@@ -1,0 +1,32 @@
+.slider__section
+    position: relative
+    margin-bottom: 100px
+    background-color: #EDEDED
+    &__item
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        width: 100%
+        height: calc(100vh - 120px - 120px)
+        &:nth-child(1)   
+            // background: url('/img/iphone bg.png') center no-repeat
+            background-size: cover
+        &:nth-child(2)    
+            // background: url('/img/headphones bg.png') center no-repeat
+            background-size: cover
+        &:nth-child(3)    
+            // background: url('/img/mouse bg.png') center no-repeat
+            background-size: cover
+        &_title
+            font-weight: 700
+            font-size: 66px
+            margin-bottom: 20px
+        &_suptitle
+            font-size: 22px
+            margin-bottom: 20px
+        &_link
+            font-size: 24px
+            padding: 25px 50px
+            border-radius: 10px
+            background: #007DFD

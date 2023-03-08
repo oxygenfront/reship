@@ -1,0 +1,291 @@
+*
+  font-family: 'Mulish', sans-serif
+
+/*Обнуление*/
+*
+  padding: 0
+  margin: 0
+  border: 0
+
+*,
+*::before,
+*::after
+  box-sizing: border-box
+
+:focus,
+:active
+  outline: none
+
+a:focus,
+a:active
+  outline: none
+
+nav,
+footer,
+header,
+aside
+  display: block
+
+input,
+button,
+textarea
+  font-family: inherit
+
+input
+  background: none
+
+input::-ms-clear
+  display: none
+
+button
+  cursor: pointer
+
+button::-moz-focus-inner
+  padding: 0
+  border: 0
+
+a,
+a:visited
+  text-decoration: none
+
+a:hover
+  text-decoration: none
+
+ul li
+  list-style: none
+
+img
+  vertical-align: top
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+  font-size: inherit
+  font-weight: 400
+
+a
+  text-decoration: none
+  color: inherit
+
+body
+  // font-family: Mulish
+  background-color: #090909
+  color: white
+  font-weight: 600
+
+.container
+  width: 100%
+  max-width: 1120px
+  height: 100%
+  margin: 0 auto
+  padding: 0 15px
+
+
+.buttons__10
+  display: flex
+  justify-content: space-between
+  &-item
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 10px
+    background-color: white
+    color: black
+    font-size: 18px
+    transition: all .2s linear
+    &:not([disabled]):hover
+      background: #1388FF
+      color: white
+      &[disabled]
+        cursor: default
+.buttons__16
+  color: white
+  background-color: #007DFD
+  font-size: 25px
+  padding: 38px 167px
+  border-radius: 16px
+.buttons__19
+  width: 346px
+  height: 63px
+  padding: 0
+  color: white
+  background-color: #007DFD
+  border-radius: 19px
+  font-size: 22px
+  margin-bottom: 27px
+.buttons__29
+
+.main-catalog
+  margin-bottom: 90px
+  &__title
+    font-size: 51px
+    font-weight: 700
+    margin-bottom: 34px
+  &__buttons
+    width: 47.89%
+    &-item
+      padding: 8px 12px
+      margin-bottom: 41px
+      &.active
+        background: #007DFD
+        color: white
+          // &.active:nth-child(1)
+          //     background: #007DFD
+          //     color: whit
+  &__preview
+    display: flex
+    justify-content: space-between
+    font-size: 25px
+    color: black
+    &-lg
+      width: 290px
+      height: 487px
+      border-radius: 10px
+      overflow: hidden
+      &_title
+        display: flex
+        justify-content: center
+        align-items: center
+        height: 115px
+        background-color: white
+        border-radius: 10px 10px 0 0
+      &-sm
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        &-item
+          display: flex
+          flex-direction: column
+          justify-content: center
+          align-items: center
+          background-color: #EDEDED
+          width: 225px
+          height: 231px
+          border-radius: 10px
+          & img
+            margin-bottom: 12px
+.reviews
+  height: 366px
+  // background: url('/img/Mask group.png') no-repeat
+  margin-bottom: 80px
+  overflow: hidden
+  &__main-block
+    height: 100%
+    display: flex
+    flex-direction: column
+    justify-content: space-evenly
+    &-title
+      font-size: 51px
+      font-weight: 700
+    &__links
+      width: 800px
+      display: flex
+      justify-content: space-between
+      &-link
+        padding: 25px 50px
+        font-size: 24px
+      &-desc
+        padding: 25px 50px
+        border: solid 2px white
+        border-radius: 10px
+        font-size: 22px
+      &-suptitle
+        font-size: 33px
+.delpay
+  margin-bottom: 85px
+  &__container
+  &__title
+    font-weight: 700
+    font-size: 51px
+  &__suptitle
+    font-size: 22px
+  &__hr
+    margin: 28px 0
+  &__grid
+    display: grid
+    justify-content: space-between
+    grid-template-columns: repeat(3, 356px)
+    grid-row-gap: 22px
+    &-item
+      padding: 73px 45px
+      display: flex
+      flex-direction: column
+      justify-content: space-evenly
+      width: 320px
+      background: black
+      height: 260px
+      border-bottom: 10px solid #007DFD
+      border-radius: 10px
+      &_title
+        font-size: 36px
+        width: 182px
+        margin-bottom: 22px
+        display: flex
+        align-items: center
+        justify-content: space-between
+.faq
+  margin-bottom: 90px
+  &__title
+    font-size: 51px
+    font-weight: 700
+    margin-bottom: 32px
+  &__accordeon
+    width: 100%
+  &__item
+    position: relative
+    height: auto
+    border-radius: 15px
+    background-color: #EDEDED
+    color: black
+    font-size: 18px
+    &.active .faq__item-arrows
+      transform: rotate(225deg)
+    &:not(:last-child)
+      margin-bottom: 45px
+    &-first-block
+      display: flex
+      justify-content: space-between
+      padding: 26px 57px 26px 53px
+    &-title
+      font-size: 24px
+    &-arrows
+      width: 18px
+      height: 18px
+      border-right: 3px solid black
+      border-bottom: 3px solid black
+      transform: rotate(45deg)
+      transition: all .4s linear
+    &-about
+      display: none
+      padding: 22px 167px 44px 53px
+      animation: aboutOn 1s linear
+    &.active &-about
+      display: block
+.footer
+  height: 440px
+  background-color: #080808
+  &__container
+    display: flex
+    flex-direction: column
+    justify-content: center
+  &__titles
+    font-size: 18px
+    display: flex
+    justify-content: space-between
+    margin-bottom: 40px
+  &__title
+    width: 18.57%
+  &__blocks
+    width: 100%
+    display: flex
+    justify-content: space-between
+  &__block
+    display: flex
+    flex-direction: column
+    width: 18.57%
+    &-suptitle
+      &:not(:last-child)
+        margin-bottom: 11px

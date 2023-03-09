@@ -132,9 +132,11 @@ body
       &.active
         background: #007DFD
         color: white
+        
+          
           // &.active:nth-child(1)
           //     background: #007DFD
-          //     color: whit
+          //     color: #fff
   &__preview
     display: flex
     justify-content: space-between
@@ -152,7 +154,7 @@ body
         height: 115px
         background-color: white
         border-radius: 10px 10px 0 0
-      &-sm
+    &-sm
         display: flex
         flex-direction: column
         justify-content: space-between
@@ -200,8 +202,10 @@ body
   &__title
     font-weight: 700
     font-size: 51px
+    
   &__suptitle
     font-size: 22px
+    margin-bottom: 50px
   &__hr
     margin: 28px 0
   &__grid
@@ -234,6 +238,7 @@ body
     margin-bottom: 32px
   &__accordeon
     width: 100%
+    
   &__item
     position: relative
     height: auto
@@ -242,7 +247,8 @@ body
     color: black
     font-size: 18px
     &.active .faq__item-arrows
-      transform: rotate(225deg)
+      
+      transform: rotate(225deg) 
     &:not(:last-child)
       margin-bottom: 45px
     &-first-block
@@ -259,33 +265,96 @@ body
       transform: rotate(45deg)
       transition: all .4s linear
     &-about
+      
       display: none
       padding: 22px 167px 44px 53px
       animation: aboutOn 1s linear
     &.active &-about
+      
       display: block
-.footer
-  height: 440px
-  background-color: #080808
-  &__container
+.auth
+    margin-top: calc( 120px + 100px )
+    margin-bottom: 107px
+    &__container
+        display: flex
+        flex-direction: column
+        align-items: center
+    &__title
+        font-size: 33px
+        margin-bottom: 30px
+        &-reg
+            text-align: center
+        & img
+            margin-right: 18px
+    &__links
+        width: 100%
+        display: flex
+        justify-content: space-evenly
+        font-size: 17px
+        &-auth
+            width: 50%
+    &__reg
+        color: #007DFD
+.main-form
     display: flex
     flex-direction: column
-    justify-content: center
-  &__titles
-    font-size: 18px
-    display: flex
-    justify-content: space-between
-    margin-bottom: 40px
-  &__title
-    width: 18.57%
-  &__blocks
-    width: 100%
-    display: flex
-    justify-content: space-between
-  &__block
-    display: flex
-    flex-direction: column
-    width: 18.57%
-    &-suptitle
-      &:not(:last-child)
-        margin-bottom: 11px
+    align-items: center
+    padding: 43px 47px
+    padding-bottom: 0
+    border-radius: 38px
+    &__form
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        &-input
+            width: 346px
+            height: 63px
+            padding-left: 35px
+            background-color: #fff
+            font-size: 18px
+            margin-bottom: 18px
+            border-radius: 19px
+            color: #007DFD
+            &::placeholder
+                color: #E3E3E3
+        &__label
+            display: flex
+            align-items: center
+            width: unset
+            height: unset
+            padding: unset
+            background: unset
+            font-size: 15px
+            margin-bottom: 27px
+            background-repeat: unset
+        &-btn
+            background: #007DFD
+            border-radius: 12px
+            padding: 20px 94px
+            font-size: 18px
+            color: white
+    &_order
+        &-title
+            font-size: 22px
+            margin-bottom: 42px
+            font-weight: 700
+            & span
+                color: #492FEB
+    &__grid
+        width: 710px
+        display: grid
+        grid-template-columns: 346px 346px
+        &-input
+            width: 100%
+            height: 63px
+            &-btn
+                background: #1388FF
+                font-size: 18px
+                width: 100%
+                height: 63px
+            &-label
+                grid-column: 1 / 3
+                justify-content: center
+                text-align: center
+                & a
+                    color: #007DFD

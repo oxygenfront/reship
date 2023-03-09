@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import styles from './Slider.module.sass';
+import styles from './Slider.module.sass'
 function Slider() {
   return (
     <section className={styles.slider__section}>
@@ -11,7 +11,7 @@ function Slider() {
         <div className={styles.slider__section__item_suptitle}>
           В продаже с 30 сентября
         </div>
-        <a href='#!' className={styles.slider__section__item_link}>
+        <a href="#!" className={styles.slider__section__item_link}>
           Перейти к товару
         </a>
       </div>
@@ -20,7 +20,7 @@ function Slider() {
         <div className={styles.slider__section__item_suptitle}>
           Снова в наличии
         </div>
-        <a href='#!' className={styles.slider__section__item_link}>
+        <a href="#!" className={styles.slider__section__item_link}>
           Перейти к товару
         </a>
       </div>
@@ -29,12 +29,12 @@ function Slider() {
         <div className={styles.slider__section__item_suptitle}>
           По самой выгодной цене
         </div>
-        <a href='#!' className={styles.slider__section__item_link}>
+        <a href="#!" className={styles.slider__section__item_link}>
           Перейти к товару
         </a>
       </div>
     </section>
-  );
+  )
 }
 
-export default Slider;
+export default Slider

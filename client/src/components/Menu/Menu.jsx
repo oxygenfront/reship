@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 import styles from './Menu.module.scss'
+import { Link } from 'react-router-dom'
 
 const Menu = () => {
   return (
@@ -29,12 +30,12 @@ const Menu = () => {
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
-        <a href="/reg.html" className={styles.search_section__registr_block}>
+        <Link to="/register" className={styles.search_section__registr_block}>
           <div className={styles.search_section__registr_item}>Регистрация</div>
-        </a>
-        <a href="/auth.html" className={styles.search_section__login_block}>
+        </Link>
+        <Link to="/login" className={styles.search_section__login_block}>
           <div className={styles.search_section__login_item}>Войти</div>
-        </a>
+        </Link>
       </div>
     </div>
   )

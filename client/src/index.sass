@@ -846,3 +846,123 @@ body
                     background: #03C42E
         &.active
             display: block
+.card-section
+    margin-top: calc(120px + 80px)
+    &__container
+        display: flex
+        justify-content: space-between
+        
+    &__img-block
+        width: 225px
+        height: 244px 
+        & img
+            width: 100%
+            height: 100%
+            border-radius: 30px
+    &__about
+        position: relative
+        height: auto
+        padding: 20px 44px
+        border-radius: 18px 
+        background: #3D3D3D33
+        &-name
+            font-size: 20px
+            margin-bottom: 24px
+        &-info:not(:last-child)
+            margin-bottom: 16px
+            font-size: 15px
+        &-info
+            &-more
+                display: none
+                margin-bottom: 16px
+        &-btn
+            font-size: 15px
+            color: #007DFD
+            background: none
+            &.no-show
+                display: none
+    &__hr
+        background: white
+        height: 250px
+        width: 2px
+    &__choice
+        height: 244px
+        width: 299px
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        &-block
+            display: flex
+            justify-content: space-between
+        &-purchase
+            height: 116px
+            width: 234px
+            display: flex
+            flex-direction: column
+            justify-content: space-evenly
+            align-items: center
+            color: black
+            background: #fff
+            border-radius: 15px
+            & span
+                font-size: 22px
+            & a
+                display: flex
+                justify-content: center
+                align-items: center
+                color: white
+                height: 44px
+                width: 179px
+                background: #007DFD
+                font-size: 15px
+                border-radius: 15px
+        &-blue-blocks
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            &_item
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 52px
+                height: 52px
+                background: #007DFD
+                border-radius: 15px
+        &-char
+            display: flex
+            justify-content: space-between
+            &_item
+                padding: 8px
+                border-radius: 6px
+                font-size: 15px
+                background: #3D3D3D33
+                color: white
+                &.active
+                    background: #007DFD
+        &-color
+            display: flex
+            justify-content: space-evenly
+            align-items: center
+            height: 50px
+            border-radius: 9px
+            background-color: #3D3D3D33
+            &-item
+                width: 20px
+                height: 20px
+                border-radius: 50%
+                &:nth-child(1)
+                    background: #9F31B8
+                &:nth-child(2)
+                    background: #31B857
+                &:nth-child(3)
+                    background: #DCCB30
+                &:nth-child(4)
+                    background: #B84131
+                &:nth-child(5)
+                    background: #000
+                &:nth-child(6)
+                    background: #FFFFFF
+                &.active
+                    border: solid 3px white
+                &.white
+                    border: solid 3px #007DFD

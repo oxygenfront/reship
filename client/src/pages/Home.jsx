@@ -1,5 +1,6 @@
 import React from 'react'
 import Accordeon from '../components/Accordeon'
+
 import CatalogMain from '../components/CatalogMain'
 import Footer from '../components/Footer/Footer'
 import Menu from '../components/Menu/Menu'

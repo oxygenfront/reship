@@ -1,9 +1,11 @@
+import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import Header from './components/Header/Header'
 
 import './index.sass'
 import Cart from './pages/Cart'
+import FullItem from './pages/FullItem'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -41,6 +43,14 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
+        <Route
+          path="/:id"
+          element={
+            <Suspense fallback={<div>Идёт загрузка...</div>}>
+              <FullItem></FullItem>
+            </Suspense>
+          }
+        ></Route>
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/cart" element={<Cart></Cart>}></Route>

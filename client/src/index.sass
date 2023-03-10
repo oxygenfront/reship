@@ -299,9 +299,10 @@ body
     display: flex
     flex-direction: column
     align-items: center
-    padding: 43px 47px
-    padding-bottom: 0
-    border-radius: 38px
+    padding: 53px
+    
+    border-radius: 15px
+    background: #020202
     &__form
         display: flex
         flex-direction: column
@@ -505,7 +506,7 @@ body
         height: 271px
         display: flex
         align-items: center
-        background-color: #090909
+        background-color: #020202
         color: white
         border-radius: 30px
         margin-bottom: 34px
@@ -516,6 +517,7 @@ body
         height: 205px
         border-radius: 27px
         margin-right: 48px
+        margin-left: 42px 
     &__info
         display: flex
         flex-direction: column
@@ -966,3 +968,214 @@ body
                     border: solid 3px white
                 &.white
                     border: solid 3px #007DFD
+.forgot
+    margin: calc( 120px + 100px ) 0
+    &__container
+        display: flex
+        flex-direction: column
+        align-items: center
+    &__title
+        font-size: 34px
+        font-weight: 500
+        margin-bottom: 29px
+    &__wrapper
+        display: flex
+        flex-direction: column
+        justify-content: space-evenly
+        align-items: center
+        height: 264px
+        width: 46%
+        border-radius: 38px
+    &__message
+        display: flex
+        align-items: center
+        width: 368px
+        color: white
+        font-size: 17px
+        & img
+            margin-right: 15px
+    &__exit
+        width: 368px
+        height: 63px
+        display: flex
+        justify-content: center
+        align-items: center
+        background: #007DFD
+        border-radius: 12px
+.catalog
+    margin-top: calc(120px + 63px)
+    &__block
+        &#news-block, &#action-block, &#leaders-block
+            display: none
+    &__block:not(:last-child)
+        margin-bottom: 63px
+    &-section
+        margin: 0
+        align-items: start
+        height: unset
+        display: block
+        background: unset
+        &__buttons-item
+            margin: 0
+        &-search__search-block
+            width: 635px
+    &__supheader
+        height: 169px
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-between
+        margin-bottom: 63px
+    &__title
+        text-align: center
+        font-size: 33px
+    &__suptitle
+        width: 100%
+        height: 60px
+        background-color: #3D3D3D33
+        display: flex
+        justify-content: center
+        align-items: center
+        border-radius: 13px
+        font-size: 18px
+        margin-bottom: 63px
+        &:not(:first-child)
+            margin-top: 63px
+    &__items
+        &-block
+            display: grid
+            grid-template-columns: repeat(3, 327px)
+            justify-content: space-between
+            grid-row-gap: 31px
+            &-item
+                display: flex
+                flex-direction: column
+                justify-content: space-between
+                height: 427px
+                border: solid 2px #fff
+                border-radius: 19px
+                padding: 20px 22px
+                &_img-block
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 282px
+                    height: 282px
+                    background: #fff
+                    border-radius: 15px
+                    & img
+                        width: 198px
+                        height: 253px  
+                &_price
+                    & span
+                        font-size: 22px
+                        margin-right: 7px
+                    & s
+                        font-size: 17px
+                        color: gray
+                &_name
+                    font-size: 14px
+                &_buttons
+                    position: relative
+                    display: flex
+                    justify-content: space-between
+                    width: 100%
+                    z-index: 10
+                    font-size: 13px
+                    &-item
+                        height: 32px
+                        color: white
+                        border-radius: 6px
+                        &:nth-child(1)
+                            background: #007DFD
+                            width: 96px
+                        &:nth-child(2)
+                            width: 117px
+                            background: none
+                            border: solid 1px white
+                        &:nth-child(3)
+                            display: flex
+                            justify-content: center
+                            align-items: center
+                            background: #fff
+                            width: 32px
+                            border-radius: 50%
+
+// .search-section
+//     display: flex
+//     align-items: center
+//     margin-top: 120px
+//     height: 120px
+//     background: white
+//     &__container
+//         display: flex
+//         justify-content: space-between
+//         height: 54px
+//     &__catalog
+//         width: 16%
+//         display: flex
+//         justify-content: space-evenly
+//         align-items: center
+//         font-size: 18px
+//         background-color: #EFEFEF
+//         color: black
+//         border-radius: 9px
+//         transition: all .2s ease-in-out
+//         &:hover
+//             opacity: .8
+//         & img
+//             width: 25px
+//             height: 25px
+//     &__search
+//         &-block
+//             width: 52.295%
+//             display: flex
+//             align-items: center
+//             justify-content: space-between
+//             background-color: #EFEFEF
+//             border-radius: 10px
+//             font-size: 23px
+//             &_glass
+//                 display: flex
+//                 justify-content: center
+//                 align-items: center
+//                 width: 64px
+//                 height: 100%
+//                 font-size: 24px
+//                 background-color: #F5F5F5
+//                 border-top-right-radius: 10px
+//                 border-bottom-right-radius: 10px
+//         &-item
+//             width: 100%
+//             margin: 0 24.65px
+//             height: 60px
+//             font-size: 23px
+//             color: #007DFD
+//     &__registr
+//         &-block
+//             width: 14.68%
+//             display: flex
+//             justify-content: center
+//             align-items: center
+//             background-color: #007DFD
+//             font-size: 18px
+//             color: white
+//             border-radius: 9px
+//             transition: all .2s linear
+//             &:hover
+//                 background: white
+//                 color: black
+//     &__login
+//         &-block
+//             width: 9.175%
+//             display: flex
+//             justify-content: center
+//             align-items: center
+//             background-color: #007DFD
+//             font-size: 18px
+//             color: white
+//             border-radius: 9px
+//             transition: all .2s linear
+//             &:hover
+//                 background: white
+//                 color: black

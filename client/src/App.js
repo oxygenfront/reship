@@ -5,9 +5,13 @@ import Header from './components/Header/Header'
 
 import './index.sass'
 import Cart from './pages/Cart'
+import Catalog from './pages/Catalog'
+import Forgot from './pages/Forgot'
 import FullItem from './pages/FullItem'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Order from './pages/Order'
+import Personal from './pages/Personal'
 import Register from './pages/Register'
 
 function App() {
@@ -53,7 +57,11 @@ function App() {
         ></Route>
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/forgot" element={<Forgot></Forgot>}></Route>
         <Route path="/cart" element={<Cart></Cart>}></Route>
+        <Route path="/personal" element={<Personal></Personal>}></Route>
+        <Route path="/order" element={<Order></Order>}></Route>
+        <Route path="/catalog" element={<Catalog></Catalog>}></Route>
       </Routes>
     </div>
   )

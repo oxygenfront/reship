@@ -35,9 +35,9 @@ const Header = () => {
             />
             <span>Корзина</span>
           </Link>
-          <button className={styles.header__like}>
+          <Link to="/personal" className={styles.header__like}>
             <img src="./assets/img/heart 1.svg" alt="heart" />
-          </button>
+          </Link>
           <div className={styles.header__line}></div>
           <a href="/" className={styles.header__messenger_item}>
             <img src="./assets/img/vkontakte 1.svg" alt="vk" />

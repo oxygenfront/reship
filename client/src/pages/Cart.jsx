@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import CartItem from '../components/CartItem/CartItem'
 
@@ -43,12 +44,12 @@ const Cart = () => {
             </div>
           </div>
           <div className="cart__total-wrapper-buttons">
-            <a
-              href="/order.html"
+            <Link
+              to="/order"
               className="cart__total-wrapper-buttons_link buttons__16"
             >
               Оформить заказ
-            </a>
+            </Link>
             <form action="">
               <input
                 type="text"

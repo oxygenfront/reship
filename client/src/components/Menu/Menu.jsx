@@ -12,14 +12,14 @@ const Menu = () => {
           styles.search_section__container
         )}
       >
-        <button className={styles.search_section__catalog}>
+        <Link to="/catalog" className={styles.search_section__catalog}>
           <img
             className="search-section__catalog-img"
             src="./assets/img/free-icon-tiles-6569357 1.png"
             alt="tiles"
           />
           <span>#вКаталог</span>
-        </button>
+        </Link>
         <div className={styles.search_section__search_block}>
           <input
             type="text"

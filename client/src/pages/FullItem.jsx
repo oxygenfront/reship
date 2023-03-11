@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const FullItem = () => {
   return (
@@ -6,12 +7,12 @@ const FullItem = () => {
       <div className="container card-section__container">
         <div className="card-section__img-block">
           <img
-            src="./assets/img/iphone-product-card.png"
+            src="../assets/img/iphone-product-card.png"
             className="fiol"
             alt="iphone"
           />
           <img
-            src="./assets/img/g-pro.png"
+            src="../assets/img/g-pro.png"
             className="green"
             alt=""
             style={{ display: 'none' }}
@@ -66,16 +67,16 @@ const FullItem = () => {
           <div className="card-section__choice-block">
             <div className="card-section__choice-purchase">
               <span>42 990 ₽</span>
-              <a href="/order.html">
+              <Link to="/order">
                 <span>Купить</span>
-              </a>
+              </Link>
             </div>
             <div className="card-section__choice-blue-blocks">
               <button className="card-section__choice-blue-blocks_item">
-                <img src="/img/bag-white.svg" alt="" />
+                <img src="../assets/img/bag-white.svg" alt="" />
               </button>
               <button className="card-section__choice-blue-blocks_item">
-                <img src="/img/heart-white.svg" alt="" />
+                <img src="../assets/img/heart-white.svg" alt="" />
               </button>
             </div>
           </div>

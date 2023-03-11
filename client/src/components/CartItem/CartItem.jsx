@@ -1,8 +1,20 @@
 import classNames from 'classnames'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { addItem, minusItem, removeItem } from '../../redux/slices/cartSlice'
 import styles from './CartItem.module.sass'
 
-const CartItem = () => {
+const CartItem = ({ id, price, image, count, name }) => {
+  const dispatch = useDispatch()
+  const onClickPlus = () => {
+    dispatch(addItem(id))
+  }
+  const onClickMinus = () => {
+    dispatch(minusItem(id))
+  }
+  // const onClickRemove = () => {
+  //   dispatch(removeItem(id))
+  // }
   return (
     <>
       <div
@@ -38,7 +50,10 @@ const CartItem = () => {
           )}
         >
           <div className={styles.cart__delivery_items_item_count_wrapper}>
-            <button className={styles.cart__delivery_items_item_count_minus}>
+            <button
+              onClick={onClickMinus}
+              className={styles.cart__delivery_items_item_count_minus}
+            >
               <div></div>
             </button>
             <div
@@ -56,7 +71,10 @@ const CartItem = () => {
                 1
               </span>
             </div>
-            <button className={styles.cart__delivery_items_item_count_pluses}>
+            <button
+              onClick={onClickPlus}
+              className={styles.cart__delivery_items_item_count_pluses}
+            >
               <div
                 className={styles.cart__delivery_items_item_count_pluses_block}
               >

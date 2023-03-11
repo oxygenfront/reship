@@ -4,7 +4,10 @@ import styles from './Slider.module.sass'
 function Slider() {
   return (
     <section className={styles.slider__section}>
-      <div className={styles.slider__section__item}>
+      <div
+        className={styles.slider__section__item}
+        style={{ background: `url('/assets/img/iphone bg.png')` }}
+      >
         <div className={styles.slider__section__item_title}>
           iPhone 14 Pro Max
         </div>
@@ -15,7 +18,10 @@ function Slider() {
           Перейти к товару
         </a>
       </div>
-      <div className={styles.slider__section__item}>
+      <div
+        className={styles.slider__section__item}
+        style={{ background: `url('/assets/img/headphones bg.png')` }}
+      >
         <div className={styles.slider__section__item_title}>Logitech G435</div>
         <div className={styles.slider__section__item_suptitle}>
           Снова в наличии
@@ -24,7 +30,10 @@ function Slider() {
           Перейти к товару
         </a>
       </div>
-      <div className={styles.slider__section__item}>
+      <div
+        className={styles.slider__section__item}
+        style={{ background: `url('/assets/img/mouse bg.png')` }}
+      >
         <div className={styles.slider__section__item_title}>Logitech G PRO</div>
         <div className={styles.slider__section__item_suptitle}>
           По самой выгодной цене

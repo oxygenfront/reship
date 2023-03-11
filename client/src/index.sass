@@ -143,10 +143,14 @@ body
     font-size: 25px
     color: black
     &-lg
+      transition: transform 0.2s ease-in-out
       width: 290px
       height: 487px
       border-radius: 10px
       overflow: hidden
+      &:hover
+        transform: scale(1.05)
+        transition: transform 0.2s ease-in-out
       &_title
         display: flex
         justify-content: center
@@ -154,11 +158,16 @@ body
         height: 115px
         background-color: white
         border-radius: 10px 10px 0 0
+      
+        
+        
+        
     &-sm
         display: flex
         flex-direction: column
         justify-content: space-between
         &-item
+          transition: transform 0.2s ease-in-out
           display: flex
           flex-direction: column
           justify-content: center
@@ -169,6 +178,9 @@ body
           border-radius: 10px
           & img
             margin-bottom: 12px
+          &:hover
+            transform: scale(1.05)
+            transition: transform 0.2s ease-in-out
 .reviews
   height: 366px
   // background: url('/img/Mask group.png') no-repeat
@@ -265,13 +277,14 @@ body
       transform: rotate(45deg)
       transition: all .4s linear
     &-about
+      height: 0px
+      transition: height 0.4s ease-in-out
+      overflow: hidden
+      padding: 0px 50px 0px 50px
       
-      display: none
-      padding: 22px 167px 44px 53px
-      animation: aboutOn 1s linear
     &.active &-about
-      
-      display: block
+      height: 100px
+      transition: height 0.4s ease-in-out
 .auth
     margin-top: calc( 120px + 100px )
     margin-bottom: 107px
@@ -1002,6 +1015,57 @@ body
         align-items: center
         background: #007DFD
         border-radius: 12px
+.search-section
+    display: flex
+    align-items: center
+    margin-top: 120px
+    height: 120px
+    background: white
+    &__container
+        display: flex
+        justify-content: space-between
+        height: 54px
+    &__catalog
+        width: 16%
+        display: flex
+        justify-content: space-evenly
+        align-items: center
+        font-size: 18px
+        background-color: #EFEFEF
+        color: black
+        border-radius: 9px
+        transition: all .2s ease-in-out
+        &:hover
+            opacity: .8
+        & img
+            width: 25px
+            height: 25px
+    &__search
+        &-block
+            
+            display: flex
+            align-items: center
+            justify-content: space-between
+            background-color: #EFEFEF
+            border-radius: 10px
+            font-size: 23px
+            &_glass
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 64px
+                height: 100%
+                font-size: 24px
+                background-color: #F5F5F5
+                border-top-right-radius: 10px
+                border-bottom-right-radius: 10px
+        &-item
+            width: 100%
+            margin: 0 24.65px
+            height: 60px
+            font-size: 23px
+            color: #007DFD
+
 .catalog
     margin-top: calc(120px + 63px)
     &__block
@@ -1100,82 +1164,42 @@ body
                             background: #fff
                             width: 32px
                             border-radius: 50%
+.desc-section
+    &__flex-block
+        display: flex
+        justify-content: space-between
+        align-items: center
+        margin-bottom: 90px
+        &_img
+            width: 45%
+            height: 70%
+        &_txt
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            width: 50%
+            font-size: 25px
+            & h1
+                font-weight: 700
+                font-size: 47px
+                margin-bottom: 47px
+    &__benefits-cards
+        display: flex
+        justify-content: space-between
+        margin-bottom: 77px
+        &-item
+            display: flex
+            flex-direction: column
 
-// .search-section
-//     display: flex
-//     align-items: center
-//     margin-top: 120px
-//     height: 120px
-//     background: white
-//     &__container
-//         display: flex
-//         justify-content: space-between
-//         height: 54px
-//     &__catalog
-//         width: 16%
-//         display: flex
-//         justify-content: space-evenly
-//         align-items: center
-//         font-size: 18px
-//         background-color: #EFEFEF
-//         color: black
-//         border-radius: 9px
-//         transition: all .2s ease-in-out
-//         &:hover
-//             opacity: .8
-//         & img
-//             width: 25px
-//             height: 25px
-//     &__search
-//         &-block
-//             width: 52.295%
-//             display: flex
-//             align-items: center
-//             justify-content: space-between
-//             background-color: #EFEFEF
-//             border-radius: 10px
-//             font-size: 23px
-//             &_glass
-//                 display: flex
-//                 justify-content: center
-//                 align-items: center
-//                 width: 64px
-//                 height: 100%
-//                 font-size: 24px
-//                 background-color: #F5F5F5
-//                 border-top-right-radius: 10px
-//                 border-bottom-right-radius: 10px
-//         &-item
-//             width: 100%
-//             margin: 0 24.65px
-//             height: 60px
-//             font-size: 23px
-//             color: #007DFD
-//     &__registr
-//         &-block
-//             width: 14.68%
-//             display: flex
-//             justify-content: center
-//             align-items: center
-//             background-color: #007DFD
-//             font-size: 18px
-//             color: white
-//             border-radius: 9px
-//             transition: all .2s linear
-//             &:hover
-//                 background: white
-//                 color: black
-//     &__login
-//         &-block
-//             width: 9.175%
-//             display: flex
-//             justify-content: center
-//             align-items: center
-//             background-color: #007DFD
-//             font-size: 18px
-//             color: white
-//             border-radius: 9px
-//             transition: all .2s linear
-//             &:hover
-//                 background: white
-//                 color: black
+            width: 30%
+            &_top
+                display: flex
+                align-items: center
+                margin-bottom: 15px
+                &-title
+                    font-size: 36px
+                &-img
+                    margin-right: 23px
+            &_bottom
+                font-size: 20px
+

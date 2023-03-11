@@ -10,8 +10,86 @@ const Home = () => {
     <div>
       <Menu />
       <Slider />
+      <section className="desc-section">
+        <div className="container desc-section__container">
+          <div className="desc-section__flex-block">
+            <img
+              className="desc-section__flex-block_img"
+              src="./assets/img/desc.png"
+              alt=""
+            />
+            <div className="desc-section__flex-block_txt">
+              <h1>ReShip – это</h1>
+              <p>
+                Интернет-магазин по продаже оригинальных девайсов на любой
+                бюджет по предельно низким цена. <br />
+                <br />
+                Столь приятные цены в нашем магазине обусловлены тем, что мы
+                закупаем товар у прямых поставщиков из-за рубежа.
+              </p>
+            </div>
+          </div>
+
+          <div className="desc-section__benefits-cards">
+            <div className="desc-section__benefits-cards-item">
+              <div className="desc-section__benefits-cards-item_top">
+                <img
+                  className="desc-section__benefits-cards-item_top-img"
+                  src="./assets/img/high-quality 1.png"
+                  alt=""
+                />
+                <span className="desc-section__benefits-cards-item_top-title">
+                  Качество
+                </span>
+              </div>
+              <div className="desc-section__benefits-cards-item_bottom">
+                <p>
+                  В продаже только официальная, сертифицированная в Росcии
+                  продукция.
+                </p>
+              </div>
+            </div>
+            <div className="desc-section__benefits-cards-item">
+              <div className="desc-section__benefits-cards-item_top">
+                <img
+                  className="desc-section__benefits-cards-item_top-img"
+                  src="./assets/img/discount 1.png"
+                  alt=""
+                />
+                <span className="desc-section__benefits-cards-item_top-title">
+                  Скидки
+                </span>
+              </div>
+              <div className="desc-section__benefits-cards-item_bottom">
+                <p>Скидки на разные категории товаров. Успей купить выгодно!</p>
+              </div>
+            </div>
+            <div className="desc-section__benefits-cards-item">
+              <div className="desc-section__benefits-cards-item_top">
+                <img
+                  className="desc-section__benefits-cards-item_top-img"
+                  src="./assets/img/delivery-truck 1.png"
+                  alt="delivery"
+                />
+                <span className="desc-section__benefits-cards-item_top-title">
+                  Доставка
+                </span>
+              </div>
+              <div className="desc-section__benefits-cards-item_bottom">
+                <p>
+                  Совершенно бесплатно для <br />
+                  наших клиентов по всей России
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <CatalogMain />
-      <section className="reviews">
+      <section
+        className="reviews"
+        style={{ background: `url('./assets/img/Mask group.png')` }}
+      >
         <div className="container reviews__container">
           <div className="reviews__main-block">
             <h1 className="reviews__main-block-title">

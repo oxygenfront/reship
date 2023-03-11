@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import axios from 'axios'
 
-export const fetchFullPizza = createAsyncThunk(
-  'pizza/getFullPizza',
+export const fetchFullItem = createAsyncThunk(
+  'pizza/getFullItem',
   async ({ id }) => {
     const { data } = await axios.get('url/items' + id)
     console.log(id)
@@ -18,27 +18,27 @@ const initialState = {
   status: 'loading', // 'loading', 'success', 'error'
 }
 
-const fullPizzaSlice = createSlice({
-  name: 'fullPizza',
+const fullItemSlice = createSlice({
+  name: 'fullItem',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchFullPizza.pending, (state, action) => {
+    builder.addCase(fetchFullItem.pending, (state, action) => {
       state.status = 'loading'
       state.item = { price: 0, image: '', name: '' }
     })
-    builder.addCase(fetchFullPizza.fulfilled, (state, action) => {
+    builder.addCase(fetchFullItem.fulfilled, (state, action) => {
       state.item = action.payload
       state.status = 'success'
     })
-    builder.addCase(fetchFullPizza.rejected, (state, action) => {
+    builder.addCase(fetchFullItem.rejected, (state, action) => {
       state.status = 'error'
       state.item = { price: 0, image: '', name: '' }
     })
   },
 })
 
-export const selectFullPizzaData = (state) => state.fullPizza
-export const {} = fullPizzaSlice.actions
+export const selectFullPizzaData = (state) => state.fullItem
+export const {} = fullItemSlice.actions
 
-export default fullPizzaSlice.reducer
+export default fullItemSlice.reducer

@@ -532,9 +532,41 @@ body
         margin-right: 48px
         margin-left: 42px 
     &__info
+        width: 690px
         display: flex
         flex-direction: column
         justify-content: center
+        &-input-button
+            display: flex
+            align-items: center
+            justify-content: space-between
+            margin-bottom: 12px
+        &-input
+            width: 240px
+            border-bottom: 2px solid white
+            color: white
+            background: transparent
+            font-size: 29px
+            &::-webkit-input-placeholder
+                color: white
+                font-size: 25px
+            &.mail
+                width: 270px
+                font-size: 20px
+                &::-webkit-input-placeholder
+                    color: white
+                    font-size: 17px
+            &_button
+                background: white
+                color: black
+                font-size: 20px
+                height: 40px
+                width: 130px
+                border-radius: 10px
+                transition: all .3s linear
+                &:hover
+                    background: #03EB6F
+                    color: white
         &-item
             display: flex
             align-items: center
@@ -578,12 +610,12 @@ body
                 background-color: white
                 color: black
             &_wrapper
-                display: none
+                // display: none
                 width: 100%
                 height: auto
                 border-radius: 30px
                 &.active
-                    display: block
+                    // display: block
                 &-title
                     text-align: center
                     font-size: 20px
@@ -676,9 +708,9 @@ body
                 align-items: center
                 margin-bottom: 40px
             &_wrapper
-                display: none
+                // display: none
                 &.active
-                    display: block
+                    // display: block
 
         &-items
             &_item
@@ -725,7 +757,7 @@ body
                 color: black
                 border-radius: 10px
     &__favorites-wrapper
-        display: none
+        // display: none
         &-items
             display: grid
             grid-template-columns: repeat(3, 300px)
@@ -758,7 +790,7 @@ body
         &.active
             display: block
     &__secret
-        display: none
+        // display: none
         justify-content: space-between
         align-items: flex-start
         width: 550px
@@ -793,7 +825,7 @@ body
             &-block
                 height: 100px
                 width: 932px
-                display: none
+                // display: none
                 justify-content: space-between
                 align-items: flex-start
                 padding: 0 0 40px 0
@@ -829,7 +861,7 @@ body
                 color: white
                 font-size: 18px
     &__reviews
-        display: none
+        // display: none
         font-size: 18px
         &_text-block
             margin-bottom: 50px

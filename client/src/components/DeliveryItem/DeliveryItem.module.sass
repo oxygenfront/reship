@@ -1,0 +1,102 @@
+.person
+    margin: 34px 0
+    
+    &__delivery
+        &_history
+            display: flex
+            align-items: center
+            justify-content: center
+            height: auto
+            
+            &_wrapper
+                // display: none
+                width: 100%
+                height: auto
+                border-radius: 30px
+                &.active
+                    // display: block
+               
+                &_item
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+                    height: 260px
+                    
+                    &:not(:last-child)
+                        margin-bottom: 36px
+                    
+                        
+                        
+                    &_name
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        width: 150px
+                        height: 60px
+                        font-size: 22px
+                    &_number
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        background-color: #007DFD
+                        color: white
+                        border-radius: 50%
+                        width: 34px
+                        height: 34px
+                        & span
+                    &_price
+                        font-size: 22px
+                    &_status
+                        width: 126px
+                        height: 43px
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        border-radius: 13px
+                        background-color: #2DB118
+                        color: white
+                        font-weight: 700
+                        &_deliv
+                            background-color: #007DFD
+                        &_return
+                            background-color: #3D3D3D33
+                    &_buttons
+                        height: 104px
+                        width: 181px
+                        font-size: 18px
+                        display: flex
+                        flex-direction: column
+                        justify-content: space-between
+                        & div
+                            width: 100%
+                            background: #007DFD
+                            &:last-child
+                                background: white
+                                color: black
+        
+
+        &_items
+            &_item
+                padding: 0px 62px
+                background-color: #020202
+                border-radius: 20px
+                height: 260px
+                display: flex
+                justify-content: space-between
+                align-items: center
+                font-size: 20px
+                &:not(:last-child)
+                    margin-bottom: 36px
+                &_img
+                    border-radius: 20px
+                &_number
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 34px
+                    height: 34px
+                    border-radius: 50%
+                    background: #007DFD
+                &_name
+                    & span:nth-child(3)
+                        color: #828282

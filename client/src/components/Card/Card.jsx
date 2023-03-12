@@ -1,7 +1,20 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { addItem } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 
-const Card = () => {
+const Card = ({ name, image, price, id }) => {
+  const dispatch = useDispatch()
+  const onClickAdd = () => {
+    const item = {
+      id,
+      name,
+      image,
+      price,
+      count: 0,
+    }
+    dispatch(addItem(item))
+  }
   return (
     <div className={styles.catalog__items_block_item}>
       <button className={styles.catalog__items_block_item_img_block}>
@@ -18,7 +31,10 @@ const Card = () => {
         <button className={styles.catalog__items_block_item_buttons_item}>
           Купить
         </button>
-        <button className={styles.catalog__items_block_item_buttons_item}>
+        <button
+          onClick={onClickAdd}
+          className={styles.catalog__items_block_item_buttons_item}
+        >
           В корзину
         </button>
         <button className={styles.catalog__items_block_item_buttons_item}>

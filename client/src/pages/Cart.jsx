@@ -12,18 +12,33 @@ const Cart = () => {
     dispatch(clearItems())
   }
   // const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+  // if (!totalPrice) {
+  //   return (
+  //     <div className="person__delivery-history" style={{ display: 'none' }}>
+  //       <div
+  //         className="person__delivery-history-mess"
+  //         style={{ textAlign: 'center' }}
+  //       >
+  //         Вернитесь сюда позднее, а пока можете
+  //         <Link to="catalog">перейти в каталог</Link>, для выбора товара
+  //       </div>
+  //     </div>
+  //   )
+  // }
   return (
     <section className="cart">
       <div className="container cart__container">
         <div className="cart__title">
           Корзина: <span>3 товара</span>
         </div>
-        <div
-          className="cart__title cart__title_none"
-          style={{ display: 'none' }}
-        >
-          Ваша корзина пока пуста
-        </div>
+        {/* {!items.length() && (
+          <div
+            className="cart__title cart__title_none"
+            style={{ display: 'none' }}
+          >
+            Ваша корзина пока пуста
+          </div>
+        )} */}
 
         <div className="cart__wrapper">
           <div className="person__delivery-items cart__delivery-items">
@@ -44,11 +59,11 @@ const Cart = () => {
                 Стоимость доставки: <span> 4334 ₽</span>
               </div>
               <div className="cart__total-wrapper-info_total">
-                Итого к оплате:{' '}
+                Итого к оплате:
               </div>
             </div>
             <div className="cart__total-wrapper-price">
-              <span>56 150 ₽</span>{' '}
+              <span>56 150 ₽</span>
             </div>
           </div>
           <div className="cart__total-wrapper-buttons">
@@ -79,16 +94,6 @@ const Cart = () => {
               className="cart__buttons-confirm-input"
               placeholder="Ввести промокод (при наличии)"
             />
-          </div>
-        </div>
-
-        <div className="person__delivery-history" style={{ display: 'none' }}>
-          <div
-            className="person__delivery-history-mess"
-            style={{ textAlign: 'center' }}
-          >
-            Вернитесь сюда позднее, а пока можете{' '}
-            <a href="#">перейти в каталог</a>, для выбора товара
           </div>
         </div>
       </div>

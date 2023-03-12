@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import styles from './PersonItem.module.sass'
 
-const PersonItem = () => {
+const PersonItem = ({ status, image, price, count, title }) => {
   return (
     <div className={styles.person__delivery_history_wrapper_item}>
       <div className={styles.person__delivery_history_wrapper_item_img_block}>

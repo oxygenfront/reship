@@ -38,7 +38,7 @@ const fullItemSlice = createSlice({
   },
 })
 
-export const selectFullPizzaData = (state) => state.fullItem
+export const selectFullItemData = (state) => state.fullItem
 export const {} = fullItemSlice.actions
 
 export default fullItemSlice.reducer

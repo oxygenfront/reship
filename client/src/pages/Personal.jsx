@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Menu, PersonItem } from '../components';
 
 const Personal = () => {
+
+  
   const [personPages, setPersonPages] = useState({
     delHistory: false,
     delInfo: false,
@@ -35,32 +37,39 @@ const Personal = () => {
   };
 
   const [changeSecret, setChangeSecret] = useState(false);
-  const [changePassword, setChangePassword] = useState(false);
-  const [changeEmail, setChangeEmail] = useState(false);
+  const [changeState, setChangeState] = useState({
+    changePassword: false,
+    changeEmail: false,
+  });
 
   const [password, setPassword] = useState({
     lastPassword: '',
-    newPassword: ''
-  })
+    newPassword: '',
+  });
 
   const updatePassword = (e) => {
     setPassword({
       ...password,
-      [e.target.name]: e.target.value
-    })
-  }
-  
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const [email, setEmail] = useState({
     email: '',
-    password: ''
-  })
+    password: '',
+  });
 
   const updateEmail = (e) => {
     setEmail({
       ...email,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const onCloseAll = () => {
+    setChangeState({ changeEmail: false, changePassword: false });
+    setChangeSecret(false);
+  };
 
   useEffect(() => {
     setPersonPages({ delHistory: true });
@@ -140,17 +149,15 @@ const Personal = () => {
               <button className='person__info-item'>
                 Укажите адресс доставки
               </button>
-              
-              {!changeSecret ? (
-                <button
-                  className='person__info-item'
-                  id='settings-conf'
-                  onClick={() => setChangeSecret(!changeSecret)}
-                >
-                  Настройки конфиденциальности
-                  <img src='./assets/img/gear.svg' alt='' />
-                </button>
-              ) : null}
+
+              <button
+                className='person__info-item'
+                id='settings-conf'
+                onClick={() => setChangeSecret(!changeSecret)}
+              >
+                Настройки конфиденциальности
+                <img src='./assets/img/gear.svg' alt='' />
+              </button>
             </div>
           </div>
 
@@ -160,21 +167,29 @@ const Personal = () => {
                 <button
                   className='person__secret-change-btn'
                   id='change-pass'
-                  onClick={() => setChangePassword(!changePassword)}
+                  onClick={() =>
+                    setChangeState({
+                      changePassword: !changeState.changePassword,
+                    })
+                  }
                 >
                   Изменить пароль
                 </button>
                 <button
                   className='person__secret-change-btn'
                   id='change-mail'
-                  onClick={() => setChangeEmail(!changeEmail)}
+                  onClick={() =>
+                    setChangeState({
+                      changeEmail: !changeState.changeEmail,
+                    })
+                  }
                 >
                   Изменить E-mail
                 </button>
                 <button
                   className='person__secret-close'
                   id='close-secret'
-                  onClick={() => setChangeSecret(!changeSecret)}
+                  onClick={onCloseAll}
                 >
                   <div className='person__secret-close__cross'>
                     <div className='person__secret-close__cross_item'></div>
@@ -185,7 +200,7 @@ const Personal = () => {
             </div>
           ) : null}
 
-          {changePassword ? (
+          {changeState.changePassword ? (
             <div className='person__secret-change-block person__secret-change-block-pass'>
               <div className='person__secret-change-block-wrapper'>
                 <input
@@ -205,14 +220,22 @@ const Personal = () => {
                 <button
                   className='person__secret-change-confirm'
                   id='person-confirm-pass'
-                  onClick={() => setChangePassword(!changePassword)}
+                  onClick={() =>
+                    setChangeState({
+                      changePassword: !changeState.changePassword,
+                    })
+                  }
                 >
                   Сохранить изменения
                 </button>
                 <button
                   className='person__secret-close'
                   id='person-close-pass'
-                  onClick={() => setChangePassword(!changePassword)}
+                  onClick={() =>
+                    setChangeState({
+                      changePassword: !changeState.changePassword,
+                    })
+                  }
                 >
                   <div className='person__secret-close__cross'>
                     <div className='person__secret-close__cross_item'></div>
@@ -223,7 +246,7 @@ const Personal = () => {
             </div>
           ) : null}
 
-          {changeEmail ? (
+          {changeState.changeEmail ? (
             <div className='person__secret-change-block person__secret-change-block-mail'>
               <div className='person__secret-change-block-wrapper'>
                 <input
@@ -243,14 +266,18 @@ const Personal = () => {
                 <button
                   className='person__secret-change-confirm'
                   id='person-confirm-mail'
-                  onClick={setChangeEmail(!changeEmail)}
+                  onClick={() =>
+                    setChangeState({ changeEmail: !changeState.changeEmail })
+                  }
                 >
                   Сохранить изменения
                 </button>
                 <button
                   className='person__secret-close'
                   id='person-close-mail'
-                  onClick={setChangeEmail(!changeEmail)}
+                  onClick={() =>
+                    setChangeState({ changeEmail: !changeState.changeEmail })
+                  }
                 >
                   <div className='person__secret-close__cross'>
                     <div className='person__secret-close__cross_item'></div>
@@ -261,7 +288,11 @@ const Personal = () => {
             </div>
           ) : null}
 
-          <div className='person__opacity'>
+          <div
+            className={
+              changeSecret ? 'person__opacity active' : 'person__opacity'
+            }
+          >
             <div className='person__buttons buttons__10' id='person-btn'>
               <button
                 className={

@@ -6,9 +6,11 @@ const Home = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/getProducts').then(({ data }) => {
-      setData(data);
-    });
+    axios
+      .get('http://localhost:5000/api/getProducts?category=1')
+      .then(({ data }) => {
+        setData(data);
+      });
   }, []);
 
   return (

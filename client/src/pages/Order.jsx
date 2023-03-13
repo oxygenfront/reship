@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-
+import React, { useState } from 'react';
+import { isEmail } from 'validator';
+import InputMask from 'react-input-mask';
 const Order = () => {
   const initialState = {
     fullName: '',
@@ -9,8 +10,8 @@ const Order = () => {
     street: '',
     numberHouse: '',
     numberApartment: '',
-    postIndex: ''
-  }
+    postIndex: '',
+  };
   const [order, setOrder] = useState({
     fullName: '',
     number: '',
@@ -19,20 +20,21 @@ const Order = () => {
     street: '',
     numberHouse: '',
     numberApartment: '',
-    postIndex: ''
-  })
-
+    postIndex: '',
+  });
+  const [isValidEmail, setIsValidEmail] = useState(false);
   function updateOrder(e) {
     setOrder({
       ...order,
-      [e.target.name]: e.target.value
-    })
+      [e.target.name]: e.target.value,
+    });
   }
-  
+
   function sendForm(e) {
-    e.preventDefault()
-    setOrder(initialState)
-    console.log(order)
+    e.preventDefault();
+    setOrder(initialState);
+    setIsValidEmail(isEmail(order.email))
+    console.log(isValidEmail);
   }
   return (
     <section className='auth'>
@@ -48,13 +50,14 @@ const Order = () => {
               type='text'
               placeholder='ФИО получателя'
             />
-            <input
+            <InputMask
               className='main-form__form-input'
               name='number'
+              mask='+7 (999) 999-99-99'
+              placeholder='+7 (___) ___-__-__'
               value={order.number}
               onChange={updateOrder}
               type='text'
-              placeholder='Контактный номер телефона'
             />
             <input
               className='main-form__form-input'
@@ -115,6 +118,6 @@ const Order = () => {
       </div>
     </section>
   );
-}
+};
 
-export default Order
+export default Order;

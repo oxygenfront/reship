@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CatalogMain, Footer, Menu, Slider } from '../components';
 import Accordeon from '../components/Accordeon';
-
+import axios from 'axios';
 const Home = () => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/getProducts').then(({ data }) => {
+      setData(data);
+    });
+  }, []);
+
   return (
     <div>
       <Menu />

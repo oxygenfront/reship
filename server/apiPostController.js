@@ -78,13 +78,13 @@ class ApiPostController {
     }
 
     async getProducts(request, response) {
-        if (!tools.checkJsonKey(request.body, 'category')) {
-            return response.status(400).json({'error': 'Некорректные данные.', 'bcode': 2})
-        }
+        // if (!tools.checkJsonKey(request.body, 'category')) {
+        //     return response.status(400).json({'error': 'Некорректные данные.', 'bcode': 2})
+        // }
 
-        let category = tools.delInjection(request.body.category)
+        // let category = tools.delInjection(request.body.category)
 
-        database.query('SELECT * FROM `products` WHERE category="' + category + '"', (error, rows, fields) => {
+        database.query('SELECT * FROM `products`', (error, rows, fields) => {
             if (error) {
                 return response.status(500).json({'error': 'Ошибка на сервере', 'bcode': 2.1})
             }

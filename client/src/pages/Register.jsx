@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [checkPass, setCheckPass] = useState(true);
-
+  
   const [regForm, setRegForm] = useState({
     firstName: '',
     lastName: '',

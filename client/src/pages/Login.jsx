@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
+import { fetchAuth, selectIsAuth } from '../redux/slices/authSlice';
 
 const Login = () => {
   const [authForm, setAuthForm] = useState({
@@ -23,6 +26,23 @@ const Login = () => {
     })
 
   }
+
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
+  if (isAuth) {
+    return <Navigate to='/' />;
+  }
+  const onSubmit = async (values) => {
+    const data = await dispatch(fetchAuth(values));
+
+    if (!data.payload) {
+      return alert('Не удалось авторизоваться');
+    }
+
+    if ('token' in data.payload) {
+      window.localStorage.setItem('token', data.payload.token);
+    }
+  };
   
   return (
     <div>

@@ -1,38 +1,64 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
+  const [authForm, setAuthForm] = useState({
+    email: '',
+    password: '',
+  });
+
+  const updateAuthForm = (e) => {
+    setAuthForm({
+      ...authForm,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  function sendForm(e) {
+    e.preventDefault();
+    console.log(authForm);
+    setAuthForm({
+      email: '',
+      password: ''
+    })
+
+  }
+  
   return (
     <div>
-      <section className="auth">
-        <div className="container auth__container">
-          <h1 className="auth__title">
-            <img src="/img/input 1.svg" alt="" />
+      <section className='auth'>
+        <div className='container auth__container'>
+          <h1 className='auth__title'>
+            <img src='/img/input 1.svg' alt='' />
             Вход в аккаунт ReShip
           </h1>
-          <div className="main-form">
-            <form className="main-form__form" action="">
+          <div className='main-form'>
+            <form className='main-form__form' action=''>
               <input
-                className="main-form__form-input"
-                type="text"
-                placeholder="Адресс эл. почты"
+                className='main-form__form-input'
+                name='email'
+                value={authForm.email}
+                onChange={updateAuthForm}
+                type='text'
+                placeholder='Адресс эл. почты'
               />
               <input
-                className="main-form__form-input"
-                type="text"
-                placeholder="Пароль"
+                className='main-form__form-input'
+                name='password'
+                value={authForm.password}
+                onChange={updateAuthForm}
+                type='password'
+                placeholder='Пароль'
               />
-              <input
-                className="buttons__19"
-                type="submit"
-                value="Выполнить вход"
-              />
+              <button className='buttons__19' type='submit' onClick={sendForm}>
+                Выполнить вход
+              </button>
             </form>
-            <div className="auth__links">
-              <Link to="/forgot" className="auth__forgot">
+            <div className='auth__links'>
+              <Link to='/forgot' className='auth__forgot'>
                 Забыли пароль?
               </Link>
-              <Link to="/register" className="auth__reg">
+              <Link to='/register' className='auth__reg'>
                 Зарегистрироваться
               </Link>
             </div>
@@ -40,7 +66,7 @@ const Login = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -2,8 +2,15 @@ import React from 'react'
 import classNames from 'classnames'
 import styles from './Menu.module.scss'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectIsAuth } from '../../redux/slices/authSlice'
 
 const Menu = () => {
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  const onClickLogout = () => {
+    dispatch(logout())
+  }
   return (
     <div className={styles.search_section}>
       <div
@@ -30,12 +37,38 @@ const Menu = () => {
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
-        <Link to="/register" className={styles.search_section__registr_block}>
-          <div className={styles.search_section__registr_item}>Регистрация</div>
-        </Link>
-        <Link to="/login" className={styles.search_section__login_block}>
-          <div className={styles.search_section__login_item}>Войти</div>
-        </Link>
+        {isAuth ? (
+          <>
+            <Link
+              to="/personal"
+              className={styles.search_section__profile_block}
+            >
+              <img src="./assets/img/user.svg" alt="user" />
+              <p>Фамилия И.</p>
+            </Link>
+            <Link
+              to=""
+              onClick={onClickLogout}
+              className={styles.search_section__logout_block}
+            >
+              <img src="./assets/img/free-icon-power.svg" alt="power" />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/register"
+              className={styles.search_section__registr_block}
+            >
+              <div className={styles.search_section__registr_item}>
+                Регистрация
+              </div>
+            </Link>
+            <Link to="/login" className={styles.search_section__login_block}>
+              <div className={styles.search_section__login_item}>Войти</div>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   )

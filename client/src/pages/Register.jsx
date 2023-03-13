@@ -1,7 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
+  const [checkPass, setCheckPass] = useState(true);
+
+  const [regForm, setRegForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  const updateForm = (e) => {
+    setRegForm({
+      ...regForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const closeError = (e) => {
+    e.preventDefault();
+    setCheckPass(true)
+  }
+  
+  const sendForm = (e) => {
+    e.preventDefault();
+    if (regForm.newPassword === regForm.confirmPassword) {
+      setCheckPass(true);
+      setRegForm({
+        firstName: '',
+        lastName: '',
+        email: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    } else {
+      setCheckPass(false);
+    }
+    
+  };
   return (
     <section className='auth'>
       <div className='container auth__container'>
@@ -14,33 +52,72 @@ const Register = () => {
             <input
               className='main-form__form-input main-form__grid-input'
               type='text'
+              name='firstName'
+              value={regForm.firstName}
+              onChange={updateForm}
               placeholder='Имя'
             />
+
+            {checkPass ? (
+              <input
+                className='main-form__form-input main-form__grid-input'
+                name='newPassword'
+                value={regForm.newPassword}
+                onChange={updateForm}
+                type='password'
+                placeholder='Придумайте пароль'
+              />
+            ) : (
+              <div className='main-form__form-input main-form__grid-input incorrectPass'>
+                <div>Пароли не совпадают</div>
+                <button onClick={closeError}>
+                  <img src='../assets/img/Error Form.png' alt='' />
+                </button>
+              </div>
+            )}
+
             <input
               className='main-form__form-input main-form__grid-input'
-              type='password'
-              placeholder='Придумайте пароль'
-            />
-            <input
-              className='main-form__form-input main-form__grid-input'
+              name='lastName'
+              value={regForm.lastName}
+              onChange={updateForm}
               type='text'
               placeholder='Фамилия'
             />
+
+            {checkPass ? (
+              <input
+                className='main-form__form-input main-form__grid-input'
+                name='confirmPassword'
+                value={regForm.confirmPassword}
+                onChange={updateForm}
+                type='password'
+                placeholder='Повторите пароль'
+              />
+            ) : (
+              <div className='main-form__form-input main-form__grid-input incorrectPass'>
+                <div>Пароли не совпадают</div>
+                <button onClick={closeError}>
+                  <img src='../assets/img/Error Form.png' alt='' />
+                </button>
+              </div>
+            )}
+
             <input
               className='main-form__form-input main-form__grid-input'
-              type='password'
-              placeholder='Повторите пароль'
-            />
-            <input
-              className='main-form__form-input main-form__grid-input'
+              name='email'
+              value={regForm.email}
+              onChange={updateForm}
               type='text'
               placeholder='Адресс эл. почты'
             />
-            <input
+            <button
               className='buttons__19 main-form__grid-input-btn'
               type='submit'
-              value='Создать аккаунт'
-            />
+              onClick={sendForm}
+            >
+              Создать аккаунт
+            </button>
             <label className='main-form__form__label main-form__grid-input-label'>
               <p>
                 Регистрируя аккаунт, вы принимаете

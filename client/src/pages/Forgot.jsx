@@ -1,24 +1,57 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react';
 
-const Forgot = () => {
+function Forgot() {
+  const [forgotForm, setForgotForm] = useState({
+    email: '',
+  });
+
+  const updateForm = (e) => {
+    setForgotForm({
+      ...forgotForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const sendForm = (e) => {
+    e.preventDefault()
+    console.log(forgotForm);
+    setForgotForm({
+      email: ''
+    })
+  }
   return (
-    <div className="forgot">
-      <div className="container forgot__container">
-        <div className="forgot__wrapper">
-          <div className="forgot__message">
-            <img src="./assets/img/check-mark 1.svg" alt="check" />
-            <span>
-              Мы отправили письмо на ваш E-mail c новым паролем для входа
-            </span>
+    <section className='auth'>
+      <div className='container auth__container'>
+        <h1 className='auth__title'>
+          <img src='/img/key 1.svg' alt='' />
+          Забыли пароль?
+        </h1>
+        <div className='main-form'>
+          <form className='main-form__form' action=''>
+            <input
+              className='main-form__form-input'
+              name='email'
+              value={forgotForm.email}
+              onChange={updateForm}
+              type='text'
+              placeholder='Адресс эл. почты'
+            />
+            <button className='buttons__19' type='submit' onClick={sendForm}>
+              Восстановить пароль
+            </button>
+          </form>
+          <div className='auth__links'>
+            <a href='/auth.html' className='auth__forgot'>
+              Войти в аккаунт
+            </a>
+            <a href='/reg.html' className='auth__reg'>
+              Зарегистрироваться
+            </a>
           </div>
-          <Link to="/login" className="forgot__exit">
-            <span>Вернуться ко входу</span>
-          </Link>
         </div>
       </div>
-    </div>
-  )
+    </section>
+  );
 }
 
-export default Forgot
+export default Forgot;

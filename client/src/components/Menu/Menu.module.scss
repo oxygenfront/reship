@@ -82,6 +82,23 @@
     color: black;
   }
 }
+.search_section__profile_block {
+  width: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #007dfd;
+  font-size: 18px;
+  color: white;
+  border-radius: 9px;
+}
+.search_section__logout_block {
+  margin-left: 22px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .search_section__login_block {
   width: 9.175%;
   display: flex;

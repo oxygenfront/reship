@@ -1,84 +1,83 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
-import { fetchAuth, selectIsAuth } from '../redux/slices/authSlice';
+import React, { useState } from 'react'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom'
+import { fetchAuth, selectIsAuth } from '../redux/slices/authSlice'
 
 const Login = () => {
   const [authForm, setAuthForm] = useState({
     email: '',
     password: '',
-  });
+  })
 
   const updateAuthForm = (e) => {
     setAuthForm({
       ...authForm,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
   function sendForm(e) {
-    e.preventDefault();
-    console.log(authForm);
+    e.preventDefault()
+    console.log(authForm)
     setAuthForm({
       email: '',
-      password: ''
+      password: '',
     })
-
   }
 
-  const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
   if (isAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to="/" />
   }
-  const onSubmit = async (values) => {
-    const data = await dispatch(fetchAuth(values));
+  const onSubmit = (values) => {
+    const data = dispatch(fetchAuth(values))
 
     if (!data.payload) {
-      return alert('Не удалось авторизоваться');
+      return alert('Не удалось авторизоваться')
     }
 
     if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload.token);
+      window.localStorage.setItem('token', data.payload.token)
     }
-  };
-  
+  }
+
   return (
     <div>
-      <section className='auth'>
-        <div className='container auth__container'>
-          <h1 className='auth__title'>
-            <img src='/img/input 1.svg' alt='' />
+      <section className="auth">
+        <div className="container auth__container">
+          <h1 className="auth__title">
+            <img src="./assets/img/input 1.svg" alt="input" />
             Вход в аккаунт ReShip
           </h1>
-          <div className='main-form'>
-            <form className='main-form__form' action=''>
+          <div className="main-form">
+            <form onSubmit={onSubmit} className="main-form__form" action="">
               <input
-                className='main-form__form-input'
-                name='email'
+                className="main-form__form-input"
+                name="email"
                 value={authForm.email}
                 onChange={updateAuthForm}
-                type='text'
-                placeholder='Адресс эл. почты'
+                type="text"
+                placeholder="Адресс эл. почты"
               />
               <input
-                className='main-form__form-input'
-                name='password'
+                className="main-form__form-input"
+                name="password"
                 value={authForm.password}
                 onChange={updateAuthForm}
-                type='password'
-                placeholder='Пароль'
+                type="password"
+                placeholder="Пароль"
               />
-              <button className='buttons__19' type='submit' onClick={sendForm}>
+              <button className="buttons__19" type="submit" onClick={sendForm}>
                 Выполнить вход
               </button>
             </form>
-            <div className='auth__links'>
-              <Link to='/forgot' className='auth__forgot'>
+            <div className="auth__links">
+              <Link to="/forgot" className="auth__forgot">
                 Забыли пароль?
               </Link>
-              <Link to='/register' className='auth__reg'>
+              <Link to="/register" className="auth__reg">
                 Зарегистрироваться
               </Link>
             </div>
@@ -86,7 +85,7 @@ const Login = () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

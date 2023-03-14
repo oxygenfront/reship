@@ -9,7 +9,10 @@ const Menu = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const onClickLogout = () => {
-    dispatch(logout())
+    if (window.confirm('Вы действительно хотите выйти?')) {
+      dispatch(logout())
+      window.localStorage.removeItem('token')
+    }
   }
   return (
     <div className={styles.search_section}>

@@ -25,7 +25,7 @@ const CartItem = ({ id, price, image, count, name }) => {
       >
         <div className={styles.cart__delivery_items_item_block_img}>
           <img
-            src="./assets/img/iphone-prev.png"
+            src={image}
             alt="item"
             className={classNames(
               styles.person__delivery_items_item_img,
@@ -40,7 +40,7 @@ const CartItem = ({ id, price, image, count, name }) => {
             styles.cart__delivery_items_item_name
           )}
         >
-          IPhone 11 (128 gb)
+          {name} (128 gb)
         </span>
 
         <div
@@ -68,7 +68,7 @@ const CartItem = ({ id, price, image, count, name }) => {
                   styles.cart__delivery_items_item_count_number_block_item
                 )}
               >
-                1
+                {count}
               </span>
             </div>
             <button
@@ -99,7 +99,7 @@ const CartItem = ({ id, price, image, count, name }) => {
             styles.cart__delivery_items_item_price
           )}
         >
-          43,000 Р
+          {price * count} Р
         </div>
       </div>
     </>

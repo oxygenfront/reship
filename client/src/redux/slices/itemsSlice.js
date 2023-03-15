@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../axios'
 
 export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
-  const { data } = await axios.get('/getProducts')
+  const { data } = await axios.get('/getProducts?category=none')
+
   return data
 })
 
@@ -24,6 +25,7 @@ const ItemsSlice = createSlice({
       state.status = 'success'
     })
     builder.addCase(fetchItems.rejected, (state, action) => {
+      console.log(action)
       state.status = 'error'
       state.items = []
     })

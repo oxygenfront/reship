@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  choosenCategorie: 0,
+  choosenCategorie: 'none',
   choosenSort: '',
   searchValue: '',
 }

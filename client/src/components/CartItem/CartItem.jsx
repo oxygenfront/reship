@@ -7,14 +7,14 @@ import styles from './CartItem.module.sass'
 const CartItem = ({ id, price, image, count, name }) => {
   const dispatch = useDispatch()
   const onClickPlus = () => {
-    dispatch(addItem(id))
+    dispatch(addItem({ id }))
   }
   const onClickMinus = () => {
     dispatch(minusItem(id))
   }
-  // const onClickRemove = () => {
-  //   dispatch(removeItem(id))
-  // }
+  const onClickRemove = () => {
+    dispatch(removeItem(id))
+  }
   return (
     <>
       <div
@@ -51,7 +51,7 @@ const CartItem = ({ id, price, image, count, name }) => {
         >
           <div className={styles.cart__delivery_items_item_count_wrapper}>
             <button
-              onClick={onClickMinus}
+              onClick={count === 1 ? onClickRemove : onClickMinus}
               className={styles.cart__delivery_items_item_count_minus}
             >
               <div></div>
@@ -99,7 +99,7 @@ const CartItem = ({ id, price, image, count, name }) => {
             styles.cart__delivery_items_item_price
           )}
         >
-          {price * count} Р
+          {price * count} ₽
         </div>
       </div>
     </>

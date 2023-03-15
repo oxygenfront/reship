@@ -3,7 +3,7 @@ import { calcTotalPrice } from '../../utils/calcTotalPrice'
 import { getCartFromLS } from '../../utils/getCartFromLs'
 
 const { items, totalPrice } = getCartFromLS()
-console.log(items, totalPrice)
+
 const initialState = {
   items,
   totalPrice,

@@ -11,8 +11,11 @@ const Cart = () => {
   const onClickClear = () => {
     dispatch(clearItems())
   }
+
   console.log(items)
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+  const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
+
   if (!totalPrice) {
     return (
       <div className="person__delivery-history">
@@ -31,13 +34,13 @@ const Cart = () => {
     <section className="cart">
       <div className="container cart__container">
         <div className="cart__title">
-          Корзина: <span>{totalCount} товара</span>
+          Всего товаров: <span>{totalCount}</span>
         </div>
-        {!totalPrice && (
+        {!totalPrice ? (
           <div className="cart__title cart__title_none">
             Ваша корзина пока пуста
           </div>
-        )}
+        ) : null}
 
         <div className="cart__wrapper">
           <div className="person__delivery-items cart__delivery-items">
@@ -54,7 +57,7 @@ const Cart = () => {
                 Общая стоимость заказа: <span> {totalPrice} ₽</span>
               </div>
               <div className="cart__total-wrapper-info_suptotal">
-                Стоимость доставки: <span> 4334 ₽</span>
+                Стоимость доставки: <span> {deliveryPrice} ₽</span>
               </div>
               <div className="cart__total-wrapper-info_total">
                 Итого к оплате:

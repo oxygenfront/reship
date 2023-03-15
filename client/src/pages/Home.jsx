@@ -3,8 +3,6 @@ import { CatalogMain, Footer, Menu, Slider } from '../components'
 import Accordeon from '../components/Accordeon'
 import axios from 'axios'
 const Home = () => {
-  const [data, setData] = useState(null)
-
   return (
     <div>
       <Menu />

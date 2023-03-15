@@ -4,6 +4,8 @@ import { Link, Navigate } from 'react-router-dom'
 import { fetchAuth, selectIsAuth } from '../redux/slices/authSlice'
 
 const Login = () => {
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
   const [authForm, setAuthForm] = useState({
     email: '',
     password: '',
@@ -18,20 +20,12 @@ const Login = () => {
 
   function sendForm(e) {
     e.preventDefault()
-    console.log(authForm)
+
     setAuthForm({
       email: '',
       password: '',
     })
-  }
-
-  const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
-  if (isAuth) {
-    return <Navigate to="/" />
-  }
-  const onSubmit = (values) => {
-    const data = dispatch(fetchAuth(values))
+    const data = dispatch(fetchAuth(authForm))
 
     if (!data.payload) {
       return alert('Не удалось авторизоваться')
@@ -41,6 +35,11 @@ const Login = () => {
       window.localStorage.setItem('token', data.payload.token)
     }
   }
+
+  if (isAuth) {
+    return <Navigate to="/" />
+  }
+  const onSubmit = () => {}
 
   return (
     <div>

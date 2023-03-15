@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { selectIsAuth } from '../redux/slices/authSlice'
+import { fetchRegister, selectIsAuth } from '../redux/slices/authSlice'
 
 const Register = () => {
   const isAuth = useSelector(selectIsAuth)
@@ -14,7 +14,12 @@ const Register = () => {
     newPassword: '',
     confirmPassword: '',
   })
-
+  const form = {
+    first_name: regForm.firstName,
+    last_name: regForm.lastName,
+    password: regForm.confirmPassword,
+    email: regForm.email,
+  }
   const updateForm = (e) => {
     setRegForm({
       ...regForm,
@@ -29,19 +34,31 @@ const Register = () => {
 
   const sendForm = (e) => {
     e.preventDefault()
+
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true)
+      console.log(form)
+      const data = dispatch(fetchRegister(form))
+      console.log(data)
+      if (!data.payload) {
+        return alert('Не удалось зарегистрироваться')
+      }
+
+      if ('token' in data.payload) {
+        window.localStorage.setItem('token', data.payload.token)
+      }
       setRegForm({
         firstName: '',
         lastName: '',
         email: '',
-        newPassword: '',
-        confirmPassword: '',
+        password: { newPassword: '', confirmPassword: '' },
       })
     } else {
       setCheckPass(false)
     }
   }
+  const dispatch = useDispatch()
+
   if (isAuth) {
     return <Navigate to="/" />
   }

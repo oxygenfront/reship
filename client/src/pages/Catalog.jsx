@@ -1,14 +1,18 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card } from '../components'
+import { Card, Skeleton } from '../components'
+import { selectFilter } from '../redux/slices/fiterSlice'
 import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
 
 const Catalog = () => {
-  const items = useSelector(selectItemsData)
   const dispatch = useDispatch()
-  // useEffect(() => {
-  //   dispatch(fetchItems())
-  // })
+  const { items, status } = useSelector(selectItemsData)
+  const { choosenCategorie, searchValue } = useSelector(selectFilter)
+
+  useEffect(() => {
+    dispatch(fetchItems({ choosenCategorie }))
+  }, [choosenCategorie, searchValue])
+
   return (
     <section className="catalog">
       <div className="container catalog__container">
@@ -66,8 +70,20 @@ const Catalog = () => {
             <span>Техника Apple</span>
           </div>
 
-          <div href="#" className="catalog__items-block">
-            <Card></Card>
+          <div className="catalog__items-block">
+            {status === 'loading'
+              ? [...new Array(3)].map((_, index) => (
+                  <Skeleton key={index}></Skeleton>
+                ))
+              : items.map((item) => (
+                  <Card
+                    key={item.id}
+                    id={item.id}
+                    name={item.name}
+                    price={item.price}
+                    image={item.image_link}
+                  ></Card>
+                ))}
           </div>
         </div>
 

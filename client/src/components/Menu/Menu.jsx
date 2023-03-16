@@ -4,16 +4,19 @@ import styles from './Menu.module.scss'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, selectIsAuth } from '../../redux/slices/authSlice'
+import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
+  const { searchValue } = useSelector(selectFilter)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
       window.localStorage.removeItem('token')
     }
   }
+
   return (
     <div className={styles.search_section}>
       <div
@@ -35,6 +38,7 @@ const Menu = () => {
             type="text"
             placeholder="Поиск товара"
             className={styles.search_section__search_item}
+            onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
           <button className={styles.search_section__search_block_glass}>
             <i className="fa-solid fa-magnifying-glass"></i>

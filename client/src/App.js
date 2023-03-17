@@ -1,9 +1,12 @@
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
+import { Footer } from './components'
 
 import Header from './components/Header/Header'
 
 import './index.sass'
+import { ForgotMessage } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
 import Forgot from './pages/Forgot'
@@ -13,34 +16,13 @@ import Login from './pages/Login'
 import Order from './pages/Order'
 import Personal from './pages/Personal'
 import Register from './pages/Register'
+import { selectIsAuth } from './redux/slices/authSlice'
 
 function App() {
-  // $(document).ready(function () {
-  //   $('.faq__item').click(function () {
-  //     $('.faq__item').not($(this)).find($('.faq__item-about')).slideUp(500)
-  //     $(this).find('.faq__item-about').slideToggle(500)
-
-  //     if ($(this).hasClass('active')) {
-  //       $(this).removeClass('active')
-  //     } else {
-  //       $(this).parent().find('.faq__item').removeClass('active')
-  //       $(this).addClass('active')
-  //     }
-  //   })
-  //   $('.card-section__about-btn').click(function () {
-  //     $('.card-section__about')
-  //       .find('.card-section__about-info-more')
-  //       .slideToggle(600)
-  //   })
-
-  //   $('.card-section__about-btn.show').click(function () {
-  //     $('.card-section__about-btn.show').css('display', 'none')
-  //     $('.card-section__about-btn.no-show').css('display', 'block')
-  //   })
-  //   $('.card-section__about-btn.no-show').click(function () {
-  //     $('.card-section__about-btn.show').css('display', 'block')
-  //     $('.card-section__about-btn.no-show').css('display', 'none')
-  //   })
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  // useEffect(() => {
+  //   dispatch(fetchAuthMe())
   // })
   return (
     <div className="App">
@@ -62,6 +44,7 @@ function App() {
         <Route path="/personal" element={<Personal></Personal>}></Route>
         <Route path="/order" element={<Order></Order>}></Route>
         <Route path="/catalog" element={<Catalog></Catalog>}></Route>
+        <Route path="/forgot/message" element={<ForgotMessage />}></Route>
       </Routes>
     </div>
   )

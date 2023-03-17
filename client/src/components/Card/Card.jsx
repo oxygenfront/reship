@@ -15,17 +15,18 @@ const Card = ({ name, image, price, id }) => {
     }
     dispatch(addItem(item))
   }
+
   return (
     <div className={styles.catalog__items_block_item}>
       <button className={styles.catalog__items_block_item_img_block}>
-        <img src="./assets/img/iphone-catalog.png" alt="iphone" />
+        <img src={image} alt="iphone" />
       </button>
       <div className={styles.catalog__items_block_item_price}>
-        <span>43 000 ₽</span>
-        <s>50 000 ₽</s>
+        <span>{price} ₽</span>
+        {/* <s>50 000 ₽</s> */}
       </div>
       <div className={styles.catalog__items_block_item_name}>
-        <span>IPhone 11 black 128 GB</span>
+        <span>{name} black 128 GB</span>
       </div>
       <div className={styles.catalog__items_block_item_buttons}>
         <button className={styles.catalog__items_block_item_buttons_item}>

@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { selectCart } from '../../redux/slices/cartSlice'
 import styles from './Header.module.sass'
 
 const Header = () => {
+  const { items, totalPrice } = useSelector(selectCart)
+  const isMounted = useRef(false)
+  const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items)
+      localStorage.setItem('cart', json)
+    }
+    isMounted.current = true
+  }, [items])
   return (
     <header className={styles.header}>
       <div className={styles.header__container}>

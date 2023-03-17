@@ -5,7 +5,7 @@ import axios from 'axios'
 export const fetchFullItem = createAsyncThunk(
   'pizza/getFullItem',
   async ({ id }) => {
-    const { data } = await axios.get('url/items' + id)
+    const { data } = await axios.get('/getProducts' + id)
     console.log(id)
     console.log(data)
 

@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { setChoosenCategorie } from '../redux/slices/fiterSlice'
 
 function CatalogMain() {
+  const dispatch = useDispatch()
+
+  const onChangeCategory = useCallback((sort) => {
+    dispatch(setChoosenCategorie(sort))
+  }, [])
   return (
     <section className="main-catalog">
       <div className="container main-catalog__container">
         <h1 className="main-catalog__title">Каталог продукции</h1>
         <div className="main-catalog__buttons buttons__10">
-          <button
+          <Link
+            to="/catalog"
             className="main-catalog__buttons-item buttons__10-item"
             id="main-catalog"
           >
             <span>Каталог</span>
-          </button>
+          </Link>
           <button
             className="main-catalog__buttons-item buttons__10-item"
             id="main-news"
@@ -33,7 +42,12 @@ function CatalogMain() {
         </div>
         <hr className="hr" />
         <div className="main-catalog__preview">
-          <a href="/catalog.html#apple" className="main-catalog__preview-lg">
+          <Link
+            to="/catalog"
+            onClick={() => onChangeCategory('apple')}
+            value={'apple'}
+            className="main-catalog__preview-lg"
+          >
             <div className="main-catalog__preview-lg_title">
               <span>Apple</span>
             </div>
@@ -42,10 +56,11 @@ function CatalogMain() {
               src="./assets/img/apple1.png"
               alt="apple"
             />
-          </a>
+          </Link>
           <div className="main-catalog__preview-sm">
-            <a
-              href="/catalog.html#micro"
+            <Link
+              onClick={() => onChangeCategory('microphone')}
+              to="/catalog"
               className="main-catalog__preview-sm-item"
             >
               <img
@@ -53,9 +68,10 @@ function CatalogMain() {
                 alt="microphone"
               />
               <span>Микрофоны</span>
-            </a>
-            <a
-              href="/catalog.html#mouse"
+            </Link>
+            <Link
+              onClick={() => onChangeCategory('mouse')}
+              to="/catalog"
               className="main-catalog__preview-sm-item"
             >
               <img
@@ -63,11 +79,12 @@ function CatalogMain() {
                 alt="mouse"
               />
               <span>Мышки</span>
-            </a>
+            </Link>
           </div>
           <div className="main-catalog__preview-sm">
-            <a
-              href="/catalog.html#headphones"
+            <Link
+              onClick={() => onChangeCategory('headphone')}
+              to="/catalog"
               className="main-catalog__preview-sm-item"
             >
               <img
@@ -75,16 +92,21 @@ function CatalogMain() {
                 alt="headphones"
               />
               <span>Наушники</span>
-            </a>
-            <a
-              href="/catalog.html#access"
+            </Link>
+            <Link
+              onClick={() => onChangeCategory('access')}
+              to="/catalog"
               className="main-catalog__preview-sm-item"
             >
               <img src="./assets/img/smartwatch 1.svg" alt="smartwatch" />
               <span>Аксессуары</span>
-            </a>
+            </Link>
           </div>
-          <a href="/catalog.html#board" className="main-catalog__preview-lg">
+          <Link
+            onClick={() => onChangeCategory('board')}
+            to="/catalog"
+            className="main-catalog__preview-lg"
+          >
             <div className="main-catalog__preview-lg_title">
               <span>Клавиатуры</span>
             </div>
@@ -93,7 +115,7 @@ function CatalogMain() {
               src="./assets/img/board1.png"
               alt="board"
             />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

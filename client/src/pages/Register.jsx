@@ -4,6 +4,7 @@ import { Link, Navigate } from 'react-router-dom'
 import { fetchRegister, selectIsAuth } from '../redux/slices/authSlice'
 
 const Register = () => {
+  const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const [checkPass, setCheckPass] = useState(true)
 
@@ -32,13 +33,13 @@ const Register = () => {
     setCheckPass(true)
   }
 
-  const sendForm = (e) => {
+  const sendForm = async (e) => {
     e.preventDefault()
 
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true)
       console.log(form)
-      const data = dispatch(fetchRegister(form))
+      const data = await dispatch(fetchRegister(form))
       console.log(data)
       if (!data.payload) {
         return alert('Не удалось зарегистрироваться')
@@ -57,11 +58,11 @@ const Register = () => {
       setCheckPass(false)
     }
   }
-  const dispatch = useDispatch()
 
   if (isAuth) {
     return <Navigate to="/" />
   }
+  console.log(isAuth)
   return (
     <section className="auth">
       <div className="container auth__container">

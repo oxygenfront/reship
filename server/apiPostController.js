@@ -50,7 +50,7 @@ class ApiPostController {
               `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash('md5')
                 .update(password)
-                .digest('hex')}', '0');`,
+                .digest('hex')}', '1');`,
             (error, rows, fields) => {
               if (error) {
                 return response
@@ -67,34 +67,51 @@ class ApiPostController {
                 text:
                   `Активируйте аккаунт по ссылке: ${url}/api/activateEmail?code=` +
                   activation_code,
-                // html: '<b>Hey there! </b><br
               }
 
-              transporter.sendMail(mailData, function (err, info) {
-                if (err) {
-                  return response.status(400).json({
-                    error: 'Указана несуществующая почта.',
-                    bcode: 1.3,
-                  })
-                } else {
-                  database.query(
-                    "INSERT INTO `activate_email` (`email`, `code`) VALUES ('" +
-                      email +
-                      "', '" +
-                      activation_code +
-                      "');",
-                    (error, rows, fields) => {
-                      if (error) {
-                        return response
-                          .status(500)
-                          .json({ error: 'Ошибка на сервере', bcode: error })
-                      }
+              // transporter.sendMail(mailData, function (err, info) {
+              //   if (err) {
+              //     return response.status(400).json({
+              //       error: 'Указана несуществующая почта.',
+              //       bcode: 1.3,
+              //     });
+              //   } else {
+              //     database.query(
+              //       "INSERT INTO `activate_email` (`email`, `code`) VALUES ('" +
+              //         email +
+              //         "', '" +
+              //         activation_code +
+              //         "');",
+              //       (error, rows, fields) => {
+              //         if (error) {
+              //           return response
+              //             .status(500)
+              //             .json({ error: 'Ошибка на сервере', bcode: error });
+              //         }
 
-                      return response.status(400).json({ token: new_token })
-                    }
-                  )
+              //         return response.status(400).json({ token: new_token });
+              //       }
+              //     );
+              //   }
+              // });
+
+              database.query(
+                "INSERT INTO `activate_email` (`email`, `code`) VALUES ('" +
+                  email +
+                  "', '" +
+                  activation_code +
+                  "');",
+                (error, rows, fields) => {
+                  if (error) {
+                    return response
+                      .status(500)
+                      .json({ error: 'Ошибка на сервере', bcode: 1.3 })
+                  }
+
+                  response.header('Authorization', new_token)
+                  return response.status(400).json({ token: new_token })
                 }
-              })
+              )
             }
           )
         } else {
@@ -107,19 +124,24 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    if (!tools.checkJsonKey(request.query, 'category')) {
+    let category = null
+    let query = null
+
+    if (tools.checkJsonKey(request.query, 'category')) {
+      category = tools.delInjection(request.query.category)
+    }
+
+    if (tools.checkJsonKey(request.query, 'query')) {
+      query = tools.delInjection(request.query.query)
+    }
+
+    if (category === query) {
       return response
         .status(400)
         .json({ error: 'Некорректные данные.', bcode: 2 })
     }
 
-    let category = tools.delInjection(request.query.category)
-
-    let sql = ' WHERE category="' + category + '"'
-
-    if (category === 'none') sql = ''
-
-    database.query('SELECT * FROM `products`' + sql, (error, rows, fields) => {
+    database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
       if (error) {
         return response
           .status(500)
@@ -127,9 +149,25 @@ class ApiPostController {
       }
 
       let response_json_new = []
+      let category_true = []
 
       for (let i = 0; i < rows.length; i++) {
-        let response_json = rows[i]
+        if (category !== null) {
+          if (rows[i].category === category) {
+            category_true.push(rows[i])
+          }
+        } else {
+          category_true.push(rows[i])
+        }
+      }
+
+      for (let i = 0; i < category_true.length; i++) {
+        let response_json = category_true[i]
+
+        if (query === null) {
+          response_json_new.push(response_json)
+          continue
+        }
 
         response_json.colors = JSON.parse(response_json.colors)
         response_json.colors_avail = JSON.parse(response_json.colors_avail)
@@ -138,7 +176,9 @@ class ApiPostController {
           response_json.parameters_avail
         )
 
-        response_json_new.push(response_json)
+        if (response_json.name.includes(query)) {
+          response_json_new.push(response_json)
+        }
       }
 
       response.json(response_json_new)
@@ -155,15 +195,14 @@ class ApiPostController {
         .json({ error: 'Некорректные данные.', bcode: 3 })
     }
 
-    let password = tools.delInjection(request.body.password)
-    let email = tools.delInjection(request.body.email)
+    const password = tools.delInjection(request.body.password)
+    const email = tools.delInjection(request.body.email)
 
     database.query(
-      "SELECT * FROM `users` WHERE email='" +
-        email +
-        "' AND password_md5='" +
-        crypto.createHash('md5').update(password).digest('hex') +
-        "'",
+      `SELECT * FROM \`users\` WHERE email='${email}' AND password_md5='${crypto
+        .createHash('md5')
+        .update(password)
+        .digest('hex')}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -189,10 +228,10 @@ class ApiPostController {
         .json({ error: 'Некорректные данные.', bcode: 4 })
     }
 
-    let token = tools.delInjection(request.body.token)
+    const token = tools.delInjection(request.body.token)
 
     database.query(
-      "SELECT * FROM `users` WHERE token='" + token + "'",
+      `SELECT * FROM \`users\` WHERE token='${token}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -201,7 +240,7 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          let response_json = {
+          const response_json = {
             id: rows[0].id,
             first_name: rows[0].first_name,
             last_name: rows[0].last_name,
@@ -230,16 +269,15 @@ class ApiPostController {
         .json({ error: 'Некорректные данные.', bcode: 5 })
     }
 
-    let password = tools.delInjection(request.body.password)
-    let new_password = tools.delInjection(request.body.new_password)
-    let token = tools.delInjection(request.body.token)
+    const password = tools.delInjection(request.body.password)
+    const new_password = tools.delInjection(request.body.new_password)
+    const token = tools.delInjection(request.body.token)
 
     database.query(
-      "SELECT * FROM `users` WHERE token='" +
-        token +
-        "' AND password_md5='" +
-        crypto.createHash('md5').update(password).digest('hex') +
-        "'",
+      `SELECT * FROM \`users\` WHERE token='${token}' AND password_md5='${crypto
+        .createHash('md5')
+        .update(password)
+        .digest('hex')}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -248,21 +286,16 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          let new_token = 'reship.api.' + tools.createToken(50)
+          const new_token = 'reship.api.' + tools.createToken(50)
 
           database.query(
-            "UPDATE `users` SET `password_md5` = '" +
-              crypto.createHash('md5').update(new_password).digest('hex') +
-              "' WHERE token='" +
-              token +
-              "';"
+            `UPDATE \`users\` SET \`password_md5\` = '${crypto
+              .createHash('md5')
+              .update(new_password)
+              .digest('hex')}' WHERE token='${token}';`
           )
           database.query(
-            "UPDATE `users` SET `token` = '" +
-              new_token +
-              "' WHERE token='" +
-              token +
-              "';"
+            `UPDATE \`users\` SET \`token\` = '${new_token}' WHERE token='${token}';`
           )
 
           return response.json({ token: new_token })
@@ -286,16 +319,15 @@ class ApiPostController {
         .json({ error: 'Некорректные данные.', bcode: 6 })
     }
 
-    let password = tools.delInjection(request.body.password)
-    let new_email = tools.delInjection(request.body.new_email)
-    let token = tools.delInjection(request.body.token)
+    const password = tools.delInjection(request.body.password)
+    const new_email = tools.delInjection(request.body.new_email)
+    const token = tools.delInjection(request.body.token)
 
     database.query(
-      "SELECT * FROM `users` WHERE token='" +
-        token +
-        "' AND password_md5='" +
-        crypto.createHash('md5').update(password).digest('hex') +
-        "'",
+      `SELECT * FROM \`users\` WHERE token='${token}' AND password_md5='${crypto
+        .createHash('md5')
+        .update(password)
+        .digest('hex')}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -304,77 +336,13 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          let new_token = 'reship.api.' + tools.createToken(50)
+          const new_token = 'reship.api.' + tools.createToken(50)
 
           database.query(
-            "UPDATE `users` SET `email` = '" +
-              new_email +
-              "' WHERE token='" +
-              token +
-              "';"
+            `UPDATE \`users\` SET \`email\` = '${new_email}' WHERE token='${token}';`
           )
           database.query(
-            "UPDATE `users` SET `token` = '" +
-              new_token +
-              "' WHERE token='" +
-              token +
-              "';"
-          )
-
-          return response.json({ token: new_token, email: new_email })
-        } else {
-          return response
-            .status(400)
-            .json({ error: 'Неверный пароль.', bcode: 6.2 })
-        }
-      }
-    )
-  }
-
-  async changeEmail(request, response) {
-    if (
-      !tools.checkJsonKey(request.body, 'password') ||
-      !tools.checkJsonKey(request.body, 'new_email') ||
-      !tools.checkJsonKey(request.body, 'token')
-    ) {
-      return response
-        .status(400)
-        .json({ error: 'Некорректные данные.', bcode: 6 })
-    }
-
-    let password = tools.delInjection(request.body.password)
-    let new_email = tools.delInjection(request.body.new_email)
-    let token = tools.delInjection(request.body.token)
-
-    database.query(
-      "SELECT * FROM `users` WHERE token='" +
-        token +
-        "' AND password_md5='" +
-        crypto.createHash('md5').update(password).digest('hex') +
-        "'",
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 6.1 })
-        }
-
-        if (rows.length == 1) {
-          let new_token = 'reship.api.' + tools.createToken(50)
-
-          database.query(
-            "UPDATE `users` SET `email` = '" +
-              new_email +
-              "' WHERE token='" +
-              token +
-              "';"
-          )
-          database.query(
-            "UPDATE `users` SET `token` = '" +
-              new_token +
-              "' WHERE token='" +
-              token +
-              "';"
+            `UPDATE \`users\` SET \`token\` = '${new_token}' WHERE token='${token}';`
           )
 
           return response.json({ token: new_token, email: new_email })
@@ -448,10 +416,10 @@ class ApiPostController {
         .json({ error: 'Некорректные данные.', bcode: 8 })
     }
 
-    let email = tools.delInjection(request.body.email)
+    const email = tools.delInjection(request.body.email)
 
     database.query(
-      "SELECT * FROM `users` WHERE email='" + email,
+      `SELECT * FROM \`users\` WHERE email='${email}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -460,21 +428,13 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          let new_token = 'reship.api.' + tools.createToken(50)
+          const new_token = 'reship.api.' + tools.createToken(50)
 
           database.query(
-            "UPDATE `users` SET `email` = '" +
-              new_email +
-              "' WHERE token='" +
-              token +
-              "';"
+            `UPDATE \`users\` SET \`email\` = '${new_email}' WHERE token='${token}';`
           )
           database.query(
-            "UPDATE `users` SET `token` = '" +
-              new_token +
-              "' WHERE token='" +
-              token +
-              "';"
+            `UPDATE \`users\` SET \`token\` = '${new_token}' WHERE token='${token}';`
           )
 
           return response.json({ token: new_token, email: new_email })
@@ -484,6 +444,23 @@ class ApiPostController {
             bcode: 8.2,
           })
         }
+      }
+    )
+  }
+
+  async getProductById(request, response) {
+    const id = tools.delInjection(request.params.id)
+
+    database.query(
+      `SELECT * FROM \`products\` WHERE id='${id}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: 'Ошибка на сервере', bcode: 9.1 })
+        }
+
+        response.json(rows[0])
       }
     )
   }

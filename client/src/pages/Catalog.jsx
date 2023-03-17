@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
-import { selectFilter } from '../redux/slices/fiterSlice'
+import { selectFilter, setSearchValue } from '../redux/slices/fiterSlice'
 import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
 
 const Catalog = () => {
@@ -12,7 +12,8 @@ const Catalog = () => {
   useEffect(() => {
     dispatch(fetchItems({ choosenCategorie }))
   }, [choosenCategorie, searchValue])
-
+  console.log(searchValue)
+  console.log(items)
   return (
     <section className="catalog">
       <div className="container catalog__container">
@@ -22,6 +23,8 @@ const Catalog = () => {
             <div className=" catalog-section__container">
               <div className="search-section__search-block catalog-section-search__search-block">
                 <input
+                  value={searchValue}
+                  onChange={(e) => dispatch(setSearchValue(e.target.value))}
                   type="text"
                   placeholder="Поиск товара"
                   className="search-section__search-item"

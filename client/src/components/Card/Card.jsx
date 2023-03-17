@@ -1,21 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addItem } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 
-const Card = ({ name, image, price, id }) => {
+const Card = ({ name, image, price, id, favorite = false }) => {
   const dispatch = useDispatch()
   const onClickAdd = () => {
     const item = {
       id,
       name,
+
       image,
       price,
       count: 0,
     }
     dispatch(addItem(item))
   }
-
+  const [isFavorite, setIsFavorite] = useState(favorite)
+  const onChangeFavorite = () => {
+    setIsFavorite(!isFavorite)
+  }
   return (
     <div className={styles.catalog__items_block_item}>
       <button className={styles.catalog__items_block_item_img_block}>
@@ -38,9 +42,16 @@ const Card = ({ name, image, price, id }) => {
         >
           В корзину
         </button>
-        <button className={styles.catalog__items_block_item_buttons_item}>
+        <button
+          onClick={onChangeFavorite}
+          className={styles.catalog__items_block_item_buttons_item}
+        >
           <img
-            src="./assets/img/heart-catalog.svg"
+            src={
+              isFavorite
+                ? './assets/img/heart-catalog.svg'
+                : './assets/img/heart-empty.svg'
+            }
             alt="heart"
             width={'18px'}
           />

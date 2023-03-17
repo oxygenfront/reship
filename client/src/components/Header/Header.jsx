@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { selectCart } from '../../redux/slices/cartSlice'
-import styles from './Header.module.scss'
+import styles from './Header.module.sass'
 
 const Header = () => {
   const { items, totalPrice } = useSelector(selectCart)
@@ -50,16 +50,15 @@ const Header = () => {
           <Link to="/personal" className={styles.header__like}>
             <img src="../assets/img/heart 1.svg" alt="heart" />
           </Link>
-          <div className={styles.header__line}></div>
+          <a href="/" className={styles.header__messenger_item}>
+            <img src="../assets/img/telegram.svg" alt=""></img>
+          </a>
           <a
             href="https://vk.com/reship"
             className={styles.header__messenger_item}
           >
             <img src="../assets/img/vkontakte 1.svg" alt="vk" />
           </a>
-          {/* <a href="/" className={styles.header__messenger_item}>
-            <img src="../assets/img/telegram.svg" alt=""></img>
-          </a> */}
           <a href="/" className={styles.header__messenger_item}>
             <img src="../assets/img/discord 1.svg" alt="" />
           </a>

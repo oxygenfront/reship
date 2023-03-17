@@ -16,14 +16,16 @@ import Login from './pages/Login'
 import Order from './pages/Order'
 import Personal from './pages/Personal'
 import Register from './pages/Register'
-import { selectIsAuth } from './redux/slices/authSlice'
+import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
 
 function App() {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
-  // useEffect(() => {
-  //   dispatch(fetchAuthMe())
-  // })
+  const token = localStorage.getItem('token')
+  useEffect(() => {
+    dispatch(fetchAuthMe())
+  }, [])
+
   return (
     <div className="App">
       <Header />

@@ -7,7 +7,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/getProducts?category=1')
+      .get('http://localhost:5000/api/getProducts?category=apple')
       .then(({ data }) => {
         setData(data);
       });

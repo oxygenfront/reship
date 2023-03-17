@@ -56,14 +56,14 @@ const Menu = () => {
           </>
         ) : (
           <>
-            <Link
+            {/* <Link
               to="/register"
               className={styles.search_section__registr_block}
             >
               <div className={styles.search_section__registr_item}>
                 Регистрация
               </div>
-            </Link>
+            </Link> */}
             <Link to="/login" className={styles.search_section__login_block}>
               <div className={styles.search_section__login_item}>Войти</div>
             </Link>

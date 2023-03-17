@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import styles from './Header.module.scss'
+import styles from './Header.module.sass'
 
 const Header = () => {
   return (
@@ -28,26 +28,25 @@ const Header = () => {
           </Link>
         </div>
         <div className={styles.header__cont}>
-          <Link to="/cart" className={styles.header__cart}>
+          {/* <Link to="/cart" className={styles.header__cart}>
             <img
               src="../assets/img/free-icon-shopping-bag-5023684 1.png"
               alt="shopping-bag"
             />
             <span>Корзина</span>
-          </Link>
-          <Link to="/personal" className={styles.header__like}>
+          </Link> */}
+          {/* <Link to="/personal" className={styles.header__like}>
             <img src="../assets/img/heart 1.svg" alt="heart" />
-          </Link>
-          <div className={styles.header__line}></div>
+          </Link> */}
+          <a href="/" className={styles.header__messenger_item}>
+            <img src="../assets/img/telegram.svg" alt=""></img>
+          </a>
           <a
             href="https://vk.com/reship"
             className={styles.header__messenger_item}
           >
             <img src="../assets/img/vkontakte 1.svg" alt="vk" />
           </a>
-          {/* <a href="/" className={styles.header__messenger_item}>
-            <img src="../assets/img/telegram.svg" alt=""></img>
-          </a> */}
           <a href="/" className={styles.header__messenger_item}>
             <img src="../assets/img/discord 1.svg" alt="" />
           </a>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { addItem } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 
@@ -22,9 +23,12 @@ const Card = ({ name, image, price, id, favorite = false }) => {
   }
   return (
     <div className={styles.catalog__items_block_item}>
-      <button className={styles.catalog__items_block_item_img_block}>
+      <Link
+        to={`/item/${id}`}
+        className={styles.catalog__items_block_item_img_block}
+      >
         <img src={image} alt="iphone" />
-      </button>
+      </Link>
       <div className={styles.catalog__items_block_item_price}>
         <span>{price} ₽</span>
         {/* <s>50 000 ₽</s> */}

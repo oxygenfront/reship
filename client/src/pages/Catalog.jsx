@@ -14,6 +14,21 @@ const Catalog = () => {
   }, [choosenCategorie, searchValue])
   console.log(searchValue)
   console.log(items)
+  // const categories = new Set(
+  //   items.length < 0
+  //     ? null
+  //     : items.map((item) => {
+  //         categories.add(item.category)
+  //       })
+  // )
+
+  const set = new Set()
+
+  if (status === 'success') {
+    items.map((item) => set.add(item.category))
+  }
+  const categories = [...set]
+  console.log(categories)
   return (
     <section className="catalog">
       <div className="container catalog__container">
@@ -68,106 +83,37 @@ const Catalog = () => {
           </div>
         </div>
 
-        <div className="catalog__block" id="apple">
-          <div className="catalog__suptitle">
-            <span>Техника Apple</span>
-          </div>
-
-          <div className="catalog__items-block">
-            {status === 'loading'
-              ? [...new Array(3)].map((_, index) => (
-                  <Skeleton key={index}></Skeleton>
-                ))
-              : items.map((item) => (
-                  <Card
-                    key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    price={item.price}
-                    image={item.image_link}
-                  ></Card>
-                ))}
-          </div>
-        </div>
-
-        <div className="catalog__block" id="board">
-          <div className="catalog__suptitle">
-            <span>Клавиатуры</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="micro">
-          <div className="catalog__suptitle">
-            <span>Микрофоны</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="mouse">
-          <div className="catalog__suptitle">
-            <span>Мышки</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="headphones">
-          <div className="catalog__suptitle">
-            <span>Наушники</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="access">
-          <div className="catalog__suptitle">
-            <span>Аксессуары</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="news-block">
-          <div className="catalog__suptitle">
-            <span>Новинки</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="action-block">
-          <div className="catalog__suptitle">
-            <span>Акции</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="leaders-block">
-          <div className="catalog__suptitle">
-            <span>Лидеры продаж</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
+        <div className="catalog__block">
+          {categories.map((categorie, index) => (
+            <>
+              <div className="catalog__suptitle">
+                <span>{categorie}</span>
+              </div>
+              <div className="catalog__items-block">
+                {status === 'loading'
+                  ? [...new Array(3)].map((_, index) => (
+                      <Skeleton key={index}></Skeleton>
+                    ))
+                  : items
+                      .filter((item) => {
+                        if (item.category === categorie) {
+                          return true
+                        } else {
+                          return false
+                        }
+                      })
+                      .map((item) => (
+                        <Card
+                          key={item.id}
+                          id={item.id}
+                          name={item.name}
+                          price={item.price}
+                          image={item.image_link}
+                        ></Card>
+                      ))}
+              </div>
+            </>
+          ))}
         </div>
       </div>
     </section>

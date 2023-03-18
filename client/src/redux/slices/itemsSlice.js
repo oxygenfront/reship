@@ -4,7 +4,7 @@ import axios from '../../axios'
 export const fetchItems = createAsyncThunk(
   'items/fetchItems',
   async ({ choosenCategorie, searchValue }) => {
-    const { data } = await axios.get(`/getProducts`)
+    const { data } = await axios.get(`/getProductsAll`)
 
     return data
   }

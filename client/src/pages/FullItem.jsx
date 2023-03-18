@@ -1,7 +1,20 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import {
+  fetchFullItem,
+  selectFullItemData,
+} from '../redux/slices/fullItemSlice'
 
 const FullItem = () => {
+  const { id } = useParams()
+  const { item } = useSelector(selectFullItemData)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  useEffect(() => {
+    dispatch(fetchFullItem({ id }))
+  }, [])
+  console.log(item)
   return (
     <section className="card-section">
       <div className="container card-section__container">
@@ -11,18 +24,10 @@ const FullItem = () => {
             className="fiol"
             alt="iphone"
           />
-          <img
-            src="../assets/img/g-pro.png"
-            className="green"
-            alt=""
-            style={{ display: 'none' }}
-          />
         </div>
 
         <div className="card-section__about">
-          <div className="card-section__about-name">
-            Смартфон iPhone 11 black 128 GB
-          </div>
+          <div className="card-section__about-name">{item.name}</div>
           <div className="card-section__about-info">
             Диагональ экрана: 6.1 дюйм
           </div>
@@ -66,7 +71,7 @@ const FullItem = () => {
         <div className="card-section__choice">
           <div className="card-section__choice-block">
             <div className="card-section__choice-purchase">
-              <span>42 990 ₽</span>
+              <span>{item.price} ₽</span>
               <Link to="/order">
                 <span>Купить</span>
               </Link>

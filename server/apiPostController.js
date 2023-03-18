@@ -46,7 +46,7 @@ class ApiPostController {
           let new_token = 'reship.api.' + tools.createToken(50)
 
           database.query(
-            'INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `basket`, `token`, `date_register_timestamp`, `password_md5`, `email_active`) VALUES ' +
+            'INSERT INTO \`users\` (\`first_name\`, \`last_name\`, \`email\`, \`avatar\`, \`adress_delivery\`, \`basket\`, \`token\`, \`date_register_timestamp\`, `password_md5`, `email_active`) VALUES ' +
               `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash('md5')
                 .update(password)
@@ -96,11 +96,7 @@ class ApiPostController {
               // });
 
               database.query(
-                "INSERT INTO `activate_email` (`email`, `code`) VALUES ('" +
-                  email +
-                  "', '" +
-                  activation_code +
-                  "');",
+                `INSERT INTO \`activate_email\` (\`email\`, \`code\`) VALUES ('${email}', '${activation_code}');`,
                 (error, rows, fields) => {
                   if (error) {
                     return response
@@ -164,17 +160,17 @@ class ApiPostController {
       for (let i = 0; i < category_true.length; i++) {
         let response_json = category_true[i]
 
-        if (query === null) {
-          response_json_new.push(response_json)
-          continue
-        }
-
         response_json.colors = JSON.parse(response_json.colors)
         response_json.colors_avail = JSON.parse(response_json.colors_avail)
         response_json.parameters = JSON.parse(response_json.parameters)
         response_json.parameters_avail = JSON.parse(
           response_json.parameters_avail
         )
+
+        if (query === null) {
+          response_json_new.push(response_json)
+          continue
+        }
 
         if (response_json.name.includes(query)) {
           response_json_new.push(response_json)
@@ -463,6 +459,33 @@ class ApiPostController {
         response.json(rows[0])
       }
     )
+  }
+
+  async getProductsAll(request, response) {
+    database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
+      if (error) {
+        return response
+          .status(500)
+          .json({ error: 'Ошибка на сервере', bcode: 10 })
+      }
+
+      let response_json_new = []
+
+      for (let i = 0; i < rows.length; i++) {
+        let response_json = rows[i]
+
+        response_json.colors = JSON.parse(response_json.colors)
+        response_json.colors_avail = JSON.parse(response_json.colors_avail)
+        response_json.parameters = JSON.parse(response_json.parameters)
+        response_json.parameters_avail = JSON.parse(
+          response_json.parameters_avail
+        )
+
+        response_json_new.push(response_json)
+      }
+
+      response.json(response_json_new)
+    })
   }
 }
 

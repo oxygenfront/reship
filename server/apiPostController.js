@@ -132,9 +132,32 @@ class ApiPostController {
     }
 
     if (category === query) {
-      return response
-        .status(400)
-        .json({ error: 'Некорректные данные.', bcode: 2 })
+      database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: 'Ошибка на сервере', bcode: 10 })
+        }
+  
+        let response_json_new = []
+  
+        for (let i = 0; i < rows.length; i++) {
+          let response_json = rows[i]
+  
+          response_json.colors = JSON.parse(response_json.colors)
+          response_json.colors_avail = JSON.parse(response_json.colors_avail)
+          response_json.parameters = JSON.parse(response_json.parameters)
+          response_json.parameters_avail = JSON.parse(
+            response_json.parameters_avail
+          )
+  
+          response_json_new.push(response_json)
+        }
+  
+        response.json(response_json_new)
+      })
+
+      return
     }
 
     database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {

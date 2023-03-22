@@ -13,5 +13,6 @@ router.post('/changePassword', apiPostController.changePassword)
 router.post('/changeEmail', apiPostController.changeEmail)
 router.get('/activateEmail', apiPostController.activateEmail)
 router.post('/recoveryPassword', apiPostController.recoveryPassword)
+router.post('/createProduct', apiPostController.createProduct)
 
 export default router;

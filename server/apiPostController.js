@@ -538,10 +538,12 @@ class ApiPostController {
     const old_price = tools.delInjection(request.body.old_price)
     const price = tools.delInjection(request.body.price)
     const availability = tools.delInjection(request.body.availability)
-    const colors = tools.delInjection(request.body.colors)
-    const colors_avail = tools.delInjection(request.body.colors_avail)
-    const parameters = tools.delInjection(request.body.parameters)
-    const parameters_avail = tools.delInjection(request.body.parameters_avail)
+
+    const colors = JSON.parse(request.body.colors.toString())
+    const colors_avail = JSON.parse(request.body.colors_avail.toString())
+    const parameters = JSON.parse(request.body.parameters.toString())
+    const parameters_avail = JSON.parse(request.body.parameters_avail.toString())
+
     const image_link = tools.delInjection(request.body.image_link)
     const category = tools.delInjection(request.body.category)
 
@@ -553,7 +555,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 11.1 })
+            .json({ error: 'Ошибка на сервере', bcode: 11.1})
         }
 
         if (rows.length == 1) {
@@ -567,7 +569,7 @@ class ApiPostController {
                   .json({ error: 'Ошибка на сервере', bcode: error})
               }
 
-              return response.json(rows)
+              return response.json({'product_id': rows.insertId})
             })
           }
 

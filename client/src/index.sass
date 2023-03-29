@@ -921,6 +921,8 @@ body
             height: 100%
             border-radius: 30px
     &__about
+        margin: 0px 20px
+        width: 600px
         position: relative
         height: auto
         padding: 20px 44px
@@ -934,8 +936,18 @@ body
             font-size: 15px
         &-info
             &-more
-                display: none
+                display: flex
+                align-items: center
+                transition:  height .4s ease-in-out
+                height: 0px
+                overflow: hidden
                 margin-bottom: 16px
+                &-active
+                    transition:  height .3s ease-in-out
+                    height: 200px
+                    display: flex
+                    align-items: center
+                    
         &-btn
             font-size: 15px
             color: #007DFD
@@ -946,6 +958,7 @@ body
         background: white
         height: 250px
         width: 2px
+        margin-right: 15px
     &__choice
         height: 244px
         width: 299px
@@ -956,6 +969,7 @@ body
             display: flex
             justify-content: space-between
         &-purchase
+            margin-right: 15px
             height: 116px
             width: 234px
             display: flex

@@ -60,7 +60,7 @@ function CatalogMain() {
           <div className="main-catalog__preview-sm">
             <Link
               onClick={() => onChangeCategory('microphone')}
-              to="/catalog"
+              to="/catalog#микрофоны"
               className="main-catalog__preview-sm-item"
             >
               <img

@@ -12,7 +12,6 @@ const Cart = () => {
     dispatch(clearItems())
   }
 
-  console.log(items)
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
 
@@ -64,7 +63,7 @@ const Cart = () => {
               </div>
             </div>
             <div className="cart__total-wrapper-price">
-              <span>{totalPrice} ₽</span>
+              <span>{totalPrice + deliveryPrice} ₽</span>
             </div>
           </div>
           <div className="cart__total-wrapper-buttons">

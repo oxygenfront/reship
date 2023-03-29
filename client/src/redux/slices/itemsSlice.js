@@ -9,6 +9,16 @@ export const fetchItems = createAsyncThunk(
     return data
   }
 )
+export const fetchItemsWithParams = createAsyncThunk(
+  'items/fetchItemsWithParams',
+  async ({ choosenCategorie, searchValue }) => {
+    const { data } = await axios.get(
+      `/getProducts?category=${choosenCategorie}?query=${searchValue}`
+    )
+
+    return data
+  }
+)
 
 const initialState = {
   items: [],

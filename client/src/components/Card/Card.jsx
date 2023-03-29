@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addItem } from '../../redux/slices/cartSlice'
+import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 
 const Card = ({ name, image, price, id, favorite = false }) => {
   const dispatch = useDispatch()
+  const cartItem = useSelector(selectCartItemById(id))
   const onClickAdd = () => {
     const item = {
       id,
       name,
-
       image,
       price,
       count: 0,
     }
     dispatch(addItem(item))
   }
+  const addedCount = cartItem ? cartItem.count : 0
   const [isFavorite, setIsFavorite] = useState(favorite)
   const onChangeFavorite = () => {
     setIsFavorite(!isFavorite)
@@ -34,7 +35,7 @@ const Card = ({ name, image, price, id, favorite = false }) => {
         {/* <s>50 000 ₽</s> */}
       </div>
       <div className={styles.catalog__items_block_item_name}>
-        <span>{name} black 128 GB</span>
+        <span>{name}</span>
       </div>
       <div className={styles.catalog__items_block_item_buttons}>
         <button className={styles.catalog__items_block_item_buttons_item}>
@@ -45,6 +46,7 @@ const Card = ({ name, image, price, id, favorite = false }) => {
           className={styles.catalog__items_block_item_buttons_item}
         >
           В корзину
+          {addedCount > 0 ? <i>{addedCount}</i> : null}
         </button>
         <button
           onClick={onChangeFavorite}

@@ -1,20 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
+import { addItem } from '../redux/slices/cartSlice'
 import {
   fetchFullItem,
   selectFullItemData,
 } from '../redux/slices/fullItemSlice'
 
 const FullItem = () => {
+  const [openFull, setOpenFull] = useState(false)
   const { id } = useParams()
-  const { item } = useSelector(selectFullItemData)
+  const { item, status } = useSelector(selectFullItemData)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const onClickAdd = () => {
+    const tovar = {
+      id: item.id,
+      name: item.name,
+      image: item.image,
+      price: item.price,
+      count: 0,
+    }
+    dispatch(addItem(tovar))
+  }
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
   }, [])
-  console.log(item)
+
   return (
     <section className="card-section">
       <div className="container card-section__container">
@@ -29,36 +40,34 @@ const FullItem = () => {
         <div className="card-section__about">
           <div className="card-section__about-name">{item.name}</div>
           <div className="card-section__about-info">
-            Диагональ экрана: 6.1 дюйм
+            {status === 'success'
+              ? JSON.stringify(item.description_small)
+                  .replaceAll('"', '')
+                  .split('\\n')
+                  .map((str, index) => <p key={index}>{str}</p>)
+              : null}
           </div>
-          <div className="card-section__about-info">
-            Разрешение (пикс): 1792x828
-          </div>
-          <div className="card-section__about-info">
-            Фотокамера (Мп): 12 + 12
-          </div>
-          <div className="card-section__about-info">Оптический зум: x2</div>
-          <div className="card-section__about-info-more">
+
+          <div
+            className={
+              openFull
+                ? 'card-section__about-info-more-active'
+                : 'card-section__about-info-more'
+            }
+          >
             <div className="card-section__about-info">
-              Какая-то доп. информация
-            </div>
-            <div className="card-section__about-info">
-              Какая-то доп. информация
-            </div>
-            <div className="card-section__about-info">
-              Какая-то доп. информация
-            </div>
-            <div className="card-section__about-info">
-              Какая-то доп. информация
-            </div>
-            <div className="card-section__about-info">
-              Какая-то доп. информация
-            </div>
-            <div className="card-section__about-info">
-              Какая-то доп. информация
+              {status === 'success'
+                ? JSON.stringify(item.description_full)
+                    .replaceAll('"', '')
+                    .split('\\n')
+                    .map((str, index) => <p key={index}>{str}</p>)
+                : null}
             </div>
           </div>
-          <button className="card-section__about-btn show">
+          <button
+            onClick={() => setOpenFull(!openFull)}
+            className="card-section__about-btn show"
+          >
             Полный список характеристик
           </button>
           <button className="card-section__about-btn no-show">
@@ -72,12 +81,15 @@ const FullItem = () => {
           <div className="card-section__choice-block">
             <div className="card-section__choice-purchase">
               <span>{item.price} ₽</span>
-              <Link to="/order">
+              <Link to="/cart" onClick={onClickAdd}>
                 <span>Купить</span>
               </Link>
             </div>
             <div className="card-section__choice-blue-blocks">
-              <button className="card-section__choice-blue-blocks_item">
+              <button
+                onClick={onClickAdd}
+                className="card-section__choice-blue-blocks_item"
+              >
                 <img src="../assets/img/bag-white.svg" alt="" />
               </button>
               <button className="card-section__choice-blue-blocks_item">
@@ -93,12 +105,11 @@ const FullItem = () => {
           </div>
 
           <div className="card-section__choice-color">
-            <button className="card-section__choice-color-item"></button>
-            <button className="card-section__choice-color-item"></button>
-            <button className="card-section__choice-color-item"></button>
-            <button className="card-section__choice-color-item"></button>
-            <button className="card-section__choice-color-item"></button>
-            <button className="card-section__choice-color-item"></button>
+            {status === 'success'
+              ? JSON.parse(item.colors_avail).map((color, index) => (
+                  <button key={index}>{color}</button>
+                ))
+              : null}
           </div>
         </div>
       </div>

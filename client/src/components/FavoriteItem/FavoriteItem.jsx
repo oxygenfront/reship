@@ -15,6 +15,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
     }
     dispatch(addItem(item))
   }
+
   return (
     <div className={styles.person__favorites_wrapper_items_item}>
       <img

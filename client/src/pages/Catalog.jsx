@@ -2,7 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
 import { selectFilter, setSearchValue } from '../redux/slices/fiterSlice'
-import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
+import { fetchFullItem } from '../redux/slices/fullItemSlice'
+import {
+  fetchItems,
+  fetchItemsWithParams,
+  selectItemsData,
+} from '../redux/slices/itemsSlice'
 
 const Catalog = () => {
   const dispatch = useDispatch()
@@ -10,17 +15,10 @@ const Catalog = () => {
   const { choosenCategorie, searchValue } = useSelector(selectFilter)
 
   useEffect(() => {
-    dispatch(fetchItems({ choosenCategorie }))
-  }, [choosenCategorie, searchValue])
-  console.log(searchValue)
+    dispatch(fetchItems({ choosenCategorie, searchValue }))
+  }, [])
+
   console.log(items)
-  // const categories = new Set(
-  //   items.length < 0
-  //     ? null
-  //     : items.map((item) => {
-  //         categories.add(item.category)
-  //       })
-  // )
 
   const set = new Set()
 
@@ -28,7 +26,7 @@ const Catalog = () => {
     items.map((item) => set.add(item.category))
   }
   const categories = [...set]
-  console.log(categories)
+
   return (
     <section className="catalog">
       <div className="container catalog__container">
@@ -86,10 +84,10 @@ const Catalog = () => {
         <div className="catalog__block">
           {categories.map((categorie, index) => (
             <>
-              <div className="catalog__suptitle">
+              <div className="catalog__suptitle" id={categorie}>
                 <span>{categorie}</span>
               </div>
-              <div className="catalog__items-block">
+              <div key={index} className="catalog__items-block">
                 {status === 'loading'
                   ? [...new Array(3)].map((_, index) => (
                       <Skeleton key={index}></Skeleton>

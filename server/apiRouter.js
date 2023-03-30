@@ -3,6 +3,7 @@ import apiPostController from "./apiPostController.js";
 
 const router = Router();
 
+// user
 router.post('/registration', apiPostController.registration)
 router.post('/auth', apiPostController.auth)
 router.get('/getProducts', apiPostController.getProducts)
@@ -13,6 +14,9 @@ router.post('/changePassword', apiPostController.changePassword)
 router.post('/changeEmail', apiPostController.changeEmail)
 router.get('/activateEmail', apiPostController.activateEmail)
 router.post('/recoveryPassword', apiPostController.recoveryPassword)
+
+// admin
 router.post('/createProduct', apiPostController.createProduct)
+router.post('/changeProduct', apiPostController.changeProduct)
 
 export default router;

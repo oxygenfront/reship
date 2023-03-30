@@ -539,10 +539,10 @@ class ApiPostController {
     const price = tools.delInjection(request.body.price)
     const availability = tools.delInjection(request.body.availability)
 
-    const colors = JSON.parse(request.body.colors.toString())
-    const colors_avail = JSON.parse(request.body.colors_avail.toString())
-    const parameters = JSON.parse(request.body.parameters.toString())
-    const parameters_avail = JSON.parse(request.body.parameters_avail.toString())
+    const colors = JSON.parse(request.body.colors)
+    const colors_avail = JSON.parse(request.body.colors_avail)
+    const parameters = JSON.parse(request.body.parameters)
+    const parameters_avail = JSON.parse(request.body.parameters_avail)
 
     const image_link = tools.delInjection(request.body.image_link)
     const category = tools.delInjection(request.body.category)
@@ -566,7 +566,7 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: 'Ошибка на сервере', bcode: error})
+                  .json({ error: 'Ошибка на сервере', bcode: 11.4})
               }
 
               return response.json({'product_id': rows.insertId})
@@ -578,6 +578,130 @@ class ApiPostController {
         }
       }
     )
+  }
+
+  async changeProduct(request, response) {
+    const requiredKeys = [
+      'id', 'name', 'description_small', 'description_full', 'old_price', 'price',
+      'availability', 'colors', 'colors_avail', 'parameters', 'parameters_avail',
+      'image_link', 'category', 'token'
+    ];
+  
+    const requestData = request.body;
+  
+    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    if (missingKey) {
+      return response.status(400).json({ error: 'Некорректные данные.', bcode: 12 });
+    }
+  
+    const {
+      id, name, description_small, description_full, old_price, price,
+      availability, colors, colors_avail, parameters, parameters_avail,
+      image_link, category, token
+    } = requestData;
+  
+    const sanitizedValues = {
+      id: tools.delInjection(id),
+      name: tools.delInjection(name),
+      description_small: tools.delInjection(description_small),
+      description_full: tools.delInjection(description_full),
+      old_price: tools.delInjection(old_price),
+      price: tools.delInjection(price),
+      availability: tools.delInjection(availability),
+
+      colors: JSON.parse(colors),
+      colors_avail: JSON.parse(colors_avail),
+      parameters: JSON.parse(parameters),
+      parameters_avail: JSON.parse(parameters_avail),
+
+      image_link: tools.delInjection(image_link),
+      category: tools.delInjection(category),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: 'Ошибка на сервере', bcode: 12.1})
+        }
+
+        if (rows.length == 1) {
+          if (rows[0].admin == 0) {
+            return response.json({'error': 'У вас недостаточно прав.', 'bcode': 12.3})
+          } else {
+            let sql_start = 'UPDATE `products` SET ';
+
+            if (sanitizedValues.name) {
+              sql_start += '`name` = \'' + sanitizedValues.name + '\',';
+            }
+            
+            if (sanitizedValues.description_small) {
+              sql_start += '`description_small` = \'' + sanitizedValues.description_small + '\',';
+            }
+            
+            if (sanitizedValues.description_full) {
+              sql_start += '`description_full` = \'' + sanitizedValues.description_full + '\',';
+            }
+
+            if (sanitizedValues.old_price) {
+              sql_start += '`old_price` = \'' + sanitizedValues.old_price + '\',';
+            }
+
+            if (sanitizedValues.price) {
+              sql_start += '`price` = \'' + sanitizedValues.price + '\',';
+            }
+
+            if (sanitizedValues.availability) {
+              sql_start += '`availability` = \'' + sanitizedValues.availability + '\',';
+            }
+
+            if (sanitizedValues.colors) {
+              sql_start += '`colors` = \'' + JSON.stringify(sanitizedValues.colors) + '\',';
+            }
+
+            if (sanitizedValues.colors_avail) {
+              sql_start += '`colors_avail` = \'' + JSON.stringify(sanitizedValues.colors_avail) + '\',';
+            }
+
+            if (sanitizedValues.parameters) {
+              sql_start += '`parameters` = \'' + JSON.stringify(sanitizedValues.parameters) + '\',';
+            }
+
+            if (sanitizedValues.parameters_avail) {
+              sql_start += '`parameters_avail` = \'' + JSON.stringify(sanitizedValues.parameters_avail) + '\',';
+            }
+
+            if (sanitizedValues.image_link) {
+              sql_start += '`image_link` = \'' + sanitizedValues.image_link + '\',';
+            }
+
+            if (sanitizedValues.category) {
+              sql_start += '`category` = \'' + sanitizedValues.category + '\'';
+            }
+
+            let sql_end = sql_start + " WHERE id='" + sanitizedValues.id + "';";
+
+            database.query(sql_end, (error, rows, fields) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: 'Ошибка на сервере', bcode: 12.5})
+              }
+
+              return response.json({'product_id': sanitizedValues.id})
+            })
+          }
+
+        } else {
+          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 12.2})
+        }
+      }
+    )
+
+    
   }
 }
 

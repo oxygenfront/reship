@@ -38,6 +38,7 @@ const Header = () => {
           <Link to="/" className={styles.header__faq}>
             FAQ
           </Link>
+          <Link to="/admin">ADMIN</Link>
         </div>
         <div className={styles.header__cont}>
           <Link to="/cart" className={styles.header__cart}>

@@ -1,12 +1,11 @@
 import { Suspense, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
-import { Footer } from './components'
 
 import Header from './components/Header/Header'
 
 import './index.sass'
-import { ForgotMessage } from './pages'
+import { Admin, AdminChange, AdminCreate, ForgotMessage } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
 import Forgot from './pages/Forgot'
@@ -39,6 +38,12 @@ function App() {
             </Suspense>
           }
         ></Route>
+        <Route path="/admin" element={<Admin></Admin>}></Route>
+        <Route
+          path="/admin/create"
+          element={<AdminCreate></AdminCreate>}
+        ></Route>
+        <Route path="/admin/:id" element={<AdminChange></AdminChange>}></Route>
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/forgot" element={<Forgot></Forgot>}></Route>

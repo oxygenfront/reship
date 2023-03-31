@@ -703,6 +703,35 @@ class ApiPostController {
 
     
   }
+
+  async deleteProduct(request, response) {
+    const requiredKeys = [
+      'id'
+    ];
+  
+    const requestData = request.body;
+  
+    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    if (missingKey) {
+      return response.status(400).json({ error: 'Некорректные данные.', bcode: 13 });
+    }
+  
+    const {
+      id
+    } = requestData;
+  
+    const sanitizedValues = {
+      id: tools.delInjection(id)
+    };
+
+    database.query(`DELETE FROM products WHERE id=${sanitizedValues.id}`, (error) => {
+      if (error) {
+        return response.status(400).json({ error: 'Ошибка при удалении товара из БД.', bcode: 13.1, e:error});
+      }
+      
+      response.json({'id': sanitizedValues.id})
+    })
+  }
 }
 
 export default new ApiPostController()

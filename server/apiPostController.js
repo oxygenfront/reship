@@ -46,16 +46,14 @@ class ApiPostController {
           let new_token = 'reship.api.' + tools.createToken(50)
 
           database.query(
-            'INSERT INTO \`users\` (\`first_name\`, \`last_name\`, \`email\`, \`avatar\`, \`adress_delivery\`, \`basket\`, \`token\`, \`date_register_timestamp\`, `password_md5`, `email_active`, `favorites`, `admin`) VALUES ' +
+            'INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `basket`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`) VALUES ' +
               `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash('md5')
                 .update(password)
                 .digest('hex')}', '1', '${JSON.stringify([])}', '0');`,
             (error, rows, fields) => {
               if (error) {
-                return response
-                  .status(500)
-                  .json({ error: 'Ошибка на сервере'})
+                return response.status(500).json({ error: 'Ошибка на сервере' })
               }
 
               let activation_code = tools.createToken(50)
@@ -105,7 +103,7 @@ class ApiPostController {
                   }
 
                   response.header('Authorization', new_token)
-                  return response.status(400).json({ token: new_token })
+                  return response.json({ token: new_token })
                 }
               )
             }
@@ -138,22 +136,22 @@ class ApiPostController {
             .status(500)
             .json({ error: 'Ошибка на сервере', bcode: 10 })
         }
-  
+
         let response_json_new = []
-  
+
         for (let i = 0; i < rows.length; i++) {
           let response_json = rows[i]
-  
+
           response_json.colors = JSON.parse(response_json.colors)
           response_json.colors_avail = JSON.parse(response_json.colors_avail)
           response_json.parameters = JSON.parse(response_json.parameters)
           response_json.parameters_avail = JSON.parse(
             response_json.parameters_avail
           )
-  
+
           response_json_new.push(response_json)
         }
-  
+
         response.json(response_json_new)
       })
 
@@ -268,7 +266,7 @@ class ApiPostController {
             adress_delivery: rows[0].adress_delivery,
             date_register_timestamp: rows[0].date_register_timestamp,
             admin: rows[0].admin,
-            favorites: JSON.parse(rows[0].favorites)
+            favorites: JSON.parse(rows[0].favorites),
           }
 
           return response.json(response_json)
@@ -557,26 +555,39 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 11.1})
+            .json({ error: 'Ошибка на сервере', bcode: 11.1 })
         }
 
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
-            return response.json({'error': 'У вас недостаточно прав.', 'bcode': 11.3})
-          } else {
-            database.query(`INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(colors)}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(parameters)}', '${JSON.stringify(parameters_avail)}', '${image_link}', '${category}');`, (error, rows, fields) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: 'Ошибка на сервере', bcode: 11.4})
-              }
-
-              return response.json({'product_id': rows.insertId})
+            return response.json({
+              error: 'У вас недостаточно прав.',
+              bcode: 11.3,
             })
-          }
+          } else {
+            database.query(
+              `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
+                colors
+              )}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(
+                parameters
+              )}', '${JSON.stringify(
+                parameters_avail
+              )}', '${image_link}', '${category}');`,
+              (error, rows, fields) => {
+                if (error) {
+                  return response
+                    .status(500)
+                    .json({ error: 'Ошибка на сервере', bcode: 11.4 })
+                }
 
+                return response.json({ product_id: rows.insertId })
+              }
+            )
+          }
         } else {
-          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 11.2})
+          return response
+            .status(400)
+            .json({ error: 'Ошибка доступа.', bcode: 11.2 })
         }
       }
     )
@@ -584,24 +595,50 @@ class ApiPostController {
 
   async changeProduct(request, response) {
     const requiredKeys = [
-      'id', 'name', 'description_small', 'description_full', 'old_price', 'price',
-      'availability', 'colors', 'colors_avail', 'parameters', 'parameters_avail',
-      'image_link', 'category', 'token'
-    ];
-  
-    const requestData = request.body;
-  
-    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+      'id',
+      'name',
+      'description_small',
+      'description_full',
+      'old_price',
+      'price',
+      'availability',
+      'colors',
+      'colors_avail',
+      'parameters',
+      'parameters_avail',
+      'image_link',
+      'category',
+      'token',
+    ]
+
+    const requestData = request.body
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    )
     if (missingKey) {
-      return response.status(400).json({ error: 'Некорректные данные.', bcode: 12 });
+      return response
+        .status(400)
+        .json({ error: 'Некорректные данные.', bcode: 12 })
     }
-  
+
     const {
-      id, name, description_small, description_full, old_price, price,
-      availability, colors, colors_avail, parameters, parameters_avail,
-      image_link, category, token
-    } = requestData;
-  
+      id,
+      name,
+      description_small,
+      description_full,
+      old_price,
+      price,
+      availability,
+      colors,
+      colors_avail,
+      parameters,
+      parameters_avail,
+      image_link,
+      category,
+      token,
+    } = requestData
+
     const sanitizedValues = {
       id: tools.delInjection(id),
       name: tools.delInjection(name),
@@ -619,7 +656,7 @@ class ApiPostController {
       image_link: tools.delInjection(image_link),
       category: tools.delInjection(category),
       token: tools.delInjection(token),
-    };
+    }
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
@@ -627,134 +664,161 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 12.1})
+            .json({ error: 'Ошибка на сервере', bcode: 12.1 })
         }
 
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
-            return response.json({'error': 'У вас недостаточно прав.', 'bcode': 12.3})
+            return response.json({
+              error: 'У вас недостаточно прав.',
+              bcode: 12.3,
+            })
           } else {
-            let sql_start = 'UPDATE `products` SET ';
+            let sql_start = 'UPDATE `products` SET '
 
             if (sanitizedValues.name) {
-              sql_start += '`name` = \'' + sanitizedValues.name + '\',';
+              sql_start += "`name` = '" + sanitizedValues.name + "',"
             }
-            
+
             if (sanitizedValues.description_small) {
-              sql_start += '`description_small` = \'' + sanitizedValues.description_small + '\',';
+              sql_start +=
+                "`description_small` = '" +
+                sanitizedValues.description_small +
+                "',"
             }
-            
+
             if (sanitizedValues.description_full) {
-              sql_start += '`description_full` = \'' + sanitizedValues.description_full + '\',';
+              sql_start +=
+                "`description_full` = '" +
+                sanitizedValues.description_full +
+                "',"
             }
 
             if (sanitizedValues.old_price) {
-              sql_start += '`old_price` = \'' + sanitizedValues.old_price + '\',';
+              sql_start += "`old_price` = '" + sanitizedValues.old_price + "',"
             }
 
             if (sanitizedValues.price) {
-              sql_start += '`price` = \'' + sanitizedValues.price + '\',';
+              sql_start += "`price` = '" + sanitizedValues.price + "',"
             }
 
             if (sanitizedValues.availability) {
-              sql_start += '`availability` = \'' + sanitizedValues.availability + '\',';
+              sql_start +=
+                "`availability` = '" + sanitizedValues.availability + "',"
             }
 
             if (sanitizedValues.colors) {
-              sql_start += '`colors` = \'' + JSON.stringify(sanitizedValues.colors) + '\',';
+              sql_start +=
+                "`colors` = '" + JSON.stringify(sanitizedValues.colors) + "',"
             }
 
             if (sanitizedValues.colors_avail) {
-              sql_start += '`colors_avail` = \'' + JSON.stringify(sanitizedValues.colors_avail) + '\',';
+              sql_start +=
+                "`colors_avail` = '" +
+                JSON.stringify(sanitizedValues.colors_avail) +
+                "',"
             }
 
             if (sanitizedValues.parameters) {
-              sql_start += '`parameters` = \'' + JSON.stringify(sanitizedValues.parameters) + '\',';
+              sql_start +=
+                "`parameters` = '" +
+                JSON.stringify(sanitizedValues.parameters) +
+                "',"
             }
 
             if (sanitizedValues.parameters_avail) {
-              sql_start += '`parameters_avail` = \'' + JSON.stringify(sanitizedValues.parameters_avail) + '\',';
+              sql_start +=
+                "`parameters_avail` = '" +
+                JSON.stringify(sanitizedValues.parameters_avail) +
+                "',"
             }
 
             if (sanitizedValues.image_link) {
-              sql_start += '`image_link` = \'' + sanitizedValues.image_link + '\',';
+              sql_start +=
+                "`image_link` = '" + sanitizedValues.image_link + "',"
             }
 
             if (sanitizedValues.category) {
-              sql_start += '`category` = \'' + sanitizedValues.category + '\'';
+              sql_start += "`category` = '" + sanitizedValues.category + "'"
             }
 
-            let sql_end = sql_start + " WHERE id='" + sanitizedValues.id + "';";
+            let sql_end = sql_start + " WHERE id='" + sanitizedValues.id + "';"
 
             database.query(sql_end, (error, rows, fields) => {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: 'Ошибка на сервере', bcode: 12.5})
+                  .json({ error: 'Ошибка на сервере', bcode: 12.5 })
               }
 
-              return response.json({'product_id': sanitizedValues.id})
+              return response.json({ product_id: sanitizedValues.id })
             })
           }
-
         } else {
-          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 12.2})
+          return response
+            .status(400)
+            .json({ error: 'Ошибка доступа.', bcode: 12.2 })
         }
       }
     )
-
-    
   }
 
   async deleteProduct(request, response) {
-    const requiredKeys = [
-      'id'
-    ];
-  
-    const requestData = request.body;
-  
-    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
-    if (missingKey) {
-      return response.status(400).json({ error: 'Некорректные данные.', bcode: 13 });
-    }
-  
-    const {
-      id
-    } = requestData;
-  
-    const sanitizedValues = {
-      id: tools.delInjection(id)
-    };
+    const requiredKeys = ['id']
 
-    database.query(`DELETE FROM products WHERE id=${sanitizedValues.id}`, (error) => {
-      if (error) {
-        return response.status(400).json({ error: 'Ошибка при удалении товара из БД.', bcode: 13.1, e:error});
+    const requestData = request.body
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    )
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: 'Некорректные данные.', bcode: 13 })
+    }
+
+    const { id } = requestData
+
+    const sanitizedValues = {
+      id: tools.delInjection(id),
+    }
+
+    database.query(
+      `DELETE FROM products WHERE id=${sanitizedValues.id}`,
+      (error) => {
+        if (error) {
+          return response.status(400).json({
+            error: 'Ошибка при удалении товара из БД.',
+            bcode: 13.1,
+            e: error,
+          })
+        }
+
+        response.json({ id: sanitizedValues.id })
       }
-      
-      response.json({'id': sanitizedValues.id})
-    })
+    )
   }
 
   async addFavorites(request, response) {
-    const requiredKeys = [
-      'product_id', 'token'
-    ];
-  
-    const requestData = request.body;
-  
-    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    const requiredKeys = ['product_id', 'token']
+
+    const requestData = request.body
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    )
     if (missingKey) {
-      return response.status(400).json({ error: 'Некорректные данные.', bcode: 14 });
+      return response
+        .status(400)
+        .json({ error: 'Некорректные данные.', bcode: 14 })
     }
-  
-    const {
-      product_id, token
-    } = requestData;
-  
+
+    const { product_id, token } = requestData
+
     const sanitizedValues = {
       product_id: tools.delInjection(product_id),
-      token: tools.delInjection(token)
-    };
+      token: tools.delInjection(token),
+    }
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
@@ -762,57 +826,69 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 14.1})
+            .json({ error: 'Ошибка на сервере', bcode: 14.1 })
         }
 
         if (rows.length == 1) {
-          const favorites = JSON.parse(rows[0].favorites);
+          const favorites = JSON.parse(rows[0].favorites)
 
           for (let i = 0; i < favorites.length; i++) {
             if (favorites[i] === sanitizedValues.product_id) {
-              return response.status(400).json({'error': 'Товар уже находится в избранных.', bcode: 14.4})
+              return response.status(400).json({
+                error: 'Товар уже находится в избранных.',
+                bcode: 14.4,
+              })
             }
           }
 
-          let new_favorites = favorites;
+          let new_favorites = favorites
           new_favorites.push(sanitizedValues.product_id)
-          
-          database.query(`UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(new_favorites)}' WHERE \`token\`='${sanitizedValues.token}';`, (error) => {
-            if (error) {
-              return response
-                .status(500)
-                .json({ error: 'Ошибка на сервере', bcode: 14.3})
+
+          database.query(
+            `UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(
+              new_favorites
+            )}' WHERE \`token\`='${sanitizedValues.token}';`,
+            (error) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: 'Ошибка на сервере', bcode: 14.3 })
+              }
+
+              response.json({
+                message: 'Товар успешно добавлен в избранные.',
+                favorites: new_favorites,
+              })
             }
-
-            response.json({'message': 'Товар успешно добавлен в избранные.', 'favorites': new_favorites})
-          })
-
+          )
         } else {
-          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 14.2})
+          return response
+            .status(400)
+            .json({ error: 'Ошибка доступа.', bcode: 14.2 })
         }
       }
     )
   }
 
   async getFavorites(request, response) {
-    const requiredKeys = [
-      'token'
-    ];
-  
-    const requestData = request.body;
-  
-    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    const requiredKeys = ['token']
+
+    const requestData = request.body
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    )
     if (missingKey) {
-      return response.status(400).json({ error: 'Некорректные данные.', bcode: 15 });
+      return response
+        .status(400)
+        .json({ error: 'Некорректные данные.', bcode: 15 })
     }
-  
-    const {
-      token
-    } = requestData;
-  
+
+    const { token } = requestData
+
     const sanitizedValues = {
-      token: tools.delInjection(token)
-    };
+      token: tools.delInjection(token),
+    }
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
@@ -820,41 +896,42 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 15.1})
+            .json({ error: 'Ошибка на сервере', bcode: 15.1 })
         }
 
         if (rows.length == 1) {
-          const favorites = JSON.parse(rows[0].favorites);
+          const favorites = JSON.parse(rows[0].favorites)
 
           response.json(favorites)
-
         } else {
-          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 15.2})
+          return response
+            .status(400)
+            .json({ error: 'Ошибка доступа.', bcode: 15.2 })
         }
       }
     )
   }
 
   async deleteFavorites(request, response) {
-    const requiredKeys = [
-      'product_id', 'token'
-    ];
-  
-    const requestData = request.body;
-  
-    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    const requiredKeys = ['product_id', 'token']
+
+    const requestData = request.body
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    )
     if (missingKey) {
-      return response.status(400).json({ error: 'Некорректные данные.', bcode: 16 });
+      return response
+        .status(400)
+        .json({ error: 'Некорректные данные.', bcode: 16 })
     }
-  
-    const {
-      product_id, token
-    } = requestData;
-  
+
+    const { product_id, token } = requestData
+
     const sanitizedValues = {
       product_id: tools.delInjection(product_id),
-      token: tools.delInjection(token)
-    };
+      token: tools.delInjection(token),
+    }
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
@@ -862,26 +939,38 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: 'Ошибка на сервере', bcode: 16.1})
+            .json({ error: 'Ошибка на сервере', bcode: 16.1 })
         }
 
         if (rows.length == 1) {
-          const favorites = JSON.parse(rows[0].favorites);
+          const favorites = JSON.parse(rows[0].favorites)
 
-          let new_favorites = tools.removeItemAll(favorites, sanitizedValues.product_id);
-          
-          database.query(`UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(new_favorites)}' WHERE \`token\`='${sanitizedValues.token}';`, (error) => {
-            if (error) {
-              return response
-                .status(500)
-                .json({ error: 'Ошибка на сервере', bcode: 16.3})
+          let new_favorites = tools.removeItemAll(
+            favorites,
+            sanitizedValues.product_id
+          )
+
+          database.query(
+            `UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(
+              new_favorites
+            )}' WHERE \`token\`='${sanitizedValues.token}';`,
+            (error) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: 'Ошибка на сервере', bcode: 16.3 })
+              }
+
+              response.json({
+                message: 'Товар успешно удален из избранных',
+                favorites: new_favorites,
+              })
             }
-
-            response.json({'message': 'Товар успешно удален из избранных', 'favorites': new_favorites})
-          })
-
+          )
         } else {
-          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 16.2})
+          return response
+            .status(400)
+            .json({ error: 'Ошибка доступа.', bcode: 16.2 })
         }
       }
     )

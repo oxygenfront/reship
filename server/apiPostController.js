@@ -267,6 +267,8 @@ class ApiPostController {
             avatar: rows[0].avatar,
             adress_delivery: rows[0].adress_delivery,
             date_register_timestamp: rows[0].date_register_timestamp,
+            admin: rows[0].admin,
+            favorites: JSON.parse(rows[0].favorites)
           }
 
           return response.json(response_json)

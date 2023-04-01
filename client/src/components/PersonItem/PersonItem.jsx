@@ -16,7 +16,7 @@ const PersonItem = ({ status, image, price, count, title }) => {
       </div>
       <div className={styles.person__delivery_history_wrapper_item_name}>
         <span>
-          IPhone 11 (128 gb)
+          <span>IPhone 11</span> (128 gb)
         </span>
       </div>
       <div className={styles.person__delivery_history_wrapper_item_number}>

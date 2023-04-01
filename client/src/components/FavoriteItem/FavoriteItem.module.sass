@@ -1,9 +1,13 @@
 .person
     margin: 34px 0
-
+    
     &__favorites_wrapper
-
+        
         &_items
+            display: grid
+            grid-template-columns: repeat(3, 300px)
+            grid-row-gap: 88px
+            justify-content: space-between
             &_item
                 display: flex
                 flex-direction: column
@@ -12,12 +16,11 @@
                 height: 483px
                 &_img
                     border-radius: 29px
-                    width: 100%
                 &_name
                     font-size: 20px
                 &_price
-                    font-size: 20px 
-                    padding: 15px 30px 
+                    font-size: 20px
+                    padding: 15px 30px
                     background-color: #2DB118
                     border-radius: 12px
                     color: white
@@ -31,20 +34,3 @@
                     font-size: 20px
         &.active
             display: block
-@media (max-width: 991px)
-    .person
-        &__favorites_wrapper_items
-            &_item
-                &_price
-                    font-size: 19px
-                    padding: 15px 14px
-                &_add_cart
-                    padding: 15px 7px
-@media (max-width: 767px)
-    .person
-        &__favorites_wrapper_items
-            &_item
-                height: 440px
-                &_price
-                &_add_cart
-        

@@ -5,7 +5,8 @@ import fullItem from './slices/fullItemSlice'
 import auth from './slices/authSlice'
 import filter from './slices/fiterSlice'
 import admin from './slices/adminSlice'
+import favorite from './slices/favoriteSlice'
 
 export const store = configureStore({
-  reducer: { items, cart, fullItem, auth, filter, admin },
+  reducer: { items, cart, fullItem, auth, filter, admin, favorite },
 })

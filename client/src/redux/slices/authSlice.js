@@ -9,8 +9,8 @@ export const fetchAuth = createAsyncThunk('auth/fetchAuth', async (params) => {
 export const fetchAuthMe = createAsyncThunk(
   'auth/fetchAuthMe',
   async (token) => {
-    console.log(token)
-    const { data } = await axios.get('/getUser', token)
+    const { data } = await axios.get(`/getUser?token=${token}`)
+
     return data
   }
 )
@@ -53,7 +53,6 @@ const authSlice = createSlice({
       state.data = null
     })
     builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
-      console.log(action)
       state.data = action.payload
       state.status = 'success'
     })
@@ -77,6 +76,7 @@ const authSlice = createSlice({
 })
 
 export const { logout } = authSlice.actions
+export const selectUserData = (state) => state.auth
 export const selectIsAuth = (state) => Boolean(state.auth.data)
 
 export default authSlice.reducer

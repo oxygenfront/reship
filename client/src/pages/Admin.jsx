@@ -7,6 +7,7 @@ import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
 const Admin = () => {
   const dispatch = useDispatch()
   const { items, status } = useSelector(selectItemsData)
+
   useEffect(() => {
     dispatch(fetchItems({}))
   }, [])
@@ -15,6 +16,7 @@ const Admin = () => {
   if (status === 'success') {
     items.map((item) => set.add(item.category))
   }
+
   const categories = [...set]
   return (
     <div className="admin-wrapper">

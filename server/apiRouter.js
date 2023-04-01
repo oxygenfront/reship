@@ -1,7 +1,7 @@
-import Router from "express";
-import apiPostController from "./apiPostController.js";
+import Router from 'express'
+import apiPostController from './apiPostController.js'
 
-const router = Router();
+const router = Router()
 
 // user
 router.post('/registration', apiPostController.registration)
@@ -23,4 +23,4 @@ router.post('/createProduct', apiPostController.createProduct)
 router.post('/changeProduct', apiPostController.changeProduct)
 router.post('/deleteProduct', apiPostController.deleteProduct)
 
-export default router;
+export default router

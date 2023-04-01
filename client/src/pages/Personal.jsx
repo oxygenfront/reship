@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
+import { useSelector } from 'react-redux'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const Personal = () => {
+  const { data, status } = useSelector(selectUserData)
+  console.log(data)
   const [personPages, setPersonPages] = useState({
     delHistory: false,
     delInfo: false,
@@ -68,6 +72,15 @@ const Personal = () => {
     setChangeState({ changeEmail: false, changePassword: false })
     setChangeSecret(false)
   }
+  useEffect(() => {
+    if (status === 'success') {
+      setPersonName({
+        firstName: data.first_name,
+        lastName: data.last_name,
+      })
+      setPersonMail({ mail: data.email })
+    }
+  }, [status])
 
   useEffect(() => {
     setPersonPages({ delHistory: true })
@@ -388,14 +401,28 @@ const Personal = () => {
               </div>
             ) : null}
 
-            {personPages.favorites ? (
-              <div className="person__favorites-wrapper">
-                <div className="person__favorites-wrapper-items">
-                  <FavoriteItem />
-                  <FavoriteItem />
-                  <FavoriteItem />
+            {personPages.favorites && status === 'success' ? (
+              data.favorites.length > 0 ? (
+                <div className="person__favorites-wrapper">
+                  <div className="person__favorites-wrapper-items">
+                    {data.favorites.map((item) => (
+                      <FavoriteItem id={item}></FavoriteItem>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="person__wait-wrapper">
+                  <FavoriteItem></FavoriteItem>
+                  <div className="person__reviews_text-block">
+                    <p>
+                      Вы еще не добавляли товары в “Избранное” - вернитесь сюда
+                      позднее, а пока можете <br />
+                      <Link to="/catalog">перейти в каталог</Link>, для выбора
+                      товара
+                    </p>
+                  </div>
+                </div>
+              )
             ) : null}
 
             {personPages.reviews ? (
@@ -446,31 +473,6 @@ const Personal = () => {
                   Вы еще не совершали покупок - вернитесь сюда позднее, а пока
                   можете <Link to="/catalog">перейти в каталог</Link>, <br />{' '}
                   для выбора товара
-                </p>
-              </div>
-            </div>
-
-            <div className="person__wait-wrapper" style={{ display: 'none' }}>
-              <div className="person__reviews_text-block">
-                <p>
-                  Вы еще не добавляли товары в “Избранное” - вернитесь сюда
-                  позднее, а пока можете <br />
-                  <Link to="/catalog">перейти в каталог</Link>, для выбора
-                  товара
-                </p>
-              </div>
-            </div>
-
-            <div
-              className="person__favorites-wrapper_none"
-              style={{ display: 'none' }}
-            >
-              <div className="person__reviews_text-block">
-                <p>
-                  Вы еще не добавляли товары в “Избранное” - вернитесь сюда
-                  позднее, а пока можете <br />
-                  <a href="/catalog.html">перейти в каталог</a>, для выбора
-                  товара
                 </p>
               </div>
             </div>

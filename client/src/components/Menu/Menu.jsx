@@ -3,12 +3,17 @@ import classNames from 'classnames'
 import styles from './Menu.module.scss'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout, selectIsAuth } from '../../redux/slices/authSlice'
+import {
+  logout,
+  selectIsAuth,
+  selectUserData,
+} from '../../redux/slices/authSlice'
 import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
+  const { data, status } = useSelector(selectUserData)
   const { searchValue } = useSelector(selectFilter)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
@@ -51,7 +56,9 @@ const Menu = () => {
               className={styles.search_section__profile_block}
             >
               <img src="./assets/img/user.svg" alt="user" />
-              <p>Фамилия И.</p>
+              <p>
+                {data.last_name} {data.first_name}
+              </p>
             </Link>
             <Link
               to=""

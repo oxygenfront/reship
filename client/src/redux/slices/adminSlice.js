@@ -15,6 +15,14 @@ export const fetchChangeItem = createAsyncThunk(
     return data
   }
 )
+export const fetchDeleteItem = createAsyncThunk(
+  'auth/fetchDeleteItem',
+  async (id) => {
+    console.log(id)
+    const { data } = await axios.post('/deleteProduct', id)
+    return data
+  }
+)
 
 const initialState = {
   data: null,
@@ -47,6 +55,18 @@ const adminSlice = createSlice({
       state.status = 'success'
     })
     builder.addCase(fetchChangeItem.rejected, (state, action) => {
+      state.status = 'error'
+      state.data = null
+    })
+    builder.addCase(fetchDeleteItem.pending, (state, action) => {
+      state.status = 'loading'
+      state.data = null
+    })
+    builder.addCase(fetchDeleteItem.fulfilled, (state, action) => {
+      state.data = action.payload
+      state.status = 'success'
+    })
+    builder.addCase(fetchDeleteItem.rejected, (state, action) => {
       state.status = 'error'
       state.data = null
     })

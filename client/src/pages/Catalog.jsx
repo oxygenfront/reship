@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
 import { selectFilter, setSearchValue } from '../redux/slices/fiterSlice'
@@ -8,10 +8,13 @@ import {
   fetchItemsWithParams,
   selectItemsData,
 } from '../redux/slices/itemsSlice'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const Catalog = () => {
   const dispatch = useDispatch()
   const { items, status } = useSelector(selectItemsData)
+  const { data } = useSelector(selectUserData)
+
   const { choosenCategorie, searchValue } = useSelector(selectFilter)
 
   useEffect(() => {
@@ -100,11 +103,13 @@ const Catalog = () => {
                           return false
                         }
                       })
+
                       .map((item) => (
                         <Card
                           key={item.id}
                           id={item.id}
                           name={item.name}
+                          old_price={item.old_price}
                           price={item.price}
                           image={item.image_link}
                         ></Card>

@@ -25,7 +25,8 @@ const FullItem = () => {
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
   }, [])
-
+  const renderStatus = Boolean(status === 'success')
+  if (renderStatus) console.log()
   return (
     <section className="card-section">
       <div className="container card-section__container">
@@ -40,12 +41,11 @@ const FullItem = () => {
         <div className="card-section__about">
           <div className="card-section__about-name">{item.name}</div>
           <div className="card-section__about-info">
-            {status === 'success'
-              ? JSON.stringify(item.description_small)
-                  .replaceAll('"', '')
-                  .split('\\n')
-                  .map((str, index) => <p key={index}>{str}</p>)
-              : null}
+            {renderStatus &&
+              JSON.stringify(item.description_small)
+                .replaceAll('"', '')
+                .split('\\n')
+                .map((str, index) => <p key={index}>{str}</p>)}
           </div>
 
           <div
@@ -56,12 +56,11 @@ const FullItem = () => {
             }
           >
             <div className="card-section__about-info">
-              {status === 'success'
-                ? JSON.stringify(item.description_full)
-                    .replaceAll('"', '')
-                    .split('\\n')
-                    .map((str, index) => <p key={index}>{str}</p>)
-                : null}
+              {renderStatus &&
+                JSON.stringify(item.description_full)
+                  .replaceAll('"', '')
+                  .split('\\n')
+                  .map((str, index) => <p key={index}>{str}</p>)}
             </div>
           </div>
           <button
@@ -99,18 +98,26 @@ const FullItem = () => {
           </div>
 
           <div className="card-section__choice-char">
-            <button className="card-section__choice-char_item">64 GB</button>
-            <button className="card-section__choice-char_item">128 GB</button>
-            <button className="card-section__choice-char_item">256 GB</button>
+            {renderStatus && item.category === 'клавиатуры' ? (
+              JSON.parse(item.parameters).svitchi.map((param) => (
+                <button key={param} className="card-section__choice-char_item">
+                  {param}
+                </button>
+              ))
+            ) : (
+              <></>
+            )}
           </div>
 
-          <div className="card-section__choice-color">
-            {status === 'success'
-              ? JSON.parse(item.colors_avail).map((color, index) => (
-                  <button key={index}>{color}</button>
-                ))
-              : null}
-          </div>
+          {renderStatus && JSON.parse(item.colors_avail).length > 0 ? (
+            <div className="card-section__choice-color">
+              {JSON.parse(item.colors_avail).map((color, index) => (
+                <button className="card-section__choice-color-item" key={index}>
+                  {color}
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

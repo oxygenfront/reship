@@ -21,6 +21,7 @@ function App() {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
+
   useEffect(() => {
     dispatch(fetchAuthMe(token))
   }, [])

@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
+import { selectUserData } from '../../redux/slices/authSlice'
+import {
+  fetchAddFavorite,
+  fetchDeleteFavorite,
+} from '../../redux/slices/favoriteSlice'
 
-const Card = ({ name, image, price, id, favorite = false }) => {
+const Card = ({ name, image, price, id, old_price }) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
+  const token = localStorage.getItem('token')
+  const { data, status } = useSelector(selectUserData)
   const onClickAdd = () => {
     const item = {
       id,
@@ -17,10 +24,35 @@ const Card = ({ name, image, price, id, favorite = false }) => {
     }
     dispatch(addItem(item))
   }
+
   const addedCount = cartItem ? cartItem.count : 0
-  const [isFavorite, setIsFavorite] = useState(favorite)
-  const onChangeFavorite = () => {
-    setIsFavorite(!isFavorite)
+  const [isFavorite, setIsFavorite] = useState(false)
+  useEffect(() => {
+    if (status === 'success') {
+      console.log(Number(id))
+      setIsFavorite(data.favorites.includes(Number(id)))
+    }
+  }, [status])
+
+  const onChangeFavorite = async () => {
+    if (!isFavorite) {
+      const data = await dispatch(fetchAddFavorite({ product_id: id, token }))
+      if (!data.payload) {
+        return alert('Не удалось добавить товар в избранные')
+      } else {
+        return setIsFavorite(true)
+      }
+    }
+    if (isFavorite) {
+      const data = await dispatch(
+        fetchDeleteFavorite({ product_id: id, token })
+      )
+      if (!data.payload) {
+        return alert('Не удалось удалить товар из избранных')
+      } else {
+        return setIsFavorite(false)
+      }
+    }
   }
   return (
     <div className={styles.catalog__items_block_item}>
@@ -32,7 +64,7 @@ const Card = ({ name, image, price, id, favorite = false }) => {
       </Link>
       <div className={styles.catalog__items_block_item_price}>
         <span>{price} ₽</span>
-        {/* <s>50 000 ₽</s> */}
+        {old_price !== price ? <s>{old_price} ₽</s> : null}
       </div>
       <div className={styles.catalog__items_block_item_name}>
         <span>{name}</span>

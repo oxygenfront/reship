@@ -556,10 +556,15 @@ class ApiPostController {
           return response
             .status(500)
             .json({ error: 'Ошибка на сервере', bcode: 11.1 })
+            .json({ error: 'Ошибка на сервере', bcode: 11.1 })
         }
 
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
+            return response.json({
+              error: 'У вас недостаточно прав.',
+              bcode: 11.3,
+            })
             return response.json({
               error: 'У вас недостаточно прав.',
               bcode: 11.3,
@@ -620,6 +625,9 @@ class ApiPostController {
       return response
         .status(400)
         .json({ error: 'Некорректные данные.', bcode: 12 })
+      return response
+        .status(400)
+        .json({ error: 'Некорректные данные.', bcode: 12 })
     }
 
     const {
@@ -673,6 +681,10 @@ class ApiPostController {
               error: 'У вас недостаточно прав.',
               bcode: 12.3,
             })
+            return response.json({
+              error: 'У вас недостаточно прав.',
+              bcode: 12.3,
+            })
           } else {
             let sql_start = 'UPDATE `products` SET '
 
@@ -685,9 +697,17 @@ class ApiPostController {
                 "`description_small` = '" +
                 sanitizedValues.description_small +
                 "',"
+              sql_start +=
+                "`description_small` = '" +
+                sanitizedValues.description_small +
+                "',"
             }
 
             if (sanitizedValues.description_full) {
+              sql_start +=
+                "`description_full` = '" +
+                sanitizedValues.description_full +
+                "',"
               sql_start +=
                 "`description_full` = '" +
                 sanitizedValues.description_full +
@@ -696,13 +716,17 @@ class ApiPostController {
 
             if (sanitizedValues.old_price) {
               sql_start += "`old_price` = '" + sanitizedValues.old_price + "',"
+              sql_start += "`old_price` = '" + sanitizedValues.old_price + "',"
             }
 
             if (sanitizedValues.price) {
               sql_start += "`price` = '" + sanitizedValues.price + "',"
+              sql_start += "`price` = '" + sanitizedValues.price + "',"
             }
 
             if (sanitizedValues.availability) {
+              sql_start +=
+                "`availability` = '" + sanitizedValues.availability + "',"
               sql_start +=
                 "`availability` = '" + sanitizedValues.availability + "',"
             }
@@ -710,9 +734,15 @@ class ApiPostController {
             if (sanitizedValues.colors) {
               sql_start +=
                 "`colors` = '" + JSON.stringify(sanitizedValues.colors) + "',"
+              sql_start +=
+                "`colors` = '" + JSON.stringify(sanitizedValues.colors) + "',"
             }
 
             if (sanitizedValues.colors_avail) {
+              sql_start +=
+                "`colors_avail` = '" +
+                JSON.stringify(sanitizedValues.colors_avail) +
+                "',"
               sql_start +=
                 "`colors_avail` = '" +
                 JSON.stringify(sanitizedValues.colors_avail) +
@@ -724,6 +754,10 @@ class ApiPostController {
                 "`parameters` = '" +
                 JSON.stringify(sanitizedValues.parameters) +
                 "',"
+              sql_start +=
+                "`parameters` = '" +
+                JSON.stringify(sanitizedValues.parameters) +
+                "',"
             }
 
             if (sanitizedValues.parameters_avail) {
@@ -731,9 +765,15 @@ class ApiPostController {
                 "`parameters_avail` = '" +
                 JSON.stringify(sanitizedValues.parameters_avail) +
                 "',"
+              sql_start +=
+                "`parameters_avail` = '" +
+                JSON.stringify(sanitizedValues.parameters_avail) +
+                "',"
             }
 
             if (sanitizedValues.image_link) {
+              sql_start +=
+                "`image_link` = '" + sanitizedValues.image_link + "',"
               sql_start +=
                 "`image_link` = '" + sanitizedValues.image_link + "',"
             }
@@ -749,8 +789,10 @@ class ApiPostController {
                 return response
                   .status(500)
                   .json({ error: 'Ошибка на сервере', bcode: 12.5 })
+                  .json({ error: 'Ошибка на сервере', bcode: 12.5 })
               }
 
+              return response.json({ product_id: sanitizedValues.id })
               return response.json({ product_id: sanitizedValues.id })
             })
           }

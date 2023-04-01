@@ -11,6 +11,7 @@ const AdminChange = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const { item, status } = useSelector(selectFullItemData)
+
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
   }, [])
@@ -35,6 +36,7 @@ const AdminChange = () => {
   useEffect(() => {
     if (status === 'success') {
       setChangeItem({
+        id: item.id,
         name: item.name,
         description_small: item.description_small,
         description_full: item.description_full,
@@ -68,6 +70,7 @@ const AdminChange = () => {
       return alert('Не удалось изменить товар')
     }
     setChangeItem(initialState)
+    alert('Товар успешно изменен!')
   }
   return (
     <section className="auth">

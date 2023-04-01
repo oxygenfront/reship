@@ -1,15 +1,15 @@
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { logout, selectIsAuth } from '../../redux/slices/authSlice';
-import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice';
-import styles from './Menu.module.sass';
+import React from 'react'
+import classNames from 'classnames'
+import styles from './Menu.module.scss'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, selectIsAuth } from '../../redux/slices/authSlice'
+import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
 
 const Menu = () => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
-  const { searchValue } = useSelector(selectFilter);
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  const { searchValue } = useSelector(selectFilter)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
@@ -50,7 +50,7 @@ const Menu = () => {
               to="/personal"
               className={styles.search_section__profile_block}
             >
-              <img src='./assets/img/user.svg' alt='user' />
+              <img src="./assets/img/user.svg" alt="user" />
               <p>Фамилия И.</p>
             </Link>
             <Link

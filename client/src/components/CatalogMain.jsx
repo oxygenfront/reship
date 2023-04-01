@@ -61,7 +61,11 @@ function CatalogMain() {
             <Link
               onClick={() => onChangeCategory('microphone')}
 <<<<<<< HEAD
+<<<<<<< HEAD
               to="/catalog#микрофоны"
+=======
+              to="/catalog"
+>>>>>>> parent of 3777939 (adaptiv 4 responsive)
 =======
               to="/catalog"
 >>>>>>> parent of 3777939 (adaptiv 4 responsive)

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components';
@@ -18,6 +19,15 @@ const Personal = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 console.log(data)
+=======
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
+
+const Personal = () => {
+
+  
+>>>>>>> parent of 3777939 (adaptiv 4 responsive)
 =======
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -325,6 +335,7 @@ const Personal = () => {
             }
           >
 <<<<<<< HEAD
+<<<<<<< HEAD
             {windowWidth > 767 ? (
               <div className="person__buttons buttons__10" id="person-btn">
                 <button
@@ -425,6 +436,8 @@ const Personal = () => {
               </div>
             )}
 =======
+=======
+>>>>>>> parent of 3777939 (adaptiv 4 responsive)
             <div className='person__buttons buttons__10' id='person-btn'>
               <button
                 className={
@@ -471,6 +484,9 @@ const Personal = () => {
                 <span>Оставить отзыв</span>
               </button>
             </div>
+<<<<<<< HEAD
+>>>>>>> parent of 3777939 (adaptiv 4 responsive)
+=======
 >>>>>>> parent of 3777939 (adaptiv 4 responsive)
 
             {personPages.delHistory ? (

@@ -32,13 +32,21 @@ const Register = () => {
     setCheckPass(true)
   }
 
+<<<<<<< HEAD
   const sendForm = async (e) => {
+=======
+  const sendForm = (e) => {
+>>>>>>> parent of 3777939 (adaptiv 4 responsive)
     e.preventDefault()
 
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true)
       console.log(form)
+<<<<<<< HEAD
       const data = await dispatch(fetchRegister(form))
+=======
+      const data = dispatch(fetchRegister(form))
+>>>>>>> parent of 3777939 (adaptiv 4 responsive)
       console.log(data)
       if (!data.payload) {
         return alert('Не удалось зарегистрироваться')

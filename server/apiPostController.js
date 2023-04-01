@@ -241,13 +241,13 @@ class ApiPostController {
   }
 
   async getUser(request, response) {
-    if (!tools.checkJsonKey(request.body, 'token')) {
+    if (!tools.checkJsonKey(request.query, 'token')) {
       return response
         .status(400)
         .json({ error: 'Некорректные данные.', bcode: 4 })
     }
 
-    const token = tools.delInjection(request.body.token)
+    const token = tools.delInjection(request.query.token)
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${token}'`,

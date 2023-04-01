@@ -7,7 +7,6 @@ export const fetchFullItem = createAsyncThunk(
   async ({ id }) => {
     const { data } = await axios.get(`/getProductById/${id}`)
     console.log(id)
-    console.log(data)
 
     return data
   }
@@ -39,6 +38,5 @@ const fullItemSlice = createSlice({
 })
 
 export const selectFullItemData = (state) => state.fullItem
-export const {} = fullItemSlice.actions
 
 export default fullItemSlice.reducer

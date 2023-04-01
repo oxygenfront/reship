@@ -18,5 +18,6 @@ router.post('/recoveryPassword', apiPostController.recoveryPassword)
 // admin
 router.post('/createProduct', apiPostController.createProduct)
 router.post('/changeProduct', apiPostController.changeProduct)
+router.post('/deleteProduct', apiPostController.deleteProduct)
 
 export default router;

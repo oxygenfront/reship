@@ -46,16 +46,16 @@ class ApiPostController {
           let new_token = 'reship.api.' + tools.createToken(50)
 
           database.query(
-            'INSERT INTO \`users\` (\`first_name\`, \`last_name\`, \`email\`, \`avatar\`, \`adress_delivery\`, \`basket\`, \`token\`, \`date_register_timestamp\`, `password_md5`, `email_active`) VALUES ' +
+            'INSERT INTO \`users\` (\`first_name\`, \`last_name\`, \`email\`, \`avatar\`, \`adress_delivery\`, \`basket\`, \`token\`, \`date_register_timestamp\`, `password_md5`, `email_active`, `favorites`, `admin`) VALUES ' +
               `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash('md5')
                 .update(password)
-                .digest('hex')}', '1');`,
+                .digest('hex')}', '1', '${JSON.stringify([])}', '0');`,
             (error, rows, fields) => {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: 'Ошибка на сервере', bcode: 1.2 })
+                  .json({ error: 'Ошибка на сервере'})
               }
 
               let activation_code = tools.createToken(50)
@@ -731,6 +731,158 @@ class ApiPostController {
       
       response.json({'id': sanitizedValues.id})
     })
+  }
+
+  async addFavorites(request, response) {
+    const requiredKeys = [
+      'product_id', 'token'
+    ];
+  
+    const requestData = request.body;
+  
+    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    if (missingKey) {
+      return response.status(400).json({ error: 'Некорректные данные.', bcode: 14 });
+    }
+  
+    const {
+      product_id, token
+    } = requestData;
+  
+    const sanitizedValues = {
+      product_id: tools.delInjection(product_id),
+      token: tools.delInjection(token)
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: 'Ошибка на сервере', bcode: 14.1})
+        }
+
+        if (rows.length == 1) {
+          const favorites = JSON.parse(rows[0].favorites);
+
+          for (let i = 0; i < favorites.length; i++) {
+            if (favorites[i] === sanitizedValues.product_id) {
+              return response.status(400).json({'error': 'Товар уже находится в избранных.', bcode: 14.4})
+            }
+          }
+
+          let new_favorites = favorites;
+          new_favorites.push(sanitizedValues.product_id)
+          
+          database.query(`UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(new_favorites)}' WHERE \`token\`='${sanitizedValues.token}';`, (error) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: 'Ошибка на сервере', bcode: 14.3})
+            }
+
+            response.json({'message': 'Товар успешно добавлен в избранные.', 'favorites': new_favorites})
+          })
+
+        } else {
+          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 14.2})
+        }
+      }
+    )
+  }
+
+  async getFavorites(request, response) {
+    const requiredKeys = [
+      'token'
+    ];
+  
+    const requestData = request.body;
+  
+    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    if (missingKey) {
+      return response.status(400).json({ error: 'Некорректные данные.', bcode: 15 });
+    }
+  
+    const {
+      token
+    } = requestData;
+  
+    const sanitizedValues = {
+      token: tools.delInjection(token)
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: 'Ошибка на сервере', bcode: 15.1})
+        }
+
+        if (rows.length == 1) {
+          const favorites = JSON.parse(rows[0].favorites);
+
+          response.json(favorites)
+
+        } else {
+          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 15.2})
+        }
+      }
+    )
+  }
+
+  async deleteFavorites(request, response) {
+    const requiredKeys = [
+      'product_id', 'token'
+    ];
+  
+    const requestData = request.body;
+  
+    const missingKey = requiredKeys.find(key => !requestData.hasOwnProperty(key));
+    if (missingKey) {
+      return response.status(400).json({ error: 'Некорректные данные.', bcode: 16 });
+    }
+  
+    const {
+      product_id, token
+    } = requestData;
+  
+    const sanitizedValues = {
+      product_id: tools.delInjection(product_id),
+      token: tools.delInjection(token)
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: 'Ошибка на сервере', bcode: 16.1})
+        }
+
+        if (rows.length == 1) {
+          const favorites = JSON.parse(rows[0].favorites);
+
+          let new_favorites = tools.removeItemAll(favorites, sanitizedValues.product_id);
+          
+          database.query(`UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(new_favorites)}' WHERE \`token\`='${sanitizedValues.token}';`, (error) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: 'Ошибка на сервере', bcode: 16.3})
+            }
+
+            response.json({'message': 'Товар успешно удален из избранных', 'favorites': new_favorites})
+          })
+
+        } else {
+          return response.status(400).json({'error': 'Ошибка доступа.', 'bcode': 16.2})
+        }
+      }
+    )
   }
 }
 

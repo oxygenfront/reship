@@ -14,6 +14,9 @@ router.post('/changePassword', apiPostController.changePassword)
 router.post('/changeEmail', apiPostController.changeEmail)
 router.get('/activateEmail', apiPostController.activateEmail)
 router.post('/recoveryPassword', apiPostController.recoveryPassword)
+router.post('/addFavorites', apiPostController.addFavorites)
+router.get('/getFavorites', apiPostController.getFavorites)
+router.post('/deleteFavorites', apiPostController.deleteFavorites)
 
 // admin
 router.post('/createProduct', apiPostController.createProduct)

@@ -18,14 +18,9 @@ const Login = () => {
     })
   }
 
-  function sendForm(e) {
+  async function sendForm(e) {
     e.preventDefault()
-
-    setAuthForm({
-      email: '',
-      password: '',
-    })
-    const data = dispatch(fetchAuth(authForm))
+    const data = await dispatch(fetchAuth(authForm))
 
     if (!data.payload) {
       return alert('Не удалось авторизоваться')
@@ -34,12 +29,15 @@ const Login = () => {
     if ('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token)
     }
+    setAuthForm({
+      email: '',
+      password: '',
+    })
   }
 
   if (isAuth) {
     return <Navigate to="/" />
   }
-  const onSubmit = () => {}
 
   return (
     <div>
@@ -50,7 +48,7 @@ const Login = () => {
             Вход в аккаунт ReShip
           </h1>
           <div className="main-form">
-            <form onSubmit={onSubmit} className="main-form__form" action="">
+            <form className="main-form__form" action="">
               <input
                 className="main-form__form-input"
                 name="email"

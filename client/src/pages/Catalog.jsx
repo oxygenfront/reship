@@ -1,17 +1,34 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
-import { selectFilter } from '../redux/slices/fiterSlice'
-import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
+import { selectFilter, setSearchValue } from '../redux/slices/fiterSlice'
+import { fetchFullItem } from '../redux/slices/fullItemSlice'
+import {
+  fetchItems,
+  fetchItemsWithParams,
+  selectItemsData,
+} from '../redux/slices/itemsSlice'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const Catalog = () => {
   const dispatch = useDispatch()
   const { items, status } = useSelector(selectItemsData)
+  const { data } = useSelector(selectUserData)
+
   const { choosenCategorie, searchValue } = useSelector(selectFilter)
 
   useEffect(() => {
-    dispatch(fetchItems({ choosenCategorie }))
-  }, [choosenCategorie, searchValue])
+    dispatch(fetchItems({ choosenCategorie, searchValue }))
+  }, [])
+
+  console.log(items)
+
+  const set = new Set()
+
+  if (status === 'success') {
+    items.map((item) => set.add(item.category))
+  }
+  const categories = [...set]
 
   return (
     <section className="catalog">
@@ -22,6 +39,8 @@ const Catalog = () => {
             <div className=" catalog-section__container">
               <div className="search-section__search-block catalog-section-search__search-block">
                 <input
+                  value={searchValue}
+                  onChange={(e) => dispatch(setSearchValue(e.target.value))}
                   type="text"
                   placeholder="Поиск товара"
                   className="search-section__search-item"
@@ -65,106 +84,39 @@ const Catalog = () => {
           </div>
         </div>
 
-        <div className="catalog__block" id="apple">
-          <div className="catalog__suptitle">
-            <span>Техника Apple</span>
-          </div>
+        <div className="catalog__block">
+          {categories.map((categorie, index) => (
+            <>
+              <div className="catalog__suptitle" id={categorie}>
+                <span>{categorie}</span>
+              </div>
+              <div key={index} className="catalog__items-block">
+                {status === 'loading'
+                  ? [...new Array(3)].map((_, index) => (
+                      <Skeleton key={index}></Skeleton>
+                    ))
+                  : items
+                      .filter((item) => {
+                        if (item.category === categorie) {
+                          return true
+                        } else {
+                          return false
+                        }
+                      })
 
-          <div className="catalog__items-block">
-            {status === 'loading'
-              ? [...new Array(3)].map((_, index) => (
-                  <Skeleton key={index}></Skeleton>
-                ))
-              : items.map((item) => (
-                  <Card
-                    key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    price={item.price}
-                    image={item.image_link}
-                  ></Card>
-                ))}
-          </div>
-        </div>
-
-        <div className="catalog__block" id="board">
-          <div className="catalog__suptitle">
-            <span>Клавиатуры</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="micro">
-          <div className="catalog__suptitle">
-            <span>Микрофоны</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="mouse">
-          <div className="catalog__suptitle">
-            <span>Мышки</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="headphones">
-          <div className="catalog__suptitle">
-            <span>Наушники</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="access">
-          <div className="catalog__suptitle">
-            <span>Аксессуары</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="news-block">
-          <div className="catalog__suptitle">
-            <span>Новинки</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="action-block">
-          <div className="catalog__suptitle">
-            <span>Акции</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
-        </div>
-
-        <div className="catalog__block" id="leaders-block">
-          <div className="catalog__suptitle">
-            <span>Лидеры продаж</span>
-          </div>
-
-          <div className="catalog__items-block">
-            <Card></Card>
-          </div>
+                      .map((item) => (
+                        <Card
+                          key={item.id}
+                          id={item.id}
+                          name={item.name}
+                          old_price={item.old_price}
+                          price={item.price}
+                          image={item.image_link}
+                        ></Card>
+                      ))}
+              </div>
+            </>
+          ))}
         </div>
       </div>
     </section>

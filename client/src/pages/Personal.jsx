@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components';
+import { useSelector } from 'react-redux'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const Personal = () => {
+  const { data, status } = useSelector(selectUserData)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
     function handleResize() {
@@ -13,7 +16,7 @@ const Personal = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
+console.log(data)
   const [personPages, setPersonPages] = useState({
     delHistory: false,
     delInfo: false,
@@ -46,39 +49,48 @@ const Personal = () => {
     });
   };
 
-  const [changeSecret, setChangeSecret] = useState(false);
+  const [changeSecret, setChangeSecret] = useState(false)
   const [changeState, setChangeState] = useState({
     changePassword: false,
     changeEmail: false,
-  });
+  })
   const [password, setPassword] = useState({
     lastPassword: '',
     newPassword: '',
-  });
+  })
 
   const updatePassword = (e) => {
     setPassword({
       ...password,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const [email, setEmail] = useState({
     email: '',
     password: '',
-  });
+  })
 
   const updateEmail = (e) => {
     setEmail({
       ...email,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const onCloseAll = () => {
-    setChangeState({ changeEmail: false, changePassword: false });
-    setChangeSecret(false);
-  };
+    setChangeState({ changeEmail: false, changePassword: false })
+    setChangeSecret(false)
+  }
+  useEffect(() => {
+    if (status === 'success') {
+      setPersonName({
+        firstName: data.first_name,
+        lastName: data.last_name,
+      })
+      setPersonMail({ mail: data.email })
+    }
+  }, [status])
 
   useEffect(() => {
     setPersonPages({ delHistory: true });
@@ -162,12 +174,12 @@ const Personal = () => {
               </button>
 
               <button
-                className='person__info-item'
-                id='settings-conf'
+                className="person__info-item"
+                id="settings-conf"
                 onClick={() => setChangeSecret(!changeSecret)}
               >
                 Настройки конфиденциальности
-                <img src='./assets/img/gear.svg' alt='' />
+                <img src="./assets/img/gear.svg" alt="" />
               </button>
             </div>
           </div>
@@ -176,8 +188,8 @@ const Personal = () => {
             <div className='person__secret'>
               <div className='person__secret-wrapper'>
                 <button
-                  className='person__secret-change-btn'
-                  id='change-pass'
+                  className="person__secret-change-btn"
+                  id="change-pass"
                   onClick={() =>
                     setChangeState({
                       changePassword: !changeState.changePassword,
@@ -187,8 +199,8 @@ const Personal = () => {
                   Изменить пароль
                 </button>
                 <button
-                  className='person__secret-change-btn'
-                  id='change-mail'
+                  className="person__secret-change-btn"
+                  id="change-mail"
                   onClick={() =>
                     setChangeState({
                       changeEmail: !changeState.changeEmail,
@@ -198,8 +210,8 @@ const Personal = () => {
                   Изменить E-mail
                 </button>
                 <button
-                  className='person__secret-close'
-                  id='close-secret'
+                  className="person__secret-close"
+                  id="close-secret"
                   onClick={onCloseAll}
                 >
                   <div className='person__secret-close__cross'>
@@ -212,8 +224,8 @@ const Personal = () => {
           ) : null}
 
           {changeState.changePassword ? (
-            <div className='person__secret-change-block person__secret-change-block-pass'>
-              <div className='person__secret-change-block-wrapper'>
+            <div className="person__secret-change-block person__secret-change-block-pass">
+              <div className="person__secret-change-block-wrapper">
                 <input
                   className='person__secret-change-inp-pass'
                   onChange={updatePassword}
@@ -229,8 +241,8 @@ const Personal = () => {
                   placeholder='Введите новый пароль'
                 />
                 <button
-                  className='person__secret-change-confirm'
-                  id='person-confirm-pass'
+                  className="person__secret-change-confirm"
+                  id="person-confirm-pass"
                   onClick={() =>
                     setChangeState({
                       changePassword: !changeState.changePassword,
@@ -240,8 +252,8 @@ const Personal = () => {
                   Сохранить изменения
                 </button>
                 <button
-                  className='person__secret-close'
-                  id='person-close-pass'
+                  className="person__secret-close"
+                  id="person-close-pass"
                   onClick={() =>
                     setChangeState({
                       changePassword: !changeState.changePassword,
@@ -258,8 +270,8 @@ const Personal = () => {
           ) : null}
 
           {changeState.changeEmail ? (
-            <div className='person__secret-change-block person__secret-change-block-mail'>
-              <div className='person__secret-change-block-wrapper'>
+            <div className="person__secret-change-block person__secret-change-block-mail">
+              <div className="person__secret-change-block-wrapper">
                 <input
                   className='person__secret-change-inp-pass'
                   onChange={updateEmail}
@@ -275,8 +287,8 @@ const Personal = () => {
                   placeholder='Введите пароль'
                 />
                 <button
-                  className='person__secret-change-confirm'
-                  id='person-confirm-mail'
+                  className="person__secret-change-confirm"
+                  id="person-confirm-mail"
                   onClick={() =>
                     setChangeState({ changeEmail: !changeState.changeEmail })
                   }
@@ -284,8 +296,8 @@ const Personal = () => {
                   Сохранить изменения
                 </button>
                 <button
-                  className='person__secret-close'
-                  id='person-close-mail'
+                  className="person__secret-close"
+                  id="person-close-mail"
                   onClick={() =>
                     setChangeState({ changeEmail: !changeState.changeEmail })
                   }
@@ -305,7 +317,7 @@ const Personal = () => {
             }
           >
             {windowWidth > 767 ? (
-              <div className='person__buttons buttons__10' id='person-btn'>
+              <div className="person__buttons buttons__10" id="person-btn">
                 <button
                   className={
                     personPages.delHistory
@@ -454,14 +466,28 @@ const Personal = () => {
               </div>
             ) : null}
 
-            {personPages.favorites ? (
-              <div className='person__favorites-wrapper'>
-                <div className='person__favorites-wrapper-items'>
-                  <FavoriteItem />
-                  <FavoriteItem />
-                  <FavoriteItem />
+            {personPages.favorites && status === 'success' ? (
+              data.favorites.length > 0 ? (
+                <div className="person__favorites-wrapper">
+                  <div className="person__favorites-wrapper-items">
+                    {data.favorites.map((item) => (
+                      <FavoriteItem id={item}></FavoriteItem>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="person__wait-wrapper">
+                  <FavoriteItem></FavoriteItem>
+                  <div className="person__reviews_text-block">
+                    <p>
+                      Вы еще не добавляли товары в “Избранное” - вернитесь сюда
+                      позднее, а пока можете <br />
+                      <Link to="/catalog">перейти в каталог</Link>, для выбора
+                      товара
+                    </p>
+                  </div>
+                </div>
+              )
             ) : null}
 
             {personPages.reviews ? (

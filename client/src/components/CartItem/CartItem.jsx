@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { addItem, minusItem, removeItem } from '../../redux/slices/cartSlice'
 import styles from './CartItem.module.sass'
 
@@ -15,6 +16,7 @@ const CartItem = ({ id, price, image, count, name }) => {
   const onClickRemove = () => {
     dispatch(removeItem(id))
   }
+
   return (
     <>
       <div
@@ -23,8 +25,12 @@ const CartItem = ({ id, price, image, count, name }) => {
           styles.cart__delivery_items_item
         )}
       >
-        <div className={styles.cart__delivery_items_item_block_img}>
+        <Link
+          to={`/item/${id}`}
+          className={styles.cart__delivery_items_item_block_img}
+        >
           <img
+            onClick={() => console.log(id)}
             src={image}
             alt="item"
             className={classNames(
@@ -32,16 +38,17 @@ const CartItem = ({ id, price, image, count, name }) => {
               styles.cart__delivery_items_item_block_img_img
             )}
           />
-        </div>
+        </Link>
 
-        <span
+        <Link
+          to={`/item/${id}`}
           className={classNames(
             styles.person__delivery_items_item_name,
             styles.cart__delivery_items_item_name
           )}
         >
-          {name} (128 gb)
-        </span>
+          {name}
+        </Link>
 
         <div
           className={classNames(

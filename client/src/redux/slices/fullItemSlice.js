@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import axios from 'axios'
+import axios from '../../axios'
 
 export const fetchFullItem = createAsyncThunk(
   'pizza/getFullItem',
   async ({ id }) => {
-    const { data } = await axios.get('/getProducts' + id)
+    const { data } = await axios.get(`/getProductById/${id}`)
     console.log(id)
-    console.log(data)
 
     return data
   }
@@ -39,6 +38,5 @@ const fullItemSlice = createSlice({
 })
 
 export const selectFullItemData = (state) => state.fullItem
-export const {} = fullItemSlice.actions
 
 export default fullItemSlice.reducer

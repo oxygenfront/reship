@@ -104,20 +104,21 @@ const Header = () => {
           <Link to='/' className={styles.header__faq}>
             FAQ
           </Link>
+          <Link to="/admin">ADMIN</Link>
         </div>
         <div className={styles.header__cont}>
-          {/* <Link to="/cart" className={styles.header__cart}>
+          <Link to="/cart" className={styles.header__cart}>
             <img
               src="../assets/img/free-icon-shopping-bag-5023684 1.png"
               alt="shopping-bag"
             />
             <span>Корзина</span>
-          </Link> */}
-          {/* <Link to="/personal" className={styles.header__like}>
+          </Link>
+          <Link to="/personal" className={styles.header__like}>
             <img src="../assets/img/heart 1.svg" alt="heart" />
-          </Link> */}
-          <a href='/' className={styles.header__messenger_item}>
-            <img src='../assets/img/telegram.svg' alt=''></img>
+          </Link>
+          <a href="/" className={styles.header__messenger_item}>
+            <img src="../assets/img/telegram.svg" alt=""></img>
           </a>
           <a
             href='https://vk.com/reship'

@@ -43,14 +43,14 @@ const Register = () => {
     setCheckPass(true);
   };
 
-  const sendForm = (e) => {
-    e.preventDefault();
+  const sendForm = async (e) => {
+    e.preventDefault()
 
     if (regForm.newPassword === regForm.confirmPassword) {
-      setCheckPass(true);
-      console.log(form);
-      const data = dispatch(fetchRegister(form));
-      console.log(data);
+      setCheckPass(true)
+      console.log(form)
+      const data = await dispatch(fetchRegister(form))
+      console.log(data)
       if (!data.payload) {
         return alert('Не удалось зарегистрироваться');
       }
@@ -67,12 +67,13 @@ const Register = () => {
     } else {
       setCheckPass(false);
     }
-  };
-  const dispatch = useDispatch();
+  }
+  const dispatch = useDispatch()
 
   if (isAuth) {
     return <Navigate to='/' />;
   }
+  console.log(isAuth)
   return (
     <section className='auth'>
       <div className='container auth__container'>

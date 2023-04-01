@@ -15,6 +15,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
     }
     dispatch(addItem(item))
   }
+  console.log(id)
   return (
     <div className={styles.person__favorites_wrapper_items_item}>
       <img
@@ -22,7 +23,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
         src="https://placehold.co/300"
       />
       <div className={styles.person__favorites_wrapper_items_item_name}>
-        Iphone 11 pro (128)
+        {id}
       </div>
       <div className={styles.person__favorites_wrapper_items_item_price}>
         <span>Всего за 44,999 rub</span>

@@ -57,10 +57,9 @@ function CatalogMain() {
         {windowWidth > 991 ? (
           <div className='main-catalog__preview'>
             <Link
-              to='/catalog'
-              onClick={() => onChangeCategory('apple')}
-              value={'apple'}
-              className='main-catalog__preview-lg'
+              onClick={() => onChangeCategory('microphone')}
+              to="/catalog#микрофоны"
+              className="main-catalog__preview-sm-item"
             >
               <div className='main-catalog__preview-lg_title'>
                 <span>Apple</span>

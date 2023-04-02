@@ -29,6 +29,7 @@ const Login = () => {
     if ('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token)
     }
+
     setAuthForm({
       email: '',
       password: '',

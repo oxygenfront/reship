@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
 import { useSelector } from 'react-redux'
-import { selectUserData } from '../redux/slices/authSlice'
+import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
 
 const Personal = () => {
+  const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
@@ -96,6 +97,9 @@ const Personal = () => {
   useEffect(() => {
     setPersonPages({ delHistory: true })
   }, [])
+  if (!isAuth) {
+    return <Navigate to="/"></Navigate>
+  }
 
   return (
     <>
@@ -417,7 +421,7 @@ const Personal = () => {
               </div>
             )}
 
-            <div className="person__buttons buttons__10" id="person-btn">
+            {/* <div className="person__buttons buttons__10" id="person-btn">
               <button
                 className={
                   personPages.delHistory
@@ -462,7 +466,7 @@ const Personal = () => {
               >
                 <span>Оставить отзыв</span>
               </button>
-            </div>
+            </div> */}
 
             {personPages.delHistory ? (
               <div className="person__delivery-history_wrapper">
@@ -519,7 +523,7 @@ const Personal = () => {
                 <div className="person__favorites-wrapper">
                   <div className="person__favorites-wrapper-items">
                     {data.favorites.map((item) => (
-                      <FavoriteItem id={item}></FavoriteItem>
+                      <FavoriteItem key={item} id={item}></FavoriteItem>
                     ))}
                   </div>
                 </div>

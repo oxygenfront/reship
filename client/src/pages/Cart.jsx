@@ -28,7 +28,7 @@ const Cart = () => {
       </div>
     )
   }
-
+  console.log(items, totalPrice)
   return (
     <section className="cart">
       <div className="container cart__container">

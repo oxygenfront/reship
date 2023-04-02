@@ -29,7 +29,6 @@ const Card = ({ name, image, price, id, old_price }) => {
   const [isFavorite, setIsFavorite] = useState(false)
   useEffect(() => {
     if (status === 'success') {
-      console.log(Number(id))
       setIsFavorite(data.favorites.includes(Number(id)))
     }
   }, [status])

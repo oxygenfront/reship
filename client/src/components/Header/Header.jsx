@@ -4,9 +4,11 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { selectCart } from '../../redux/slices/cartSlice'
 import styles from './Header.module.sass'
+import { selectIsAuth, selectUserData } from '../../redux/slices/authSlice'
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
-
+  const isAuth = useSelector(selectIsAuth)
+  const { data, status } = useSelector(selectUserData)
   const { items, totalPrice } = useSelector(selectCart)
   const isMounted = useRef(false)
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
@@ -104,7 +106,9 @@ const Header = () => {
           <Link to="/" className={styles.header__faq}>
             FAQ
           </Link>
-          <Link to="/admin">ADMIN</Link>
+          {isAuth && status === 'success' && data.admin === 1 ? (
+            <Link to="/admin">ADMIN</Link>
+          ) : null}
         </div>
         <div className={styles.header__cont}>
           <Link to="/cart" className={styles.header__cart}>

@@ -1,5 +1,4 @@
 .person
-    
     &__delivery
         &_history
             display: flex
@@ -31,7 +30,7 @@
                     height: 260px
                     background: #020202
                     border-radius: 15px
-                    padding: 0px 62px 0px 62px
+                    padding: 0 62px
                     &:not(:last-child)
                         margin-bottom: 36px
                     &_img_block
@@ -42,8 +41,11 @@
                         align-items: center
                         background: white
                         border-radius: 20px
-                        
-                        
+                        & img
+                            width: 80%
+                            height: 80%
+                            border-radius: 20px
+
                     &_name
                         display: flex
                         justify-content: center
@@ -90,4 +92,91 @@
                             &:last-child
                                 background: white
                                 color: black
-       
+@media (max-width: 991px)
+    .person
+        &__delivery
+            &_history
+                &_mess
+                &_wrapper
+                    height: 180px
+                    &.active
+                    &_title
+                    &_item
+                        height: 200px
+                        padding: 0 30px
+                        &:not(:last-child)
+                        &_img_block
+                        &_name
+                            width: 110px
+                        &_number
+                            & span
+                        &_price
+                        &_status
+                            &_deliv
+                            &_return
+                        &_buttons
+                            & div
+                                &:last-child
+@media (max-width: 767px)
+    .person
+        &__delivery
+            &_history
+                &_mess
+                &_wrapper
+                    &.active
+                    &_title
+                    &_item
+                        padding: 0 20px
+                        &:not(:last-child)
+                        &_img_block
+                            width: 115px
+                            height: 115px
+
+                        &_name
+                            width: 85px
+                            font-size: 18px
+                        &_number
+                            width: 26px
+                            height: 26px
+                            & span
+                                font-size: 14px
+                        &_price
+                            font-size: 19px
+                        &_status
+                            width: 90px
+                            height: 36px
+                            font-size: 15px
+                            &_deliv
+                            &_return
+                        &_buttons
+                            & div
+                                &:last-child
+@media (max-width: 575px)
+    .person
+        &__delivery
+            &_history
+                &_mess
+                &_wrapper
+                    &.active
+                    &_title
+                    &_item
+                        flex-direction: column
+                        padding: unset
+                        width: 300px
+                        height: 330px
+                        padding: 30px 0
+                        &:not(:last-child)
+                            margin-bottom: 70px
+                        &_img_block
+                        &_name
+                            height: unset
+                            width: 100%
+                        &_number
+                            & span
+                        &_price
+                        &_status
+                            &_deliv
+                            &_return
+                        &_buttons
+                            & div
+                                &:last-child

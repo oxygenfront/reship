@@ -54,7 +54,7 @@ function Accordeon() {
           >
             <div className='faq__item-first-block'>
               <div className='faq__item-title'>
-                Что будет если я получу бракованный/нерабочий товар?
+                Что будет если я получу бракованный или нерабочий товар?
               </div>
               <div className='faq__item-arrows'></div>
             </div>

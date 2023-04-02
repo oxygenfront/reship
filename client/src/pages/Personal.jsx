@@ -103,11 +103,13 @@ const Personal = () => {
       <section className="person">
         <div className="container person__container">
           <div className="person__card">
-            <img
-              src="./assets/img/photo_2022-03-30_21-45-34.jpg"
-              alt=""
-              className="person__img"
-            />
+            <div className="person__img-block">
+              <img
+                src="./assets/img/photo_2022-03-30_21-45-34.jpg"
+                alt=""
+                className="person__img"
+              />
+            </div>
             <div className="person__info">
               {changeName ? (
                 <button
@@ -497,10 +499,10 @@ const Personal = () => {
                 </div>
 
                 <div className="person__delivery-links">
-                  <a className="person__delivery-links_track" href="">
+                  <a className="person__delivery-links_track" href="/#">
                     <span>Отследить заказ</span>
                   </a>
-                  <a className="person__delivery-links_deliv" href="">
+                  <a className="person__delivery-links_deliv" href="/#">
                     <span>Задать вопрос по доставке</span>
                   </a>
                 </div>
@@ -554,7 +556,7 @@ const Personal = () => {
                     <span>Оставить отзыв в ВКонтакте</span>
                   </a>
                   <a
-                    href="#"
+                    href="/#"
                     className="person__reviews-buttons-item buttons__10-item"
                   >
                     <span>Оставить отзыв в Discord</span>

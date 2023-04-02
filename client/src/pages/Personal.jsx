@@ -1,42 +1,23 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components';
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
 import { useSelector } from 'react-redux'
 import { selectUserData } from '../redux/slices/authSlice'
 
 const Personal = () => {
   const { data, status } = useSelector(selectUserData)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-console.log(data)
-=======
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  console.log(data)
 
-const Personal = () => {
-
-  
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
-=======
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
-
-const Personal = () => {
-
-  
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
   const [personPages, setPersonPages] = useState({
     delHistory: false,
     delInfo: false,
@@ -334,8 +315,6 @@ const Personal = () => {
               changeSecret ? 'person__opacity active' : 'person__opacity'
             }
           >
-<<<<<<< HEAD
-<<<<<<< HEAD
             {windowWidth > 767 ? (
               <div className="person__buttons buttons__10" id="person-btn">
                 <button
@@ -344,7 +323,7 @@ const Personal = () => {
                       ? 'person__buttons-item buttons__10-item active'
                       : 'person__buttons-item buttons__10-item'
                   }
-                  id='lk-history'
+                  id="lk-history"
                   onClick={() => setPersonPages({ delHistory: true })}
                 >
                   <span>История заказов</span>
@@ -355,7 +334,7 @@ const Personal = () => {
                       ? 'person__buttons-item buttons__10-item active'
                       : 'person__buttons-item buttons__10-item'
                   }
-                  id='lk-wait'
+                  id="lk-wait"
                   onClick={() => setPersonPages({ delInfo: true })}
                 >
                   <span>Ожидают доставки</span>
@@ -366,7 +345,7 @@ const Personal = () => {
                       ? 'person__buttons-item buttons__10-item active'
                       : 'person__buttons-item buttons__10-item'
                   }
-                  id='lk-favorites'
+                  id="lk-favorites"
                   onClick={() => setPersonPages({ favorites: true })}
                 >
                   <span>Избранные товары</span>
@@ -377,22 +356,22 @@ const Personal = () => {
                       ? 'person__buttons-item buttons__10-item active'
                       : 'person__buttons-item buttons__10-item'
                   }
-                  id='lk-reviews'
+                  id="lk-reviews"
                   onClick={() => setPersonPages({ reviews: true })}
                 >
                   <span>Оставить отзыв</span>
                 </button>
               </div>
             ) : (
-              <div className='person__buttons buttons__10' id='person-btn'>
-                <div className='person__buttons-flex'>
+              <div className="person__buttons buttons__10" id="person-btn">
+                <div className="person__buttons-flex">
                   <button
                     className={
                       personPages.delHistory
                         ? 'person__buttons-item buttons__10-item active'
                         : 'person__buttons-item buttons__10-item'
                     }
-                    id='lk-history'
+                    id="lk-history"
                     onClick={() => setPersonPages({ delHistory: true })}
                   >
                     <span>История заказов</span>
@@ -403,20 +382,20 @@ const Personal = () => {
                         ? 'person__buttons-item buttons__10-item active'
                         : 'person__buttons-item buttons__10-item'
                     }
-                    id='lk-wait'
+                    id="lk-wait"
                     onClick={() => setPersonPages({ delInfo: true })}
                   >
                     <span>Ожидают доставки</span>
                   </button>
                 </div>
-                <div className='person__buttons-flex'>
+                <div className="person__buttons-flex">
                   <button
                     className={
                       personPages.favorites
                         ? 'person__buttons-item buttons__10-item active'
                         : 'person__buttons-item buttons__10-item'
                     }
-                    id='lk-favorites'
+                    id="lk-favorites"
                     onClick={() => setPersonPages({ favorites: true })}
                   >
                     <span>Избранные товары</span>
@@ -427,7 +406,7 @@ const Personal = () => {
                         ? 'person__buttons-item buttons__10-item active'
                         : 'person__buttons-item buttons__10-item'
                     }
-                    id='lk-reviews'
+                    id="lk-reviews"
                     onClick={() => setPersonPages({ reviews: true })}
                   >
                     <span>Оставить отзыв</span>
@@ -435,10 +414,8 @@ const Personal = () => {
                 </div>
               </div>
             )}
-=======
-=======
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
-            <div className='person__buttons buttons__10' id='person-btn'>
+
+            <div className="person__buttons buttons__10" id="person-btn">
               <button
                 className={
                   personPages.delHistory
@@ -484,10 +461,6 @@ const Personal = () => {
                 <span>Оставить отзыв</span>
               </button>
             </div>
-<<<<<<< HEAD
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
-=======
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
 
             {personPages.delHistory ? (
               <div className="person__delivery-history_wrapper">
@@ -539,7 +512,6 @@ const Personal = () => {
               </div>
             ) : null}
 
-<<<<<<< HEAD
             {personPages.favorites && status === 'success' ? (
               data.favorites.length > 0 ? (
                 <div className="person__favorites-wrapper">
@@ -548,14 +520,6 @@ const Personal = () => {
                       <FavoriteItem id={item}></FavoriteItem>
                     ))}
                   </div>
-=======
-            {personPages.favorites ? (
-              <div className="person__favorites-wrapper">
-                <div className="person__favorites-wrapper-items">
-                  <FavoriteItem />
-                  <FavoriteItem />
-                  <FavoriteItem />
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
                 </div>
               ) : (
                 <div className="person__wait-wrapper">

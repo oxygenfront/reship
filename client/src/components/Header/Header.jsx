@@ -50,14 +50,8 @@ const Header = () => {
           </Link>
           <Link to="/personal" className={styles.header__like}>
             <img src="../assets/img/heart 1.svg" alt="heart" />
-<<<<<<< HEAD
           </Link>
-=======
-          </Link> */}
-<<<<<<< HEAD
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
-=======
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
+
           <a href="/" className={styles.header__messenger_item}>
             <img src="../assets/img/telegram.svg" alt=""></img>
           </a>

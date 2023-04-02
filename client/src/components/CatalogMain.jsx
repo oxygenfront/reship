@@ -60,15 +60,7 @@ function CatalogMain() {
           <div className="main-catalog__preview-sm">
             <Link
               onClick={() => onChangeCategory('microphone')}
-<<<<<<< HEAD
-<<<<<<< HEAD
               to="/catalog#микрофоны"
-=======
-              to="/catalog"
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
-=======
-              to="/catalog"
->>>>>>> parent of 3777939 (adaptiv 4 responsive)
               className="main-catalog__preview-sm-item"
             >
               <img

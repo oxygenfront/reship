@@ -17,10 +17,14 @@ router.post('/recoveryPassword', apiPostController.recoveryPassword)
 router.post('/addFavorites', apiPostController.addFavorites)
 router.get('/getFavorites', apiPostController.getFavorites)
 router.post('/deleteFavorites', apiPostController.deleteFavorites)
+router.post('/createOrder', apiPostController.createOrder)
+router.get('/getOrdersByCustomerId', apiPostController.getOrdersByCustomerId)
+router.get('/getOrder', apiPostController.getOrder)
 
 // admin
 router.post('/createProduct', apiPostController.createProduct)
 router.post('/changeProduct', apiPostController.changeProduct)
 router.post('/deleteProduct', apiPostController.deleteProduct)
+router.get('/getOrdersAll', apiPostController.getOrdersAll)
 
 export default router

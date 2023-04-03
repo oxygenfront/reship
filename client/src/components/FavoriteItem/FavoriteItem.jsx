@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addItem } from '../../redux/slices/cartSlice'
 import styles from './FavoriteItem.module.sass'
+import { Link } from 'react-router-dom'
 
 const FavoriteItem = ({ name, price, image, id }) => {
   const dispatch = useDispatch()
@@ -18,13 +19,19 @@ const FavoriteItem = ({ name, price, image, id }) => {
   console.log(id)
   return (
     <div className={styles.person__favorites_wrapper_items_item}>
-      <img
-        className={styles.person__favorites_wrapper_items_item_img}
-        src="https://placehold.co/300"
-      />
-      <div className={styles.person__favorites_wrapper_items_item_name}>
+      <Link to={`/item/${id}`}>
+        <img
+          className={styles.person__favorites_wrapper_items_item_img}
+          src="https://placehold.co/300"
+        />
+      </Link>
+
+      <Link
+        to={`/item/${id}`}
+        className={styles.person__favorites_wrapper_items_item_name}
+      >
         {id}
-      </div>
+      </Link>
       <div className={styles.person__favorites_wrapper_items_item_price}>
         <span>Всего за 44,999 rub</span>
       </div>

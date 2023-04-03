@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
-import { selectUserData } from '../../redux/slices/authSlice'
+import { fetchAuthMe, selectUserData } from '../../redux/slices/authSlice'
 import {
   fetchAddFavorite,
   fetchDeleteFavorite,
@@ -39,6 +39,7 @@ const Card = ({ name, image, price, id, old_price }) => {
       if (!data.payload) {
         return alert('Не удалось добавить товар в избранные')
       } else {
+        dispatch(fetchAuthMe(data.payload.token))
         return setIsFavorite(true)
       }
     }
@@ -49,6 +50,7 @@ const Card = ({ name, image, price, id, old_price }) => {
       if (!data.payload) {
         return alert('Не удалось удалить товар из избранных')
       } else {
+        dispatch(fetchAuthMe(data.payload.token))
         return setIsFavorite(false)
       }
     }

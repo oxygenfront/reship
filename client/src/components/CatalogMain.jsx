@@ -73,7 +73,7 @@ function CatalogMain() {
             </Link>
             <div className="main-catalog__preview-sm">
               <Link
-                onClick={() => onChangeCategory('microphone')}
+                onClick={() => onChangeCategory('микрофоны')}
                 to="/catalog"
                 className="main-catalog__preview-sm-item"
               >
@@ -84,7 +84,7 @@ function CatalogMain() {
                 <span>Микрофоны</span>
               </Link>
               <Link
-                onClick={() => onChangeCategory('mouse')}
+                onClick={() => onChangeCategory('мышки')}
                 to="/catalog"
                 className="main-catalog__preview-sm-item"
               >
@@ -97,7 +97,7 @@ function CatalogMain() {
             </div>
             <div className="main-catalog__preview-sm">
               <Link
-                onClick={() => onChangeCategory('headphone')}
+                onClick={() => onChangeCategory('наушники')}
                 to="/catalog"
                 className="main-catalog__preview-sm-item"
               >
@@ -117,7 +117,7 @@ function CatalogMain() {
               </Link>
             </div>
             <Link
-              onClick={() => onChangeCategory('board')}
+              onClick={() => onChangeCategory('клавиатуры')}
               to="/catalog"
               className="main-catalog__preview-lg"
             >
@@ -151,7 +151,7 @@ function CatalogMain() {
                 />
               </Link>
               <Link
-                onClick={() => onChangeCategory('board')}
+                onClick={() => onChangeCategory('клавиатуры')}
                 to="/catalog"
                 className="main-catalog__preview-lg"
               >
@@ -167,7 +167,7 @@ function CatalogMain() {
             </div>
             <div className="main-catalog__preview-sm">
               <Link
-                onClick={() => onChangeCategory('microphone')}
+                onClick={() => onChangeCategory('микрофоны')}
                 to="/catalog"
                 className="main-catalog__preview-sm-item"
               >
@@ -178,7 +178,7 @@ function CatalogMain() {
                 <span>Микрофоны</span>
               </Link>
               <Link
-                onClick={() => onChangeCategory('mouse')}
+                onClick={() => onChangeCategory('мышки')}
                 to="/catalog"
                 className="main-catalog__preview-sm-item"
               >
@@ -189,7 +189,7 @@ function CatalogMain() {
                 <span>Мышки</span>
               </Link>
               <Link
-                onClick={() => onChangeCategory('headphone')}
+                onClick={() => onChangeCategory('наушники')}
                 to="/catalog"
                 className="main-catalog__preview-sm-item"
               >

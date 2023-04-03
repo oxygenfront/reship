@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { fetchAuth, selectIsAuth } from '../redux/slices/authSlice'
+import { fetchAuth, fetchAuthMe, selectIsAuth } from '../redux/slices/authSlice'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -28,6 +28,7 @@ const Login = () => {
 
     if ('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token)
+      dispatch(fetchAuthMe(data.payload.token))
     }
 
     setAuthForm({

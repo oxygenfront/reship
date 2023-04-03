@@ -14,7 +14,7 @@ const Menu = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
-  const { searchValue } = useSelector(selectFilter)
+
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
@@ -55,7 +55,7 @@ const Menu = () => {
             type="text"
             placeholder="Поиск товара"
             className={styles.search_section__search_item}
-            onChange={(e) => dispatch(setSearchValue(e.target.value))}
+            // onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
           <button className={styles.search_section__search_block_glass}>
             <i className="fa-solid fa-magnifying-glass"></i>
@@ -70,7 +70,7 @@ const Menu = () => {
               >
                 <img src="./assets/img/user.svg" alt="user" />
                 <p>
-                  {data.first_name} {data.last_name}
+                  {data.first_name[0].toUpperCase() + data.first_name.slice(1)}
                 </p>
               </Link>
               <Link

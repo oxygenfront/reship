@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
+import { fetchChangePassword } from '../redux/slices/changeSlice'
 
 const Personal = () => {
+  const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
+  const token = localStorage.getItem('token')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
     function handleResize() {
@@ -59,6 +62,7 @@ const Personal = () => {
   const [password, setPassword] = useState({
     lastPassword: '',
     newPassword: '',
+    token,
   })
 
   const updatePassword = (e) => {
@@ -83,6 +87,16 @@ const Personal = () => {
   const onCloseAll = () => {
     setChangeState({ changeEmail: false, changePassword: false })
     setChangeSecret(false)
+  }
+  const onClickSavePassword = async () => {
+    const data = await dispatch(fetchChangePassword(updatePassword))
+    if (!data.payload) {
+      return alert('Не удалось изменить пароль')
+    }
+    if (data.payload) {
+      return alert('Пароль успешно изменен')
+    }
+    setPassword({ lastPassword: '', newPassword: '' })
   }
   useEffect(() => {
     if (status === 'success') {
@@ -116,13 +130,9 @@ const Personal = () => {
             </div>
             <div className="person__info">
               {changeName ? (
-                <button
-                  className="person__info-item"
-                  onClick={() => setChangeName(!changeName)}
-                >
+                <div className="person__info-item">
                   {personName.lastName} {personName.firstName}
-                  <img src="./assets/img/pen-edit.png" alt="" />
-                </button>
+                </div>
               ) : (
                 <div className="person__info-input-button">
                   <input
@@ -149,13 +159,7 @@ const Personal = () => {
               )}
 
               {changeMail ? (
-                <button
-                  className="person__info-item"
-                  onClick={() => setChangeMail(!changeMail)}
-                >
-                  {personMail.mail}
-                  <img src="./assets/img/pen-edit.png" alt="" />
-                </button>
+                <div className="person__info-item">{personMail.mail}</div>
               ) : (
                 <div className="person__info-input-button">
                   <input

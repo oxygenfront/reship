@@ -1,5 +1,5 @@
 function Preloader() {
-  return ( <div></div> );
+  return ( <div>загрузка</div> );
 }
 
 export default Preloader;

@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
-import styles from './Card.module.sass'
-import { fetchAuthMe, selectUserData } from '../../redux/slices/authSlice'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { addItem, selectCartItemById } from '../../redux/slices/cartSlice';
+import styles from './Card.module.sass';
+import { fetchAuthMe, selectUserData } from '../../redux/slices/authSlice';
 import {
   fetchAddFavorite,
   fetchDeleteFavorite,
-} from '../../redux/slices/favoriteSlice'
+} from '../../redux/slices/favoriteSlice';
+import classNames from 'classnames';
 
 const Card = ({ name, image, price, id, old_price }) => {
-  const dispatch = useDispatch()
-  const cartItem = useSelector(selectCartItemById(id))
-  const token = localStorage.getItem('token')
-  const { data, status } = useSelector(selectUserData)
+  const dispatch = useDispatch();
+  const cartItem = useSelector(selectCartItemById(id));
+  const token = localStorage.getItem('token');
+  const { data, status } = useSelector(selectUserData);
   const onClickAdd = () => {
     const item = {
       id,
@@ -21,47 +22,47 @@ const Card = ({ name, image, price, id, old_price }) => {
       image,
       price,
       count: 0,
-    }
-    dispatch(addItem(item))
-  }
+    };
+    dispatch(addItem(item));
+  };
 
-  const addedCount = cartItem ? cartItem.count : 0
-  const [isFavorite, setIsFavorite] = useState(false)
+  const addedCount = cartItem ? cartItem.count : 0;
+  const [isFavorite, setIsFavorite] = useState(false);
   useEffect(() => {
     if (status === 'success') {
-      setIsFavorite(data.favorites.includes(Number(id)))
+      setIsFavorite(data.favorites.includes(Number(id)));
     }
-  }, [status])
+  }, [status]);
 
   const onChangeFavorite = async () => {
     if (!isFavorite) {
-      const data = await dispatch(fetchAddFavorite({ product_id: id, token }))
+      const data = await dispatch(fetchAddFavorite({ product_id: id, token }));
       if (!data.payload) {
-        return alert('Не удалось добавить товар в избранные')
+        return alert('Не удалось добавить товар в избранные');
       } else {
-        dispatch(fetchAuthMe(data.payload.token))
-        return setIsFavorite(true)
+        dispatch(fetchAuthMe(data.payload.token));
+        return setIsFavorite(true);
       }
     }
     if (isFavorite) {
       const data = await dispatch(
         fetchDeleteFavorite({ product_id: id, token })
-      )
+      );
       if (!data.payload) {
-        return alert('Не удалось удалить товар из избранных')
+        return alert('Не удалось удалить товар из избранных');
       } else {
-        dispatch(fetchAuthMe(data.payload.token))
-        return setIsFavorite(false)
+        dispatch(fetchAuthMe(data.payload.token));
+        return setIsFavorite(false);
       }
     }
-  }
+  };
   return (
     <div className={styles.catalog__items_block_item}>
       <Link
         to={`/item/${id}`}
         className={styles.catalog__items_block_item_img_block}
       >
-        <img src={image} alt="iphone" />
+        <img src={image} alt='iphone' />
       </Link>
       <div className={styles.catalog__items_block_item_price}>
         <span>{price} ₽</span>
@@ -74,13 +75,25 @@ const Card = ({ name, image, price, id, old_price }) => {
         <button className={styles.catalog__items_block_item_buttons_item}>
           Купить
         </button>
-        <button
-          onClick={onClickAdd}
-          className={styles.catalog__items_block_item_buttons_item}
-        >
-          В корзину
-          {addedCount > 0 ? <i>{addedCount}</i> : null}
-        </button>
+        {addedCount > 0 ? (
+          <button
+            onClick={onClickAdd}
+            className={classNames(
+              styles.catalog__items_block_item_buttons_item,
+              styles.catalog__items_block_item_buttons_item_added
+            )}
+          >
+            В корзине <span>{
+            }</span>
+          </button>
+        ) : (
+          <button
+            onClick={onClickAdd}
+            className={styles.catalog__items_block_item_buttons_item}
+          >
+            В корзину
+          </button>
+        )}
         <button
           onClick={onChangeFavorite}
           className={styles.catalog__items_block_item_buttons_item}
@@ -91,13 +104,13 @@ const Card = ({ name, image, price, id, old_price }) => {
                 ? './assets/img/heart-catalog.svg'
                 : './assets/img/heart-empty.svg'
             }
-            alt="heart"
+            alt='heart'
             width={'18px'}
           />
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

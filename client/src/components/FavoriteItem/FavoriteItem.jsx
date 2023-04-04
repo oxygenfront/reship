@@ -16,7 +16,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
     }
     dispatch(addItem(item))
   }
-  console.log(id)
+  console.log(name);
   return (
     <div className={styles.person__favorites_wrapper_items_item}>
       <Link to={`/item/${id}`}>
@@ -30,7 +30,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
         to={`/item/${id}`}
         className={styles.person__favorites_wrapper_items_item_name}
       >
-        {id}
+        {name}
       </Link>
       <div className={styles.person__favorites_wrapper_items_item_price}>
         <span>Всего за 44,999 rub</span>

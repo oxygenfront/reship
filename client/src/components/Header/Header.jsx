@@ -23,6 +23,7 @@ const Header = () => {
     }
   };
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
     if (isMounted.current) {
       const json = JSON.stringify(items);
@@ -31,7 +32,7 @@ const Header = () => {
     isMounted.current = true;
   }, [items]);
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  
 
   useEffect(() => {
     function handleResize() {

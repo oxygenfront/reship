@@ -16,11 +16,12 @@ const DeliveryItem = ({ name, price, trackNumber }) => {
   
   return (
     <div className={styles.person__delivery_items_item}>
-      <img
-        className={styles.person__delivery_items_item_img}
-        src="https://placehold.co/136x136"
-        alt=""
-      />
+      <div className={styles.person__delivery_items_item_img}>
+        <img
+          src='https://placehold.co/136x136'
+          alt=''
+        />
+      </div>
       <div className={styles.person__delivery_items_item_name}>
         <span>
           <span>IPhone 11</span> <br />
@@ -42,7 +43,7 @@ const DeliveryItem = ({ name, price, trackNumber }) => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default DeliveryItem

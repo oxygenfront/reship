@@ -18,12 +18,13 @@ const Cart = () => {
   if (!totalPrice) {
     return (
       <div className="person__delivery-history">
-        <div
-          className="person__delivery-history-mess"
-          style={{ textAlign: 'center' }}
-        >
-          Вернитесь сюда позднее, а пока можете{' '}
-          <Link to="/catalog">перейти в каталог</Link>, для выбора товара
+        <div className='container person__delivery-history__container'>
+          <div
+            className="person__delivery-history-mess"
+          >
+            Вернитесь сюда позднее, а пока можете{' '}
+            <Link to="/catalog">перейти в каталог</Link>, для выбора товара
+          </div>
         </div>
       </div>
     )
@@ -53,10 +54,10 @@ const Cart = () => {
           <div className="cart__total-wrapper">
             <div className="cart__total-wrapper-info">
               <div className="cart__total-wrapper-info_suptotal">
-                Общая стоимость заказа: <span> {totalPrice} ₽</span>
+                Стоимость доставки: <span> {deliveryPrice} ₽</span>
               </div>
               <div className="cart__total-wrapper-info_suptotal">
-                Стоимость доставки: <span> {deliveryPrice} ₽</span>
+                Стоимость заказа: <span> {totalPrice} ₽</span>
               </div>
               <div className="cart__total-wrapper-info_total">
                 Итого к оплате:

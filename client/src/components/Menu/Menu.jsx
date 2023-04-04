@@ -41,44 +41,54 @@ const Menu = () => {
         )}
       >
         {windowWidth <= 767 ? null : (
-          <Link to="/catalog" className={styles.search_section__catalog}>
+          <Link to='/catalog' className={styles.search_section__catalog}>
             <img
-              className="search-section__catalog-img"
-              src="./assets/img/free-icon-tiles-6569357 1.png"
-              alt="tiles"
+              className='search-section__catalog-img'
+              src='./assets/img/free-icon-tiles-6569357 1.png'
+              alt='tiles'
             />
             <span>#вКаталог</span>
           </Link>
         )}
         <div className={styles.search_section__search_block}>
           <input
-            type="text"
-            placeholder="Поиск товара"
+            type='text'
+            placeholder='Поиск товара'
             className={styles.search_section__search_item}
             // onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
           <button className={styles.search_section__search_block_glass}>
-            <i className="fa-solid fa-magnifying-glass"></i>
+            <i className='fa-solid fa-magnifying-glass'></i>
           </button>
         </div>
         {isAuth ? (
           status === 'success' && (
             <>
+              {windowWidth > 767 ? (
+                <Link
+                  to='/personal'
+                  className={styles.search_section__profile_block}
+                >
+                  <img src='./assets/img/user.svg' alt='user' />
+                  <p>
+                    {data.first_name[0].toUpperCase() +
+                      data.first_name.slice(1)}
+                  </p>
+                </Link>
+              ) : (
+                <Link
+                  to='/personal'
+                  className={styles.search_section__profile_block}
+                >
+                  <img src='./assets/img/user.svg' alt='user' />
+                </Link>
+              )}
               <Link
-                to="/personal"
-                className={styles.search_section__profile_block}
-              >
-                <img src="./assets/img/user.svg" alt="user" />
-                <p>
-                  {data.first_name[0].toUpperCase() + data.first_name.slice(1)}
-                </p>
-              </Link>
-              <Link
-                to=""
+                to=''
                 onClick={onClickLogout}
                 className={styles.search_section__logout_block}
               >
-                <img src="./assets/img/free-icon-power.svg" alt="power" />
+                <img src='./assets/img/free-icon-power.svg' alt='power' />
               </Link>
             </>
           )
@@ -93,7 +103,7 @@ const Menu = () => {
               </div>
             </Link> */}
             {windowWidth > 575 ? (
-              <Link to="/login" className={styles.search_section__login_block}>
+              <Link to='/login' className={styles.search_section__login_block}>
                 <div className={styles.search_section__login_item}>Войти</div>
               </Link>
             ) : null}
@@ -101,7 +111,7 @@ const Menu = () => {
         )}
       </div>
     </div>
-  )
+  );
 }
 
 export default Menu

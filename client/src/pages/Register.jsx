@@ -171,6 +171,22 @@ const Register = () => {
                 onChange={updateForm}
                 placeholder="Имя"
               />
+              <input
+                className="main-form__form-input main-form__grid-input"
+                name="lastName"
+                value={regForm.lastName}
+                onChange={updateForm}
+                type="text"
+                placeholder="Фамилия"
+              />
+              <input
+                className="main-form__form-input main-form__grid-input"
+                name="email"
+                value={regForm.email}
+                onChange={updateForm}
+                type="text"
+                placeholder="Адресс эл. почты"
+              />
 
               {checkPass ? (
                 <input
@@ -190,14 +206,6 @@ const Register = () => {
                 </div>
               )}
 
-              <input
-                className="main-form__form-input main-form__grid-input"
-                name="lastName"
-                value={regForm.lastName}
-                onChange={updateForm}
-                type="text"
-                placeholder="Фамилия"
-              />
 
               {checkPass ? (
                 <input
@@ -217,14 +225,6 @@ const Register = () => {
                 </div>
               )}
 
-              <input
-                className="main-form__form-input main-form__grid-input"
-                name="email"
-                value={regForm.email}
-                onChange={updateForm}
-                type="text"
-                placeholder="Адресс эл. почты"
-              />
               <button
                 className="buttons__19 main-form__grid-input-btn"
                 type="submit"

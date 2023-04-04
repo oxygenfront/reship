@@ -83,7 +83,7 @@ const Card = ({ name, image, price, id, old_price }) => {
               styles.catalog__items_block_item_buttons_item_added
             )}
           >
-            В корзине <span>{
+            В корзине <span>{addedCount
             }</span>
           </button>
         ) : (

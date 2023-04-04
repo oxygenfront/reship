@@ -1,10 +1,13 @@
-import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import {
+  logout,
+  selectIsAuth,
+  selectUserData,
+} from '../../redux/slices/authSlice';
 import { selectCart } from '../../redux/slices/cartSlice';
 import styles from './Header.module.sass';
-import { selectIsAuth, selectUserData } from '../../redux/slices/authSlice';
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false);
   const isAuth = useSelector(selectIsAuth);
@@ -12,6 +15,14 @@ const Header = () => {
   const { items, totalPrice } = useSelector(selectCart);
   const isMounted = useRef(false);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const dispatch = useDispatch();
+  const onClickLogout = () => {
+    if (window.confirm('Вы действительно хотите выйти?')) {
+      dispatch(logout());
+      window.localStorage.removeItem('token');
+    }
+  };
+
   useEffect(() => {
     if (isMounted.current) {
       const json = JSON.stringify(items);
@@ -46,54 +57,112 @@ const Header = () => {
   //   window.removeEventListener('popstate', handlePopState);
   // };
   // });
+
+  const onCloseBurger = () => {
+    setIsBurger(!isBurger)
+  }
+  
   return (
     <header className={styles.header}>
       {isBurger ? (
-        <div className={styles.header__adaptive_burger}>
-          <div className={styles.header__adaptive_burger_wrapper}>
-            <a className={styles.header__adaptive_burger_wrapper_item}>
-              Доставка и оплата
-            </a>
-            <a className={styles.header__adaptive_burger_wrapper_item}>FAQ</a>
-            <div className={styles.header__adaptive_burger_wrapper_item}>
-              <Link to='/cart' className={styles.header__cart}>
-                <img
-                  src='../assets/img/free-icon-shopping-bag-5023684 1.png'
-                  alt='shopping-bag'
-                />
-                <span>Корзина</span>
-              </Link>
-            </div>
-            <div className={styles.header__adaptive_burger_wrapper_item}>
-              <Link to='/personal' className={styles.header__cart}>
-                <img src='../assets/img/heart 1.svg' alt='heart' />
-                <span>Избранное</span>
-              </Link>
-            </div>
-            <div className={styles.header__adaptive_burger_wrapper_item}>
-              <Link to='/catalog' className={styles.header__burger__catalog}>
-                <img
-                  className='search-section__catalog-img'
-                  src='./assets/img/free-icon-tiles-6569357 1.png'
-                  alt='tiles'
-                />
-                <span>#вКаталог</span>
-              </Link>
-            </div>
+        <div className={styles.header__adaptive_burger_background}>
+          <div className={styles.header__adaptive_burger}>
+            <div className={styles.header__adaptive_burger_wrapper}>
+              <div className={styles.header__adaptive_burger_items}>
+                {isAuth ? (
+                  status === 'success' && (
+                    <div className={styles.header__wrapper_burger_login_logout}>
+                      <Link
+                        onClick={onCloseBurger}
+                        to='/personal'
+                        className={styles.search_section__profile_block}
+                      >
+                        <img src='./assets/img/user.svg' alt='user' />
+                        <p>
+                          {data.first_name[0].toUpperCase() +
+                            data.first_name.slice(1)}
+                        </p>
+                      </Link>
+                      <Link
+                        to=''
+                        onClick={onClickLogout}
+                        className={styles.search_section__logout_block}
+                      >
+                        <img
+                          src='./assets/img/free-icon-power-8509243 white.svg'
+                          alt='power'
+                        />
+                      </Link>
+                    </div>
+                  )
+                ) : (
+                  <>
+                    <Link
+                      onClick={onCloseBurger}
+                      to='/login'
+                      className={styles.search_section__login_block}
+                    >
+                      <div className={styles.search_section__login_item}>
+                        Войти
+                      </div>
+                    </Link>
+                  </>
+                )}
+                <div className={styles.header__adaptive_burger_wrapper_item}>
+                  <Link
+                    onClick={onCloseBurger}
+                    to='/catalog'
+                    className={styles.header__burger__catalog}
+                  >
+                    <img
+                      className='search-section__catalog-img'
+                      src='./assets/img/free-icon-tiles-6569357 1.png'
+                      alt='tiles'
+                    />
+                    <span>#вКаталог</span>
+                  </Link>
+                </div>
+                <div className={styles.header__adaptive_burger_wrapper_item}>
+                  <Link
+                    to='/cart'
+                    className={styles.header__cart}
+                    onClick={onCloseBurger}
+                  >
+                    <img
+                      src='../assets/img/free-icon-shopping-bag-5023684 1.png'
+                      alt='shopping-bag'
+                    />
+                    <span>Корзина</span>
+                  </Link>
+                </div>
+                <div className={styles.header__adaptive_burger_wrapper_item}>
+                  <Link
+                    to='/personal'
+                    className={styles.header__cart}
+                    onClick={onCloseBurger}
+                  >
+                    <img src='../assets/img/heart 1.svg' alt='heart' />
+                    <span>Избранное</span>
+                  </Link>
+                </div>
 
-            <div className={styles.header__adaptive_burger_wrapper_messages}>
-              <a href='/' className={styles.header__messenger_item}>
-                <img src='../assets/img/telegram.svg' alt=''></img>
-              </a>
-              <a
-                href='https://vk.com/reship'
-                className={styles.header__messenger_item}
-              >
-                <img src='../assets/img/vkontakte 1.svg' alt='vk' />
-              </a>
-              <a href='/' className={styles.header__messenger_item}>
-                <img src='../assets/img/discord 1.svg' alt='' />
-              </a>
+                <div
+                  className={styles.header__adaptive_burger_wrapper_messages}
+                >
+                  <a href='/' className={styles.header__messenger_item}>
+                    <img src='../assets/img/telegram.svg' alt=''></img>
+                  </a>
+                  <a
+                    href='https://vk.com/reship'
+                    className={styles.header__messenger_item}
+                  >
+                    <img src='../assets/img/vkontakte 1.svg' alt='vk' />
+                  </a>
+                  <a href='/' className={styles.header__messenger_item}>
+                    <img src='../assets/img/discord 1.svg' alt='' />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

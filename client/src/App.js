@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
@@ -16,45 +16,59 @@ import Order from './pages/Order'
 import Personal from './pages/Personal'
 import Register from './pages/Register'
 import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
+import Preloader from './components/Preloader/Preloader'
 
 function App() {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const handleLoad = () => {
+      setLoading(false);
+    };
+    window.addEventListener('load', handleLoad);
+    return () => window.removeEventListener('load', handleLoad);
+  }, []);
+
   useEffect(() => {
     dispatch(fetchAuthMe(token))
   }, [])
 
   return (
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route
-          path="item/:id"
-          element={
-            <Suspense fallback={<div>Идёт загрузка...</div>}>
-              <FullItem></FullItem>
-            </Suspense>
-          }
-        ></Route>
-        <Route path="/admin" element={<Admin></Admin>}></Route>
-        <Route
-          path="/admin/create"
-          element={<AdminCreate></AdminCreate>}
-        ></Route>
-        <Route path="/admin/:id" element={<AdminChange></AdminChange>}></Route>
-        <Route path="/register" element={<Register></Register>}></Route>
-        <Route path="/login" element={<Login></Login>}></Route>
-        <Route path="/forgot" element={<Forgot></Forgot>}></Route>
-        <Route path="/cart" element={<Cart></Cart>}></Route>
-        <Route path="/personal" element={<Personal></Personal>}></Route>
-        <Route path="/order" element={<Order></Order>}></Route>
-        <Route path="/catalog" element={<Catalog></Catalog>}></Route>
-        <Route path="/forgot/message" element={<ForgotMessage />}></Route>
-      </Routes>
-    </div>
+    <>
+      {loading && <Preloader />}
+      {!loading && <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home></Home>}></Route>
+          <Route
+            path="item/:id"
+            element={
+              <Suspense fallback={<div>Идёт загрузка...</div>}>
+                <FullItem></FullItem>
+              </Suspense>
+            }
+          ></Route>
+          <Route path="/admin" element={<Admin></Admin>}></Route>
+          <Route
+            path="/admin/create"
+            element={<AdminCreate></AdminCreate>}
+          ></Route>
+          <Route path="/admin/:id" element={<AdminChange></AdminChange>}></Route>
+          <Route path="/register" element={<Register></Register>}></Route>
+          <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/forgot" element={<Forgot></Forgot>}></Route>
+          <Route path="/cart" element={<Cart></Cart>}></Route>
+          <Route path="/personal" element={<Personal></Personal>}></Route>
+          <Route path="/order" element={<Order></Order>}></Route>
+          <Route path="/catalog" element={<Catalog></Catalog>}></Route>
+          <Route path="/forgot/message" element={<ForgotMessage />}></Route>
+        </Routes>
+      </div>}
+    </>
   )
 }
 

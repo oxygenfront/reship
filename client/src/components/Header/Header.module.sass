@@ -83,8 +83,8 @@
   background-color: #fff
   transition: all 0.2s ease-in-out
   img
-    width: 23px
-    height: 23px
+    width: 35px
+    height: 35px
 
   &:hover
     background: #007dfd
@@ -106,8 +106,8 @@
   color: black
   transition: all 0.2s ease-in-out
   img
-    width: 25px
-    height: 28px
+    width: 28px
+    height: 33px
 
   &:hover
     background: #007dfd
@@ -158,19 +158,28 @@
   display: flex
   justify-content: flex-end
   width: 100%
+  height: 100%
   animation: burgerAnimate .6s
-  &_wrapper
-    padding-top: 100px
+  &_background
+    position: fixed
+    height: 100vh
+    width: 100%
+    background: rgba(0, 0, 0, .8)
+    transition: background 5s linear
+  &_items
     font-size: 20px
     display: flex
     flex-direction: column
     align-items: center
+    justify-content: space-evenly
+    height: 500px
     color: white
+
+  &_wrapper
+    padding-top: 100px
     background: #000
     width: 300px
-    height: 500px
-    &_item
-      margin-bottom: 30px
+    height: 100%
     &_messages
       width: 200px
       display: flex
@@ -184,7 +193,7 @@
 
   &_button
     position: relative
-    z-index: 10
+    z-index: 100
     flex-direction: column
     display: flex
     justify-content: center
@@ -220,8 +229,41 @@
   color: black
   background: white
   height: 45px
-  width: 145px
+  width: 170px
   border-radius: 10px
+.header
+  &__wrapper_burger_login_logout
+    width: 170px
+    justify-content: space-between
+    display: flex
+.search_section
+  &__login_block
+    width: 100px
+    height: 45px
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: #007dfd
+    font-size: 18px
+    color: white
+    border-radius: 9px
+    transition: all 0.2s linear
+  &__logout_block
+    width: 28px
+    display: flex
+    justify-content: center
+    align-items: center
+  &__profile_block
+    padding: 10px 20px
+    max-width: 200px
+    display: flex
+    align-items: center
+    background-color: #007dfd
+    font-size: 18px
+    color: white
+    border-radius: 9px
+    & img
+      margin-right: 15px
 @media (max-width: 1199px)
   .header__container
     max-width: 960px
@@ -237,7 +279,7 @@
   .header__container
     max-width: 720px
   .header__cart
-    width: 120px
+    width: 140px
   .header__logo_block
     width: 50px
     height: 40px
@@ -256,7 +298,7 @@
       width: 230px
       align-content: center
     &:nth-child(3)
-      width: 180px
+      width: 210px
       align-content: flex-end
 @media (max-width: 767px)
   .header
@@ -268,7 +310,8 @@
       // display: none
       &_button
         display: flex
+  .header__cart
+    width: 170px
 @media (max-width: 575px)
   .header__container
     max-width: 100%
-  

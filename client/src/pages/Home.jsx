@@ -117,7 +117,7 @@ const Home = () => {
         style={{ background: `url('./assets/img/Mask group.png')`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: 'cover' }}
       >
         <div className='container reviews__container'>
-          {windowWidth <= 575 ? (
+          {windowWidth <= 767 ? (
             <div className='reviews__main-block'>
               <h1 className='reviews__main-block-title'>
                 Ознакомьтесь с отзывами в нашем канале Discord

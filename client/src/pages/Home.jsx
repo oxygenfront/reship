@@ -114,7 +114,7 @@ const Home = () => {
       <CatalogMain />
       <section
         className='reviews'
-        style={{ background: `url('./assets/img/Mask group.png')` }}
+        style={{ background: `url('./assets/img/Mask group.png')`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: 'cover' }}
       >
         <div className='container reviews__container'>
           {windowWidth <= 575 ? (

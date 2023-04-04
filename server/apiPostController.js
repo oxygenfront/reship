@@ -55,7 +55,7 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере" });
+                  .json({ error: "Ошибка на сервере", bcode: 1.2, e:error });
               }
 
               let activation_code = tools.createToken(50);

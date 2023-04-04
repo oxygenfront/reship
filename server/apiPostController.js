@@ -46,11 +46,11 @@ class ApiPostController {
           let new_token = "reship.api." + tools.createToken(50);
 
           database.query(
-            "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `basket`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`) VALUES " +
-              `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '', '${new_token}', '${Date.now()}', '${crypto
+            "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`) VALUES " +
+              `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash("md5")
                 .update(password)
-                .digest("hex")}', '1', '${JSON.stringify([])}', '0');`,
+                .digest("hex")}', '1', '${JSON.stringify([])}', '0', '${JSON.stringify([])}');`,
             (error, rows, fields) => {
               if (error) {
                 return response
@@ -1194,6 +1194,174 @@ class ApiPostController {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 20.2 });
+        }
+      }
+    );
+  }
+
+  async addBasket(request, response) {
+    const requiredKeys = ["product_id", "token"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 21 });
+    }
+
+    const { product_id, token } = requestData;
+
+    const sanitizedValues = {
+      product_id: tools.delInjection(product_id),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 21.1 });
+        }
+
+        if (rows.length == 1) {
+          const basket = JSON.parse(rows[0].basket);
+
+          let new_basket = basket;
+          new_basket.push(sanitizedValues.product_id);
+
+          database.query(
+            `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(
+              new_basket
+            )}' WHERE \`token\`='${sanitizedValues.token}';`,
+            (error) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 21.2 });
+              }
+
+              response.json({
+                message: "Товар успешно добавлен в корзину.",
+                basket: new_basket,
+              });
+            }
+          );
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 21.3 });
+        }
+      }
+    );
+  }
+
+  async getBasket(request, response) {
+    const requiredKeys = ["token"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 22 });
+    }
+
+    const { token } = requestData;
+
+    const sanitizedValues = {
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 22.1 });
+        }
+
+        if (rows.length == 1) {
+          const basket = JSON.parse(rows[0].basket);
+
+          response.json(basket);
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 22.2 });
+        }
+      }
+    );
+  }
+
+  async deleteBasket(request, response) {
+    const requiredKeys = ["product_id", "token"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 23 });
+    }
+
+    const { product_id, token } = requestData;
+
+    const sanitizedValues = {
+      product_id: tools.delInjection(product_id),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 23.1 });
+        }
+
+        if (rows.length == 1) {
+          const basket = JSON.parse(rows[0].basket);
+
+          let new_basket = tools.removeItemAll(
+            basket,
+            sanitizedValues.product_id
+          );
+
+          database.query(
+            `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(
+              new_basket
+            )}' WHERE \`token\`='${sanitizedValues.token}';`,
+            (error) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 23.3 });
+              }
+
+              response.json({
+                message: "Товар успешно удален из корзины",
+                basket: new_basket,
+              });
+            }
+          );
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 23.2 });
         }
       }
     );

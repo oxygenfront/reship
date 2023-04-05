@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { CartItem } from '../components'
 
-import { clearItems, selectCart } from '../redux/slices/cartSlice'
+import { clearItems, fetchCart, selectCart } from '../redux/slices/cartSlice'
 
 const Cart = () => {
   const dispatch = useDispatch()
+  // const token = localStorage.getItem('token')
   const { items, totalPrice } = useSelector(selectCart)
   const onClickClear = () => {
     dispatch(clearItems())
@@ -15,13 +16,15 @@ const Cart = () => {
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
 
+  // useEffect(() => {
+  //   dispatch(fetchCart({ token }))
+  // }, [])
+
   if (!totalPrice) {
     return (
       <div className="person__delivery-history">
-        <div className='container person__delivery-history__container'>
-          <div
-            className="person__delivery-history-mess"
-          >
+        <div className="container person__delivery-history__container">
+          <div className="person__delivery-history-mess">
             Вернитесь сюда позднее, а пока можете{' '}
             <Link to="/catalog">перейти в каталог</Link>, для выбора товара
           </div>
@@ -29,7 +32,7 @@ const Cart = () => {
       </div>
     )
   }
-  console.log(items, totalPrice)
+
   return (
     <section className="cart">
       <div className="container cart__container">

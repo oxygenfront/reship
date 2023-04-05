@@ -1,37 +1,37 @@
-import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import classNames from 'classnames'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   logout,
   selectIsAuth,
   selectUserData,
-} from '../../redux/slices/authSlice';
-import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice';
-import styles from './Menu.module.sass';
+} from '../../redux/slices/authSlice'
+import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
+import styles from './Menu.module.sass'
 
 const Menu = () => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
-  const { data, status } = useSelector(selectUserData);
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  const { data, status } = useSelector(selectUserData)
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout());
-      window.localStorage.removeItem('token');
+      dispatch(logout())
+      window.localStorage.removeItem('token')
     }
-  };
+  }
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   return (
     <div className={styles.search_section}>
       <div
@@ -41,24 +41,24 @@ const Menu = () => {
         )}
       >
         {windowWidth <= 767 ? null : (
-          <Link to='/catalog' className={styles.search_section__catalog}>
+          <Link to="/catalog" className={styles.search_section__catalog}>
             <img
-              className='search-section__catalog-img'
-              src='./assets/img/free-icon-tiles-6569357 1.png'
-              alt='tiles'
+              className="search-section__catalog-img"
+              src="./assets/img/free-icon-tiles-6569357 1.png"
+              alt="tiles"
             />
             <span>#вКаталог</span>
           </Link>
         )}
         <div className={styles.search_section__search_block}>
           <input
-            type='text'
-            placeholder='Поиск товара'
+            type="text"
+            placeholder="Поиск товара"
             className={styles.search_section__search_item}
             // onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
           <button className={styles.search_section__search_block_glass}>
-            <i className='fa-solid fa-magnifying-glass'></i>
+            <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
         {isAuth ? (
@@ -66,23 +66,25 @@ const Menu = () => {
             <>
               {windowWidth > 767 ? (
                 <Link
-                  to='/personal'
+                  to="/personal"
                   className={styles.search_section__profile_block}
                 >
-                  <img src='./assets/img/user.svg' alt='user' />
-                  <p>
-                    {data.first_name[0].toUpperCase() +
-                      data.first_name.slice(1)}
-                  </p>
+                  <img src="./assets/img/user.svg" alt="user" />
+                  {data.first_name ? (
+                    <p>
+                      {data.first_name[0].toUpperCase() +
+                        data.first_name.slice(1)}
+                    </p>
+                  ) : null}
                 </Link>
               ) : null}
               {windowWidth > 767 ? (
                 <Link
-                  to=''
+                  to=""
                   onClick={onClickLogout}
                   className={styles.search_section__logout_block}
                 >
-                  <img src='./assets/img/free-icon-power.svg' alt='power' />
+                  <img src="./assets/img/free-icon-power.svg" alt="power" />
                 </Link>
               ) : null}
             </>
@@ -90,7 +92,7 @@ const Menu = () => {
         ) : (
           <>
             {windowWidth > 575 ? (
-              <Link to='/login' className={styles.search_section__login_block}>
+              <Link to="/login" className={styles.search_section__login_block}>
                 <div className={styles.search_section__login_item}>Войти</div>
               </Link>
             ) : null}
@@ -98,7 +100,7 @@ const Menu = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu

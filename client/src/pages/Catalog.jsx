@@ -15,9 +15,7 @@ const Catalog = () => {
   const { items, status } = useSelector(selectItemsData)
   const { data } = useSelector(selectUserData)
 
-  const filters = useSelector(selectFilter)
   const { choosenCategorie, searchValue } = useSelector(selectFilter)
-  console.log(choosenCategorie, searchValue)
 
   useEffect(() => {
     dispatch(fetchItems({ choosenCategorie, searchValue }))
@@ -42,7 +40,7 @@ const Catalog = () => {
               <div className="search-section__search-block catalog-section-search__search-block">
                 <input
                   value={searchValue}
-                  // onChange={(e) => dispatch(setSearchValue(e.target.value))}
+                  onChange={(e) => dispatch(setSearchValue(e.target.value))}
                   type="text"
                   placeholder="Поиск товара"
                   className="search-section__search-item"

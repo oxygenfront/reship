@@ -1,68 +1,57 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   logout,
   selectIsAuth,
   selectUserData,
-} from '../../redux/slices/authSlice';
-import { selectCart } from '../../redux/slices/cartSlice';
-import styles from './Header.module.sass';
+} from '../../redux/slices/authSlice'
+import { selectCart } from '../../redux/slices/cartSlice'
+import styles from './Header.module.sass'
 const Header = () => {
-  const [isBurger, setIsBurger] = useState(false);
-  const isAuth = useSelector(selectIsAuth);
-  const { data, status } = useSelector(selectUserData);
-  const { items, totalPrice } = useSelector(selectCart);
-  const isMounted = useRef(false);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
-  const dispatch = useDispatch();
+  const [isBurger, setIsBurger] = useState(false)
+  const isAuth = useSelector(selectIsAuth)
+  const { data, status } = useSelector(selectUserData)
+  const { items, totalPrice } = useSelector(selectCart)
+  const isMounted = useRef(false)
+  const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+
+  const dispatch = useDispatch()
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout());
-      window.localStorage.removeItem('token');
+      dispatch(logout())
+      window.localStorage.removeItem('token')
     }
-  };
+  }
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
     if (isMounted.current) {
-      const json = JSON.stringify(items);
-      localStorage.setItem('cart', json);
+      const json = JSON.stringify(items)
+      localStorage.setItem('cart', json)
     }
-    isMounted.current = true;
-  }, [items]);
-
-  
+    isMounted.current = true
+  }, [items])
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // const [path, setPath] = useState(window.location.pathname);
-
-  // useEffect(() => {
-  // const handlePopState = () => {
-  // setPath(window.location.pathname);
-  // };
-
-  // window.addEventListener('popstate', handlePopState);
-
-  //Очистка эффекта и удаление слушателя событий
-  // return () => {
-  //   window.removeEventListener('popstate', handlePopState);
-  // };
-  // });
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const onCloseBurger = () => {
     setIsBurger(!isBurger)
   }
-  
+
+  const favoriteCount =
+    isAuth && status === 'success'
+      ? data.favorites && data.favorites.length
+      : null
+
   return (
     <header className={styles.header}>
       {isBurger ? (
@@ -75,23 +64,23 @@ const Header = () => {
                     <div className={styles.header__wrapper_burger_login_logout}>
                       <Link
                         onClick={onCloseBurger}
-                        to='/personal'
+                        to="/personal"
                         className={styles.search_section__profile_block}
                       >
-                        <img src='./assets/img/user.svg' alt='user' />
+                        <img src="./assets/img/user.svg" alt="user" />
                         <p>
                           {data.first_name[0].toUpperCase() +
                             data.first_name.slice(1)}
                         </p>
                       </Link>
                       <Link
-                        to=''
+                        to=""
                         onClick={onClickLogout}
                         className={styles.search_section__logout_block}
                       >
                         <img
-                          src='./assets/img/free-icon-power-8509243 white.svg'
-                          alt='power'
+                          src="./assets/img/free-icon-power-8509243 white.svg"
+                          alt="power"
                         />
                       </Link>
                     </div>
@@ -100,7 +89,7 @@ const Header = () => {
                   <>
                     <Link
                       onClick={onCloseBurger}
-                      to='/login'
+                      to="/login"
                       className={styles.search_section__login_block}
                     >
                       <div className={styles.search_section__login_item}>
@@ -112,37 +101,39 @@ const Header = () => {
                 <div className={styles.header__adaptive_burger_wrapper_item}>
                   <Link
                     onClick={onCloseBurger}
-                    to='/catalog'
+                    to="/catalog"
                     className={styles.header__burger__catalog}
                   >
                     <img
-                      className='search-section__catalog-img'
-                      src='./assets/img/free-icon-tiles-6569357 1.png'
-                      alt='tiles'
+                      className="search-section__catalog-img"
+                      src="./assets/img/free-icon-tiles-6569357 1.png"
+                      alt="tiles"
                     />
                     <span>#вКаталог</span>
                   </Link>
                 </div>
                 <div className={styles.header__adaptive_burger_wrapper_item}>
                   <Link
-                    to='/cart'
+                    to="/cart"
                     className={styles.header__cart}
                     onClick={onCloseBurger}
                   >
                     <img
-                      src='../assets/img/free-icon-shopping-bag-5023684 1.png'
-                      alt='shopping-bag'
+                      src="../assets/img/free-icon-shopping-bag-5023684 1.png"
+                      alt="shopping-bag"
                     />
+
                     <span>Корзина</span>
                   </Link>
                 </div>
                 <div className={styles.header__adaptive_burger_wrapper_item}>
                   <Link
-                    to='/personal'
+                    to="/personal"
                     className={styles.header__cart}
                     onClick={onCloseBurger}
                   >
-                    <img src='../assets/img/heart 1.svg' alt='heart' />
+                    <img src="../assets/img/heart 1.svg" alt="heart" />
+
                     <span>Избранное</span>
                   </Link>
                 </div>
@@ -150,17 +141,17 @@ const Header = () => {
                 <div
                   className={styles.header__adaptive_burger_wrapper_messages}
                 >
-                  <a href='/' className={styles.header__messenger_item}>
-                    <img src='../assets/img/telegram.svg' alt=''></img>
+                  <a href="/" className={styles.header__messenger_item}>
+                    <img src="../assets/img/telegram.svg" alt=""></img>
                   </a>
                   <a
-                    href='https://vk.com/reship'
+                    href="https://vk.com/reship"
                     className={styles.header__messenger_item}
                   >
-                    <img src='../assets/img/vkontakte 1.svg' alt='vk' />
+                    <img src="../assets/img/vkontakte 1.svg" alt="vk" />
                   </a>
-                  <a href='/' className={styles.header__messenger_item}>
-                    <img src='../assets/img/discord 1.svg' alt='' />
+                  <a href="/" className={styles.header__messenger_item}>
+                    <img src="../assets/img/discord 1.svg" alt="" />
                   </a>
                 </div>
               </div>
@@ -170,40 +161,42 @@ const Header = () => {
       ) : null}
       <div className={styles.header__container}>
         <div className={styles.header__cont}>
-          <Link to='/' className={styles.header__logo_block}>
+          <Link to="/" className={styles.header__logo_block}>
             <img
-              src='../assets/img/logo.svg'
-              alt='logo'
+              src="../assets/img/logo.svg"
+              alt="logo"
               className={styles.header__logo_block}
             />
           </Link>
-          <Link to='/catalog' className={styles.header__discount}>
-            <img src='../assets/img/free-icon-fire-8648355 1.svg' alt='fire' />
+          <Link to="/catalog" className={styles.header__discount}>
+            <img src="../assets/img/free-icon-fire-8648355 1.svg" alt="fire" />
             <span>Акции</span>
           </Link>
         </div>
 
         <div className={styles.header__cont}>
-          <Link to='/' className={styles.header__delivery}>
+          <Link to="/" className={styles.header__delivery}>
             Доставка и оплата
           </Link>
-          <Link to='/' className={styles.header__faq}>
+          <Link to="/" className={styles.header__faq}>
             FAQ
           </Link>
           {isAuth && status === 'success' && data.admin === 1 ? (
-            <Link to='/admin'>ADMIN</Link>
+            <Link to="/admin">ADMIN</Link>
           ) : null}
         </div>
         <div className={styles.header__cont}>
-          <Link to='/cart' className={styles.header__cart}>
+          <Link to="/cart" className={styles.header__cart}>
             <img
-              src='../assets/img/free-icon-shopping-bag-5023684 1.png'
-              alt='shopping-bag'
+              src="../assets/img/free-icon-shopping-bag-5023684 1.png"
+              alt="shopping-bag"
             />
+            <p>{totalCount > 0 ? totalCount : null}</p>
             <span>Корзина</span>
           </Link>
-          <Link to='/personal' className={styles.header__like}>
-            <img src='../assets/img/heart 1.svg' alt='heart' />
+          <Link to="/personal" className={styles.header__like}>
+            <img src="../assets/img/heart 1.svg" alt="heart" />
+            <p>{favoriteCount > 0 ? favoriteCount : null}</p>
           </Link>
         </div>
 
@@ -221,7 +214,7 @@ const Header = () => {
         </button>
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

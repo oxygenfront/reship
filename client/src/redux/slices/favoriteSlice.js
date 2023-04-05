@@ -4,7 +4,6 @@ import axios from '../../axios'
 export const fetchAddFavorite = createAsyncThunk(
   'items/fetchAddFavorite',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post(`/addFavorites`, params)
 
     return data
@@ -13,7 +12,6 @@ export const fetchAddFavorite = createAsyncThunk(
 export const fetchDeleteFavorite = createAsyncThunk(
   'items/fetchDeleteFavorite',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post(`/deleteFavorites`, params)
 
     return data

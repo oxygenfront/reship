@@ -23,24 +23,13 @@ function App() {
   const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
 
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const handleLoad = () => {
-      setLoading(false);
-    };
-    window.addEventListener('load', handleLoad);
-    return () => window.removeEventListener('load', handleLoad);
-  }, []);
-
   useEffect(() => {
     dispatch(fetchAuthMe(token))
   }, [])
 
   return (
     <>
-      {loading && <Preloader />}
-      {!loading && <div className="App">
+      <div className="App">
         <Header />
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
@@ -57,7 +46,10 @@ function App() {
             path="/admin/create"
             element={<AdminCreate></AdminCreate>}
           ></Route>
-          <Route path="/admin/:id" element={<AdminChange></AdminChange>}></Route>
+          <Route
+            path="/admin/:id"
+            element={<AdminChange></AdminChange>}
+          ></Route>
           <Route path="/register" element={<Register></Register>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/forgot" element={<Forgot></Forgot>}></Route>
@@ -67,7 +59,7 @@ function App() {
           <Route path="/catalog" element={<Catalog></Catalog>}></Route>
           <Route path="/forgot/message" element={<ForgotMessage />}></Route>
         </Routes>
-      </div>}
+      </div>
     </>
   )
 }

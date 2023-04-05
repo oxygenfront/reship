@@ -1,12 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { calcTotalPrice } from '../../utils/calcTotalPrice'
 import { getCartFromLS } from '../../utils/getCartFromLs'
 
+import axios from '../../axios'
+
 const { items, totalPrice } = getCartFromLS()
+
+export const fetchCart = createAsyncThunk('/fetchCart', async (token) => {
+  console.log(token)
+  const { data } = axios.get('/getBasket', token)
+  console.log(data)
+  return data
+})
+export const fetchAddCartItem = createAsyncThunk(
+  '/fetchAddCartItem',
+  async (params) => {
+    console.log(params)
+    const { data } = axios.get('/addBasket', params)
+    console.log(data)
+    return data
+  }
+)
+export const fetchDeleteCartItem = createAsyncThunk(
+  '/fetchDeleteCartItem',
+  async (params) => {
+    console.log(params)
+    const { data } = axios.get('/deleteBasket', params)
+    console.log(data)
+    return data
+  }
+)
 
 const initialState = {
   items,
-  totalPrice,
+  // status: 'loading',
+  totalPrice: 0,
 }
 const cartSlice = createSlice({
   name: 'cart',
@@ -37,6 +65,32 @@ const cartSlice = createSlice({
       state.totalPrice = 0
     },
   },
+  // extraReducers: (builder) => {
+  //   builder.addCase(fetchAddCartItem.pending, (state, action) => {
+  //     state.status = 'loading'
+  //     state.items = []
+  //   })
+  //   builder.addCase(fetchAddCartItem.fulfilled, (state, action) => {
+  //     state.items = action.payload
+  //     state.status = 'success'
+  //   })
+  //   builder.addCase(fetchAddCartItem.rejected, (state, action) => {
+  //     state.status = 'error'
+  //     state.items = []
+  //   })
+  //   builder.addCase(fetchDeleteCartItem.pending, (state, action) => {
+  //     state.status = 'loading'
+  //     state.items = []
+  //   })
+  //   builder.addCase(fetchDeleteCartItem.fulfilled, (state, action) => {
+  //     state.items = action.payload
+  //     state.status = 'success'
+  //   })
+  //   builder.addCase(fetchDeleteCartItem.rejected, (state, action) => {
+  //     state.status = 'error'
+  //     state.items = []
+  //   })
+  // },
 })
 
 export const selectCart = (state) => state.cart

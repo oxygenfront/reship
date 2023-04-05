@@ -71,7 +71,15 @@
 .header__discount.active
   background: #007dfd
   color: white
-
+.header__cart_wrapper
+  position: relative
+  display: flex
+  justify-content: center
+  align-items: center
+  p
+    color: white
+    position: absolute
+    z-index: 100
 .header__like
   position: relative
   display: flex
@@ -85,7 +93,6 @@
   p
     position: absolute
     
-    left: 18px
   img
     width: 35px
     height: 35px
@@ -109,11 +116,6 @@
   font-size: 18px
   color: black
   transition: all 0.2s ease-in-out
-  p
-    text-align: center
-    color: #fff
-    position: absolute
-    right: 115px
   img
     text-align: center
     width: 31px

@@ -187,11 +187,13 @@ const Header = () => {
         </div>
         <div className={styles.header__cont}>
           <Link to="/cart" className={styles.header__cart}>
-            <img
-              src="../assets/img/free-icon-shopping-bag-5023684 1.png"
-              alt="shopping-bag"
-            />
-            <p>{totalCount > 0 ? totalCount : null}</p>
+            <div className={styles.header__cart_wrapper}>
+              <img
+                src="../assets/img/free-icon-shopping-bag-5023684 1.png"
+                alt="shopping-bag"
+              />
+              <p>{totalCount > 0 ? totalCount : null}</p>
+            </div>
             <span>Корзина</span>
           </Link>
           <Link to="/personal" className={styles.header__like}>

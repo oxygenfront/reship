@@ -19,6 +19,10 @@ function createToken(length) {
 }
 
 function delInjection(string) {
+    if (string === null) {
+      return 'null';
+    }
+
     if (string[string.length-1] == '"' || string[string.length-1] == "'" || string[string.length-1] == '`') {
         string = string.substring(0, string.length - 1) 
     }

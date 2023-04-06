@@ -126,16 +126,19 @@ const Header = () => {
                     <span>Корзина</span>
                   </Link>
                 </div>
-                <div className={styles.header__adaptive_burger_wrapper_item}>
-                  <Link
-                    to="/personal"
-                    className={styles.header__cart}
-                    onClick={onCloseBurger}
-                  >
-                    <img src="../assets/img/heart 1.svg" alt="heart" />
 
-                    <span>Избранное</span>
-                  </Link>
+                <div className={styles.header__adaptive_burger_wrapper_item}>
+                  {isAuth ? (
+                    <Link
+                      to="/personal"
+                      className={styles.header__cart}
+                      onClick={onCloseBurger}
+                    >
+                      <img src="../assets/img/heart 1.svg" alt="heart" />
+
+                      <span>Избранное</span>
+                    </Link>
+                  ) : null}
                 </div>
 
                 <div
@@ -196,10 +199,12 @@ const Header = () => {
             </div>
             <span>Корзина</span>
           </Link>
-          <Link to="/personal" className={styles.header__like}>
-            <img src="../assets/img/heart 1.svg" alt="heart" />
-            <p>{favoriteCount > 0 ? favoriteCount : null}</p>
-          </Link>
+          {isAuth ? (
+            <Link to="/personal" className={styles.header__like}>
+              <img src="../assets/img/heart 1.svg" alt="heart" />
+              <p>{favoriteCount > 0 ? favoriteCount : null}</p>
+            </Link>
+          ) : null}
         </div>
 
         <button

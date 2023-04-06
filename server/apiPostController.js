@@ -50,7 +50,9 @@ class ApiPostController {
               `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash("md5")
                 .update(password)
-                .digest("hex")}', '1', '${JSON.stringify([])}', '0', '${JSON.stringify([])}');`,
+                .digest("hex")}', '1', '${JSON.stringify(
+                []
+              )}', '0', '${JSON.stringify([])}');`,
             (error, rows, fields) => {
               if (error) {
                 return response
@@ -249,6 +251,10 @@ class ApiPostController {
 
     const token = tools.delInjection(request.query.token);
 
+    if (token === 'null') {
+      return response.json({'message': 'Пользователь не авторизован', bcode: 4.3})
+    }
+
     database.query(
       `SELECT * FROM \`users\` WHERE token='${token}'`,
       (error, rows, fields) => {
@@ -259,22 +265,29 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const response_json = {
-            id: rows[0].id,
-            first_name: rows[0].first_name,
-            last_name: rows[0].last_name,
-            email: rows[0].email,
-            avatar: rows[0].avatar,
-            adress_delivery: rows[0].adress_delivery,
-            date_register_timestamp: rows[0].date_register_timestamp,
-            admin: rows[0].admin,
-            favorites: JSON.parse(rows[0].favorites),
-            basket: JSON.parse(rows[0].basket)
-          };
+          database.query(
+            `SELECT * FROM \`orders\` WHERE customer_id='${rows[0].id}'`,
+            (error, rows_orders, fields) => {
+              const orders = rows_orders
 
-          return response.json(response_json);
+              const response_json = {
+                id: rows[0].id,
+                first_name: rows[0].first_name,
+                last_name: rows[0].last_name,
+                email: rows[0].email,
+                avatar: rows[0].avatar,
+                adress_delivery: rows[0].adress_delivery,
+                date_register_timestamp: rows[0].date_register_timestamp,
+                admin: rows[0].admin,
+                favorites: JSON.parse(rows[0].favorites),
+                basket: JSON.parse(rows[0].basket),
+                orders: orders
+              };
+    
+              return response.json(response_json);
+            })
         } else {
-          return response.status(400).json({ error: "ашалеть", bcode: 4.2 });
+          return response.status(400).json({ error: "Ошибка доступа", bcode: 4.2 });
         }
       }
     );
@@ -835,83 +848,57 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const favorites = JSON.parse(rows[0].favorites);
-
-          for (let i = 0; i < favorites.length; i++) {
-            if (favorites[i] === sanitizedValues.product_id) {
-              return response.status(400).json({
-                error: "Товар уже находится в избранных.",
-                bcode: 14.4,
-              });
-            }
-          }
-
-          let new_favorites = favorites;
-          new_favorites.push(sanitizedValues.product_id);
-
           database.query(
-            `UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(
-              new_favorites
-            )}' WHERE \`token\`='${sanitizedValues.token}';`,
-            (error) => {
-              if (error) {
+            `SELECT * FROM \`products\` WHERE id='${sanitizedValues.product_id}'`,
+            (error, rows_product, fields) => {
+              if (rows_product.length == 1) {
+                const favorites = JSON.parse(rows[0].favorites);
+
+                for (let i = 0; i < favorites.length; i++) {
+                  if (favorites[i].product_id === sanitizedValues.product_id) {
+                    return response.status(400).json({
+                      error: "Товар уже находится в избранных.",
+                      bcode: 14.4,
+                    });
+                  }
+                }
+
+                let new_favorites = favorites;
+                new_favorites.push({
+                  product_id: sanitizedValues.product_id,
+                  name: rows_product[0].name,
+                  price: rows_product[0].price,
+                });
+                console.log();
+
+                database.query(
+                  `UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(
+                    new_favorites
+                  )}' WHERE \`token\`='${sanitizedValues.token}';`,
+                  (error) => {
+                    if (error) {
+                      return response
+                        .status(500)
+                        .json({ error: "Ошибка на сервере", bcode: 14.3 });
+                    }
+
+                    response.json({
+                      message: "Товар успешно добавлен в избранные.",
+                      favorites: new_favorites,
+                    });
+                  }
+                );
+              } else {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 14.3 });
+                  .json({ error: "Товара нет в БД.", bcode: 14.4 });
               }
-
-              response.json({
-                message: "Товар успешно добавлен в избранные.",
-                favorites: new_favorites,
-              });
             }
           );
         } else {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 14.2 });
-        }
-      }
-    );
-  }
-
-  async getFavorites(request, response) {
-    const requiredKeys = ["token"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 15 });
-    }
-
-    const { token } = requestData;
-
-    const sanitizedValues = {
-      token: tools.delInjection(token),
-    };
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 15.1 });
-        }
-
-        if (rows.length == 1) {
-          const favorites = JSON.parse(rows[0].favorites);
-
-          response.json(favorites);
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 15.2 });
         }
       }
     );
@@ -948,12 +935,16 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const favorites = JSON.parse(rows[0].favorites);
+          let favorites = JSON.parse(rows[0].favorites);
 
-          let new_favorites = tools.removeItemAll(
-            favorites,
-            sanitizedValues.product_id
-          );
+          for (let i = 0; i < favorites.length; i++) {
+            if (favorites[i].product_id === sanitizedValues.product_id) {
+              favorites.splice(i, 1)
+              break
+            }
+          }
+
+          let new_favorites = favorites;
 
           database.query(
             `UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(
@@ -1231,74 +1222,66 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const basket = JSON.parse(rows[0].basket);
-
-          let new_basket = basket;
-          new_basket.push(sanitizedValues.product_id);
-
           database.query(
-            `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(
-              new_basket
-            )}' WHERE \`token\`='${sanitizedValues.token}';`,
-            (error) => {
+            `SELECT * FROM \`products\` WHERE id='${sanitizedValues.product_id}'`,
+            (error, rows_product, fields) => {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 21.2 });
+                  .json({ error: "Ошибка на сервере", bcode: 21.5 });
               }
 
-              response.json({
-                message: "Товар успешно добавлен в корзину.",
-                basket: new_basket,
-              });
+              if (rows_product.length == 1) {
+                let basket = JSON.parse(rows[0].basket);
+
+                let search = false;
+
+                for (let i = 0; i < basket.length; i++) {
+                  if (basket[i].product_id === sanitizedValues.product_id) {
+                    basket[i].count = basket[i].count + 1;
+                    search = true;
+                  }
+                }
+
+                let new_basket = basket;
+
+                if (!search) {
+                  new_basket.push({
+                    product_id: sanitizedValues.product_id,
+                    name: rows_product[0].name,
+                    price: rows_product[0].price,
+                    count: 1,
+                  });
+                }
+
+                database.query(
+                  `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(
+                    new_basket
+                  )}' WHERE \`token\`='${sanitizedValues.token}';`,
+                  (error) => {
+                    if (error) {
+                      return response
+                        .status(500)
+                        .json({ error: "Ошибка на сервере", bcode: 21.2 });
+                    }
+
+                    response.json({
+                      message: "Товар успешно добавлен в корзину.",
+                      basket: new_basket,
+                    });
+                  }
+                );
+              } else {
+                return response
+                  .status(500)
+                  .json({ error: "Товара нет в БД.", bcode: 21.4 });
+              }
             }
           );
         } else {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 21.3 });
-        }
-      }
-    );
-  }
-
-  async getBasket(request, response) {
-    const requiredKeys = ["token"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 22 });
-    }
-
-    const { token } = requestData;
-
-    const sanitizedValues = {
-      token: tools.delInjection(token),
-    };
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 22.1 });
-        }
-
-        if (rows.length == 1) {
-          const basket = JSON.parse(rows[0].basket);
-
-          response.json(basket);
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 22.2 });
         }
       }
     );
@@ -1335,12 +1318,19 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const basket = JSON.parse(rows[0].basket);
+          let basket = JSON.parse(rows[0].basket);
 
-          let new_basket = tools.removeItemAll(
-            basket,
-            sanitizedValues.product_id
-          );
+          for (let i = 0; i < basket.length; i++) {
+            if (basket[i].product_id === sanitizedValues.product_id) {
+              if (basket[i].count == 1) {
+                basket.splice(i, 1)
+                break
+              } 
+              basket[i].count = basket[i].count - 1;
+            }
+          }
+
+          let new_basket = basket;
 
           database.query(
             `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(

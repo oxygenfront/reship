@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
-import { selectFilter, setSearchValue } from '../redux/slices/fiterSlice'
-import { fetchFullItem } from '../redux/slices/fullItemSlice'
 import {
-  fetchItems,
-  fetchItemsWithParams,
-  selectItemsData,
-} from '../redux/slices/itemsSlice'
-import { selectUserData } from '../redux/slices/authSlice'
+  selectFilter,
+  setChoosenCategorie,
+  setSearchValue,
+} from '../redux/slices/fiterSlice'
+import { fetchFullItem } from '../redux/slices/fullItemSlice'
+import { selectItemsData } from '../redux/slices/itemsSlice'
 
 const Catalog = () => {
   const dispatch = useDispatch()
   const { items, status } = useSelector(selectItemsData)
-  const { data } = useSelector(selectUserData)
 
   const { choosenCategorie, searchValue } = useSelector(selectFilter)
 
-  useEffect(() => {
-    dispatch(fetchItems({ choosenCategorie, searchValue }))
+  const onChangeCategory = useCallback((sort) => {
+    dispatch(setChoosenCategorie(sort))
   }, [])
-
-  console.log(items)
-
   const set = new Set()
 
   if (status === 'success') {
@@ -53,6 +48,7 @@ const Catalog = () => {
           </div>
           <div className="main-catalog__buttons buttons__10">
             <button
+              onClick={() => onChangeCategory('')}
               className="main-catalog__buttons-item buttons__10-item catalog-section__buttons-item"
               id="catalog"
             >
@@ -60,6 +56,7 @@ const Catalog = () => {
             </button>
 
             <button
+              onClick={() => onChangeCategory('новинки')}
               className="main-catalog__buttons-item buttons__10-item catalog-section__buttons-item"
               id="news"
             >
@@ -67,6 +64,7 @@ const Catalog = () => {
             </button>
 
             <button
+              onClick={() => onChangeCategory('акции')}
               className="main-catalog__buttons-item buttons__10-item
 							catalog-section__buttons-item"
               id="action"
@@ -75,6 +73,7 @@ const Catalog = () => {
             </button>
 
             <button
+              onClick={() => onChangeCategory('лидеры продаж')}
               className="main-catalog__buttons-item buttons__10-item
 							catalog-section__buttons-item"
               id="leaders"
@@ -85,38 +84,63 @@ const Catalog = () => {
         </div>
 
         <div className="catalog__block">
-          {categories.map((categorie, index) => (
-            <>
-              <div className="catalog__suptitle" id={categorie}>
-                <span>{categorie}</span>
-              </div>
-              <div key={index} className="catalog__items-block">
-                {status === 'loading'
-                  ? [...new Array(3)].map((_, index) => (
-                      <Skeleton key={index}></Skeleton>
-                    ))
-                  : items
-                      .filter((item) => {
-                        if (item.category === categorie) {
-                          return true
-                        } else {
-                          return false
-                        }
-                      })
+          {choosenCategorie === 'акции'
+            ? items.map(
+                (item) =>
+                  item.old_price !== item.price && (
+                    <Card
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      old_price={item.old_price}
+                      price={item.price}
+                      image={item.image_link}
+                    ></Card>
+                  )
+              )
+            : categories.map((categorie, index) => (
+                <>
+                  <div className="catalog__suptitle" id={categorie}>
+                    <span>{categorie}</span>
+                  </div>
+                  <div key={index} className="catalog__items-block">
+                    {status === 'loading'
+                      ? [...new Array(3)].map((_, index) => (
+                          <Skeleton key={index}></Skeleton>
+                        ))
+                      : items
+                          .filter((item) => {
+                            if (item.category === categorie) {
+                              return true
+                            } else {
+                              return false
+                            }
+                          })
+                          .filter((item) => {
+                            if (
+                              item.name
+                                .toLowerCase()
+                                .includes(searchValue.toLowerCase())
+                            ) {
+                              return true
+                            } else {
+                              return false
+                            }
+                          })
 
-                      .map((item) => (
-                        <Card
-                          key={item.id}
-                          id={item.id}
-                          name={item.name}
-                          old_price={item.old_price}
-                          price={item.price}
-                          image={item.image_link}
-                        ></Card>
-                      ))}
-              </div>
-            </>
-          ))}
+                          .map((item) => (
+                            <Card
+                              key={item.id}
+                              id={item.id}
+                              name={item.name}
+                              old_price={item.old_price}
+                              price={item.price}
+                              image={item.image_link}
+                            ></Card>
+                          ))}
+                  </div>
+                </>
+              ))}
         </div>
       </div>
     </section>

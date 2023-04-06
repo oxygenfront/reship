@@ -19,19 +19,19 @@ const Card = ({ name, image, price, id, old_price }) => {
   const cartItem = useSelector(selectCartItemById(id))
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
-  const onClickAdd = () => {
-    const item = {
-      id,
-      name,
-      image,
-      price,
-      count: 0,
-    }
-    dispatch(addItem(item))
-  }
-  // const onClickAdd = async () => {
-  //   await dispatch(fetchAddCartItem({ product_id: id, token }))
+  // const onClickAdd = () => {
+  //   const item = {
+  //     id,
+  //     name,
+  //     image,
+  //     price,
+  //     count: 0,
+  //   }
+  //   dispatch(addItem(item))
   // }
+  const onClickAdd = async () => {
+    dispatch(fetchAddCartItem({ product_id: id, token }))
+  }
   const addedCount = cartItem ? cartItem.count : 0
   const [isFavorite, setIsFavorite] = useState(false)
   useEffect(() => {
@@ -68,7 +68,7 @@ const Card = ({ name, image, price, id, old_price }) => {
         to={`/item/${id}`}
         className={styles.catalog__items_block_item_img_block}
       >
-        <img src={image} alt="iphone" />
+        <img src={`../assets/products_img/${id}.png`} alt="iphone" />
       </Link>
       <div className={styles.catalog__items_block_item_price}>
         <span>{price} ₽</span>

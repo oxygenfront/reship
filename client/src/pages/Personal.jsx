@@ -323,7 +323,7 @@ const Personal = () => {
                     <input
                       className='person__secret-change-inp-pass'
                       onChange={updatePassword}
-                      value={password.lastPassword}
+                      value={password.last_password}
                       name='password'
                       type='password'
                       placeholder='Введите старый пароль'
@@ -332,7 +332,7 @@ const Personal = () => {
                       className='person__secret-change-inp-pass'
                       name='new_password'
                       onChange={updatePassword}
-                      value={password.newPassword}
+                      value={password.new_password}
                       type='password'
                       placeholder='Введите новый пароль'
                     />
@@ -544,61 +544,19 @@ const Personal = () => {
               </div>
             )}
 
-            {/* <div className="person__buttons buttons__10" id="person-btn">
-              <button
-                className={
-                  personPages.delHistory
-                    ? 'person__buttons-item buttons__10-item active'
-                    : 'person__buttons-item buttons__10-item'
-                }
-                id="lk-history"
-                onClick={() => setPersonPages({ delHistory: true })}
-              >
-                <span>История заказов</span>
-              </button>
-              <button
-                className={
-                  personPages.delInfo
-                    ? 'person__buttons-item buttons__10-item active'
-                    : 'person__buttons-item buttons__10-item'
-                }
-                id="lk-wait"
-                onClick={() => setPersonPages({ delInfo: true })}
-              >
-                <span>Ожидают доставки</span>
-              </button>
-              <button
-                className={
-                  personPages.favorites
-                    ? 'person__buttons-item buttons__10-item active'
-                    : 'person__buttons-item buttons__10-item'
-                }
-                id="lk-favorites"
-                onClick={() => setPersonPages({ favorites: true })}
-              >
-                <span>Избранные товары</span>
-              </button>
-              <button
-                className={
-                  personPages.reviews
-                    ? 'person__buttons-item buttons__10-item active'
-                    : 'person__buttons-item buttons__10-item'
-                }
-                id="lk-reviews"
-                onClick={() => setPersonPages({ reviews: true })}
-              >
-                <span>Оставить отзыв</span>
-              </button>
-            </div> */}
-
-            {personPages.delHistory ? (
-              <div className='person__delivery-history_wrapper'>
-                <div className='person__delivery-history_wrapper-title'>
-                  Дата покупки: 25 января 2022 года
-                </div>
-                <PersonItem></PersonItem>
-              </div>
-            ) : null}
+            {personPages.delHistory
+              ? status === 'succcess' &&
+                data.orders.map((order) => (
+                  <div className="person__delivery-history_wrapper">
+                    <div className="person__delivery-history_wrapper-title">
+                      {/* date */}
+                      {order}
+                    </div>
+                    {/* Order-item info */}
+                    <PersonItem></PersonItem>
+                  </div>
+                ))
+              : null}
 
             {personPages.delInfo ? (
               <div className='person__delivery-info_wrapper'>

@@ -17,7 +17,6 @@ export const filterSlice = createSlice({
       state.choosenSort = action.payload
     },
     setSearchValue(state, action) {
-      console.log(action)
       state.searchValue = action.payload
     },
   },

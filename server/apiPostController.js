@@ -55,7 +55,7 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 1.2, e:error });
+                  .json({ error: "Ошибка на сервере", bcode: 1.2 });
               }
 
               let activation_code = tools.createToken(50);
@@ -269,6 +269,7 @@ class ApiPostController {
             date_register_timestamp: rows[0].date_register_timestamp,
             admin: rows[0].admin,
             favorites: JSON.parse(rows[0].favorites),
+            basket: JSON.parse(rows[0].basket)
           };
 
           return response.json(response_json);

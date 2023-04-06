@@ -17,6 +17,8 @@ import Personal from './pages/Personal'
 import Register from './pages/Register'
 import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
 import Preloader from './components/Preloader/Preloader'
+import { fetchItems } from './redux/slices/itemsSlice'
+import { selectFilter } from './redux/slices/fiterSlice'
 
 function App() {
   const dispatch = useDispatch()
@@ -25,6 +27,11 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchAuthMe(token))
+  }, [])
+  const { choosenCategorie, searchValue } = useSelector(selectFilter)
+
+  useEffect(() => {
+    dispatch(fetchItems({ choosenCategorie, searchValue }))
   }, [])
 
   return (

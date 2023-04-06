@@ -4,23 +4,28 @@ import { Link } from 'react-router-dom'
 import { CartItem } from '../components'
 
 import { clearItems, fetchCart, selectCart } from '../redux/slices/cartSlice'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const Cart = () => {
   const dispatch = useDispatch()
   // const token = localStorage.getItem('token')
-  const { items, totalPrice } = useSelector(selectCart)
-  const onClickClear = () => {
-    dispatch(clearItems())
+  const { data, status } = useSelector(selectUserData)
+
+  const items = status === 'success' ? data.basket : []
+  if (status === 'success') {
+    console.log(data.basket)
+    console.log(items)
   }
 
+  const totalPrice = items.reduce(
+    (sum, item) => item.price * item.count + sum,
+    0
+  )
+  console.log(totalPrice)
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
 
-  // useEffect(() => {
-  //   dispatch(fetchCart({ token }))
-  // }, [])
-
-  if (!totalPrice) {
+  if (!totalCount) {
     return (
       <div className="person__delivery-history">
         <div className="container person__delivery-history__container">
@@ -39,17 +44,13 @@ const Cart = () => {
         <div className="cart__title">
           Всего товаров: <span>{totalCount}</span>
         </div>
-        {!totalPrice ? (
-          <div className="cart__title cart__title_none">
-            Ваша корзина пока пуста
-          </div>
-        ) : null}
 
         <div className="cart__wrapper">
           <div className="person__delivery-items cart__delivery-items">
-            {items.map((item) => (
-              <CartItem key={item.id} {...item}></CartItem>
-            ))}
+            {status === 'success' &&
+              data.basket.map((item) => (
+                <CartItem key={item.id} {...item}></CartItem>
+              ))}
           </div>
         </div>
 

@@ -795,6 +795,8 @@ body
             //     align-items: center
             //     height: 483px
             //     &_img
+            //         height: 50px
+            //         width: 50px
             //         border-radius: 29px
             //     &_name
             //         font-size: 20px
@@ -825,6 +827,11 @@ body
             display: flex
             justify-content: space-between
             align-items: center
+            &_adaptive
+                display: flex
+                flex-direction: column
+                justify-content: space-between
+                height: 110px
         &-close
             display: flex
             justify-content: center
@@ -848,7 +855,6 @@ body
             display: flex
         &-change
             &-block
-                height: 100px
                 width: 932px
                 // display: none
                 justify-content: space-between
@@ -863,6 +869,20 @@ body
                     justify-content: space-between
                     align-items: center
                     width: 100%
+                    &.adaptive
+                        align-items: unset
+                        width: 65%
+                &-adaptive
+                    width: 250px
+                    height: 160px
+                    display: flex
+                    flex-direction: column
+                    justify-content: space-between
+                    & .person__secret-change-inp-pass
+                        width: 100%
+                    & .person__secret-change-confirm
+                        width: 100%
+                    
             &-btn
                 padding: 10px 15px
                 border-radius: 13px
@@ -876,6 +896,8 @@ body
                 font-size: 18px
                 width: 27%
                 height: 43px
+                color: #007DFD
+                font-weight: 600
                 &::placeholder
                     color: #D7D7D7
             &-confirm

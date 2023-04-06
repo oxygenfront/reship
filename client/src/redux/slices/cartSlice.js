@@ -4,19 +4,13 @@ import { getCartFromLS } from '../../utils/getCartFromLs'
 
 import axios from '../../axios'
 
-const { items, totalPrice } = getCartFromLS()
+const { items } = getCartFromLS()
 
-export const fetchCart = createAsyncThunk('/fetchCart', async (token) => {
-  console.log(token)
-  const { data } = axios.get('/getBasket', token)
-  console.log(data)
-  return data
-})
 export const fetchAddCartItem = createAsyncThunk(
   '/fetchAddCartItem',
   async (params) => {
     console.log(params)
-    const { data } = axios.get('/addBasket', params)
+    const { data } = axios.post('/addBasket', params)
     console.log(data)
     return data
   }
@@ -25,7 +19,7 @@ export const fetchDeleteCartItem = createAsyncThunk(
   '/fetchDeleteCartItem',
   async (params) => {
     console.log(params)
-    const { data } = axios.get('/deleteBasket', params)
+    const { data } = axios.post('/deleteBasket', params)
     console.log(data)
     return data
   }
@@ -65,32 +59,32 @@ const cartSlice = createSlice({
       state.totalPrice = 0
     },
   },
-  // extraReducers: (builder) => {
-  //   builder.addCase(fetchAddCartItem.pending, (state, action) => {
-  //     state.status = 'loading'
-  //     state.items = []
-  //   })
-  //   builder.addCase(fetchAddCartItem.fulfilled, (state, action) => {
-  //     state.items = action.payload
-  //     state.status = 'success'
-  //   })
-  //   builder.addCase(fetchAddCartItem.rejected, (state, action) => {
-  //     state.status = 'error'
-  //     state.items = []
-  //   })
-  //   builder.addCase(fetchDeleteCartItem.pending, (state, action) => {
-  //     state.status = 'loading'
-  //     state.items = []
-  //   })
-  //   builder.addCase(fetchDeleteCartItem.fulfilled, (state, action) => {
-  //     state.items = action.payload
-  //     state.status = 'success'
-  //   })
-  //   builder.addCase(fetchDeleteCartItem.rejected, (state, action) => {
-  //     state.status = 'error'
-  //     state.items = []
-  //   })
-  // },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAddCartItem.pending, (state, action) => {
+      state.status = 'loading'
+      state.items = []
+    })
+    builder.addCase(fetchAddCartItem.fulfilled, (state, action) => {
+      state.items = action.payload
+      state.status = 'success'
+    })
+    builder.addCase(fetchAddCartItem.rejected, (state, action) => {
+      state.status = 'error'
+      state.items = []
+    })
+    builder.addCase(fetchDeleteCartItem.pending, (state, action) => {
+      state.status = 'loading'
+      state.items = []
+    })
+    builder.addCase(fetchDeleteCartItem.fulfilled, (state, action) => {
+      state.items = action.payload
+      state.status = 'success'
+    })
+    builder.addCase(fetchDeleteCartItem.rejected, (state, action) => {
+      state.status = 'error'
+      state.items = []
+    })
+  },
 })
 
 export const selectCart = (state) => state.cart

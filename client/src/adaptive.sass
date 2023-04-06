@@ -99,6 +99,12 @@
       grid-template-columns: repeat(3, 210px)
     &__info
       width: 60%
+    &__secret-change
+      &-block
+        width: 100%
+      &-confirm
+        padding: 10px 4px
+        width: 30%
   .catalog
     &-section-search__search-block
       width: 476px
@@ -143,6 +149,8 @@
         width: 163px
       &_deliv
         width: 250px
+    &__secret
+      width: 100%
   .cart
     &__title
       text-align: center
@@ -381,6 +389,19 @@
     &__favorites-wrapper-items
       grid-template-columns: repeat(1, 270px)
       justify-content: center
+    &__secret
+      height: unset
+      margin: 0 0 40px 0
+      &-wrapper
+        align-items: unset
+        width: 100%
+      &-change-block
+        &-adaptive
+          width: 230px
+        &-wrapper
+          &.adaptive
+            width: 100%
+
   .catalog
     &__title
       font-size: 25px

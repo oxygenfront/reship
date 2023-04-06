@@ -29,7 +29,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
                 key={id}
                 className={styles.person__favorites_wrapper_items_item}
               >
-                <Link to={`/item/${id}`}>
+                <Link to={`/item/${id}`} className={styles.person__favorites_wrapper_items_item_img_wrapper}>
                   <img
                     className={styles.person__favorites_wrapper_items_item_img}
                     src={`../assets/products_img/${id}.png`}

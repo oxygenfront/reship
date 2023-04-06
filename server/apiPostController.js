@@ -265,20 +265,27 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const response_json = {
-            id: rows[0].id,
-            first_name: rows[0].first_name,
-            last_name: rows[0].last_name,
-            email: rows[0].email,
-            avatar: rows[0].avatar,
-            adress_delivery: rows[0].adress_delivery,
-            date_register_timestamp: rows[0].date_register_timestamp,
-            admin: rows[0].admin,
-            favorites: JSON.parse(rows[0].favorites),
-            basket: JSON.parse(rows[0].basket),
-          };
+          database.query(
+            `SELECT * FROM \`orders\` WHERE customer_id='${rows[0].id}'`,
+            (error, rows_orders, fields) => {
+              const orders = rows_orders
 
-          return response.json(response_json);
+              const response_json = {
+                id: rows[0].id,
+                first_name: rows[0].first_name,
+                last_name: rows[0].last_name,
+                email: rows[0].email,
+                avatar: rows[0].avatar,
+                adress_delivery: rows[0].adress_delivery,
+                date_register_timestamp: rows[0].date_register_timestamp,
+                admin: rows[0].admin,
+                favorites: JSON.parse(rows[0].favorites),
+                basket: JSON.parse(rows[0].basket),
+                orders: orders
+              };
+    
+              return response.json(response_json);
+            })
         } else {
           return response.status(400).json({ error: "Ошибка доступа", bcode: 4.2 });
         }

@@ -85,7 +85,7 @@ const Catalog = () => {
 
         <div
           className={
-            choosenCategorie ? 'catalog__items-block' : 'catalog__block'
+            choosenCategorie === 'акции' ? 'catalog__items-block' : 'catalog__block'
           }
         >
           {choosenCategorie === 'акции'

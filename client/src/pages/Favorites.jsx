@@ -8,7 +8,7 @@ import {
   fetchChangePassword,
 } from '../redux/slices/changeSlice'
 
-const Personal = () => {
+const Favorites = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
@@ -131,14 +131,12 @@ const Personal = () => {
   }, [status])
 
   useEffect(() => {
-    setPersonPages({ delHistory: true })
+    setPersonPages({ favorites: true })
   }, [])
   if (status === 'success' && !isAuth) {
     return <Navigate to="/"></Navigate>
   }
-  if (status === 'success') {
-    data.orders.map((order) => console.log(order))
-  }
+
   return (
     <>
       <Menu />
@@ -299,7 +297,7 @@ const Personal = () => {
                     <input
                       className="person__secret-change-inp-pass"
                       onChange={updatePassword}
-                      value={password.last_password}
+                      value={password.lastPassword}
                       name="password"
                       type="password"
                       placeholder="Введите старый пароль"
@@ -308,7 +306,7 @@ const Personal = () => {
                       className="person__secret-change-inp-pass"
                       name="new_password"
                       onChange={updatePassword}
-                      value={password.new_password}
+                      value={password.newPassword}
                       type="password"
                       placeholder="Введите новый пароль"
                     />
@@ -547,15 +545,12 @@ const Personal = () => {
             )}
 
             {personPages.delHistory
-              ? status === 'success' &&
+              ? status === 'succcess' &&
                 data.orders.map((order) => (
-                  <div
-                    key={order.id}
-                    className="person__delivery-history_wrapper"
-                  >
+                  <div className="person__delivery-history_wrapper">
                     <div className="person__delivery-history_wrapper-title">
-                      Дата покупки:
-                      {order.date_start}
+                      {/* date */}
+                      {order}
                     </div>
                     {/* Order-item info */}
                     <PersonItem></PersonItem>
@@ -738,4 +733,4 @@ const Personal = () => {
   )
 }
 
-export default Personal
+export default Favorites

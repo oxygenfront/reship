@@ -5,7 +5,13 @@ import { Route, Routes } from 'react-router-dom'
 import Header from './components/Header/Header'
 
 import './index.sass'
-import { Admin, AdminChange, AdminCreate, ForgotMessage } from './pages'
+import {
+  Admin,
+  AdminChange,
+  AdminCreate,
+  Favorites,
+  ForgotMessage,
+} from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
 import Forgot from './pages/Forgot'
@@ -62,6 +68,10 @@ function App() {
           <Route path="/forgot" element={<Forgot></Forgot>}></Route>
           <Route path="/cart" element={<Cart></Cart>}></Route>
           <Route path="/personal" element={<Personal></Personal>}></Route>
+          <Route
+            path="/personal/favorites"
+            element={<Favorites></Favorites>}
+          ></Route>
           <Route path="/order" element={<Order></Order>}></Route>
           <Route path="/catalog" element={<Catalog></Catalog>}></Route>
           <Route path="/forgot/message" element={<ForgotMessage />}></Route>

@@ -12,9 +12,12 @@ const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
-  const { items, totalPrice } = useSelector(selectCart)
+
   const isMounted = useRef(false)
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0)
+  const totalCount =
+    isAuth && status === 'success'
+      ? data.basket.reduce((sum, item) => sum + item.count, 0)
+      : 0
 
   const dispatch = useDispatch()
   const onClickLogout = () => {
@@ -25,13 +28,13 @@ const Header = () => {
   }
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  useEffect(() => {
-    if (isMounted.current) {
-      const json = JSON.stringify(items)
-      localStorage.setItem('cart', json)
-    }
-    isMounted.current = true
-  }, [items])
+  // useEffect(() => {
+  //   if (isMounted.current) {
+  //     const json = JSON.stringify(items)
+  //     localStorage.setItem('cart', json)
+  //   }
+  //   isMounted.current = true
+  // }, [items])
 
   useEffect(() => {
     function handleResize() {
@@ -200,7 +203,7 @@ const Header = () => {
             <span>Корзина</span>
           </Link>
           {isAuth ? (
-            <Link to="/personal" className={styles.header__like}>
+            <Link to="/personal/favorites" className={styles.header__like}>
               <img src="../assets/img/heart 1.svg" alt="heart" />
               <p>{favoriteCount > 0 ? favoriteCount : null}</p>
             </Link>

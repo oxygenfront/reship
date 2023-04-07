@@ -2,6 +2,7 @@ import tools from "./tools.js";
 import database from "./database.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import fs from "fs"
 
 const url = "http://localhost:5000";
 
@@ -47,7 +48,7 @@ class ApiPostController {
 
           database.query(
             "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`) VALUES " +
-              `('${first_name}', '${last_name}', '${email}', 'https://placehold.co/600x400', '', '${new_token}', '${Date.now()}', '${crypto
+              `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '', '${new_token}', '${Date.now()}', '${crypto
                 .createHash("md5")
                 .update(password)
                 .digest("hex")}', '1', '${JSON.stringify(
@@ -1356,6 +1357,10 @@ class ApiPostController {
         }
       }
     );
+  }
+
+  async changeAvatar(request, response) {
+    response.json({ success: true, message: 'Файл успешно загружен' });
   }
 }
 

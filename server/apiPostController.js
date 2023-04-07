@@ -269,6 +269,10 @@ class ApiPostController {
           database.query(
             `SELECT * FROM \`orders\` WHERE customer_id='${rows[0].id}'`,
             (error, rows_orders, fields) => {
+              for (let i = 0; i < rows_orders.length; i++) {
+                rows_orders[i].products = JSON.parse(rows_orders[i].products)
+              }
+              
               const orders = rows_orders
 
               const response_json = {

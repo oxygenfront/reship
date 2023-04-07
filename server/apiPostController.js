@@ -984,6 +984,7 @@ class ApiPostController {
       "number_flat",
       "postal_code",
       "token",
+      "product_ids"
     ];
 
     const requestData = request.body;
@@ -1007,6 +1008,7 @@ class ApiPostController {
       number_flat,
       postal_code,
       token,
+      product_ids
     } = requestData;
 
     const sanitizedValues = {
@@ -1019,6 +1021,7 @@ class ApiPostController {
       number_flat: tools.delInjection(number_flat),
       postal_code: tools.delInjection(postal_code),
       token: tools.delInjection(token),
+      product_ids: tools.delInjection(product_ids)
     };
 
     database.query(
@@ -1033,30 +1036,54 @@ class ApiPostController {
         if (rows.length == 1) {
           const customer_id = rows[0].id;
 
-          database.query(
-            "INSERT INTO `orders` (`init`, `number`, `email`, `city`, `street`, `number_home`, `number_flat`, `postal_code`, `status`, `customer_id`, `date_start`, `date_end`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, '0')",
-            [
-              sanitizedValues.init,
-              sanitizedValues.number,
-              sanitizedValues.email,
-              sanitizedValues.city,
-              sanitizedValues.street,
-              sanitizedValues.number_home,
-              sanitizedValues.number_flat,
-              sanitizedValues.postal_code,
-              customer_id,
-              Date.now(),
-            ],
-            (error, rows) => {
+          database.query(`SELECT * FROM \`products\` WHERE id IN (${sanitizedValues.product_ids})`, (error, rows_products) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: "Ошибка на сервере", bcode: 17.4 });
+            }
+
+            if (rows_products.length >= 1) {
+              for (let i = 0; i < rows_products.length; i++) {
+                rows_products[i].colors = JSON.parse(rows_products[i].colors)
+                rows_products[i].colors_avail = JSON.parse(rows_products[i].colors_avail)
+                rows_products[i].parameters = JSON.parse(rows_products[i].parameters)
+                rows_products[i].parameters_avail = JSON.parse(rows_products[i].parameters_avail)
+              }
+
+              database.query(
+                "INSERT INTO `orders` (`init`, `number`, `email`, `city`, `street`, `number_home`, `number_flat`, `postal_code`, `status`, `customer_id`, `date_start`, `date_end`, `products`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?, '0', ?)",
+                [
+                  sanitizedValues.init,
+                  sanitizedValues.number,
+                  sanitizedValues.email,
+                  sanitizedValues.city,
+                  sanitizedValues.street,
+                  sanitizedValues.number_home,
+                  sanitizedValues.number_flat,
+                  sanitizedValues.postal_code,
+                  customer_id,
+                  Date.now(),
+                  JSON.stringify(rows_products)
+                ],
+                (error, rows) => {
+                  if (error) {
+                    return response
+                      .status(500)
+                      .json({ error: "Ошибка на сервере", bcode: 17.3 });
+                  }
+    
+                  response.json({ order_id: rows.insertId });
+                }
+              );
+            } else {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 17.3 });
+                  .json({ error: "В заказе нет товаров", bcode: 17.5 });
               }
-
-              response.json({ order_id: rows.insertId });
             }
-          );
+          })
         } else {
           return response
             .status(400)

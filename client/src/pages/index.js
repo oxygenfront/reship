@@ -11,3 +11,5 @@ export { default as ForgotMessage } from './ForgotMessage'
 export { default as Admin } from './Admin'
 export { default as AdminCreate } from './AdminCreate'
 export { default as AdminChange } from './AdminChange'
+
+export { default as Favorites } from './Favorites'

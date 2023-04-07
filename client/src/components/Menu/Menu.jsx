@@ -44,7 +44,7 @@ const Menu = () => {
           <Link to="/catalog" className={styles.search_section__catalog}>
             <img
               className="search-section__catalog-img"
-              src="./assets/img/free-icon-tiles-6569357 1.png"
+              src="../assets/img/free-icon-tiles-6569357 1.png"
               alt="tiles"
             />
             <span>#вКаталог</span>
@@ -69,7 +69,7 @@ const Menu = () => {
                   to="/personal"
                   className={styles.search_section__profile_block}
                 >
-                  <img src="./assets/img/user.svg" alt="user" />
+                  <img src="../assets/img/user.svg" alt="user" />
                   {data.first_name ? (
                     <p>
                       {data.first_name[0].toUpperCase() +
@@ -84,7 +84,7 @@ const Menu = () => {
                   onClick={onClickLogout}
                   className={styles.search_section__logout_block}
                 >
-                  <img src="./assets/img/free-icon-power.svg" alt="power" />
+                  <img src="../assets/img/free-icon-power.svg" alt="power" />
                 </Link>
               ) : null}
             </>

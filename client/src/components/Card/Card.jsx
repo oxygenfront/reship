@@ -16,23 +16,21 @@ import classNames from 'classnames'
 
 const Card = ({ name, image, price, id, old_price }) => {
   const dispatch = useDispatch()
-  const cartItem = useSelector(selectCartItemById(id))
+
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
-  // const onClickAdd = () => {
-  //   const item = {
-  //     id,
-  //     name,
-  //     image,
-  //     price,
-  //     count: 0,
-  //   }
-  //   dispatch(addItem(item))
-  // }
+
   const onClickAdd = async () => {
-    dispatch(fetchAddCartItem({ product_id: id, token }))
+    await dispatch(fetchAddCartItem({ product_id: id, token }))
+    dispatch(fetchAuthMe(token))
   }
-  const addedCount = cartItem ? cartItem.count : 0
+  const cartItem =
+    status === 'success'
+      ? data.basket.find((item) => item.product_id === id) || { count: 0 }
+      : null
+
+  const addedCount = status === 'success' ? cartItem.count : '0'
+
   const [isFavorite, setIsFavorite] = useState(false)
   useEffect(() => {
     if (status === 'success') {

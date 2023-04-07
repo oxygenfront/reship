@@ -1,26 +1,31 @@
 import React, { useState } from 'react'
 import { isEmail } from 'validator'
 import InputMask from 'react-input-mask'
+import { useDispatch } from 'react-redux'
+import { fetchCreateOrder } from '../redux/slices/orderSlice'
 const Order = () => {
+  const dispatch = useDispatch()
+  const token = localStorage.getItem('token')
   const initialState = {
-    fullName: '',
+    init: '',
     number: '',
     email: '',
     city: '',
     street: '',
-    numberHouse: '',
-    numberApartment: '',
-    postIndex: '',
+    number_home: '',
+    number_flat: '',
+    postal_code: '',
   }
   const [order, setOrder] = useState({
-    fullName: '',
+    init: '',
     number: '',
     email: '',
     city: '',
     street: '',
-    numberHouse: '',
-    numberApartment: '',
-    postIndex: '',
+    number_home: '',
+    number_flat: '',
+    postal_code: '',
+    token,
   })
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {
@@ -30,10 +35,22 @@ const Order = () => {
     })
   }
 
-  function sendForm(e) {
+  async function sendForm(e) {
     e.preventDefault()
+    if (!isEmail(order.email)) {
+      alert('Email указан некорректно')
+      setIsValidEmail(isEmail(order.email))
+      return
+    }
+    const data = await dispatch(fetchCreateOrder(order))
+    if (!data.payload) {
+      alert('Не удалось создать заказ')
+    } else {
+      alert('Заказ успешно создан')
+    }
     setOrder(initialState)
     setIsValidEmail(isEmail(order.email))
+
     console.log(isValidEmail)
   }
   return (
@@ -44,8 +61,8 @@ const Order = () => {
           <form className="main-form__form" action="">
             <input
               className="main-form__form-input"
-              name="fullName"
-              value={order.fullName}
+              name="init"
+              value={order.init}
               onChange={updateOrder}
               type="text"
               placeholder="ФИО получателя"
@@ -85,24 +102,24 @@ const Order = () => {
             />
             <input
               className="main-form__form-input"
-              name="numberHouse"
-              value={order.numberHouse}
+              name="number_home"
+              value={order.number_home}
               onChange={updateOrder}
               type="text"
               placeholder="Номер дома/строения"
             />
             <input
               className="main-form__form-input"
-              name="numberApartment"
-              value={order.numberApartment}
+              name="number_flat"
+              value={order.number_flat}
               onChange={updateOrder}
               type="text"
               placeholder="Номер квартиры *"
             />
             <input
               className="main-form__form-input"
-              name="postIndex"
-              value={order.postIndex}
+              name="postal_code"
+              value={order.postal_code}
               onChange={updateOrder}
               type="text"
               placeholder="Почтовый индекс"

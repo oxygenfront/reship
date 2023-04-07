@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom'
 import { CartItem } from '../components'
 
 import { clearItems, fetchCart, selectCart } from '../redux/slices/cartSlice'
-import { selectUserData } from '../redux/slices/authSlice'
+import { fetchAuthMe, selectUserData } from '../redux/slices/authSlice'
 
 const Cart = () => {
   const dispatch = useDispatch()
-  // const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
 
   const items = status === 'success' ? data.basket : []
@@ -24,7 +24,9 @@ const Cart = () => {
   console.log(totalPrice)
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
-
+  useEffect(() => {
+    dispatch(fetchAuthMe(token))
+  }, [])
   if (!totalCount) {
     return (
       <div className="person__delivery-history">
@@ -49,7 +51,13 @@ const Cart = () => {
           <div className="person__delivery-items cart__delivery-items">
             {status === 'success' &&
               data.basket.map((item) => (
-                <CartItem key={item.id} {...item}></CartItem>
+                <CartItem
+                  key={item.product_id}
+                  name={item.name}
+                  count={item.count}
+                  price={item.price}
+                  id={item.product_id}
+                ></CartItem>
               ))}
           </div>
         </div>

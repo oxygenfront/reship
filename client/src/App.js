@@ -39,7 +39,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchItems({ choosenCategorie, searchValue }))
-  }, [])
+  }, [choosenCategorie])
 
   return (
     <>

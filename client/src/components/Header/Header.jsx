@@ -71,7 +71,7 @@ const Header = () => {
                         to="/personal"
                         className={styles.search_section__profile_block}
                       >
-                        <img src="./assets/img/user.svg" alt="user" />
+                        <img src="../assets/img/user.svg" alt="user" />
                         <p>
                           {data.first_name[0].toUpperCase() +
                             data.first_name.slice(1)}
@@ -134,7 +134,7 @@ const Header = () => {
                 <div className={styles.header__adaptive_burger_wrapper_item}>
                   {isAuth ? (
                     <Link
-                      to="/personal"
+                      to="/personal/favorites"
                       className={styles.header__cart}
                       onClick={onCloseBurger}
                     >

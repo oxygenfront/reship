@@ -1,12 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItem } from '../../redux/slices/cartSlice'
+import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 import styles from './FavoriteItem.module.sass'
 import { Link } from 'react-router-dom'
 import { selectItemsData } from '../../redux/slices/itemsSlice'
 
 const FavoriteItem = ({ name, price, image, id }) => {
   const dispatch = useDispatch()
+  const cartItem = useSelector(selectCartItemById(id))
+  const addedCount = cartItem ? cartItem.count : 0
   console.log(name, price, id)
   const onClickAdd = () => {
     const item = {
@@ -45,7 +47,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
           onClick={onClickAdd}
           className={styles.person__favorites_wrapper_items_item_add_cart}
         >
-          Добавить в корзину
+          Добавить в корзину {addedCount > 0 ? addedCount : null}
         </button>
       </div>
     </>

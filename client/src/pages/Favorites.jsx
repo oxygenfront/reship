@@ -141,7 +141,7 @@ const Personal = () => {
   }, [status])
 
   useEffect(() => {
-    setPersonPages({ delHistory: true })
+    setPersonPages({ favorites: true })
   }, [])
   if (status === 'success' && !isAuth) {
     return <Navigate to="/"></Navigate>

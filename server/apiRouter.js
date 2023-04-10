@@ -94,6 +94,8 @@ router.post(
 router.post("/createProduct", apiPostController.createProduct);
 router.post("/changeProduct", apiPostController.changeProduct);
 router.post("/deleteProduct", apiPostController.deleteProduct);
+router.post("/acceptPayment", apiPostController.acceptPayment);
 router.get("/getOrdersAll", apiPostController.getOrdersAll);
+router.get("/getPayments", apiPostController.getPayments);
 
 export default router;

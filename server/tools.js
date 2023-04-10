@@ -33,6 +33,14 @@ function delInjection(string) {
     return string;
 }
 
+function generateCode() {
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += Math.floor(Math.random() * 10);
+  }
+  return code;
+}
+
 function removeItemAll(arr, value) {
     var i = 0;
     while (i < arr.length) {
@@ -45,4 +53,4 @@ function removeItemAll(arr, value) {
     return arr;
   }
 
-export default {checkJsonKey, createToken, delInjection, removeItemAll};
+export default {checkJsonKey, createToken, delInjection, removeItemAll, generateCode};

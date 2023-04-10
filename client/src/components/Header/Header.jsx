@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
@@ -7,17 +7,18 @@ import {
   selectUserData,
 } from '../../redux/slices/authSlice'
 import { selectCart } from '../../redux/slices/cartSlice'
+import { setChoosenCategorie } from '../../redux/slices/fiterSlice'
 import styles from './Header.module.sass'
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
   const isAuth = useSelector(selectIsAuth)
+  const { items, totalPrice } = useSelector(selectCart)
   const { data, status } = useSelector(selectUserData)
-
+  const onChangeCategory = useCallback((sort) => {
+    dispatch(setChoosenCategorie(sort))
+  }, [])
   const isMounted = useRef(false)
-  const totalCount =
-    isAuth && status === 'success'
-      ? data.basket.reduce((sum, item) => sum + item.count, 0)
-      : 0
+  const totalCount = items.reduce((sum, item) => sum + item.count, 0)
 
   const dispatch = useDispatch()
   const onClickLogout = () => {
@@ -28,13 +29,13 @@ const Header = () => {
   }
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  // useEffect(() => {
-  //   if (isMounted.current) {
-  //     const json = JSON.stringify(items)
-  //     localStorage.setItem('cart', json)
-  //   }
-  //   isMounted.current = true
-  // }, [items])
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items)
+      localStorage.setItem('cart', json)
+    }
+    isMounted.current = true
+  }, [items])
 
   useEffect(() => {
     function handleResize() {
@@ -82,7 +83,7 @@ const Header = () => {
                         className={styles.search_section__logout_block}
                       >
                         <img
-                          src="./assets/img/free-icon-power-8509243 white.svg"
+                          src="../assets/img/free-icon-power-8509243 white.svg"
                           alt="power"
                         />
                       </Link>
@@ -109,7 +110,7 @@ const Header = () => {
                   >
                     <img
                       className="search-section__catalog-img"
-                      src="./assets/img/free-icon-tiles-6569357 1.png"
+                      src="../assets/img/free-icon-tiles-6569357 1.png"
                       alt="tiles"
                     />
                     <span>#вКаталог</span>
@@ -174,7 +175,11 @@ const Header = () => {
               className={styles.header__logo_block}
             />
           </Link>
-          <Link to="/catalog" className={styles.header__discount}>
+          <Link
+            onClick={() => onChangeCategory('акции')}
+            to="/catalog"
+            className={styles.header__discount}
+          >
             <img src="../assets/img/free-icon-fire-8648355 1.svg" alt="fire" />
             <span>Акции</span>
           </Link>

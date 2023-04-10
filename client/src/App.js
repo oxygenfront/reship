@@ -25,6 +25,7 @@ import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
 import Preloader from './components/Preloader/Preloader'
 import { fetchItems } from './redux/slices/itemsSlice'
 import { selectFilter } from './redux/slices/fiterSlice'
+import axios from 'axios'
 
 function App() {
   const dispatch = useDispatch()

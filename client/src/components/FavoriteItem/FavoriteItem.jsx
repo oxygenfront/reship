@@ -7,7 +7,7 @@ import { selectItemsData } from '../../redux/slices/itemsSlice'
 
 const FavoriteItem = ({ name, price, image, id }) => {
   const dispatch = useDispatch()
-  const { items, status } = useSelector(selectItemsData)
+  console.log(name, price, id)
   const onClickAdd = () => {
     const item = {
       id,
@@ -21,43 +21,33 @@ const FavoriteItem = ({ name, price, image, id }) => {
 
   return (
     <>
-      {status === 'success' &&
-        items.map(
-          (item) =>
-            item.id === id && (
-              <div
-                key={id}
-                className={styles.person__favorites_wrapper_items_item}
-              >
-                <Link to={`/item/${id}`} className={styles.person__favorites_wrapper_items_item_img_wrapper}>
-                  <img
-                    className={styles.person__favorites_wrapper_items_item_img}
-                    src={`../assets/products_img/${id}.png`}
-                  />
-                </Link>
+      <div className={styles.person__favorites_wrapper_items_item}>
+        <Link
+          to={`/item/${id}`}
+          className={styles.person__favorites_wrapper_items_item_img_wrapper}
+        >
+          <img
+            className={styles.person__favorites_wrapper_items_item_img}
+            src={`../assets/products_img/${id}.png`}
+          />
+        </Link>
 
-                <Link
-                  to={`/item/${id}`}
-                  className={styles.person__favorites_wrapper_items_item_name}
-                >
-                  {item.name}
-                </Link>
-                <div
-                  className={styles.person__favorites_wrapper_items_item_price}
-                >
-                  <span>Всего за {item.price} rub</span>
-                </div>
-                <button
-                  onClick={onClickAdd}
-                  className={
-                    styles.person__favorites_wrapper_items_item_add_cart
-                  }
-                >
-                  Добавить в корзину
-                </button>
-              </div>
-            )
-        )}
+        <Link
+          to={`/item/${id}`}
+          className={styles.person__favorites_wrapper_items_item_name}
+        >
+          {name}
+        </Link>
+        <div className={styles.person__favorites_wrapper_items_item_price}>
+          <span>Всего за {price} rub</span>
+        </div>
+        <button
+          onClick={onClickAdd}
+          className={styles.person__favorites_wrapper_items_item_add_cart}
+        >
+          Добавить в корзину
+        </button>
+      </div>
     </>
   )
 }

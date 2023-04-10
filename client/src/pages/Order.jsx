@@ -4,7 +4,8 @@ import InputMask from 'react-input-mask'
 import { useDispatch } from 'react-redux'
 import { fetchCreateOrder } from '../redux/slices/orderSlice'
 import { fetchAuthMe } from '../redux/slices/authSlice'
-import { Navigate } from 'react-router-dom'
+
+import { clearItems } from '../redux/slices/cartSlice'
 const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
@@ -49,6 +50,7 @@ const Order = () => {
       alert('Не удалось создать заказ')
     } else {
       alert('Заказ успешно создан')
+      clearItems()
       dispatch(fetchAuthMe(token))
     }
     setOrder(initialState)

@@ -1,27 +1,18 @@
 import classNames from 'classnames'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import {
-  addItem,
-  fetchAddCartItem,
-  fetchDeleteCartItem,
-  minusItem,
-  removeItem,
-} from '../../redux/slices/cartSlice'
+import { addItem, minusItem, removeItem } from '../../redux/slices/cartSlice'
 import styles from './CartItem.module.sass'
-import { fetchAuthMe } from '../../redux/slices/authSlice'
 
 const CartItem = ({ id, price, image, count, name }) => {
   const dispatch = useDispatch()
-  const token = localStorage.getItem('token')
-  const onClickPlus = async () => {
-    await dispatch(fetchAddCartItem({ product_id: id, token }))
-    dispatch(fetchAuthMe(token))
+
+  const onClickPlus = () => {
+    dispatch(addItem({ id }))
   }
-  const onClickMinus = async () => {
-    await dispatch(fetchDeleteCartItem({ product_id: id, token }))
-    dispatch(fetchAuthMe(token))
+  const onClickMinus = () => {
+    dispatch(minusItem(id))
   }
   const onClickRemove = () => {
     dispatch(removeItem(id))
@@ -68,7 +59,7 @@ const CartItem = ({ id, price, image, count, name }) => {
         >
           <div className={styles.cart__delivery_items_item_count_wrapper}>
             <button
-              onClick={onClickMinus}
+              onClick={count > 1 ? onClickMinus : onClickRemove}
               className={styles.cart__delivery_items_item_count_minus}
             >
               <div></div>

@@ -147,7 +147,7 @@ const Personal = () => {
     return <Navigate to="/"></Navigate>
   }
   if (status === 'success') {
-    data.orders.map((order) => console.log(order))
+    data.favorites.map((order) => console.log(order))
   }
   return (
     <>
@@ -629,7 +629,12 @@ const Personal = () => {
                 <div className="person__favorites-wrapper">
                   <div className="person__favorites-wrapper-items">
                     {data.favorites.map((item) => (
-                      <FavoriteItem key={item} id={item}></FavoriteItem>
+                      <FavoriteItem
+                        key={item.product_id}
+                        id={item.product_id}
+                        price={item.price}
+                        name={item.name}
+                      ></FavoriteItem>
                     ))}
                   </div>
                 </div>

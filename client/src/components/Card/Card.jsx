@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import {
   addItem,
   fetchAddCartItem,
   selectCartItemById,
 } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
-import { fetchAuthMe, selectUserData } from '../../redux/slices/authSlice'
+import {
+  fetchAuthMe,
+  selectIsAuth,
+  selectUserData,
+} from '../../redux/slices/authSlice'
 import {
   fetchAddFavorite,
   fetchDeleteFavorite,
@@ -16,29 +20,38 @@ import classNames from 'classnames'
 
 const Card = ({ name, image, price, id, old_price }) => {
   const dispatch = useDispatch()
-
+  const cartItem = useSelector(selectCartItemById(id))
+  const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
-
-  const onClickAdd = async () => {
-    await dispatch(fetchAddCartItem({ product_id: id, token }))
-    dispatch(fetchAuthMe(token))
+  const [navigate, setNavigate] = useState(false)
+  const onClickAdd = () => {
+    const item = {
+      id,
+      name,
+      image,
+      price,
+      count: 0,
+    }
+    dispatch(addItem(item))
   }
-  const cartItem =
-    status === 'success'
-      ? data.basket.find((item) => item.product_id === id) || { count: 0 }
-      : null
 
-  const addedCount = status === 'success' ? cartItem.count : '0'
+  const addedCount = cartItem ? cartItem.count : 0
 
   const [isFavorite, setIsFavorite] = useState(false)
   useEffect(() => {
-    if (status === 'success') {
-      setIsFavorite(data.favorites.includes(Number(id)))
+    if (status === 'success' && isAuth) {
+      const ids = data.favorites.map((item) => item.product_id)
+
+      setIsFavorite(ids.includes(Number(id)))
     }
   }, [status])
 
   const onChangeFavorite = async () => {
+    if (!isAuth) {
+      console.log('not auth')
+      return setNavigate(true)
+    }
     if (!isFavorite) {
       const data = await dispatch(fetchAddFavorite({ product_id: id, token }))
       if (!data.payload) {
@@ -52,6 +65,7 @@ const Card = ({ name, image, price, id, old_price }) => {
       const data = await dispatch(
         fetchDeleteFavorite({ product_id: id, token })
       )
+      dispatch(fetchAuthMe(token))
       if (!data.payload) {
         return alert('Не удалось удалить товар из избранных')
       } else {
@@ -59,6 +73,9 @@ const Card = ({ name, image, price, id, old_price }) => {
         return setIsFavorite(false)
       }
     }
+  }
+  if (navigate) {
+    return <Navigate to="/login"></Navigate>
   }
   return (
     <div className={styles.catalog__items_block_item}>

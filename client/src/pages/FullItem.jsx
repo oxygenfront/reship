@@ -32,7 +32,7 @@ const FullItem = () => {
       <div className="container card-section__container">
         <div className="card-section__img-block">
           <img
-            src="../assets/img/iphone-product-card.png"
+            src={`../assets/products_img/${id}.png`}
             className="fiol"
             alt="iphone"
           />

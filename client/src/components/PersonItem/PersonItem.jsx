@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import styles from './PersonItem.module.sass'
 
-const PersonItem = ({ status, image, price, count, title }) => {
+const PersonItem = ({ id, status, image, price, count, name }) => {
   return (
     <div className={styles.person__delivery_history_wrapper_item}>
       <div className={styles.person__delivery_history_wrapper_item_img_block}>
@@ -10,20 +10,18 @@ const PersonItem = ({ status, image, price, count, title }) => {
           className={
             styles.person__delivery_history_wrapper_item_img_block_item
           }
-          src="https://placehold.co/116x116"
+          src={`../assets/products_img/${id}.png`}
           alt="itemPhoto"
         />
       </div>
       <div className={styles.person__delivery_history_wrapper_item_name}>
-        <span>
-          IPhone 11 (128 gb)
-        </span>
+        <span>{name} </span>
       </div>
       <div className={styles.person__delivery_history_wrapper_item_number}>
-        <span>1</span>
+        <span>{count}</span>
       </div>
       <div className={styles.person__delivery_history_wrapper_item_price}>
-        43,000 rub
+        {price} rub
       </div>
       <div
         className={classNames(

@@ -76,6 +76,7 @@ const authSlice = createSlice({
 
 export const { logout } = authSlice.actions
 export const selectUserData = (state) => state.auth
-export const selectIsAuth = (state) => Boolean(state.auth.data)
+export const selectIsAuth = (state) =>
+  Boolean(state.auth.data && state.auth.data.bcode !== 4.3)
 
 export default authSlice.reducer

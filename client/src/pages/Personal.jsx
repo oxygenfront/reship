@@ -120,6 +120,16 @@ const Personal = () => {
     setChangeState({ changeEmail: !changeState.changeEmail })
     setPersonMail({ mail: '' })
   }
+  function timeConverter(UNIX_timestamp) {
+    const date = new Date(UNIX_timestamp)
+
+    return date.toLocaleString('ru-US', {
+      day: 'numeric',
+      year: 'numeric',
+      month: 'long',
+    })
+  }
+
   useEffect(() => {
     if (status === 'success') {
       setPersonName({
@@ -137,7 +147,7 @@ const Personal = () => {
     return <Navigate to="/"></Navigate>
   }
   if (status === 'success') {
-    data.orders.map((order) => console.log(order))
+    data.favorites.map((order) => console.log(order))
   }
   return (
     <>
@@ -554,11 +564,17 @@ const Personal = () => {
                     className="person__delivery-history_wrapper"
                   >
                     <div className="person__delivery-history_wrapper-title">
-                      Дата покупки:
-                      {order.date_start}
+                      Дата покупки: {timeConverter(order.date_start)}
                     </div>
-                    {/* Order-item info */}
-                    <PersonItem></PersonItem>
+                    {order.products.map((product) => (
+                      <PersonItem
+                        count={product.count}
+                        name={product.name}
+                        id={product.product_id}
+                        price={product.price}
+                        key={product.product_id}
+                      ></PersonItem>
+                    ))}
                   </div>
                 ))
               : null}
@@ -592,8 +608,18 @@ const Personal = () => {
                 </div>
 
                 <div className="person__delivery-items">
-                  <DeliveryItem />
-                  <DeliveryItem />
+                  {status === 'success' &&
+                    data.orders.map((order) =>
+                      order.products.map((product) => (
+                        <DeliveryItem
+                          name={product.name}
+                          price={product.price}
+                          count={product.count}
+                          id={product.product_id}
+                          key={product.product_id}
+                        />
+                      ))
+                    )}
                 </div>
               </div>
             ) : null}
@@ -603,7 +629,12 @@ const Personal = () => {
                 <div className="person__favorites-wrapper">
                   <div className="person__favorites-wrapper-items">
                     {data.favorites.map((item) => (
-                      <FavoriteItem key={item} id={item}></FavoriteItem>
+                      <FavoriteItem
+                        key={item.product_id}
+                        id={item.product_id}
+                        price={item.price}
+                        name={item.name}
+                      ></FavoriteItem>
                     ))}
                   </div>
                 </div>

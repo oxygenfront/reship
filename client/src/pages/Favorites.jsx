@@ -8,7 +8,7 @@ import {
   fetchChangePassword,
 } from '../redux/slices/changeSlice'
 
-const Favorites = () => {
+const Personal = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
@@ -120,6 +120,16 @@ const Favorites = () => {
     setChangeState({ changeEmail: !changeState.changeEmail })
     setPersonMail({ mail: '' })
   }
+  function timeConverter(UNIX_timestamp) {
+    const date = new Date(UNIX_timestamp)
+
+    return date.toLocaleString('ru-US', {
+      day: 'numeric',
+      year: 'numeric',
+      month: 'long',
+    })
+  }
+
   useEffect(() => {
     if (status === 'success') {
       setPersonName({
@@ -136,7 +146,9 @@ const Favorites = () => {
   if (status === 'success' && !isAuth) {
     return <Navigate to="/"></Navigate>
   }
-
+  if (status === 'success') {
+    data.orders.map((order) => console.log(order))
+  }
   return (
     <>
       <Menu />
@@ -297,7 +309,7 @@ const Favorites = () => {
                     <input
                       className="person__secret-change-inp-pass"
                       onChange={updatePassword}
-                      value={password.lastPassword}
+                      value={password.last_password}
                       name="password"
                       type="password"
                       placeholder="Введите старый пароль"
@@ -306,7 +318,7 @@ const Favorites = () => {
                       className="person__secret-change-inp-pass"
                       name="new_password"
                       onChange={updatePassword}
-                      value={password.newPassword}
+                      value={password.new_password}
                       type="password"
                       placeholder="Введите новый пароль"
                     />
@@ -545,15 +557,24 @@ const Favorites = () => {
             )}
 
             {personPages.delHistory
-              ? status === 'succcess' &&
+              ? status === 'success' &&
                 data.orders.map((order) => (
-                  <div className="person__delivery-history_wrapper">
+                  <div
+                    key={order.id}
+                    className="person__delivery-history_wrapper"
+                  >
                     <div className="person__delivery-history_wrapper-title">
-                      {/* date */}
-                      {order}
+                      Дата покупки: {timeConverter(order.date_start)}
                     </div>
-                    {/* Order-item info */}
-                    <PersonItem></PersonItem>
+                    {order.products.map((product) => (
+                      <PersonItem
+                        count={product.count}
+                        name={product.name}
+                        id={product.product_id}
+                        price={product.price}
+                        key={product.product_id}
+                      ></PersonItem>
+                    ))}
                   </div>
                 ))
               : null}
@@ -587,8 +608,18 @@ const Favorites = () => {
                 </div>
 
                 <div className="person__delivery-items">
-                  <DeliveryItem />
-                  <DeliveryItem />
+                  {status === 'success' &&
+                    data.orders.map((order) =>
+                      order.products.map((product) => (
+                        <DeliveryItem
+                          name={product.name}
+                          price={product.price}
+                          count={product.count}
+                          id={product.product_id}
+                          key={product.product_id}
+                        />
+                      ))
+                    )}
                 </div>
               </div>
             ) : null}
@@ -598,7 +629,12 @@ const Favorites = () => {
                 <div className="person__favorites-wrapper">
                   <div className="person__favorites-wrapper-items">
                     {data.favorites.map((item) => (
-                      <FavoriteItem key={item} id={item}></FavoriteItem>
+                      <FavoriteItem
+                        key={item.product_id}
+                        id={item.product_id}
+                        price={item.price}
+                        name={item.name}
+                      ></FavoriteItem>
                     ))}
                   </div>
                 </div>
@@ -733,4 +769,4 @@ const Favorites = () => {
   )
 }
 
-export default Favorites
+export default Personal

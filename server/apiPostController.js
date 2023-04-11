@@ -880,7 +880,6 @@ class ApiPostController {
                   name: rows_product[0].name,
                   price: rows_product[0].price,
                 });
-                console.log();
 
                 database.query(
                   `UPDATE \`users\` SET \`favorites\` = '${JSON.stringify(
@@ -994,6 +993,7 @@ class ApiPostController {
       "number_flat",
       "postal_code",
       "token",
+      "promocode"
     ];
 
     const requestData = request.body;
@@ -1017,6 +1017,7 @@ class ApiPostController {
       number_flat,
       postal_code,
       token,
+      promocode
     } = requestData;
 
     const sanitizedValues = {
@@ -1029,6 +1030,7 @@ class ApiPostController {
       number_flat: tools.delInjection(number_flat),
       postal_code: tools.delInjection(postal_code),
       token: tools.delInjection(token),
+      promocode: tools.delInjection(promocode),
     };
 
     database.query(
@@ -1083,35 +1085,59 @@ class ApiPostController {
                       .json({ error: "Ошибка на сервере.", bcode: 17.5 });
                   }
 
+                  let old_price = 0;
                   let full_price = 0;
                   for (let i = 0; i < basket.length; i++) {
                     full_price += basket[i].full_price;
                   }
 
-                  const code_payment = tools.generateCode();
+                  old_price = full_price;
 
-                  database.query(
-                    `INSERT INTO \`payments\` (\`order_id\`, \`price\`, \`date_create\`, \`status\`, \`code\`) VALUES ('${
-                      rows_order.insertId
-                    }', '${full_price}', '${Date.now()}', '0', '${code_payment}');`,
-                    (error, rows) => {
-                      if (error) {
-                        return response
-                          .status(400)
-                          .json({
-                            error: "Ошибка на сервере.",
-                            bcode: 17.6,
-                            e: error,
-                          });
-                      }
-
-                      response.json({
-                        order_id: rows_order.insertId,
-                        code_payment: code_payment,
-                        full_price: full_price,
-                      });
+                  database.query(`SELECT * FROM \`promo\` WHERE promocode='${sanitizedValues.promocode}'`, (error, rows_promo) => {
+                    if (error) {
+                      return response
+                        .status(400)
+                        .json({ error: "Ошибка на сервере.", bcode: 17.7 });
                     }
-                  );
+
+                    let info = {'message': 'Промокод не использован.', 'persent': 0, 'promocode': ''}
+
+                    if (rows_promo.length == 1) {
+                      if (Date.now() < rows_promo[0].date_end) {
+                        full_price = full_price - (full_price * rows_promo[0].persent) / 100;
+                        info.message = 'Промокод использован'
+                        info.persent = rows_promo[0].persent
+                        info.promocode = rows_promo[0].promocode
+                      }
+                    } 
+
+                    const code_payment = tools.generateCode();
+
+                    database.query(
+                      `INSERT INTO \`payments\` (\`order_id\`, \`price\`, \`date_create\`, \`status\`, \`code\`) VALUES ('${
+                        rows_order.insertId
+                      }', '${full_price}', '${Date.now()}', '0', '${code_payment}');`,
+                      (error, rows) => {
+                        if (error) {
+                          return response
+                            .status(400)
+                            .json({
+                              error: "Ошибка на сервере.",
+                              bcode: 17.6,
+                              e: error,
+                            });
+                        }
+
+                        response.json({
+                          order_id: rows_order.insertId,
+                          code_payment: code_payment,
+                          old_price: old_price,
+                          full_price: full_price,
+                          info: info
+                        });
+                      }
+                    );
+                  })
                 }
               );
             }
@@ -1548,6 +1574,123 @@ class ApiPostController {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 25.2 });
+        }
+      }
+    );
+  }
+
+  async addPromocode(request, response) {
+    const requiredKeys = ["token", "promocode", "persent", "date_end"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 26 });
+    }
+
+    const { token, promocode, persent, date_end } = requestData;
+
+    const sanitizedValues = {
+      token: tools.delInjection(token),
+      promocode: tools.delInjection(promocode),
+      persent: tools.delInjection(persent),
+      date_end: tools.delInjection(date_end),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 26.1 });
+        }
+
+        if (rows.length == 1) {
+          if (rows[0].admin == 0) {
+            return response.json({
+              error: "У вас недостаточно прав.",
+              bcode: 26.3,
+            });
+          } else {
+            database.query(`INSERT INTO \`promo\` (\`promocode\`, \`persent\`, \`date_end\`) VALUES ('${sanitizedValues.promocode}', '${sanitizedValues.persent}', '${date_end}');`, (error, rows) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 26.4 });
+              }
+
+              response.json({promocode: sanitizedValues.promocode, persent: sanitizedValues.persent, date_end: sanitizedValues.date_end })
+            })
+          }
+
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 26.2 });
+        }
+      }
+    );
+  }
+
+  async getAllPromocodes(request, response) {
+    const requiredKeys = ["token"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 27 });
+    }
+
+    const {token} = requestData;
+
+    const sanitizedValues = {
+      token: tools.delInjection(token)
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 27.1 });
+        }
+
+        if (rows.length == 1) {
+          if (rows[0].admin == 0) {
+            return response.json({
+              error: "У вас недостаточно прав.",
+              bcode: 26.3,
+            });
+          } else {
+            database.query(
+              `SELECT * FROM \`promo\``,
+              (error, rows, fields) => {
+                if (error) {
+                  return response
+                    .status(500)
+                    .json({ error: "Ошибка на сервере", bcode: 27.3 });
+                }
+
+                response.json(rows)
+              })
+          }
+
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 27.2 });
         }
       }
     );

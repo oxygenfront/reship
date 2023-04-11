@@ -84,6 +84,7 @@ router.post("/deleteBasket", apiPostController.deleteBasket);
 router.post("/createOrder", apiPostController.createOrder);
 router.get("/getOrdersByCustomerId", apiPostController.getOrdersByCustomerId);
 router.get("/getOrder", apiPostController.getOrder);
+router.get("/checkPromocode", apiPostController.checkPromocode);
 router.post(
   "/changeAvatar",
   upload_user_avatar.single("photo"),

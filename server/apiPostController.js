@@ -1030,7 +1030,7 @@ class ApiPostController {
       number_flat: tools.delInjection(number_flat),
       postal_code: tools.delInjection(postal_code),
       promocode: tools.delInjection(promocode),
-      basket: tools.delInjection(promocode),
+      basket: JSON.parse(basket),
     };
 
     let customer_id = -1;
@@ -1049,9 +1049,9 @@ class ApiPostController {
       }
     );
 
-    basket = JSON.parse(basket);
+    const basket_json = sanitizedValues.basket;
 
-    if (basket.length < 1) {
+    if (basket_json.length < 1) {
       return response
         .status(500)
         .json({ error: "В корзине нет товаров", bcode: 17.4 });
@@ -1070,7 +1070,7 @@ class ApiPostController {
         sanitizedValues.postal_code,
         customer_id,
         Date.now(),
-        JSON.stringify(basket),
+        JSON.stringify(basket_json),
       ],
       (error, rows_order) => {
         if (error) {
@@ -1090,8 +1090,8 @@ class ApiPostController {
 
             let old_price = 0;
             let full_price = 0;
-            for (let i = 0; i < basket.length; i++) {
-              full_price += basket[i].full_price;
+            for (let i = 0; i < basket_json.length; i++) {
+              full_price += basket_json[i].price;
             }
 
             old_price = full_price;

@@ -2,7 +2,7 @@ import tools from "./tools.js";
 import database from "./database.js";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import date_correct from 'date-fns'
+import date_correct from "date-fns";
 
 const url = "http://localhost:5000";
 
@@ -992,8 +992,8 @@ class ApiPostController {
       "number_home",
       "number_flat",
       "postal_code",
-      "token",
       "promocode",
+      "basket",
     ];
 
     const requestData = request.body;
@@ -1016,8 +1016,8 @@ class ApiPostController {
       number_home,
       number_flat,
       postal_code,
-      token,
       promocode,
+      basket,
     } = requestData;
 
     const sanitizedValues = {
@@ -1029,135 +1029,130 @@ class ApiPostController {
       number_home: tools.delInjection(number_home),
       number_flat: tools.delInjection(number_flat),
       postal_code: tools.delInjection(postal_code),
-      token: tools.delInjection(token),
       promocode: tools.delInjection(promocode),
+      basket: tools.delInjection(promocode),
     };
 
+    let customer_id = -1;
     database.query(
       `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
       (error, rows, fields) => {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 17.1 });
+            .json({ error: "Ошибка на сервере", bcode: 20.1 });
         }
 
         if (rows.length == 1) {
-          rows[0].basket = JSON.parse(rows[0].basket);
-
-          const customer_id = rows[0].id;
-          const basket = rows[0].basket;
-
-          if (basket.length < 1) {
-            return response
-              .status(500)
-              .json({ error: "В корзине нет товаров", bcode: 17.4 });
-          }
-
-          database.query(
-            "INSERT INTO `orders` (`init`, `number`, `email`, `city`, `street`, `number_home`, `number_flat`, `postal_code`, `status`, `customer_id`, `date_start`, `date_end`, `products`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '-1', ?, ?, '0', ?)",
-            [
-              sanitizedValues.init,
-              sanitizedValues.number,
-              sanitizedValues.email,
-              sanitizedValues.city,
-              sanitizedValues.street,
-              sanitizedValues.number_home,
-              sanitizedValues.number_flat,
-              sanitizedValues.postal_code,
-              customer_id,
-              Date.now(),
-              JSON.stringify(basket),
-            ],
-            (error, rows_order) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 17.3 });
-              }
-
-              database.query(
-                `UPDATE \`users\` SET \`basket\` = '[]' WHERE \`id\` = ${customer_id};`,
-                (error, rows) => {
-                  if (error) {
-                    return response
-                      .status(400)
-                      .json({ error: "Ошибка на сервере.", bcode: 17.5 });
-                  }
-
-                  let old_price = 0;
-                  let full_price = 0;
-                  for (let i = 0; i < basket.length; i++) {
-                    full_price += basket[i].full_price;
-                  }
-
-                  old_price = full_price;
-
-                  database.query(
-                    `SELECT * FROM \`promo\` WHERE promocode='${sanitizedValues.promocode}'`,
-                    (error, rows_promo) => {
-                      if (error) {
-                        return response
-                          .status(400)
-                          .json({ error: "Ошибка на сервере.", bcode: 17.7 });
-                      }
-
-                      let info = {
-                        message: "Промокод не использован.",
-                        persent: 0,
-                        promocode: "",
-                      };
-
-                      if (rows_promo.length == 1) {
-                        if (Date.now() < rows_promo[0].date_end) {
-                          full_price =
-                            full_price -
-                            (full_price * rows_promo[0].persent) / 100;
-                          info.message = "Промокод использован";
-                          info.persent = rows_promo[0].persent;
-                          info.promocode = rows_promo[0].promocode;
-                        } else {
-                          info.message = "Время действия промокода истекло";
-                          info.persent = rows_promo[0].persent;
-                          info.promocode = rows_promo[0].promocode;
-                        }
-                      }
-
-                      const code_payment = tools.generateCode();
-
-                      database.query(
-                        `INSERT INTO \`payments\` (\`order_id\`, \`price\`, \`date_create\`, \`status\`, \`code\`) VALUES ('${
-                          rows_order.insertId
-                        }', '${full_price}', '${Date.now()}', '0', '${code_payment}');`,
-                        (error, rows) => {
-                          if (error) {
-                            return response.status(400).json({
-                              error: "Ошибка на сервере.",
-                              bcode: 17.6,
-                              e: error,
-                            });
-                          }
-
-                          response.json({
-                            order_id: rows_order.insertId,
-                            code_payment: code_payment,
-                            old_price: old_price,
-                            full_price: full_price,
-                            info: info,
-                          });
-                        }
-                      );
-                    }
-                  );
-                }
-              );
-            }
-          );
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 17.2 });
+          customer_id = rows[0].id;
         }
+      }
+    );
+
+    basket = JSON.parse(basket);
+
+    if (basket.length < 1) {
+      return response
+        .status(500)
+        .json({ error: "В корзине нет товаров", bcode: 17.4 });
+    }
+
+    database.query(
+      "INSERT INTO `orders` (`init`, `number`, `email`, `city`, `street`, `number_home`, `number_flat`, `postal_code`, `status`, `customer_id`, `date_start`, `date_end`, `products`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '-1', ?, ?, '0', ?)",
+      [
+        sanitizedValues.init,
+        sanitizedValues.number,
+        sanitizedValues.email,
+        sanitizedValues.city,
+        sanitizedValues.street,
+        sanitizedValues.number_home,
+        sanitizedValues.number_flat,
+        sanitizedValues.postal_code,
+        customer_id,
+        Date.now(),
+        JSON.stringify(basket),
+      ],
+      (error, rows_order) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 17.3 });
+        }
+
+        database.query(
+          `UPDATE \`users\` SET \`basket\` = '[]' WHERE \`id\` = ${customer_id};`,
+          (error, rows) => {
+            if (error) {
+              return response
+                .status(400)
+                .json({ error: "Ошибка на сервере.", bcode: 17.5 });
+            }
+
+            let old_price = 0;
+            let full_price = 0;
+            for (let i = 0; i < basket.length; i++) {
+              full_price += basket[i].full_price;
+            }
+
+            old_price = full_price;
+
+            database.query(
+              `SELECT * FROM \`promo\` WHERE promocode='${sanitizedValues.promocode}'`,
+              (error, rows_promo) => {
+                if (error) {
+                  return response
+                    .status(400)
+                    .json({ error: "Ошибка на сервере.", bcode: 17.7 });
+                }
+
+                let info = {
+                  message: "Промокод не использован.",
+                  persent: 0,
+                  promocode: "",
+                };
+
+                if (rows_promo.length == 1) {
+                  if (Date.now() < rows_promo[0].date_end) {
+                    full_price =
+                      full_price - (full_price * rows_promo[0].persent) / 100;
+                    info.message = "Промокод использован";
+                    info.persent = rows_promo[0].persent;
+                    info.promocode = rows_promo[0].promocode;
+                  } else {
+                    info.message = "Время действия промокода истекло";
+                    info.persent = rows_promo[0].persent;
+                    info.promocode = rows_promo[0].promocode;
+                  }
+                }
+
+                const code_payment = tools.generateCode();
+
+                database.query(
+                  `INSERT INTO \`payments\` (\`order_id\`, \`price\`, \`date_create\`, \`status\`, \`code\`) VALUES ('${
+                    rows_order.insertId
+                  }', '${full_price}', '${Date.now()}', '0', '${code_payment}');`,
+                  (error, rows) => {
+                    if (error) {
+                      return response.status(400).json({
+                        error: "Ошибка на сервере.",
+                        bcode: 17.6,
+                        e: error,
+                      });
+                    }
+
+                    response.json({
+                      order_id: rows_order.insertId,
+                      code_payment: code_payment,
+                      old_price: old_price,
+                      full_price: full_price,
+                      info: info,
+                    });
+                  }
+                );
+              }
+            );
+          }
+        );
       }
     );
   }
@@ -1727,7 +1722,7 @@ class ApiPostController {
         .json({ error: "Некорректные данные.", bcode: 28 });
     }
 
-    const { promocode, token } = requestData;
+    const { token, promocode } = requestData;
 
     const sanitizedValues = {
       promocode: tools.delInjection(promocode),
@@ -1752,18 +1747,36 @@ class ApiPostController {
                   .status(500)
                   .json({ error: "Ошибка на сервере", bcode: 28.1 });
               }
-      
+
               if (rows.length == 1) {
                 if (rows[0].date_end < Date.now()) {
-                  const formatted_date = date_correct.format(rows[0].date_end, 'dd.MM.yyyy HH:mm:ss');
-                  
-                  response.json({'message': `Действие промокода истекло ${formatted_date}.`, 'status': 0, 'date_end_text': formatted_date, 'date_end_timestamp': rows[0].date_end})
+                  const formatted_date = date_correct.format(
+                    rows[0].date_end,
+                    "dd.MM.yyyy HH:mm:ss"
+                  );
+
+                  response.json({
+                    message: `Действие промокода истекло ${formatted_date}.`,
+                    status: 0,
+                    date_end_text: formatted_date,
+                    date_end_timestamp: rows[0].date_end,
+                    persent: rows[0].persent,
+                  });
                 } else {
-                  const formatted_date = date_correct.format(rows[0].date_end, 'dd.MM.yyyy HH:mm:ss');
-                  
-                  response.json({'message': `Промокод действителен до ${formatted_date}.`, 'status': 1, 'date_end_text': formatted_date, 'date_end_timestamp': rows[0].date_end})
+                  const formatted_date = date_correct.format(
+                    rows[0].date_end,
+                    "dd.MM.yyyy HH:mm:ss"
+                  );
+
+                  response.json({
+                    message: `Промокод действителен до ${formatted_date}.`,
+                    status: 1,
+                    date_end_text: formatted_date,
+                    date_end_timestamp: rows[0].date_end,
+                    persent: rows[0].persent,
+                  });
                 }
-              } else {  
+              } else {
                 return response
                   .status(400)
                   .json({ error: "Промокод не найден", bcode: 28.2 });

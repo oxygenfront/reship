@@ -41,7 +41,9 @@ const upload_user_avatar = multer({
           return cb(errorMysql);
         }
         if (rows.length == 1) {
-          fs.unlink("." + rows[0].avatar, (err) => {});
+          if (rows[0].avatar !== '/client/public/assets/user_img/default.jpg'){
+            fs.unlink("." + rows[0].avatar, (err) => {});
+          }
           database.query(
             `UPDATE \`users\` SET \`avatar\` = '/client/public/assets/user_img/${
               "reship-" +
@@ -84,7 +86,7 @@ router.post("/deleteBasket", apiPostController.deleteBasket);
 router.post("/createOrder", apiPostController.createOrder);
 router.get("/getOrdersByCustomerId", apiPostController.getOrdersByCustomerId);
 router.get("/getOrder", apiPostController.getOrder);
-router.get("/checkPromocode", apiPostController.checkPromocode);
+router.post("/checkPromocode", apiPostController.checkPromocode);
 router.post(
   "/changeAvatar",
   upload_user_avatar.single("photo"),

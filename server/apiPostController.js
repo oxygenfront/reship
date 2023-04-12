@@ -1040,7 +1040,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 20.1 });
+            .json({ error: "Ошибка на сервере", bcode: 17.1 });
         }
 
         if (rows.length == 1) {

@@ -1,12 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { calcTotalPrice } from '../../utils/calcTotalPrice'
 import { getCartFromLS } from '../../utils/getCartFromLs'
+import axios from '../../axios'
 
 const { items } = getCartFromLS()
+export const fetchCheckPromocode = createAsyncThunk(
+  'auth/fetchCheckPromocode',
+  async (params) => {
+    console.log(params)
+    const { data } = await axios.post('/checkPromocode', params)
+    return data
+  }
+)
 
 const initialState = {
   items,
-  // status: 'loading',
+  status: 'loading',
 }
 const cartSlice = createSlice({
   name: 'cart',

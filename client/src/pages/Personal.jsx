@@ -640,7 +640,6 @@ const Personal = () => {
                 </div>
               ) : (
                 <div className="person__wait-wrapper">
-                  <FavoriteItem></FavoriteItem>
                   <div className="person__reviews_text-block">
                     <p>
                       Вы еще не добавляли товары в “Избранное” - вернитесь сюда

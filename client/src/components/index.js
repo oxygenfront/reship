@@ -11,3 +11,6 @@ export { default as FavoriteItem } from './FavoriteItem/FavoriteItem'
 export { default as DeliveryItem } from './DeliveryItem/DeliveryItem'
 export { default as Skeleton } from './Skeleton'
 export { default as AdminItem } from './AdminItem/AdminItem'
+export { default as AdminPayment } from './AdminPayment/AdminPayment'
+export { default as AdminOrder } from './AdminOrder/AdminOrder'
+

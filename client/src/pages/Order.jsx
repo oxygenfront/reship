@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { isEmail } from 'validator'
 import InputMask from 'react-input-mask'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreateOrder } from '../redux/slices/orderSlice'
 import { fetchAuthMe } from '../redux/slices/authSlice'
 
-import { clearItems } from '../redux/slices/cartSlice'
+import { clearItems, selectCart } from '../redux/slices/cartSlice'
 const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
+  const { items } = useSelector(selectCart)
+  
   const initialState = {
     init: '',
     number: '',
@@ -18,6 +20,8 @@ const Order = () => {
     number_home: '',
     number_flat: '',
     postal_code: '',
+    promocode: '',
+    basket: [],
   }
   const [order, setOrder] = useState({
     init: '',
@@ -29,6 +33,10 @@ const Order = () => {
     number_flat: '',
     postal_code: '',
     token,
+    promocode: window.localStorage.getItem('promocode')
+      ? window.localStorage.getItem('promocode')
+      : '',
+  basket: {...items},
   })
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {

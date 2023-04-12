@@ -31,6 +31,12 @@ const Admin = () => {
       <Link to="/admin/create" className="admin-wrapper-createbtn">
         Создать новый товар
       </Link>
+      <Link className="admin-wrapper-paymentsbtn" to="/admin/payments">
+        Подтверждение оплаты
+      </Link>
+      <Link className="admin-wrapper-ordersbtn" to="/admin/orders">
+        Заказы
+      </Link>
       {categories.map((categorie, index) => (
         <>
           <div className="catalog__suptitle" key={categorie} id={categorie}>
@@ -53,7 +59,6 @@ const Admin = () => {
                       id={item.id}
                       name={item.name}
                       price={item.price}
-                      image={item.image_link}
                     ></AdminItem>
                   ))}
           </div>

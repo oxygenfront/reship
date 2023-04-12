@@ -88,20 +88,20 @@ const Catalog = () => {
             choosenCategorie === 'акции' ? 'catalog__items-block' : 'catalog__block'
           }
         >
-          {choosenCategorie === 'акции'
-            ? items.map(
+          {choosenCategorie === 'акции' 
+            ? items.filter(item => {if(item.old_price !== item.price){return true}else{return false}}).map(
                 (item) =>
-                  item.old_price !== item.price && (
-                    <Card
-                      key={item.id}
-                      id={item.id}
-                      name={item.name}
-                      old_price={item.old_price}
-                      price={item.price}
-                      image={item.image_link}
-                    ></Card>
-                  )
-              )
+                 (
+                  <Card
+                    key={item.id}
+                    id={item.id}
+                    name={item.name}
+                    old_price={item.old_price}
+                    price={item.price}
+                    
+                  ></Card>
+                ))
+              
             : categories.map((categorie, index) => (
                 <>
                   <div className='catalog__suptitle' id={categorie}>

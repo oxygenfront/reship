@@ -11,5 +11,7 @@ export { default as ForgotMessage } from './ForgotMessage'
 export { default as Admin } from './Admin'
 export { default as AdminCreate } from './AdminCreate'
 export { default as AdminChange } from './AdminChange'
+export { default as AdminPayments } from './AdminPayments'
+export { default as AdminOrders } from './AdminOrders'
 
 export { default as Favorites } from './Favorites'

@@ -20,8 +20,12 @@ const AdminItem = ({ id, price, image, name }) => {
         Изменить товар
       </Link>
       <div className={styles.container}>
-        <div className={styles.image}>
-          <img src={image} alt="img" />
+        <div>
+          <img
+            className={styles.image}
+            src={`../assets/products_img/${id}.png`}
+            alt="img"
+          />
         </div>
 
         <div className={styles.name}>{name}</div>

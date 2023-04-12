@@ -8,7 +8,9 @@ import './index.sass'
 import {
   Admin,
   AdminChange,
+  AdminOrders,
   AdminCreate,
+  AdminPayments,
   Favorites,
   ForgotMessage,
 } from './pages'
@@ -22,10 +24,11 @@ import Order from './pages/Order'
 import Personal from './pages/Personal'
 import Register from './pages/Register'
 import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
-import Preloader from './components/Preloader/Preloader'
+
 import { fetchItems } from './redux/slices/itemsSlice'
 import { selectFilter } from './redux/slices/fiterSlice'
-import axios from 'axios'
+
+
 
 function App() {
   const dispatch = useDispatch()
@@ -63,6 +66,14 @@ function App() {
           <Route
             path="/admin/:id"
             element={<AdminChange></AdminChange>}
+          ></Route>
+          <Route
+            path="/admin/payments"
+            element={<AdminPayments></AdminPayments>}
+          ></Route>
+          <Route
+            path="/admin/orders"
+            element={<AdminOrders></AdminOrders>}
           ></Route>
           <Route path="/register" element={<Register></Register>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>

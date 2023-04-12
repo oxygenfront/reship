@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { CartItem } from '../components'
@@ -6,14 +6,35 @@ import { CartItem } from '../components'
 import { selectCart } from '../redux/slices/cartSlice'
 import { fetchAuthMe } from '../redux/slices/authSlice'
 import { calcTotalPrice } from '../utils/calcTotalPrice'
+import { fetchCheckPromocode } from '../redux/slices/cartSlice'
 
 const Cart = () => {
+  const dispatch = useDispatch()
   const { items } = useSelector(selectCart)
 
   const totalPrice = calcTotalPrice(items)
 
   const totalCount = items.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
+  const [promocode, setPromocode] = useState('')
+  const token = localStorage.getItem('token')
+  const [isPromocode, setIsPromocode] = useState(false)
+  async function sendForm(e) {
+    e.preventDefault()
+    const data = await dispatch(fetchCheckPromocode({ token, promocode }))
+
+    if (!data.payload) {
+      alert('Не удалось использовать промокод')
+      return setIsPromocode(true)
+    }
+    if (data.payload) {
+      alert('Промокод применен')
+      window.localStorage.setItem('promocode', data.payload.persent)
+      return setIsPromocode(true)
+    }
+
+    setPromocode('')
+  }
 
   if (!totalCount) {
     return (
@@ -63,7 +84,13 @@ const Cart = () => {
               </div>
             </div>
             <div className="cart__total-wrapper-price">
-              <span>{totalPrice + deliveryPrice} ₽</span>
+              <span>
+                {window.localStorage.getItem('promocode')
+                  ? (totalPrice + deliveryPrice) *
+                    (1 - window.localStorage.getItem('promocode') / 100)
+                  : totalPrice + deliveryPrice}{' '}
+                ₽
+              </span>
             </div>
           </div>
           <div className="cart__total-wrapper-buttons">
@@ -75,10 +102,15 @@ const Cart = () => {
             </Link>
             <form action="">
               <input
+                value={promocode}
+                onChange={(e) => setPromocode(e.target.value)}
                 type="text"
                 className="cart__total-wrapper-buttons_inp"
                 placeholder="Ввести промокод"
               />
+              <button onClick={sendForm} type="submit">
+                <img src="" alt="check" />
+              </button>
             </form>
           </div>
         </div>

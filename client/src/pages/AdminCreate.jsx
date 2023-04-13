@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchNewItem } from '../redux/slices/adminSlice'
+import { Navigate } from 'react-router-dom'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const AdminCreate = () => {
   const dispatch = useDispatch()
+  const { data, status } = useSelector(selectUserData)
   const initialState = {
     name: '',
     description_small: '',
@@ -51,6 +54,11 @@ const AdminCreate = () => {
       return alert('Не удалось создать товар')
     }
     setNewItem(initialState)
+  }
+  if (status === 'success' && data !== null) {
+    if (data.admin !== 1) {
+      return <Navigate to="/"></Navigate>
+    }
   }
   return (
     <section className="auth">

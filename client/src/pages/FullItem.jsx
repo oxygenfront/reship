@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { addItem } from '../redux/slices/cartSlice'
 import {
   fetchFullItem,
   selectFullItemData,
 } from '../redux/slices/fullItemSlice'
+import {
+  fetchAuthMe,
+  selectIsAuth,
+  selectUserData,
+} from '../redux/slices/authSlice'
+import {
+  fetchAddFavorite,
+  fetchDeleteFavorite,
+} from '../redux/slices/favoriteSlice'
 
 const FullItem = () => {
   const [openFull, setOpenFull] = useState(false)
   const { id } = useParams()
   const { item, status } = useSelector(selectFullItemData)
   const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  const token = localStorage.getItem('token')
+  const { data, userStatus = status } = useSelector(selectUserData)
+  const [navigate, setNavigate] = useState(false)
+  const [isFavorite, setIsFavorite] = useState(false)
   const onClickAdd = () => {
     const tovar = {
       id: item.id,
@@ -22,11 +36,52 @@ const FullItem = () => {
     }
     dispatch(addItem(tovar))
   }
+  console.log(userStatus)
+  useEffect(() => {
+    if (userStatus === 'success' && isAuth) {
+      const ids = data.favorites.map((item) => item.product_id)
+      console.log(ids)
+      setIsFavorite(ids.includes(Number(id)))
+    }
+  }, [data])
+  const onChangeFavorite = async () => {
+    if (!isAuth) {
+      console.log('not auth')
+      return setNavigate(true)
+    }
+    if (!isFavorite) {
+      const data = await dispatch(
+        fetchAddFavorite({ product_id: Number(id), token })
+      )
+      if (!data.payload) {
+        return alert('Не удалось добавить товар в избранные')
+      } else {
+        dispatch(fetchAuthMe(token))
+        return setIsFavorite(true)
+      }
+    }
+    if (isFavorite) {
+      const data = await dispatch(
+        fetchDeleteFavorite({ product_id: Number(id), token })
+      )
+      dispatch(fetchAuthMe(token))
+      if (!data.payload) {
+        return alert('Не удалось удалить товар из избранных')
+      } else {
+        dispatch(fetchAuthMe(token))
+        return setIsFavorite(false)
+      }
+    }
+  }
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
   }, [])
+  if (navigate) {
+    return <Navigate to="/login"></Navigate>
+  }
+  console.log(isFavorite)
   const renderStatus = Boolean(status === 'success')
-  if (renderStatus) console.log()
+
   return (
     <section className="card-section">
       <div className="container card-section__container">
@@ -91,8 +146,19 @@ const FullItem = () => {
               >
                 <img src="../assets/img/bag-white.svg" alt="" />
               </button>
-              <button className="card-section__choice-blue-blocks_item">
-                <img src="../assets/img/heart-white.svg" alt="" />
+              <button
+                onClick={onChangeFavorite}
+                className="card-section__choice-blue-blocks_item"
+              >
+                <img
+                  width={'26px'}
+                  src={
+                    isFavorite
+                      ? '../assets/img/heart-white.svg'
+                      : '../assets/img/heart-empty.svg'
+                  }
+                  alt=""
+                />
               </button>
             </div>
           </div>

@@ -13,6 +13,8 @@ import {
   AdminPayments,
   Favorites,
   ForgotMessage,
+  AdminPromocodes,
+  AdminCreatePromocode,
 } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
@@ -27,8 +29,6 @@ import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
 
 import { fetchItems } from './redux/slices/itemsSlice'
 import { selectFilter } from './redux/slices/fiterSlice'
-
-
 
 function App() {
   const dispatch = useDispatch()
@@ -74,6 +74,14 @@ function App() {
           <Route
             path="/admin/orders"
             element={<AdminOrders></AdminOrders>}
+          ></Route>
+          <Route
+            path="/admin/promocodes"
+            element={<AdminPromocodes></AdminPromocodes>}
+          ></Route>
+          <Route
+            path="/admin/createPromocode"
+            element={<AdminCreatePromocode></AdminCreatePromocode>}
           ></Route>
           <Route path="/register" element={<Register></Register>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>

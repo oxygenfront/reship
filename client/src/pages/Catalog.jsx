@@ -26,57 +26,57 @@ const Catalog = () => {
   const categories = [...set]
 
   return (
-    <section className='catalog'>
-      <div className='container catalog__container'>
-        <div className='catalog__supheader'>
-          <h1 className='catalog__title'>Добро пожаловать в Каталог!</h1>
-          <div className='search-section catalog-section'>
-            <div className=' catalog-section__container'>
-              <div className='search-section__search-block catalog-section-search__search-block'>
+    <section className="catalog">
+      <div className="container catalog__container">
+        <div className="catalog__supheader">
+          <h1 className="catalog__title">Добро пожаловать в Каталог!</h1>
+          <div className="search-section catalog-section">
+            <div className=" catalog-section__container">
+              <div className="search-section__search-block catalog-section-search__search-block">
                 <input
                   value={searchValue}
                   onChange={(e) => dispatch(setSearchValue(e.target.value))}
-                  type='text'
-                  placeholder='Поиск товара'
-                  className='search-section__search-item'
+                  type="text"
+                  placeholder="Поиск товара"
+                  className="search-section__search-item"
                 />
-                <button className='search-section__search-block_glass'>
-                  <i className='fa-solid fa-magnifying-glass'></i>
+                <button className="search-section__search-block_glass">
+                  <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </div>
             </div>
           </div>
-          <div className='main-catalog__buttons buttons__10'>
+          <div className="main-catalog__buttons buttons__10">
             <button
               onClick={() => onChangeCategory('')}
-              className='main-catalog__buttons-item buttons__10-item catalog-section__buttons-item'
-              id='catalog'
+              className="main-catalog__buttons-item buttons__10-item catalog-section__buttons-item"
+              id="catalog"
             >
               <span>Каталог</span>
             </button>
 
             <button
               onClick={() => onChangeCategory('новинки')}
-              className='main-catalog__buttons-item buttons__10-item catalog-section__buttons-item'
-              id='news'
+              className="main-catalog__buttons-item buttons__10-item catalog-section__buttons-item"
+              id="news"
             >
               <span>Новинки</span>
             </button>
 
             <button
               onClick={() => onChangeCategory('акции')}
-              className='main-catalog__buttons-item buttons__10-item
-							catalog-section__buttons-item'
-              id='action'
+              className="main-catalog__buttons-item buttons__10-item
+							catalog-section__buttons-item"
+              id="action"
             >
               <span>Акции</span>
             </button>
 
             <button
               onClick={() => onChangeCategory('лидеры продаж')}
-              className='main-catalog__buttons-item buttons__10-item
-							catalog-section__buttons-item'
-              id='leaders'
+              className="main-catalog__buttons-item buttons__10-item
+							catalog-section__buttons-item"
+              id="leaders"
             >
               <span>Лидеры продаж</span>
             </button>
@@ -85,29 +85,35 @@ const Catalog = () => {
 
         <div
           className={
-            choosenCategorie === 'акции' ? 'catalog__items-block' : 'catalog__block'
+            choosenCategorie === 'акции'
+              ? 'catalog__items-block'
+              : 'catalog__block'
           }
         >
-          {choosenCategorie === 'акции' 
-            ? items.filter(item => {if(item.old_price !== item.price){return true}else{return false}}).map(
-                (item) =>
-                 (
+          {choosenCategorie === 'акции'
+            ? items
+                .filter((item) => {
+                  if (item.old_price !== item.price) {
+                    return true
+                  } else {
+                    return false
+                  }
+                })
+                .map((item) => (
                   <Card
                     key={item.id}
                     id={item.id}
                     name={item.name}
                     old_price={item.old_price}
                     price={item.price}
-                    
                   ></Card>
                 ))
-              
             : categories.map((categorie, index) => (
                 <>
-                  <div className='catalog__suptitle' id={categorie}>
+                  <div className="catalog__suptitle" id={categorie}>
                     <span>{categorie}</span>
                   </div>
-                  <div key={index} className='catalog__items-block'>
+                  <div key={index} className="catalog__items-block">
                     {status === 'loading'
                       ? [...new Array(3)].map((_, index) => (
                           <Skeleton key={index}></Skeleton>
@@ -115,9 +121,9 @@ const Catalog = () => {
                       : items
                           .filter((item) => {
                             if (item.category === categorie) {
-                              return true;
+                              return true
                             } else {
-                              return false;
+                              return false
                             }
                           })
                           .filter((item) => {
@@ -126,9 +132,9 @@ const Catalog = () => {
                                 .toLowerCase()
                                 .includes(searchValue.toLowerCase())
                             ) {
-                              return true;
+                              return true
                             } else {
-                              return false;
+                              return false
                             }
                           })
 
@@ -148,7 +154,7 @@ const Catalog = () => {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 export default Catalog

@@ -37,6 +37,9 @@ const Admin = () => {
       <Link className="admin-wrapper-ordersbtn" to="/admin/orders">
         Заказы
       </Link>
+      <Link className="admin-wrapper-promocodesbtn" to="/admin/promocodes">
+        Промокоды
+      </Link>
       {categories.map((categorie, index) => (
         <>
           <div className="catalog__suptitle" key={categorie} id={categorie}>

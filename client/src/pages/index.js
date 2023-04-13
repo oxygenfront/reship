@@ -13,5 +13,7 @@ export { default as AdminCreate } from './AdminCreate'
 export { default as AdminChange } from './AdminChange'
 export { default as AdminPayments } from './AdminPayments'
 export { default as AdminOrders } from './AdminOrders'
+export { default as AdminPromocodes } from './AdminPromocodes'
+export { default as AdminCreatePromocode } from './AdminCreatePromocode'
 
 export { default as Favorites } from './Favorites'

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { fetchChangeItem } from '../redux/slices/adminSlice'
 import {
   fetchFullItem,
   selectFullItemData,
 } from '../redux/slices/fullItemSlice'
+import { selectUserData } from '../redux/slices/authSlice'
 
 const AdminChange = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const { item, status } = useSelector(selectFullItemData)
-
+  const { data, userStatus = status } = useSelector(selectUserData)
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
   }, [])
@@ -71,6 +72,11 @@ const AdminChange = () => {
     }
     setChangeItem(initialState)
     alert('Товар успешно изменен!')
+  }
+  if (userStatus === 'success' && data !== null) {
+    if (data.admin !== 1) {
+      return <Navigate to="/"></Navigate>
+    }
   }
   return (
     <section className="auth">

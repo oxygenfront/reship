@@ -13,4 +13,5 @@ export { default as Skeleton } from './Skeleton'
 export { default as AdminItem } from './AdminItem/AdminItem'
 export { default as AdminPayment } from './AdminPayment/AdminPayment'
 export { default as AdminOrder } from './AdminOrder/AdminOrder'
+export { default as AdminPromocode } from './AdminPromocode/AdminPromocode'
 

@@ -26,17 +26,21 @@ const FullItem = () => {
   const { data, userStatus = status } = useSelector(selectUserData)
   const [navigate, setNavigate] = useState(false)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [parametr, setParametr] = useState('')
+  const [color, setColor] = useState('')
   const onClickAdd = () => {
     const tovar = {
       id: item.id,
       name: item.name,
       image: item.image,
       price: item.price,
+      parametr,
+      color,
       count: 0,
     }
     dispatch(addItem(tovar))
   }
-  console.log(userStatus)
+
   useEffect(() => {
     if (userStatus === 'success' && isAuth) {
       const ids = data.favorites.map((item) => item.product_id)
@@ -79,7 +83,7 @@ const FullItem = () => {
   if (navigate) {
     return <Navigate to="/login"></Navigate>
   }
-  console.log(isFavorite)
+  console.log(color)
   const renderStatus = Boolean(status === 'success')
 
   return (
@@ -166,7 +170,15 @@ const FullItem = () => {
           <div className="card-section__choice-char">
             {renderStatus && item.category === 'клавиатуры' ? (
               JSON.parse(item.parameters).svitchi.map((param) => (
-                <button key={param} className="card-section__choice-char_item">
+                <button
+                  onClick={() => setParametr(param)}
+                  key={param}
+                  className={
+                    parametr === param
+                      ? 'card-section__choice-char_item-active'
+                      : 'card-section__choice-char_item'
+                  }
+                >
                   {param}
                 </button>
               ))
@@ -177,9 +189,17 @@ const FullItem = () => {
 
           {renderStatus && JSON.parse(item.colors_avail).length > 0 ? (
             <div className="card-section__choice-color">
-              {JSON.parse(item.colors_avail).map((color, index) => (
-                <button className="card-section__choice-color-item" key={index}>
-                  {color}
+              {JSON.parse(item.colors_avail).map((param, index) => (
+                <button
+                  className={
+                    color === param
+                      ? 'card-section__choice-color-item-active'
+                      : 'card-section__choice-color-item'
+                  }
+                  key={param}
+                  onClick={() => setColor(param)}
+                >
+                  {param}
                 </button>
               ))}
             </div>

@@ -25,17 +25,19 @@ const Card = ({ name, image, price, id, old_price }) => {
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
   const [navigate, setNavigate] = useState(false)
+  const [color, setColor] = useState('')
   const onClickAdd = () => {
     const item = {
       id,
       name,
       image,
       price,
+      color,
       count: 0,
     }
     dispatch(addItem(item))
   }
-  console.log(id);
+  console.log(id)
 
   const addedCount = cartItem ? cartItem.count : 0
 

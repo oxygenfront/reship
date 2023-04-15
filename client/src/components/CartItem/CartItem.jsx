@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { addItem, minusItem, removeItem } from '../../redux/slices/cartSlice'
 import styles from './CartItem.module.sass'
 
-const CartItem = ({ id, price, image, count, name }) => {
+const CartItem = ({ id, price, color, count, name }) => {
   const dispatch = useDispatch()
 
   const onClickPlus = () => {
@@ -48,7 +48,8 @@ const CartItem = ({ id, price, image, count, name }) => {
             styles.cart__delivery_items_item_name
           )}
         >
-          {name}
+          
+          {name} {color !== '' ?   ', ' + color  : ''}
         </Link>
 
         <div

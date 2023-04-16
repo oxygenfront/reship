@@ -99,6 +99,16 @@ const Catalog = () => {
                     return false
                   }
                 })
+
+                .filter((item) => {
+                  if (
+                    item.name.toLowerCase().includes(searchValue.toLowerCase())
+                  ) {
+                    return true
+                  } else {
+                    return false
+                  }
+                })
                 .map((item) => (
                   <Card
                     key={item.id}

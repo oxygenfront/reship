@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
 import { fetchAllPromocodes, selectAdminData } from '../redux/slices/adminSlice'
 import { AdminPromocode } from '../components'
 import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
+import { Dialog } from '@headlessui/react'
 
 const AdminPromocodes = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
   const isAuth = useSelector(selectIsAuth)
-  const { data, userStatus = status } = useSelector(selectUserData)
+  const [isOpen, setIsOpen] = useState(false)
   const { promocodes, status } = useSelector(selectAdminData)
+  const { data, userStatus = status } = useSelector(selectUserData)
   useEffect(() => {
     dispatch(fetchAllPromocodes({ token }))
   }, [])
@@ -22,6 +24,8 @@ const AdminPromocodes = () => {
   }
   return (
     <div className="admin-wrapper">
+      
+      
       <Link to="/admin/createPromocode" className="admin-wrapper-createbtn">
         Создать промокод
       </Link>

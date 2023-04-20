@@ -58,12 +58,12 @@ function CatalogMain() {
           <div className="main-catalog__preview">
             <Link
               to="/catalog"
-              onClick={() => onChangeCategory('apple')}
-              value={'apple'}
+              onClick={() => onChangeCategory('мышки')}
+              value={'мышки'}
               className="main-catalog__preview-lg"
             >
               <div className="main-catalog__preview-lg_title">
-                <span>Apple</span>
+                <span>Мышки</span>
               </div>
               <img
                 className="main-catalog__preview-lg_img"

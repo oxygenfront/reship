@@ -50,14 +50,14 @@ const Cart = () => {
   }
 
   return (
-    <section className="cart">
-      <div className="container cart__container">
-        <div className="cart__title">
+    <section className='cart'>
+      <div className='container cart__container'>
+        <div className='cart__title'>
           Всего товаров: <span>{totalCount}</span>
         </div>
 
-        <div className="cart__wrapper">
-          <div className="person__delivery-items cart__delivery-items">
+        <div className='cart__wrapper'>
+          <div className='person__delivery-items cart__delivery-items'>
             {items.map((item) => (
               <CartItem
                 key={item.id}
@@ -71,53 +71,54 @@ const Cart = () => {
           </div>
         </div>
 
-        <div className="cart__total">
-          <div className="cart__total-wrapper">
-            <div className="cart__total-wrapper-info">
-              <div className="cart__total-wrapper-info_suptotal">
+        <div className='cart__total'>
+          <div className='cart__total-wrapper'>
+            <div className='cart__total-wrapper-info'>
+              <div className='cart__total-wrapper-info_suptotal'>
+                Общая стоимость заказа: <span> {totalPrice} ₽</span>
+              </div>
+              <div className='cart__total-wrapper-info_suptotal'>
                 Стоимость доставки: <span> {deliveryPrice} ₽</span>
               </div>
-              <div className="cart__total-wrapper-info_suptotal">
-                Стоимость заказа: <span> {totalPrice} ₽</span>
-              </div>
-              <div className="cart__total-wrapper-info_total">
-                Итого к оплате:
+              <div className='cart__total-wrapper-info_total'>
+                Итого к оплате:{' '}
+                <span>
+                  {window.localStorage.getItem('promocode')
+                    ? Math.round(
+                        (totalPrice + deliveryPrice) *
+                          (1 - window.localStorage.getItem('promocode') / 100)
+                      )
+                    : totalPrice + deliveryPrice}{' '}
+                  ₽
+                </span>
               </div>
             </div>
-            <div className="cart__total-wrapper-price">
-              <span>
-                {window.localStorage.getItem('promocode')
-                  ? Math.round((totalPrice + deliveryPrice) *
-                    (1 - window.localStorage.getItem('promocode') / 100))
-                  : totalPrice + deliveryPrice}{' '}
-                ₽
-              </span>
-            </div>
+            {/* <div className='cart__total-wrapper-price'></div> */}
           </div>
-          <div className="cart__total-wrapper-buttons">
+          <div className='cart__total-wrapper-buttons'>
             <Link
-              to="/order"
-              className="cart__total-wrapper-buttons_link buttons__16"
+              to='/order'
+              className='cart__total-wrapper-buttons_link buttons__16'
             >
               Оформить заказ
             </Link>
-            <form action="">
+            <form action=''>
               <input
                 value={promocode}
                 onChange={(e) => setPromocode(e.target.value)}
-                type="text"
-                className="cart__total-wrapper-buttons_inp"
-                placeholder="Ввести промокод"
+                type='text'
+                className='cart__total-wrapper-buttons_inp'
+                placeholder='Ввести промокод'
               />
-              <button onClick={sendForm} type="submit">
-                <img src="" alt="check" />
+              <button onClick={sendForm} type='submit'>
+                <img src='' alt='check' />
               </button>
             </form>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export default Cart

@@ -37,7 +37,7 @@ const Card = ({ name, image, price, id, old_price }) => {
     }
     dispatch(addItem(item))
   }
-  console.log(id)
+  
 
   const addedCount = cartItem ? cartItem.count : 0
 

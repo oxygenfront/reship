@@ -9,7 +9,7 @@ import {
 } from '../../redux/slices/authSlice'
 import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
 import styles from './Menu.module.sass'
-import { Dialog } from '@headlessui/react'
+import { Dialog, Menu as Popup } from '@headlessui/react'
 import { selectItemsData } from '../../redux/slices/itemsSlice'
 import Card from '../Card/Card'
 
@@ -19,14 +19,14 @@ const Menu = () => {
   const { data, status } = useSelector(selectUserData)
   const { searchValue } = useSelector(selectFilter)
   const { items, itemsStatus = status } = useSelector(selectItemsData)
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
       window.localStorage.removeItem('token')
     }
   }
-
+  const [isNotEmpty, setIsNotEmpty] = useState(false)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
     function handleResize() {
@@ -88,6 +88,7 @@ const Menu = () => {
                             .toLowerCase()
                             .includes(searchValue.toLowerCase())
                         ) {
+                          setIsNotEmpty(true)
                           return true
                         } else {
                           return false
@@ -125,18 +126,20 @@ const Menu = () => {
           status === 'success' && (
             <>
               {windowWidth > 767 ? (
-                <Link
-                  to="/personal"
-                  className={styles.search_section__profile_block}
-                >
-                  <img src="../assets/img/user.svg" alt="user" />
-                  {data.first_name ? (
-                    <p>
-                      {data.first_name[0].toUpperCase() +
-                        data.first_name.slice(1)}
-                    </p>
-                  ) : null}
-                </Link>
+                <>
+                  <Link
+                    to="/personal"
+                    className={styles.search_section__profile_block}
+                  >
+                    <img src="../assets/img/user.svg" alt="user" />
+                    {data.first_name ? (
+                      <p>
+                        {data.first_name[0].toUpperCase() +
+                          data.first_name.slice(1)}
+                      </p>
+                    ) : null}
+                  </Link>
+                </>
               ) : null}
               {windowWidth > 767 ? (
                 <Link

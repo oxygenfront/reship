@@ -26,8 +26,9 @@ export const fetchDeleteItem = createAsyncThunk(
 export const fetchGetPayments = createAsyncThunk(
   'auth/fetchGetPayments',
   async (token) => {
-    console.log(token)
+   
     const { data } = await axios.post('/getPayments', token)
+    console.log(data)
     return data
   }
 )
@@ -72,6 +73,8 @@ const initialState = {
   data: null,
   orders: null,
   promocodes: null,
+  payments: null,
+  paymentsStatus: 'loading',
   ordersStatus: 'loading',
   status: 'loading',
 }
@@ -118,16 +121,16 @@ const adminSlice = createSlice({
       state.data = null
     })
     builder.addCase(fetchGetPayments.pending, (state, action) => {
-      state.status = 'loading'
-      state.data = null
+      state.paymentsStatus = 'loading'
+      state.payments = null
     })
     builder.addCase(fetchGetPayments.fulfilled, (state, action) => {
-      state.data = action.payload
-      state.status = 'success'
+      state.payments = action.payload
+      state.paymentsStatus = 'success'
     })
     builder.addCase(fetchGetPayments.rejected, (state, action) => {
-      state.status = 'error'
-      state.data = null
+      state.paymentsStatus = 'error'
+      state.payments = null
     })
     builder.addCase(fetchAllOrders.pending, (state, action) => {
       state.ordersStatus = 'loading'

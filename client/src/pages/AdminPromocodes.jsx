@@ -4,7 +4,7 @@ import { Link, Navigate } from 'react-router-dom'
 import { fetchAllPromocodes, selectAdminData } from '../redux/slices/adminSlice'
 import { AdminPromocode } from '../components'
 import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
-import { Dialog } from '@headlessui/react'
+import {  Menu as Popup } from '@headlessui/react'
 
 const AdminPromocodes = () => {
   const dispatch = useDispatch()
@@ -24,8 +24,55 @@ const AdminPromocodes = () => {
   }
   return (
     <div className="admin-wrapper">
-      
-      
+      {/* <Popup>
+        <Popup.Button>More</Popup.Button>
+        <Popup.Items className="popup">
+          <Popup.Item className="popup_item">
+            {({ active }) => (
+              <a
+                className={`${active && 'bg-blue-500'}`}
+                href="/account-settings"
+              >
+                Личный кабинет
+              </a>
+            )}
+          </Popup.Item>
+          <Popup.Item>
+            {({ active }) => (
+              <a
+                className={`${active && 'bg-blue-500'}`}
+                href="/account-settings"
+              >
+                Корзина
+              </a>
+            )}
+          </Popup.Item>
+          <Popup.Item>
+            {({ active }) => (
+              <a
+                className={`${active && 'bg-blue-500'}`}
+                href="/account-settings"
+              >
+                Избранные
+              </a>
+            )}
+          </Popup.Item>
+          <Popup.Item>
+            {({ active }) => (
+              <a
+                className={`${active && 'bg-blue-500'}`}
+                href="/account-settings"
+              >
+                История заказов
+              </a>
+            )}
+          </Popup.Item>
+          <Popup.Item disabled>
+            <span className="opacity-75">Выход</span>
+          </Popup.Item>
+        </Popup.Items>
+      </Popup> */}
+
       <Link to="/admin/createPromocode" className="admin-wrapper-createbtn">
         Создать промокод
       </Link>

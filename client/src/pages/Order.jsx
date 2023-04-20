@@ -10,7 +10,7 @@ const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
   const { items } = useSelector(selectCart)
-  
+
   const initialState = {
     init: '',
     number: '',
@@ -36,7 +36,7 @@ const Order = () => {
     promocode: window.localStorage.getItem('promocode')
       ? window.localStorage.getItem('promocode')
       : '',
-  basket: {...items},
+    basket: JSON.stringify(items),
   })
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {
@@ -53,12 +53,14 @@ const Order = () => {
       setIsValidEmail(isEmail(order.email))
       return
     }
+
     const data = await dispatch(fetchCreateOrder(order))
     if (!data.payload) {
       alert('Не удалось создать заказ')
     } else {
       alert('Заказ успешно создан')
-      clearItems()
+      localStorage.removeItem('promocode')
+      dispatch(clearItems())
       dispatch(fetchAuthMe(token))
     }
     setOrder(initialState)

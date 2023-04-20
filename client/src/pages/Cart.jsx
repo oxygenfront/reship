@@ -35,7 +35,7 @@ const Cart = () => {
 
     setPromocode('')
   }
-
+  
   if (!totalCount) {
     return (
       <div className="person__delivery-history">
@@ -87,8 +87,8 @@ const Cart = () => {
             <div className="cart__total-wrapper-price">
               <span>
                 {window.localStorage.getItem('promocode')
-                  ? (totalPrice + deliveryPrice) *
-                    (1 - window.localStorage.getItem('promocode') / 100)
+                  ? Math.round((totalPrice + deliveryPrice) *
+                    (1 - window.localStorage.getItem('promocode') / 100))
                   : totalPrice + deliveryPrice}{' '}
                 ₽
               </span>

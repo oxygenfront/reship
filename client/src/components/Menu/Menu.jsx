@@ -19,7 +19,7 @@ const Menu = () => {
   const { data, status } = useSelector(selectUserData)
   const { searchValue } = useSelector(selectFilter)
   const { items, itemsStatus = status } = useSelector(selectItemsData)
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())

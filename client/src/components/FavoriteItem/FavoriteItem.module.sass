@@ -6,32 +6,84 @@
         &_items
             &_item
                 display: flex
-                flex-direction: column
                 justify-content: space-between
                 align-items: center
-                height: 483px
+                height: 181px
                 &_img_wrapper
                     background: white
                     border-radius: 29px
+                    width: 136px
+                    height: 136px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    overflow: hidden
                 &_img
-                    border-radius: 29px
                     width: 100%
+                &_buttons
+                    display: flex
+                    flex-direction: column
+                    justify-content: space-between
+                    height: 100px
                 &_name
                     font-size: 20px
+                    width: 350px
                 &_price
                     font-size: 20px 
                     padding: 15px 30px 
-                    background-color: #2DB118
                     border-radius: 12px
                     color: white
                     &_none_item
                         background-color: #5A5A5A
                 &_add_cart
-                    background-color: #492FEB
-                    padding: 15px 30px
+                    background-color: #fff
+                    padding: 9px 30px
+                    color: bkack
+                    border-radius: 12px
+                    font-size: 20px
+                &_buy
+                    background-color: #027EFD
+                    padding: 9px 30px
                     color: white
                     border-radius: 12px
                     font-size: 20px
+                &_count_block
+                    display: flex
+                    justify-content: space-evenly
+                    align-items: center
+                    background: rgba(0, 0, 0, 1)
+                    width: 91px
+                    height: 36px
+                    font-size: 22px
+                    border-radius: 10px
+                    &_minus
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        background: none
+                        height: 100%
+                        width: 25px
+                        & div
+                            width: 9px
+                            height: 2px
+                            background-color: #007DFD
+                    &_pluses
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        background: none
+                        height: 100%
+                        width: 25px
+                        &_itemv
+                            height: 9px
+                            width: 2px
+                            background-color: #007DFD
+                            transform: translateX(5.5px)
+                        &_itemh
+                            width: 9px
+                            height: 2px
+                            background-color: #007DFD
+                            transform: translateY(-.5px)
         &.active
             display: block
 @media (max-width: 991px)

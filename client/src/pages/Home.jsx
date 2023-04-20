@@ -56,7 +56,7 @@ const Home = () => {
             </div>
           )}
 
-          <div className='desc-section__benefits-cards'>
+          {/* <div className='desc-section__benefits-cards'>
             <div className='desc-section__benefits-cards-item'>
               <div className='desc-section__benefits-cards-item_top'>
                 <img
@@ -108,7 +108,7 @@ const Home = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
       <CatalogMain />

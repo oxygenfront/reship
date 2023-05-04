@@ -168,6 +168,252 @@ function CatalogMain() {
               </button>
             </div>
           </div>
+          <div className='main-catalog__products-wrapper-item'>
+            <div className='main-catalog__products-wrapper-item_category'>
+              <span>Хит продаж</span>
+            </div>
+            <Swiper
+              className='main-catalog__products-wrapper-item_slider'
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className='main-catalog__products-wrapper-item_slider_slide'
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+            </Swiper>
+            <div className='main-catalog__products-wrapper-item_title'>
+              Title
+            </div>
+            <div className='main-catalog__products-wrapper-item_bottom-block'>
+              <span className='main-catalog__products-wrapper-item_price'>
+                от 1111 руб
+              </span>
+              <button className='main-catalog__products-wrapper-item_button'>
+                В корзину
+              </button>
+            </div>
+          </div>
+          <div className='main-catalog__products-wrapper-item'>
+            <div className='main-catalog__products-wrapper-item_category'>
+              <span>Хит продаж</span>
+            </div>
+            <Swiper
+              className='main-catalog__products-wrapper-item_slider'
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className='main-catalog__products-wrapper-item_slider_slide'
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+            </Swiper>
+            <div className='main-catalog__products-wrapper-item_title'>
+              Title
+            </div>
+            <div className='main-catalog__products-wrapper-item_bottom-block'>
+              <span className='main-catalog__products-wrapper-item_price'>
+                от 1111 руб
+              </span>
+              <button className='main-catalog__products-wrapper-item_button'>
+                В корзину
+              </button>
+            </div>
+          </div>
+          <div className='main-catalog__products-wrapper-item'>
+            <div className='main-catalog__products-wrapper-item_category'>
+              <span>Хит продаж</span>
+            </div>
+            <Swiper
+              className='main-catalog__products-wrapper-item_slider'
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className='main-catalog__products-wrapper-item_slider_slide'
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+            </Swiper>
+            <div className='main-catalog__products-wrapper-item_title'>
+              Title
+            </div>
+            <div className='main-catalog__products-wrapper-item_bottom-block'>
+              <span className='main-catalog__products-wrapper-item_price'>
+                от 1111 руб
+              </span>
+              <button className='main-catalog__products-wrapper-item_button'>
+                В корзину
+              </button>
+            </div>
+          </div>
+          <div className='main-catalog__products-wrapper-item'>
+            <div className='main-catalog__products-wrapper-item_category'>
+              <span>Хит продаж</span>
+            </div>
+            <Swiper
+              className='main-catalog__products-wrapper-item_slider'
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className='main-catalog__products-wrapper-item_slider_slide'
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+            </Swiper>
+            <div className='main-catalog__products-wrapper-item_title'>
+              Title
+            </div>
+            <div className='main-catalog__products-wrapper-item_bottom-block'>
+              <span className='main-catalog__products-wrapper-item_price'>
+                от 1111 руб
+              </span>
+              <button className='main-catalog__products-wrapper-item_button'>
+                В корзину
+              </button>
+            </div>
+          </div>
+          <div className='main-catalog__products-wrapper-item'>
+            <div className='main-catalog__products-wrapper-item_category'>
+              <span>Хит продаж</span>
+            </div>
+            <Swiper
+              className='main-catalog__products-wrapper-item_slider'
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className='main-catalog__products-wrapper-item_slider_slide'
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+            </Swiper>
+            <div className='main-catalog__products-wrapper-item_title'>
+              Title
+            </div>
+            <div className='main-catalog__products-wrapper-item_bottom-block'>
+              <span className='main-catalog__products-wrapper-item_price'>
+                от 1111 руб
+              </span>
+              <button className='main-catalog__products-wrapper-item_button'>
+                В корзину
+              </button>
+            </div>
+          </div>
+          <div className='main-catalog__products-wrapper-item'>
+            <div className='main-catalog__products-wrapper-item_category'>
+              <span>Хит продаж</span>
+            </div>
+            <Swiper
+              className='main-catalog__products-wrapper-item_slider'
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className='main-catalog__products-wrapper-item_slider_slide'
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
+                }}
+                className='main-catalog__products-wrapper-item_slider_slide'
+              ></SwiperSlide>
+            </Swiper>
+            <div className='main-catalog__products-wrapper-item_title'>
+              Title
+            </div>
+            <div className='main-catalog__products-wrapper-item_bottom-block'>
+              <span className='main-catalog__products-wrapper-item_price'>
+                от 1111 руб
+              </span>
+              <button className='main-catalog__products-wrapper-item_button'>
+                В корзину
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="main-catalog__main-category">

@@ -13,12 +13,12 @@ const Home = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
   return (
-    <div>
+    <>
       <Menu />
       <Slider />
 
       <CatalogMain />
-      <section
+      {/* <section
         className="reviews"
         style={{
           background: `url('./assets/img/Mask group.png')`,
@@ -64,7 +64,7 @@ const Home = () => {
             </div>
           )}
         </div>
-      </section>
+      </section> */}
       <section className="delpay" id="delpay">
         <div className="container delpay__container">
           <div className="delpay__title">Доставка и оплата</div>
@@ -128,7 +128,7 @@ const Home = () => {
       </section>
       <Accordeon />
       <Footer />
-    </div>
+    </>
   )
 }
 

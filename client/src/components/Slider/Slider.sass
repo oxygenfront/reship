@@ -1,0 +1,88 @@
+.slider__section
+    position: relative
+    margin-bottom: 100px
+    background-color: #EDEDED
+    & .swiper-button-prev, & .swiper-button-next
+        width: 45px
+        height: 45px
+        background: white
+        border-radius: 50%
+    & .swiper-button-prev
+        left: 100px
+    & .swiper-button-next
+        right: 100px
+    & .swiper-button-next:after
+        position: absolute
+        right: 12px
+        content: ''
+        width: 13px
+        height: 13px
+        border-right: 3px solid #181818
+        border-bottom: 3px solid #181818
+        transform: rotate(-45deg)
+    & .swiper-button-next:before
+        position: absolute
+        content: ''
+        width: 20px
+        height: 3px
+        background: #181818
+        right: 13px
+
+    & .swiper-button-prev:after
+        position: absolute
+        left: 12px
+        content: ''
+        width: 13px
+        height: 13px
+        border-right: 3px solid #181818
+        border-bottom: 3px solid #181818
+        transform: rotate(135deg)
+    & .swiper-button-prev:before
+        position: absolute
+        content: ''
+        width: 20px
+        height: 3px
+        background: #181818
+        left: 13px
+    & .swiper-pagination
+        bottom: 50px !important
+    & .swiper-pagination .swiper-pagination-bullet
+        background: white
+        width: 15px
+        height: 2px
+        border-radius: 1px
+     
+    &__item
+        display: flex !important
+        flex-direction: column
+        justify-content: center
+        align-items: flex-start
+        padding-left: 300px
+        width: 100%
+        height: calc(100vh - 100px - 80px) !important
+        &:nth-child(1)
+            background-repeat: no-repeat
+            background-size: cover
+            background-position: center
+        &:nth-child(2)
+            background-repeat: no-repeat
+            background-size: cover
+            background-position: center
+        &:nth-child(3)
+            background-repeat: no-repeat
+            background-size: cover
+            background-position: center
+        &_title
+            font-weight: 700
+            font-size: 66px
+            margin-bottom: 20px
+        &_suptitle
+            font-size: 22px
+            margin-bottom: 40px
+        &_link
+            font-size: 24px
+            padding: 25px 50px
+            background: #0540F2
+            box-shadow: 0px 2px 40px rgba(5, 64, 242, 0.25)
+            border-radius: 300px
+

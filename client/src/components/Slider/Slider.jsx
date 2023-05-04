@@ -37,9 +37,12 @@ function Slider() {
         className={styles.slider__section__item}
         style={{ backgroundImage: `url('/assets/img/headphones bg.png')` }}
       >
-        <div className={styles.slider__section__item_title}>Logitech G435</div>
+        <div className={styles.slider__section__item_title}>
+          Logitech
+          <br /> G435
+        </div>
         <div className={styles.slider__section__item_suptitle}>
-          Снова в наличии
+          Теперь снова в наличии
         </div>
         <Link to="item/20" className={styles.slider__section__item_link}>
           Перейти к товару

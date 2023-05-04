@@ -556,8 +556,8 @@ const Personal = () => {
               </div>
             )}
 
-            {personPages.delHistory
-              ? status === 'success' &&
+            {personPages.delHistory ? (
+              status === 'success' && data.orders.length > 0 ? (
                 data.orders.map((order) => (
                   <div
                     key={order.id}
@@ -577,51 +577,74 @@ const Personal = () => {
                     ))}
                   </div>
                 ))
-              : null}
-
-            {personPages.delInfo ? (
-              <div className="person__delivery-info_wrapper">
-                <div className="person__delivery-info_block">
-                  <div className="person__delivery-info">
-                    <div className="person__delivery-info_main">
-                      Ближайшая доставка ожидается <span>...</span>
-                    </div>
-                    <hr className="hr" />
-                    <div className="person__delivery-info_main">
-                      Количество товаров к получению: <span>3 шт</span>
-                    </div>
-                    <hr className="hr" />
-                    <div className="person__delivery-info_text">
-                      При себе обязательно иметь документ удостоверяющий
-                      личность
-                    </div>
+              ) : (
+                <div className="person__history-wrapper">
+                  <div className="person__reviews_text-block">
+                    <p>
+                      Вы еще не совершали покупок - вернитесь сюда позднее, а
+                      пока можете <Link to="/catalog">перейти в каталог</Link>,
+                      для выбора товара
+                    </p>
                   </div>
                 </div>
+              )
+            ) : null}
 
-                <div className="person__delivery-links">
-                  <a className="person__delivery-links_track" href="/#">
-                    <span>Отследить заказ</span>
-                  </a>
-                  <a className="person__delivery-links_deliv" href="/#">
-                    <span>Задать вопрос по доставке</span>
-                  </a>
-                </div>
+            {personPages.delInfo ? (
+              data.orders.length > 0 ? (
+                <div className="person__delivery-info_wrapper">
+                  <div className="person__delivery-info_block">
+                    <div className="person__delivery-info">
+                      <div className="person__delivery-info_main">
+                        Ближайшая доставка ожидается <span>...</span>
+                      </div>
+                      <hr className="hr" />
+                      <div className="person__delivery-info_main">
+                        Количество товаров к получению: <span>3 шт</span>
+                      </div>
+                      <hr className="hr" />
+                      <div className="person__delivery-info_text">
+                        При себе обязательно иметь документ удостоверяющий
+                        личность
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="person__delivery-items">
-                  {status === 'success' &&
-                    data.orders.map((order) =>
-                      order.products.map((product) => (
-                        <DeliveryItem
-                          name={product.name}
-                          price={product.price}
-                          count={product.count}
-                          id={product.product_id}
-                          key={product.product_id}
-                        />
-                      ))
-                    )}
+                  <div className="person__delivery-links">
+                    <a className="person__delivery-links_track" href="/#">
+                      <span>Отследить заказ</span>
+                    </a>
+                    <a className="person__delivery-links_deliv" href="/#">
+                      <span>Задать вопрос по доставке</span>
+                    </a>
+                  </div>
+
+                  <div className="person__delivery-items">
+                    {status === 'success' &&
+                      data.orders.map((order) =>
+                        order.products.map((product) => (
+                          <DeliveryItem
+                            name={product.name}
+                            price={product.price}
+                            count={product.count}
+                            id={product.product_id}
+                            key={product.product_id}
+                          />
+                        ))
+                      )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="person__history-wrapper">
+                  <div className="person__reviews_text-block">
+                    <p>
+                      Вы еще не совершали покупок - вернитесь сюда позднее, а
+                      пока можете <Link to="/catalog">перейти в каталог</Link>,
+                      для выбора товара
+                    </p>
+                  </div>
+                </div>
+              )
             ) : null}
 
             {personPages.favorites && status === 'success' ? (

@@ -12,7 +12,7 @@ import styles from './Header.module.sass'
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
   const isAuth = useSelector(selectIsAuth)
-  const { items, totalPrice } = useSelector(selectCart)
+  const { items } = useSelector(selectCart)
   const { data, status } = useSelector(selectUserData)
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort))
@@ -45,7 +45,7 @@ const Header = () => {
     window.addEventListener('resize', handleResize)
 
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  })
 
   const onCloseBurger = () => {
     setIsBurger(!isBurger)
@@ -167,7 +167,7 @@ const Header = () => {
         </div>
       ) : null}
       <div className={styles.header__container}>
-        <div className={styles.header__cont}>
+        {/* <div className={styles.header__cont}>
           <Link to="/" className={styles.header__logo_block}>
             <img
               src="../assets/img/logo.svg"
@@ -183,7 +183,7 @@ const Header = () => {
             <img src="../assets/img/free-icon-fire-8648355 1.svg" alt="fire" />
             <span>Акции</span>
           </Link>
-        </div>
+        </div> */}
 
         <div className={styles.header__cont}>
           <Link to="/" className={styles.header__delivery}>
@@ -192,11 +192,14 @@ const Header = () => {
           <Link to="/" className={styles.header__faq}>
             FAQ
           </Link>
+          <Link to="/" className={styles.header__comments}>
+            Отзывы
+          </Link>
           {isAuth && status === 'success' && data.admin === 1 ? (
             <Link to="/admin">ADMIN</Link>
           ) : null}
         </div>
-        <div className={styles.header__cont}>
+        {/* <div className={styles.header__cont}>
           <Link to="/cart" className={styles.header__cart}>
             <div className={styles.header__cart_wrapper}>
               <img
@@ -213,7 +216,7 @@ const Header = () => {
               <p>{favoriteCount > 0 ? favoriteCount : null}</p>
             </Link>
           ) : null}
-        </div>
+        </div> */}
 
         <button
           onClick={() => setIsBurger(!isBurger)}

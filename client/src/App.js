@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
@@ -30,9 +30,9 @@ import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
 import { fetchItems } from './redux/slices/itemsSlice'
 import { selectFilter } from './redux/slices/fiterSlice'
 
-function App() {
+const App = () => {
   const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchItems({ choosenCategorie, searchValue }))
-  }, [])
+  }, [choosenCategorie])
 
   return (
     <>

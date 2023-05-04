@@ -55,15 +55,15 @@ const Footer = () => {
               Номер телефона
             </a>
           </div>
-          <div className={styles.footer__block}>
+          <div className={styles.footer__block_social}>
             <a href="#" className={styles.footer__block_suptitle}>
-              Telegram
+              <img src="../assets/img/vkontakte 1.svg" alt="" />
             </a>
             <a href="#" className={styles.footer__block_suptitle}>
-              ВКонтакте
+              <img src="../assets/img/vkontakte 1.svg" alt="" />
             </a>
             <a href="#" className={styles.footer__block_suptitle}>
-              Discord
+              <img src="../assets/img/vkontakte 1.svg" alt="" />
             </a>
           </div>
         </div>

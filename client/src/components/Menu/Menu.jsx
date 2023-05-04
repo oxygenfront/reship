@@ -9,7 +9,7 @@ import {
 } from '../../redux/slices/authSlice'
 import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
 import styles from './Menu.module.sass'
-import { Dialog, Menu as Popup } from '@headlessui/react'
+import { Dialog } from '@headlessui/react'
 import { selectItemsData } from '../../redux/slices/itemsSlice'
 import Card from '../Card/Card'
 
@@ -46,21 +46,28 @@ const Menu = () => {
         )}
       >
         {windowWidth <= 767 ? null : (
-          <Link to="/catalog" className={styles.search_section__catalog}>
-            <img
-              className="search-section__catalog-img"
-              src="../assets/img/free-icon-tiles-6569357 1.png"
-              alt="tiles"
-            />
-            <span>#вКаталог</span>
-          </Link>
+          <>
+            <Link className={styles.search_section__logo}>
+              <img src="../assets/img/logo.svg" alt="logo" />
+            </Link>
+
+            <Link to="/catalog" className={styles.search_section__catalog}>
+              <span>Каталог</span>
+
+              <img
+                className={styles.search_section__catalog_arrow}
+                src="../assets/img/arrow-down.svg"
+                alt="arrow"
+              />
+            </Link>
+          </>
         )}
         <div className={styles.search_section__search_block}>
           <input
             type="text"
-            placeholder="Поиск товара"
+            placeholder="Поиск по каталогу"
             className={styles.search_section__search_item}
-            onChange={(e) => dispatch(setSearchValue(e.target.value))}
+            onChange={(e) => dispatch(setSearchValue('123'))}
           />
           <Dialog
             className={styles.modal}
@@ -121,6 +128,23 @@ const Menu = () => {
           >
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
+        </div>
+        <div className={styles.search_section_links}>
+          <div>
+            <img
+              className={styles.search_section_links_heart}
+              src="../assets/img/heart.svg"
+              alt="cart"
+            />
+          </div>
+          <div>
+            <img
+              className={styles.search_section_links_cart}
+              src="../assets/img/cart.svg"
+              alt="cart"
+            />
+            <span className={styles.search_section_links_cart_count}>5</span>
+          </div>
         </div>
         {isAuth ? (
           status === 'success' && (

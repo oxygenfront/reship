@@ -8,7 +8,6 @@ import {
 } from '../../redux/slices/cartSlice'
 import styles from './FavoriteItem.module.sass'
 import { Link } from 'react-router-dom'
-import { selectItemsData } from '../../redux/slices/itemsSlice'
 
 const FavoriteItem = ({ name, price, image, id }) => {
   const dispatch = useDispatch()
@@ -48,6 +47,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
           <img
             className={styles.person__favorites_wrapper_items_item_img}
             src={`../assets/products_img/${id}.png`}
+            alt="product"
           />
         </Link>
 
@@ -71,17 +71,21 @@ const FavoriteItem = ({ name, price, image, id }) => {
           </button>
           <div>{addedCount}</div>
           <button
-            onClick={onClickPlus}
+            onClick={addedCount < 1 ? onClickAdd : onClickPlus}
             className={
               styles.person__favorites_wrapper_items_item_count_block_pluses
             }
           >
-            <div className={
-              styles.person__favorites_wrapper_items_item_count_block_pluses_itemv
-            }></div>
-            <div className={
-              styles.person__favorites_wrapper_items_item_count_block_pluses_itemh
-            }></div>
+            <div
+              className={
+                styles.person__favorites_wrapper_items_item_count_block_pluses_itemv
+              }
+            ></div>
+            <div
+              className={
+                styles.person__favorites_wrapper_items_item_count_block_pluses_itemh
+              }
+            ></div>
           </button>
         </div>
 
@@ -106,7 +110,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export default FavoriteItem

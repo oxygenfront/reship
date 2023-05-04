@@ -25,34 +25,10 @@ function CatalogMain() {
   return (
     <section className="main-catalog">
       <div className="container main-catalog__container">
-        <h1 className="main-catalog__title">Каталог продукции</h1>
-        <div className="main-catalog__buttons buttons__10">
-          <Link
-            to="/catalog"
-            className="main-catalog__buttons-item buttons__10-item"
-            id="main-catalog"
-          >
-            <span>Каталог</span>
-          </Link>
-          <button
-            className="main-catalog__buttons-item buttons__10-item"
-            id="main-news"
-          >
-            <span>Новинки</span>
-          </button>
-          <button
-            className="main-catalog__buttons-item buttons__10-item"
-            id="main-action"
-          >
-            <span>Акции</span>
-          </button>
-          <button
-            className="main-catalog__buttons-item buttons__10-item"
-            id="main-leaders"
-          >
-            <span>Лидеры продаж</span>
-          </button>
-        </div>
+        <h1 className="main-catalog__title">
+          Каталог <br></br><span>товаров</span>
+        </h1>
+        
         <hr className="hr" />
         {windowWidth > 991 ? (
           <div className="main-catalog__preview">

@@ -1,5 +1,6 @@
 *
-  font-family: 'Mulish', sans-serif
+  font-family: 'Inter', sans-serif
+  font-weight: 400
 
 /*Обнуление*/
 *
@@ -72,7 +73,8 @@ a
 
 body
   // font-family: Mulish
-  background-color: #090909
+  //   background-color: #090909
+  background-color: #f5f5f5
   color: white
   font-weight: 600
 
@@ -122,9 +124,13 @@ body
 .main-catalog
   margin-bottom: 90px
   &__title
+    color: #181818
     font-size: 51px
     font-weight: 700
     margin-bottom: 34px
+    span
+        font-weight: 700
+        color: rgba(5, 64, 242, 1)
   &__buttons
     width: 47.89%
     &-item
@@ -246,21 +252,31 @@ body
 .faq
   margin-bottom: 90px
   &__title
-    font-size: 51px
+    font-size: 64px
     font-weight: 700
     margin-bottom: 32px
+    color: #181818
+    span
+        color: rgba(5, 64, 242, 1)
+        font-weight: 700
+        font-size: 42px
   &__accordeon
     width: 100%
     
   &__item
     position: relative
     height: auto
-    border-radius: 15px
-    background-color: #EDEDED
+    transition: background 0.4s ease-in-out
+  
+    border-bottom: 2px solid #E8EBF5
     color: black
     font-size: 18px
-    &.active .faq__item-arrows
-      
+    &.active
+     border-radius: 15px
+     background: #E5EBF5
+     transition: background 0.4s ease-in-out
+     
+     .faq__item-arrows
       transform: rotate(225deg) 
     &:not(:last-child)
       margin-bottom: 45px
@@ -273,8 +289,8 @@ body
     &-arrows
       width: 18px
       height: 18px
-      border-right: 3px solid black
-      border-bottom: 3px solid black
+      border-right: 3px solid #AEC5F2
+      border-bottom: 3px solid #AEC5F2
       transform: rotate(45deg)
       transition: all .4s linear
     &-about

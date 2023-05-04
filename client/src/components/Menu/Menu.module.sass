@@ -1,7 +1,7 @@
 .container
   width: 100%
   max-width: 1120px
-  height: 100%
+  height: 100px
   margin: 0 auto
   padding: 0 15px
 
@@ -40,61 +40,97 @@
 .search_section
   display: flex
   align-items: center
-  margin-top: 120px
-  height: 120px
+  margin-top: 80px
+  height: 100px
   background: white
 
   &__container
     display: flex
     justify-content: space-between
+    align-items: center
 
     height: 54px
+  &__logo
+    &-img
+      width: 64px
+      height: 42px
 
   &__catalog
-    width: 17%
+    box-sizing: border-box
+    width: 133px
+    height: 42px
     display: flex
-    justify-content: space-evenly
+    justify-content: center
+    border: 1px solid #0540F2
+    border-radius: 30px
     align-items: center
-    font-size: 18px
-    background-color: #efefef
+    font-size: 16px
     color: black
-    border-radius: 9px
     transition: all 0.2s ease-in-out
-
-  img
-    width: 30px
-    height: 30px
-
+    &_arrow
+      padding-top: 4px
+      margin-left: 8px
   &__search_block
     position: relative
-    width: 59%
+    height: 60px
+    width: 450px
     display: flex
     align-items: center
     justify-content: space-between
-    background-color: #efefef
-    border-radius: 10px
-    font-size: 23px
 
+    border: 1px solid #0540F2
+    border-radius: 50px
+
+    font-size: 23px
+  &_links
+    position: relative
+    width: 80px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    &:hover
+      cursor: pointer
+    &_cart
+
+      &_count
+        font-size: 12px
+
+        display: flex
+        align-items: center
+        justify-content: center
+        height: 13px
+        width: 27px
+        position: absolute
+        top: -6px
+        right: -23px
+        background: #0540F2
+        border-radius: 10px
+    &_heart
+      padding-top: 3px
   &__search_block_glass
+    margin-right: 10px
     display: flex
     justify-content: center
     align-items: center
-    width: 64px
-    height: 100%
-    font-size: 24px
-    background-color: #f5f5f5
-    border-top-right-radius: 10px
-    border-bottom-right-radius: 10px
+    width: 40px
+    height: 40px
+    font-size: 20px
+    background: #E8EBF5
+    padding: 10px
+    border-radius: 50%
 
   &__search_item
     width: 100%
     margin: 0 20px 0 10px
     height: 60px
-    font-size: 23px
+    font-size: 16px
+    margin-left: 22px
 
     color: #007dfd
   input
     background: none
+    &::placeholder
+      color: rgba(0, 0, 0, 0.2)
 
   &__registr_block
     width: 14.68%
@@ -106,9 +142,6 @@
     color: white
     border-radius: 9px
     transition: all 0.2s linear
-  &:hover
-    background: white
-    color: black
 
   &__profile_block
     padding: 0 20px
@@ -128,18 +161,18 @@
     align-items: center
 
   &__login_block
-    width: 9.175%
+    width: 104px
+    height: 48px
     display: flex
     justify-content: center
     align-items: center
-    background-color: #007dfd
+    background: #0540F2
+    border-radius: 30px
     font-size: 18px
     color: white
-    border-radius: 9px
+
     transition: all 0.2s linear
-  &:hover
-    background: white
-    color: black
+
 @media (max-width: 1199px)
   .container
     max-width: 960px

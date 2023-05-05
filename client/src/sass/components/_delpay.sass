@@ -1,0 +1,93 @@
+.delpay
+    margin-bottom: 85px
+    background: #E8EBF5
+    padding: 125px 0 100px 0
+    &__slider
+        position: unset !important
+        &-wrapper
+            position: relative
+        &_item
+            width: 510px !important
+            height: 240px !important
+            background: #0540F2
+            padding: 40px 0 0 56px
+            border-radius: 40px
+            &_step
+                color: white
+                font-size: 48px
+                font-weight: 700
+            &_description
+                color: white
+                margin-top: 20px
+                font-size: 20px
+        & .swiper-button-next.swiper-button-disabled, & .swiper-button-prev.swiper-button-disabled
+            border: 2px solid #0528F2
+            background: transparent
+            opacity: 1
+        & .swiper-button-next.swiper-button-disabled
+            &:after
+                border-color: #0528F2
+            &:before
+                background: #0528F2
+        & .swiper-button-prev.swiper-button-disabled
+            &:after
+                border-color: #0528F2
+            &:before
+                background: #0528F2
+        & .swiper-button-prev, & .swiper-button-next
+            width: 45px
+            height: 45px
+            background: #0528F2
+            border: 2px solid #0528F2
+            border-radius: 50%
+        & .swiper-button-prev
+            left: 490px
+            top: 290px
+        & .swiper-button-next
+            top: 290px
+            right: 490px
+        & .swiper-button-next:after
+            position: absolute
+            right: 12px
+            content: ''
+            width: 13px
+            height: 13px
+            border-right: 3px solid white
+            border-bottom: 3px solid white
+            transform: rotate(-45deg)
+        & .swiper-button-next:before
+            position: absolute
+            content: ''
+            width: 20px
+            height: 3px
+            background: white
+            right: 13px
+
+        & .swiper-button-prev:after
+            position: absolute
+            left: 12px
+            content: ''
+            width: 13px
+            height: 13px
+            border-right: 3px solid white
+            border-bottom: 3px solid white
+            transform: rotate(135deg)
+        & .swiper-button-prev:before
+            position: absolute
+            content: ''
+            width: 20px
+            height: 3px
+            background: white
+            left: 13px
+    &__title
+        font-weight: 700
+        font-size: 64px
+        color: black
+        & span
+            color: #0540F2
+            font-weight: 700
+    &__suptitle
+        color: black
+        margin-bottom: 50px
+        font-size: 20px
+        margin-bottom: 78px

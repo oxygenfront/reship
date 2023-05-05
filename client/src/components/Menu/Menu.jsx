@@ -47,7 +47,7 @@ const Menu = () => {
       >
         {windowWidth <= 767 ? null : (
           <>
-            <Link className={styles.search_section__logo}>
+            <Link to='/' className={styles.search_section__logo}>
               <img src="../assets/img/logo.svg" alt="logo" />
             </Link>
 

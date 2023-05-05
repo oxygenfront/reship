@@ -1,0 +1,98 @@
+.catalog
+    margin-top: calc(120px + 63px)
+    &__block
+        &#news-block, &#action-block, &#leaders-block
+            display: none
+    &__block:not(:last-child)
+        margin-bottom: 63px
+    &-section
+        margin: 0
+        align-items: start
+        height: unset
+        display: block
+        background: unset
+        &__buttons-item
+            margin: 0
+        &-search__search-block
+            width: 635px
+    &__supheader
+        height: 169px
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-between
+        margin-bottom: 63px
+    &__title
+        text-align: center
+        font-size: 33px
+    &__suptitle
+        width: 100%
+        height: 60px
+        background-color: #3D3D3D33
+        display: flex
+        justify-content: center
+        align-items: center
+        border-radius: 13px
+        font-size: 18px
+        margin-bottom: 63px
+        &:not(:first-child)
+            margin-top: 63px
+    &__items
+        &-block
+            display: grid
+            grid-template-columns: repeat(3, 327px)
+            justify-content: space-between
+            grid-row-gap: 31px
+            &-item
+                display: flex
+                flex-direction: column
+                justify-content: space-between
+                height: 427px
+                border: solid 2px #fff
+                border-radius: 19px
+                padding: 20px 22px
+                &_img-block
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 282px
+                    height: 282px
+                    background: #fff
+                    border-radius: 15px
+                    & img
+                        width: 198px
+                        height: 253px
+                &_price
+                    & span
+                        font-size: 22px
+                        margin-right: 7px
+                    & s
+                        font-size: 17px
+                        color: gray
+                &_name
+                    font-size: 14px
+                &_buttons
+                    position: relative
+                    display: flex
+                    justify-content: space-between
+                    width: 100%
+                    z-index: 10
+                    font-size: 13px
+                    &-item
+                        height: 32px
+                        color: white
+                        border-radius: 6px
+                        &:nth-child(1)
+                            background: #007DFD
+                            width: 96px
+                        &:nth-child(2)
+                            width: 117px
+                            background: none
+                            border: solid 1px white
+                        &:nth-child(3)
+                            display: flex
+                            justify-content: center
+                            align-items: center
+                            background: #fff
+                            width: 32px
+                            border-radius: 50%

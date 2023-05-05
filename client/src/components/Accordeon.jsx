@@ -14,7 +14,6 @@ function Accordeon() {
         <div className="faq__title">
           Часто задаваемые<br></br> <span>вопросы/ответы</span>
         </div>
-        <hr className="hr" />
         <div className="faq__accordeon">
           <div
             className={accordeon.first_item ? 'faq__item active' : 'faq__item'}

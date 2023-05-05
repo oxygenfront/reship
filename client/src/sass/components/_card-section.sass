@@ -1,0 +1,163 @@
+.card-section
+    margin-top: calc(120px + 80px)
+    &__slider
+        width: 51px
+        height: 267px
+        & .swiper-wrapper
+            height: 251px !important
+        & .swiper-button-next
+            top: 12px
+            transform: rotate(-90deg)
+        & .swiper-button-prev
+            top: 250px
+            transform: rotate(-90deg)
+        &_item
+            display: flex !important
+            justify-content: center
+            align-items: center
+            height: 50px !important
+        &_wrapper
+            height: 100%
+            display: flex
+            align-items: center
+    &__container
+        display: flex
+        justify-content: space-between
+
+    &__img-block
+        width: 225px
+        height: 244px
+        border-radius: 30px
+        object-fit: cover
+        overflow: hidden
+        background: white
+        & img
+            width: 100%
+            height: 100%
+            object-fit: cover
+    &__about
+        margin: 0px 20px
+        width: 500px
+        position: relative
+        height: auto
+        padding: 20px 44px
+        border-radius: 18px
+        background: #3D3D3D33
+        &-name
+            font-size: 20px
+            margin-bottom: 24px
+        &-info:not(:last-child)
+            margin-bottom: 16px
+            font-size: 15px
+        &-info
+            &-more
+
+                display: flex
+                align-items: center
+                transition: height .4s ease-in-out
+                height: 0px
+                overflow: hidden
+                margin-bottom: 16px
+                &-active
+                    transition: height .3s ease-in-out
+                    height: 120px
+                    display: flex
+                    align-items: center
+                    margin-bottom: 25px
+
+        &-btn
+            font-size: 15px
+            color: #007DFD
+            background: none
+            &.no-show
+                display: none
+    &__hr
+        background: white
+        height: 280px
+        width: 2px
+        margin-right: 15px
+    &__choice
+        height: 310px
+        width: 299px
+        display: flex
+        flex-direction: column
+        &-block
+            display: flex
+            justify-content: space-between
+        &-purchase
+            margin-bottom: 15px
+            margin-right: 15px
+            height: 116px
+            width: 234px
+            display: flex
+            flex-direction: column
+            justify-content: space-evenly
+            align-items: center
+            color: black
+            background: #fff
+            border-radius: 15px
+            & span
+                font-size: 22px
+            & a
+                display: flex
+                justify-content: center
+                align-items: center
+                color: white
+                height: 44px
+                width: 179px
+                background: #007DFD
+                font-size: 15px
+                border-radius: 15px
+        &-blue-blocks
+            margin-bottom: 15px
+            display: flex
+            flex-direction: column
+            justify-content: space-between
+            &_item
+                display: flex
+                justify-content: center
+                align-items: center
+                width: 52px
+                height: 52px
+                background: #007DFD
+                border-radius: 15px
+        &-char
+            margin-bottom: 15px
+            display: flex
+            flex-direction: column
+            gap: 10px
+            justify-content: space-between
+            &_item
+                padding: 5px
+                border-radius: 6px
+                font-size: 15px
+                background: #3D3D3D33
+                color: white
+                &-active
+                    color: white
+                    padding: 5px
+                    border-radius: 6px
+                    font-size: 15px
+                    background: #007DFD
+        &-color
+            display: flex
+            justify-content: space-evenly
+            align-items: center
+
+            border-radius: 9px
+            padding: 10px 0px
+            background-color: #3D3D3D33
+            &-item
+                padding: 5px
+                border-radius: 6px
+                font-size: 15px
+                background: #b4b1b133
+                color: white
+                &-active
+                    color: white
+                    padding: 5px
+                    border-radius: 6px
+                    font-size: 15px
+                    background: #007DFD
+                &.white
+                    border: solid 3px #007DFD

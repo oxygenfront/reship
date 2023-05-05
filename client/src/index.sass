@@ -187,6 +187,16 @@ body
                     font-weight: 600
                     font-size: 14px
                     color: #416EF2
+            &_favorite
+                position: absolute
+                opacity: 0
+                background: transparent
+                right: 30px
+                top: 20px
+                z-index: 20
+                transition: .3s all linear
+            &:hover .main-catalog__products-wrapper-item_favorite
+                opacity: 1
             &_title
                 font-size: 28px
                 color: #0540F2

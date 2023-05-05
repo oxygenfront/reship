@@ -20,6 +20,7 @@ const Home = () => {
       <Slider />
 
       <CatalogMain />
+      
       <section className='delpay' id='delpay'>
         <div className='container delpay__container'>
           <div className='delpay__title'>
@@ -82,6 +83,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+
       <Accordeon />
 
       <section className='reviews'>

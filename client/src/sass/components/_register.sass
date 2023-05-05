@@ -1,0 +1,126 @@
+.react-dadata__container
+    position: relative
+
+.react-dadata__input
+    background: #E8EBF5
+    border-radius: 30px
+    box-sizing: border-box
+    display: block
+    font-size: 16px
+    height: 48px
+    outline: none
+    padding: 0 20px
+    width: 363px
+
+.react-dadata__suggestions
+    background-color: #fff
+    border-radius: 4px
+    box-shadow: 0 1px 6px 3px rgba(0, 0, 0, .1)
+    left: 0
+    list-style: none
+    margin: 0
+    overflow: hidden
+    padding: 0
+    position: absolute
+    right: 0
+    text-align: left
+    top: calc(100% + 8px)
+    z-index: 10
+
+.react-dadata__suggestion-note
+    color: #828282
+    font-size: 14px
+    padding: 10px 10px 5px
+
+.react-dadata__suggestion
+    background: none
+    border: none
+    box-sizing: border-box
+    cursor: pointer
+    display: block
+    font-size: 15px
+    padding: 7px 10px
+    text-align: left
+    width: 100%
+
+    &--line-through
+        text-decoration: line-through
+
+    &-subtitle
+        color: #777
+        font-size: 14px
+        margin-top: 4px
+
+    &-subtitle-item
+        display: inline-block
+        margin-bottom: 4px
+        margin-right: 16px
+
+    &-subtitle-item:last-child
+        margin-right: 0
+
+    &--current
+        background-color: rgba(0, 124, 214, .15)
+
+    &:hover
+        background-color: rgba(0, 124, 214, .1)
+
+.react-dadata mark
+    background: none
+
+.react-dadata--highlighted
+    color: #0094ff
+
+.register
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    &__wrapper
+        width: 541px
+        height: 613px
+        border: 2px solid #0540F2
+        border-radius: 30px
+        padding: 52px 41px 36px 50px
+        color: #181818
+        &-title
+            font-size: 48px
+            font-weight: 600
+            color: #0540F2
+            margin-bottom: 30px
+        & .hr
+            margin-bottom: 45px
+        &-input
+            width: 363px
+            height: 48px
+            background: #E8EBF5
+            font-size: 16px
+            border-radius: 30px
+            padding: 0 20px
+            &:not(:last-child)
+                margin-bottom: 15px
+            &:last-child
+                margin-bottom: 43px
+            &.second-page
+                &:first-child
+                    margin-right: 33px
+                &.sm
+                    width: 163px
+        &-link
+            font-size: 16px
+            font-weight: 400
+            margin-bottom: 98px
+            & a
+                color: #416EF2
+        &-buttons
+            display: flex
+            justify-content: space-between
+            align-items: center
+            &_forgot
+                color: #416EF2
+            &_next
+                font-size: 16px
+                padding: 14px 23px
+                color: white
+                background: #0540F2
+                border-radius: 30px

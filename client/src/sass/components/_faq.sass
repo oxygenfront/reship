@@ -1,9 +1,10 @@
 .faq
     margin-bottom: 90px
     &__title
+        line-height: 64px
         font-size: 64px
         font-weight: 700
-        margin-bottom: 32px
+        margin-bottom: 90px
         color: #181818
     span
         color: rgba(5, 64, 242, 1)
@@ -18,34 +19,38 @@
         transition: background 0.4s ease-in-out
 
         border-bottom: 2px solid #E8EBF5
-        color: black
+        color: #181818
         font-size: 18px
         &.active
-            border-radius: 15px
+            border-radius: 50px
             background: #E5EBF5
             transition: background 0.4s ease-in-out
         &-arrows
             transform: rotate(225deg)
         &:not(:last-child)
-            margin-bottom: 45px
+            margin-bottom: 20px
         &-first-block
             display: flex
             justify-content: space-between
-            padding: 26px 57px 26px 53px
+            padding: 13px 57px 26px 0
         &-title
             font-size: 24px
+            font-weight: 600
+            color: #181818
+
         &-arrows
-            width: 18px
-            height: 18px
-            border-right: 3px solid #AEC5F2
-            border-bottom: 3px solid #AEC5F2
+            width: 16px
+            height: 16px
+            border-right: 4px solid #AEC5F2
+            border-bottom: 4px solid #AEC5F2
             transform: rotate(45deg)
             transition: all .4s linear
         &-about
+            line-height: 24px
             height: 0px
             transition: height 0.4s ease-in-out
             overflow: hidden
-            padding: 0px 50px 0px 50px
+            padding: 0px 50px 0px 0
 
         &.active &-about
             height: 100px

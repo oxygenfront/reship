@@ -5,7 +5,7 @@
         font-size: 64px
         font-weight: 700
         margin-bottom: 90px
-        color: #181818
+        color: var(--color)
     span
         color: rgba(5, 64, 242, 1)
         font-weight: 700
@@ -19,11 +19,12 @@
         transition: background 0.4s ease-in-out
 
         border-bottom: 2px solid #E8EBF5
-        color: #181818
+        color: var(--color)
         font-size: 18px
         &.active
             border-radius: 30px
-            background: #E5EBF5
+            background: var(--togray)
+            border-bottom: 2px solid var(--togray)
             transition: background 0.4s ease-in-out
             &-arrows
 
@@ -40,7 +41,7 @@
         &-title
             font-size: 24px
             font-weight: 600
-            color: #181818
+            color: var(--color)
 
         &-arrows
 

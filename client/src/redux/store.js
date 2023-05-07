@@ -8,6 +8,7 @@ import admin from './slices/adminSlice'
 import favorite from './slices/favoriteSlice'
 import change from './slices/changeSlice'
 import order from './slices/orderSlice'
+import theme from './slices/themeSlice'
 
 export const store = configureStore({
   reducer: {
@@ -20,5 +21,6 @@ export const store = configureStore({
     favorite,
     change,
     order,
+    theme
   },
 })

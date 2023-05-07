@@ -26,7 +26,7 @@ const Menu = () => {
   const { cartItems } = useSelector(selectCart)
 
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
-
+  const theme = useSelector((state) => state.theme)
   const [isOpen, setIsOpen] = useState(false)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
@@ -73,11 +73,9 @@ const Menu = () => {
             <Link to="/catalog" className={styles.search_section__catalog}>
               <span>Каталог</span>
 
-              <img
-                className={styles.search_section__catalog_arrow}
-                src="../assets/img/arrow-down.svg"
-                alt="arrow"
-              />
+              <div className={styles.search_section__catalog_block}>
+                <div className={styles.search_section__catalog_arrow}></div>
+              </div>
             </Link>
           </>
         )}
@@ -150,11 +148,20 @@ const Menu = () => {
         </div>
         <div className={styles.search_section_links}>
           <Link to="/personal/favorites">
-            <img
-              className={styles.search_section_links_heart}
-              src="../assets/img/heart.svg"
-              alt="favorites"
-            />
+            {theme === 'light' ? (
+              <img
+                className={styles.search_section_links_heart}
+                src="../assets/img/heart.svg"
+                alt="favorites"
+              />
+            ) : (
+              <img
+                className={styles.search_section_links_heart}
+                src="../assets/img/heart-white.svg"
+                alt="favorites"
+                width={35}
+              />
+            )}
 
             {favoriteCount > 0 ? (
               <span className={styles.search_section_links_heart_count}>
@@ -163,11 +170,22 @@ const Menu = () => {
             ) : null}
           </Link>
           <Link to="/cart">
-            <img
-              className={styles.search_section_links_cart}
-              src="../assets/img/cart.svg"
-              alt="cart"
-            />
+            {theme === 'light' ? (
+              <img
+                className={styles.search_section_links_cart}
+                src="../assets/img/cart.svg"
+                alt="cart"
+                width={33}
+              />
+            ) : (
+              <img
+                className={styles.search_section_links_cart}
+                src="../assets/img/cart-white.svg"
+                alt="cart"
+                width={33}
+              />
+            )}
+
             {totalCount > 0 ? (
               <span className={styles.search_section_links_cart_count}>
                 {totalCount}

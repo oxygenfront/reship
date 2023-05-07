@@ -9,10 +9,11 @@ import {
 import { selectCart } from '../../redux/slices/cartSlice'
 import { setChoosenCategorie } from '../../redux/slices/fiterSlice'
 import styles from './Header.module.sass'
+import { set } from '../../redux/slices/themeSlice'
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
   const isAuth = useSelector(selectIsAuth)
-
+  const theme = useSelector((state) => state.theme)
   const { data, status } = useSelector(selectUserData)
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort))
@@ -25,7 +26,7 @@ const Header = () => {
       window.localStorage.removeItem('token')
     }
   }
-
+  console.log(theme)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   useEffect(() => {
@@ -37,15 +38,18 @@ const Header = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   })
-
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('theme', theme)
+  }, [ theme ])
   const onCloseBurger = () => {
     setIsBurger(!isBurger)
   }
 
-  const favoriteCount =
-    isAuth && status === 'success'
-      ? data.favorites && data.favorites.length
-      : null
+  const handleChange = () => {
+    const next = theme === 'dark' ? 'light' : 'dark'
+    dispatch(set(next))
+  }
 
   return (
     <header className={styles.header}>
@@ -158,25 +162,10 @@ const Header = () => {
         </div>
       ) : null}
       <div className={styles.header__container}>
-        {/* <div className={styles.header__cont}>
-          <Link to="/" className={styles.header__logo_block}>
-            <img
-              src="../assets/img/logo.svg"
-              alt="logo"
-              className={styles.header__logo_block}
-            />
-          </Link>
-          <Link
-            onClick={() => onChangeCategory('акции')}
-            to="/catalog"
-            className={styles.header__discount}
-          >
-            <img src="../assets/img/free-icon-fire-8648355 1.svg" alt="fire" />
-            <span>Акции</span>
-          </Link>
-        </div> */}
+        
 
         <div className={styles.header__cont}>
+          <button className="" onClick={handleChange}>CHANGE THEME</button>
           <Link to="/" className={styles.header__delivery}>
             Доставка и оплата
           </Link>
@@ -190,24 +179,7 @@ const Header = () => {
             <Link to="/admin">ADMIN</Link>
           ) : null}
         </div>
-        {/* <div className={styles.header__cont}>
-          <Link to="/cart" className={styles.header__cart}>
-            <div className={styles.header__cart_wrapper}>
-              <img
-                src="../assets/img/free-icon-shopping-bag-5023684 1.png"
-                alt="shopping-bag"
-              />
-              <p>{totalCount > 0 ? totalCount : null}</p>
-            </div>
-            <span>Корзина</span>
-          </Link>
-          {isAuth ? (
-            <Link to="/personal/favorites" className={styles.header__like}>
-              <img src="../assets/img/heart 1.svg" alt="heart" />
-              <p>{favoriteCount > 0 ? favoriteCount : null}</p>
-            </Link>
-          ) : null}
-        </div> */}
+        
 
         <button
           onClick={() => setIsBurger(!isBurger)}

@@ -152,89 +152,11 @@ const Home = () => {
 
             <SwiperSlide className="reviews__slider-slide">
               <div className="reviews__slider-slide_two-items">
-                <div className="reviews__slider-slide_item">
-                  <div className="reviews__slider-slide_item_header">
-                    <div className="reviews__slider-slide_item_header-left">
-                      <div className="reviews__slider-slide_item_header-left_img-block">
-                        <img src="" alt="" />
-                      </div>
-                      <div className="reviews__slider-slide_item_header-left_title-block">
-                        <div className="reviews__slider-slide_item_header-left_title-block_name">
-                          Максим Грязев
-                        </div>
-                        <a href="">Отзыв из Вконтакте</a>
-                      </div>
-                    </div>
-                    <div className="reviews__slider-slide_item_header-stars">
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                    </div>
-                  </div>
-                  <div className="reviews__slider-slide_item_description">
-                    Заказывал мышку, шла до МСК 7 дней. Все супер гуд,
-                    советую.Отдельный респект филу за то, что отправил мышку на
-                    следующий день в 7 утра, хотя заказ оформил в 23 00 по мск.
-                  </div>
-                </div>
-                <div className="reviews__slider-slide_item">
-                  <div className="reviews__slider-slide_item_header">
-                    <div className="reviews__slider-slide_item_header-left">
-                      <div className="reviews__slider-slide_item_header-left_img-block">
-                        <img src="" alt="" />
-                      </div>
-                      <div className="reviews__slider-slide_item_header-left_title-block">
-                        <div className="reviews__slider-slide_item_header-left_title-block_name">
-                          Максим Грязев
-                        </div>
-                        <a href="">Отзыв из Вконтакте</a>
-                      </div>
-                    </div>
-                    <div className="reviews__slider-slide_item_header-stars">
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                    </div>
-                  </div>
-                  <div className="reviews__slider-slide_item_description">
-                    Заказывал мышку, шла до МСК 7 дней. Все супер гуд,
-                    советую.Отдельный респект филу за то, что отправил мышку на
-                    следующий день в 7 утра, хотя заказ оформил в 23 00 по мск.
-                  </div>
-                </div>
+                <Comment></Comment>
+                <Comment></Comment>
               </div>
               <div className="reviews__slider-slide_one-item">
-                <div className="reviews__slider-slide_item">
-                  <div className="reviews__slider-slide_item_header">
-                    <div className="reviews__slider-slide_item_header-left">
-                      <div className="reviews__slider-slide_item_header-left_img-block">
-                        <img src="" alt="" />
-                      </div>
-                      <div className="reviews__slider-slide_item_header-left_title-block">
-                        <div className="reviews__slider-slide_item_header-left_title-block_name">
-                          Максим Грязев
-                        </div>
-                        <a href="">Отзыв из Вконтакте</a>
-                      </div>
-                    </div>
-                    <div className="reviews__slider-slide_item_header-stars">
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                      <img src="/assets/img/star-review.png" alt="" />
-                    </div>
-                  </div>
-                  <div className="reviews__slider-slide_item_description">
-                    Заказывал мышку, шла до МСК 7 дней. Все супер гуд,
-                    советую.Отдельный респект филу за то, что отправил мышку на
-                    следующий день в 7 утра, хотя заказ оформил в 23 00 по мск.
-                  </div>
-                </div>
+                <Comment></Comment>
               </div>
             </SwiperSlide>
           </Swiper>

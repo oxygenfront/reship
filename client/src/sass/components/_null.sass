@@ -1,6 +1,21 @@
 *
     font-family: 'Inter', sans-serif
     font-weight: 400
+html[data-theme="light"]
+    --background-color: #f5f5f5
+    --color: #181818
+    --toblue: #181818
+    --tolightgray: #E8EBF5
+    --towhite: #0540F2
+    --togray: #E8EBF5
+
+html[data-theme="dark"]
+    --background-color: rgba(24, 24, 24, 1)
+    --color: #fff
+    --toblue: #416EF2
+    --tolightgray: #313131
+    --towhite: #fff
+    --togray: #454546
 
 /*Обнуление*/
 *
@@ -72,6 +87,7 @@ a
     color: inherit
 
 body
-    background-color: #f5f5f5
-    color: white
+    background-color: var(--background-color)
+    color: var(--color)
     font-weight: 600
+    transition: background-color 0.3s ease-in-out

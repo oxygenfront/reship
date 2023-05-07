@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Comment.module.sass'
 const Comment = () => {
-  console.log(styles)
+  
   return (
     <div className={styles.reviews__slider_slide_item}>
       <div className={styles.reviews__slider_slide_item_header}>

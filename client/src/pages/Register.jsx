@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import InputMask from 'react-input-mask';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import InputMask from 'react-input-mask'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom'
 import {
   fetchAuthMe,
   fetchRegister,
   selectIsAuth,
-} from '../redux/slices/authSlice';
+} from '../redux/slices/authSlice'
 
-import { AddressSuggestions } from 'react-dadata';
+import { AddressSuggestions } from 'react-dadata'
 const Register = () => {
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
-  const isAuth = useSelector(selectIsAuth);
-  const [checkPass, setCheckPass] = useState(true);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [nextPage, setNextPage] = useState(false);
+  const isAuth = useSelector(selectIsAuth)
+  const [checkPass, setCheckPass] = useState(true)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [nextPage, setNextPage] = useState(false)
 
   const [regForm, setRegForm] = useState({
     firstName: '',
@@ -33,7 +33,7 @@ const Register = () => {
     confirmPassword: '',
     birthdate: '',
     country: 'хуй',
-  });
+  })
   const form = {
     first_name: regForm.firstName,
     last_name: regForm.lastName,
@@ -41,37 +41,37 @@ const Register = () => {
     email: regForm.email,
     birthdate: regForm.birthdate,
     country: regForm.country,
-  };
+  }
   const updateForm = (e) => {
     setRegForm({
       ...regForm,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const handleAdress = (e) => {
-    setRegForm({ ...regForm, country: e.value });
-  };
+    setRegForm({ ...regForm, country: e.value })
+  }
 
   const closeError = (e) => {
-    e.preventDefault();
-    setCheckPass(true);
-  };
+    e.preventDefault()
+    setCheckPass(true)
+  }
 
   const sendForm = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (regForm.newPassword === regForm.confirmPassword) {
-      setCheckPass(true);
-      const data = await dispatch(fetchRegister(form));
+      setCheckPass(true)
+      const data = await dispatch(fetchRegister(form))
       if (!data.payload) {
-        return alert('Не удалось зарегистрироваться');
+        return alert('Не удалось зарегистрироваться')
       }
 
       if ('token' in data.payload) {
-        window.localStorage.setItem('token', data.payload.token);
+        window.localStorage.setItem('token', data.payload.token)
 
-        await dispatch(fetchAuthMe(data.payload.token));
+        await dispatch(fetchAuthMe(data.payload.token))
       }
       setRegForm({
         firstName: '',
@@ -80,59 +80,59 @@ const Register = () => {
         password: { newPassword: '', confirmPassword: '' },
         birthdate: '',
         country: '',
-      });
+      })
     } else {
-      setCheckPass(false);
+      setCheckPass(false)
     }
-  };
-  const dispatch = useDispatch();
+  }
+  const dispatch = useDispatch()
 
   if (isAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to="/" />
   }
   return (
-    <section className='register'>
-      <div className='container register__container'>
+    <section className="register">
+      <div className="container register__container">
         {!nextPage ? (
-          <div className='register__wrapper'>
-            <div className='register__wrapper-title'>Регистрация</div>
-            <hr className='hr' />
-            <form action=''>
+          <div className="register__wrapper">
+            <div className="register__wrapper-title">Регистрация</div>
+            <hr className="hr" />
+            <form action="">
               <input
-                className='register__wrapper-input'
-                type='text'
-                name='email'
-                placeholder='Адрес электронной почты'
+                className="register__wrapper-input"
+                type="text"
+                name="email"
+                placeholder="Адрес электронной почты"
                 value={regForm.email}
                 onChange={updateForm}
               />
               <input
-                className='register__wrapper-input'
-                type='password'
-                name='newPassword'
-                placeholder='Пароль'
+                className="register__wrapper-input"
+                type="password"
+                name="newPassword"
+                placeholder="Пароль"
                 value={regForm.newPassword}
                 onChange={updateForm}
               />
               <input
-                className='register__wrapper-input'
-                type='password'
-                name='confirmPassword'
-                placeholder='Повторите пароль'
+                className="register__wrapper-input"
+                type="password"
+                name="confirmPassword"
+                placeholder="Повторите пароль"
                 value={regForm.confirmPassword}
                 onChange={updateForm}
               />
             </form>
-            <div className='register__wrapper-link'>
-              Уже есть аккаунт? <a href=''>Войти</a>
+            <div className="register__wrapper-link">
+              Уже есть аккаунт? <Link to="/login">Войти</Link>
             </div>
 
-            <div className='register__wrapper-buttons'>
-              <a href='' className='register__wrapper-buttons_forgot'>
+            <div className="register__wrapper-buttons">
+              <Link to="/forgot" className="register__wrapper-buttons_forgot">
                 Забыл пароль
-              </a>
+              </Link>
               <button
-                className='register__wrapper-buttons_next'
+                className="register__wrapper-buttons_next"
                 onClick={() => setNextPage(!nextPage)}
               >
                 Продолжить
@@ -140,66 +140,67 @@ const Register = () => {
             </div>
           </div>
         ) : (
-          <div className='register__wrapper second-page'>
-            <div className='register__wrapper-title'>Регистрация</div>
-            <hr className='hr' />
-            <form action=''>
+          <div className="register__wrapper second-page">
+            <div className="register__wrapper-title">Регистрация</div>
+            <hr className="hr" />
+            <form action="">
               <input
-                className='register__wrapper-input second-page sm'
-                type='text'
-                name='firstName'
-                placeholder='Имя'
+                className="register__wrapper-input second-page sm"
+                type="text"
+                name="firstName"
+                placeholder="Имя"
                 value={regForm.firstName}
                 onChange={updateForm}
               />
               <input
-                className='register__wrapper-input second-page sm'
-                type='text'
-                name='lastName'
-                placeholder='Фамилия'
+                className="register__wrapper-input second-page sm"
+                type="text"
+                name="lastName"
+                placeholder="Фамилия"
                 value={regForm.lastName}
                 onChange={updateForm}
               />
               <InputMask
-                mask='99-99-9999'
-                className='register__wrapper-input second-page sm db'
-                type='text'
-                name='birthdate'
-                placeholder='XX-XX-XXXX'
+                mask="99-99-9999"
+                className="register__wrapper-input second-page sm db"
+                type="text"
+                name="birthdate"
+                placeholder="XX-XX-XXXX"
                 value={regForm.birthdate}
                 onChange={updateForm}
               />
               <AddressSuggestions
-                className='register__wrapper-input second-page'
-                token='82173f834fc389954239d4414514d3ce2634ae1e'
-                // value={regForm.country}
+                className="register__wrapper-input second-page"
+                // renderOption={('', regForm.country)}
+                setInputValue={regForm.country}
+                token="82173f834fc389954239d4414514d3ce2634ae1e"
+                value={regForm.country}
                 onChange={(event) => {
-                  handleAdress(event);
-                  setRegForm({ ...regForm, country: event.value });
+                  console.log(event)
+                  handleAdress(event.value)
                 }}
                 inputProps={{
                   placeholder: 'Страна, город',
                   value: regForm.country,
                   onChange: (event) => {
-                    handleAdress(event);
-                    setRegForm({ ...regForm, country: event.value });
+                    handleAdress(event)
                   },
                 }}
               />
             </form>
-            <div className='register__wrapper-link'>
-              Уже есть аккаунт? <a href=''>Войти</a>
+            <div className="register__wrapper-link">
+              Уже есть аккаунт? <Link to="/login">Войти</Link>
             </div>
 
-            <div className='register__wrapper-buttons second-page'>
+            <div className="register__wrapper-buttons second-page">
               <button
-                className='register__wrapper-buttons_prev'
+                className="register__wrapper-buttons_prev"
                 onClick={() => setNextPage(!nextPage)}
               >
                 Назад
               </button>
               <button
-                className='register__wrapper-buttons_next second-page'
+                className="register__wrapper-buttons_next second-page"
                 onClick={() => console.log(regForm.country)}
               >
                 Готово
@@ -209,7 +210,7 @@ const Register = () => {
         )}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

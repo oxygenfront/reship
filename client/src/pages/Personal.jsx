@@ -151,7 +151,6 @@ const Personal = () => {
   }
   return (
     <>
-      <Menu />
       <section className="person">
         <div className="container person__container">
           <div className="person__card">

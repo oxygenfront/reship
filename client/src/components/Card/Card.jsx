@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import {
-  addItem,
-  fetchAddCartItem,
-  selectCartItemById,
-} from '../../redux/slices/cartSlice'
+import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 import {
   fetchAuthMe,
@@ -17,6 +13,8 @@ import {
   fetchDeleteFavorite,
 } from '../../redux/slices/favoriteSlice'
 import classNames from 'classnames'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper'
 
 const Card = ({ name, image, price, id, old_price }) => {
   const dispatch = useDispatch()
@@ -26,6 +24,7 @@ const Card = ({ name, image, price, id, old_price }) => {
   const { data, status } = useSelector(selectUserData)
   const [navigate, setNavigate] = useState(false)
   const [color, setColor] = useState('')
+
   const onClickAdd = () => {
     const item = {
       id,
@@ -37,7 +36,6 @@ const Card = ({ name, image, price, id, old_price }) => {
     }
     dispatch(addItem(item))
   }
-  
 
   const addedCount = cartItem ? cartItem.count : 0
 
@@ -81,55 +79,61 @@ const Card = ({ name, image, price, id, old_price }) => {
     return <Navigate to="/login"></Navigate>
   }
   return (
-    <div className={styles.catalog__items_block_item}>
-      <Link
-        to={`/item/${id}`}
-        className={styles.catalog__items_block_item_img_block}
+    <div className={styles.main_catalog__products_wrapper_item}>
+      <div className={styles.main_catalog__products_wrapper_item_category}>
+        <span>Хит продаж</span>
+      </div>
+      <button
+        onClick={onChangeFavorite}
+        className={styles.main_catalog__products_wrapper_item_favorite}
       >
-        <img src={`../assets/products_img/${id}.png`} alt="iphone" />
-      </Link>
-      <div className={styles.catalog__items_block_item_price}>
-        <span>{price} ₽</span>
-        {old_price !== price ? <s>{old_price} ₽</s> : null}
-      </div>
-      <div className={styles.catalog__items_block_item_name}>
-        <span>{name}</span>
-      </div>
-      <div className={styles.catalog__items_block_item_buttons}>
-        <button className={styles.catalog__items_block_item_buttons_item}>
-          Купить
-        </button>
-        {addedCount > 0 ? (
-          <button
-            onClick={onClickAdd}
-            className={classNames(
-              styles.catalog__items_block_item_buttons_item,
-              styles.catalog__items_block_item_buttons_item_added
-            )}
-          >
-            В корзине <span>{addedCount}</span>
-          </button>
+        {isFavorite ? (
+          <img src="/assets/img/active-heart-main-catalog.png"></img>
         ) : (
-          <button
-            onClick={onClickAdd}
-            className={styles.catalog__items_block_item_buttons_item}
-          >
-            В корзину
-          </button>
+          <img src="/assets/img/heart-main-catalog.png"></img>
         )}
+      </button>
+      <Swiper
+        className={styles.main_catalog__products_wrapper_item_slider}
+        modules={[Pagination]}
+        pagination={{ clickable: true }}
+        centeredSlides={true}
+      >
+        <SwiperSlide
+          className={styles.main_catalog__products_wrapper_item_slider_slide}
+          style={{
+            backgroundImage: `url('/assets/products_img/${id}.png')`,
+            backgroundSize: 250,
+          }}
+        ></SwiperSlide>
+        <SwiperSlide
+          style={{
+            backgroundImage: `url('/assets/products_img/${id}.png')`,
+            backgroundSize: 250,
+          }}
+          className={styles.main_catalog__products_wrapper_item_slider_slide}
+        ></SwiperSlide>
+        <SwiperSlide
+          style={{
+            backgroundImage: `url('/assets/products_img/${id}.png')`,
+            backgroundSize: 250,
+          }}
+          className={styles.main_catalog__products_wrapper_item_slider_slide}
+        ></SwiperSlide>
+      </Swiper>
+      <div className={styles.main_catalog__products_wrapper_item_title}>
+        {name}
+      </div>
+      <div className={styles.main_catalog__products_wrapper_item_bottom_block}>
+        <span className={styles.main_catalog__products_wrapper_item_price}>
+          от {price} руб
+        </span>
         <button
-          onClick={onChangeFavorite}
-          className={styles.catalog__items_block_item_buttons_item}
+          onClick={onClickAdd}
+          className={styles.main_catalog__products_wrapper_item_button}
         >
-          <img
-            src={
-              isFavorite
-                ? './assets/img/heart-catalog.svg'
-                : './assets/img/heart-empty.svg'
-            }
-            alt="heart"
-            width={'18px'}
-          />
+          В корзину
+          <span>{addedCount > 0 ? addedCount : null}</span>
         </button>
       </div>
     </div>

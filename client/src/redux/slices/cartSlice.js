@@ -3,7 +3,7 @@ import { calcTotalPrice } from '../../utils/calcTotalPrice'
 import { getCartFromLS } from '../../utils/getCartFromLs'
 import axios from '../../axios'
 
-const { items } = getCartFromLS()
+const { cartItems } = getCartFromLS()
 export const fetchCheckPromocode = createAsyncThunk(
   'auth/fetchCheckPromocode',
   async (params) => {
@@ -14,7 +14,7 @@ export const fetchCheckPromocode = createAsyncThunk(
 )
 
 const initialState = {
-  items,
+  cartItems,
   status: 'loading',
 }
 const cartSlice = createSlice({
@@ -22,27 +22,31 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem(state, action) {
-      const findItem = state.items.find((obj) => obj.id === action.payload.id)
+      const findItem = state.cartItems.find(
+        (obj) => obj.id === action.payload.id
+      )
       if (findItem) {
         findItem.count++
       } else {
-        state.items.push({ ...action.payload, count: 1 })
+        state.cartItems.push({ ...action.payload, count: 1 })
       }
-      state.totalPrice = calcTotalPrice(state.items)
+      state.totalPrice = calcTotalPrice(state.cartItems)
     },
     removeItem(state, action) {
-      state.items = state.items.filter((obj) => obj.id !== action.payload)
-      state.totalPrice = calcTotalPrice(state.items)
+      state.cartItems = state.cartItems.filter(
+        (obj) => obj.id !== action.payload
+      )
+      state.totalPrice = calcTotalPrice(state.cartItems)
     },
     minusItem(state, action) {
-      const findItem = state.items.find((obj) => obj.id === action.payload)
+      const findItem = state.cartItems.find((obj) => obj.id === action.payload)
       if (findItem) {
         findItem.count--
       }
-      state.totalPrice = calcTotalPrice(state.items)
+      state.totalPrice = calcTotalPrice(state.cartItems)
     },
     clearItems(state) {
-      state.items = []
+      state.cartItems = []
       state.totalPrice = 0
     },
   },
@@ -50,7 +54,7 @@ const cartSlice = createSlice({
 
 export const selectCart = (state) => state.cart
 export const selectCartItemById = (id) => (state) =>
-  state.cart.items.find((obj) => obj.id === id)
+  state.cart.cartItems.find((obj) => obj.id === id)
 
 export const { addItem, removeItem, clearItems, minusItem } = cartSlice.actions
 

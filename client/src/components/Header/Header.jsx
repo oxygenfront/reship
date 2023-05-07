@@ -12,13 +12,11 @@ import styles from './Header.module.sass'
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
   const isAuth = useSelector(selectIsAuth)
-  const { items } = useSelector(selectCart)
+
   const { data, status } = useSelector(selectUserData)
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort))
   }, [])
-  const isMounted = useRef(false)
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0)
 
   const dispatch = useDispatch()
   const onClickLogout = () => {
@@ -29,13 +27,6 @@ const Header = () => {
   }
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  useEffect(() => {
-    if (isMounted.current) {
-      const json = JSON.stringify(items)
-      localStorage.setItem('cart', json)
-    }
-    isMounted.current = true
-  }, [items])
 
   useEffect(() => {
     function handleResize() {

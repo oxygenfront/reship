@@ -1,41 +1,46 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Navigation, Pagination, A11y } from 'swiper';
-import 'swiper/css';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { setChoosenCategorie } from '../redux/slices/fiterSlice';
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Navigation, Pagination, A11y } from 'swiper'
+import 'swiper/css'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { setChoosenCategorie } from '../redux/slices/fiterSlice'
+import { selectItemsData } from '../redux/slices/itemsSlice'
+import Card from './Card/Card'
 
 function CatalogMain() {
-  const dispatch = useDispatch();
-  const [active, setActive] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const dispatch = useDispatch()
+  const [active, setActive] = useState(false)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const { items, status } = useSelector(selectItemsData)
 
   const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort));
-  }, []);
+    dispatch(setChoosenCategorie(sort))
+  }, [])
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
-    <section className='main-catalog'>
-      <div className='container main-catalog__container'>
-        <h1 className='main-catalog__title'>
+    <section className="main-catalog">
+      <div className="container main-catalog__container">
+        <h1 className="main-catalog__title">
           Каталог <br />
           <span>товаров</span>
         </h1>
 
-        <div className='main-catalog__lg-items'>
+        <div className="main-catalog__lg-items">
           <Link
-            className='main-catalog__lg-items-item'
+            to="/catalog"
+            onClick={() => onChangeCategory('клавиатуры')}
+            className="main-catalog__lg-items-item"
             style={{
               backgroundImage: `url('/assets/img/boards-main-catalog.png')`,
               backgroundColor: '#DBDBDC',
@@ -44,403 +49,117 @@ function CatalogMain() {
             <span>Клавиатуры</span>
           </Link>
           <Link
+            onClick={() => onChangeCategory('микрофоны')}
+            to="/catalog"
             style={{
               backgroundImage: `url('/assets/img/microphone-main-catalog.png')`,
               backgroundColor: '#DBDBDC',
             }}
-            className='main-catalog__lg-items-item'
+            className="main-catalog__lg-items-item"
           >
             <span>Микрофоны</span>
           </Link>
         </div>
 
-        <hr className='hr' />
+        <hr className="hr" />
 
-        <div className='main-catalog__slider-wrapper'>
+        <div className="main-catalog__slider-wrapper">
           <Swiper
-            className='main-catalog__slider'
+            className="main-catalog__slider"
             modules={[Pagination, Navigation, A11y]}
             pagination={{ clickable: true }}
-            slidesPerView='auto'
+            slidesPerView="auto"
             spaceBetween={60}
             navigation
             speed={1000}
           >
-            <SwiperSlide className='main-catalog__slider-slide'>
+            <SwiperSlide className="main-catalog__slider-slide">
               <Link
-                className='main-catalog__slider-slide_item'
+                onClick={() => onChangeCategory('мышки')}
+                to="/catalog"
+                className="main-catalog__slider-slide_item"
                 style={{
                   backgroundImage: `url('/assets/img/mouse-main-catalog.png')`,
                   backgroundColor: '#DBDBDC',
                 }}
               >
-                <div className='main-catalog__slider-sm_title'>Мышки</div>
+                <div className="main-catalog__slider-sm_title">Мышки</div>
               </Link>
             </SwiperSlide>
-            <SwiperSlide className='main-catalog__slider-slide'>
+            <SwiperSlide className="main-catalog__slider-slide">
               <Link
-                className='main-catalog__slider-slide_item'
+                onClick={() => onChangeCategory('аксессуары')}
+                to="/catalog"
+                className="main-catalog__slider-slide_item"
                 style={{
                   backgroundImage: `url('/assets/img/accessory-main-catalog.png')`,
                   backgroundColor: '#DBDBDC',
                 }}
               >
-                <div className='main-catalog__slider-sm_title'>Аксессуары</div>
+                <div className="main-catalog__slider-sm_title">Аксессуары</div>
               </Link>
             </SwiperSlide>
-            <SwiperSlide className='main-catalog__slider-slide'>
+            <SwiperSlide className="main-catalog__slider-slide">
               <Link
-                className='main-catalog__slider-slide_item'
+                onClick={() => onChangeCategory('веб-камеры')}
+                to="/catalog"
+                className="main-catalog__slider-slide_item"
                 style={{
                   backgroundImage: `url('/assets/img/camera-main-catalog.png')`,
                   backgroundColor: '#DBDBDC',
                 }}
               >
-                <div className='main-catalog__slider-sm_title'>Веб-камеры</div>
+                <div className="main-catalog__slider-sm_title">Веб-камеры</div>
               </Link>
             </SwiperSlide>
-            <SwiperSlide className='main-catalog__slider-slide'>
+            <SwiperSlide className="main-catalog__slider-slide">
               <Link
-                className='main-catalog__slider-slide_item'
+                onClick={() => onChangeCategory('наушники')}
+                to="/catalog"
+                className="main-catalog__slider-slide_item"
                 style={{
                   backgroundImage: `url('/assets/img/headphones-main-catalog.png')`,
                   backgroundColor: '#DBDBDC',
                 }}
               >
-                <div className='main-catalog__slider-sm_title'>Наушники</div>
+                <div className="main-catalog__slider-sm_title">Наушники</div>
               </Link>
             </SwiperSlide>
 
-            <hr className='hr' />
+            <hr className="hr" />
           </Swiper>
         </div>
 
-        <div className='main-catalog__products-buttons'>
-          <button className='main-catalog__products-buttons_item active'>
+        <div className="main-catalog__products-buttons">
+          <button className="main-catalog__products-buttons_item active">
             Новинки
           </button>
-          <button className='main-catalog__products-buttons_item'>
+          <button className="main-catalog__products-buttons_item">
             Популярные
           </button>
-          <button className='main-catalog__products-buttons_item'>Акции</button>
+          <button className="main-catalog__products-buttons_item">Акции</button>
         </div>
-        <hr className='hr' />
+        <hr className="hr" />
 
-        <div className='main-catalog__products-wrapper'>
-          <div className='main-catalog__products-wrapper-item'>
-            <div className='main-catalog__products-wrapper-item_category'>
-              <span>Хит продаж</span>
-            </div>
-            <button
-              onClick={() => setActive(!active)}
-              className='main-catalog__products-wrapper-item_favorite'
-            >
-              {active ? (
-                <img src='/assets/img/active-heart-main-catalog.png'></img>
-              ) : (
-                <img src='/assets/img/heart-main-catalog.png'></img>
-              )}
-            </button>
-            <Swiper
-              className='main-catalog__products-wrapper-item_slider'
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
-              centeredSlides={true}
-            >
-              <SwiperSlide
-                className='main-catalog__products-wrapper-item_slider_slide'
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-            </Swiper>
-            <div className='main-catalog__products-wrapper-item_title'>
-              Title
-            </div>
-            <div className='main-catalog__products-wrapper-item_bottom-block'>
-              <span className='main-catalog__products-wrapper-item_price'>
-                от 1111 руб
-              </span>
-              <button className='main-catalog__products-wrapper-item_button'>
-                В корзину
-              </button>
-            </div>
-          </div>
-          <div className='main-catalog__products-wrapper-item'>
-            <div className='main-catalog__products-wrapper-item_category'>
-              <span>Хит продаж</span>
-            </div>
-            <button
-              onClick={() => setActive(!active)}
-              className='main-catalog__products-wrapper-item_favorite'
-            >
-              {active ? (
-                <img src='/assets/img/active-heart-main-catalog.png'></img>
-              ) : (
-                <img src='/assets/img/heart-main-catalog.png'></img>
-              )}
-            </button>
-            <Swiper
-              className='main-catalog__products-wrapper-item_slider'
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
-              centeredSlides={true}
-            >
-              <SwiperSlide
-                className='main-catalog__products-wrapper-item_slider_slide'
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-            </Swiper>
-            <div className='main-catalog__products-wrapper-item_title'>
-              Title
-            </div>
-            <div className='main-catalog__products-wrapper-item_bottom-block'>
-              <span className='main-catalog__products-wrapper-item_price'>
-                от 1111 руб
-              </span>
-              <button className='main-catalog__products-wrapper-item_button'>
-                В корзину
-              </button>
-            </div>
-          </div>
-          <div className='main-catalog__products-wrapper-item'>
-            <div className='main-catalog__products-wrapper-item_category'>
-              <span>Хит продаж</span>
-            </div>
-            <button
-              onClick={() => setActive(!active)}
-              className='main-catalog__products-wrapper-item_favorite'
-            >
-              {active ? (
-                <img src='/assets/img/active-heart-main-catalog.png'></img>
-              ) : (
-                <img src='/assets/img/heart-main-catalog.png'></img>
-              )}
-            </button>
-            <Swiper
-              className='main-catalog__products-wrapper-item_slider'
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
-              centeredSlides={true}
-            >
-              <SwiperSlide
-                className='main-catalog__products-wrapper-item_slider_slide'
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-            </Swiper>
-            <div className='main-catalog__products-wrapper-item_title'>
-              Title
-            </div>
-            <div className='main-catalog__products-wrapper-item_bottom-block'>
-              <span className='main-catalog__products-wrapper-item_price'>
-                от 1111 руб
-              </span>
-              <button className='main-catalog__products-wrapper-item_button'>
-                В корзину
-              </button>
-            </div>
-          </div>
-          <div className='main-catalog__products-wrapper-item'>
-            <div className='main-catalog__products-wrapper-item_category'>
-              <span>Хит продаж</span>
-            </div>
-            <button
-              onClick={() => setActive(!active)}
-              className='main-catalog__products-wrapper-item_favorite'
-            >
-              {active ? (
-                <img src='/assets/img/active-heart-main-catalog.png'></img>
-              ) : (
-                <img src='/assets/img/heart-main-catalog.png'></img>
-              )}
-            </button>
-            <Swiper
-              className='main-catalog__products-wrapper-item_slider'
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
-              centeredSlides={true}
-            >
-              <SwiperSlide
-                className='main-catalog__products-wrapper-item_slider_slide'
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-            </Swiper>
-            <div className='main-catalog__products-wrapper-item_title'>
-              Title
-            </div>
-            <div className='main-catalog__products-wrapper-item_bottom-block'>
-              <span className='main-catalog__products-wrapper-item_price'>
-                от 1111 руб
-              </span>
-              <button className='main-catalog__products-wrapper-item_button'>
-                В корзину
-              </button>
-            </div>
-          </div>
-          <div className='main-catalog__products-wrapper-item'>
-            <div className='main-catalog__products-wrapper-item_category'>
-              <span>Хит продаж</span>
-            </div>
-            <button
-              onClick={() => setActive(!active)}
-              className='main-catalog__products-wrapper-item_favorite'
-            >
-              {active ? (
-                <img src='/assets/img/active-heart-main-catalog.png'></img>
-              ) : (
-                <img src='/assets/img/heart-main-catalog.png'></img>
-              )}
-            </button>
-            <Swiper
-              className='main-catalog__products-wrapper-item_slider'
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
-              centeredSlides={true}
-            >
-              <SwiperSlide
-                className='main-catalog__products-wrapper-item_slider_slide'
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-            </Swiper>
-            <div className='main-catalog__products-wrapper-item_title'>
-              Title
-            </div>
-            <div className='main-catalog__products-wrapper-item_bottom-block'>
-              <span className='main-catalog__products-wrapper-item_price'>
-                от 1111 руб
-              </span>
-              <button className='main-catalog__products-wrapper-item_button'>
-                В корзину
-              </button>
-            </div>
-          </div>
-          <div className='main-catalog__products-wrapper-item'>
-            <div className='main-catalog__products-wrapper-item_category'>
-              <span>Хит продаж</span>
-            </div>
-            <button
-              onClick={() => setActive(!active)}
-              className='main-catalog__products-wrapper-item_favorite'
-            >
-              {active ? (
-                <img src='/assets/img/active-heart-main-catalog.png'></img>
-              ) : (
-                <img src='/assets/img/heart-main-catalog.png'></img>
-              )}
-            </button>
-            <Swiper
-              className='main-catalog__products-wrapper-item_slider'
-              modules={[Pagination]}
-              pagination={{ clickable: true }}
-              centeredSlides={true}
-            >
-              <SwiperSlide
-                className='main-catalog__products-wrapper-item_slider_slide'
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('/assets/img/pro-x-main-catalog.png')`,
-                }}
-                className='main-catalog__products-wrapper-item_slider_slide'
-              ></SwiperSlide>
-            </Swiper>
-            <div className='main-catalog__products-wrapper-item_title'>
-              Title
-            </div>
-            <div className='main-catalog__products-wrapper-item_bottom-block'>
-              <span className='main-catalog__products-wrapper-item_price'>
-                от 1111 руб
-              </span>
-              <button className='main-catalog__products-wrapper-item_button'>
-                В корзину
-              </button>
-            </div>
-          </div>
-          
+        <div className="main-catalog__products-wrapper">
+          {status === 'success' &&
+            items
+              .slice(0, 6)
+              .map((item) => (
+                <Card
+                  id={item.id}
+                  price={item.price}
+                  key={item.id}
+                  name={item.name}
+                ></Card>
+              ))}
         </div>
 
-        <div className='main-catalog__main-category'>
+        <div className="main-catalog__main-category">
           <button>Все новинки</button>
         </div>
 
-        <hr className='hr' />
+        <hr className="hr" />
 
         {/* {windowWidth > 991 ? (
           <div className="main-catalog__preview">
@@ -678,7 +397,7 @@ function CatalogMain() {
         ) : null} */}
       </div>
     </section>
-  );
+  )
 }
 
-export default CatalogMain;
+export default CatalogMain

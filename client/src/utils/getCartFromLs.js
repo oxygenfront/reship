@@ -2,10 +2,10 @@ import { calcTotalPrice } from './calcTotalPrice'
 
 export const getCartFromLS = () => {
   const data = localStorage.getItem('cart')
-  const items = data ? JSON.parse(data) : []
-  const totalPrice = calcTotalPrice(items)
+  const cartItems = data ? JSON.parse(data) : []
+  const totalPrice = calcTotalPrice(cartItems)
   return {
-    items,
+    cartItems,
     totalPrice,
   }
 }

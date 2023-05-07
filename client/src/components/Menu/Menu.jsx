@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
@@ -12,13 +12,21 @@ import styles from './Menu.module.sass'
 import { Dialog } from '@headlessui/react'
 import { selectItemsData } from '../../redux/slices/itemsSlice'
 import Card from '../Card/Card'
+import { selectCart } from '../../redux/slices/cartSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
+
+  const isMounted = useRef(false)
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
   const { searchValue } = useSelector(selectFilter)
+
   const { items, itemsStatus = status } = useSelector(selectItemsData)
+  const { cartItems } = useSelector(selectCart)
+
+  const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
+
   const [isOpen, setIsOpen] = useState(false)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
@@ -28,6 +36,10 @@ const Menu = () => {
   }
   const [isNotEmpty, setIsNotEmpty] = useState(false)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const favoriteCount =
+    isAuth && status === 'success'
+      ? data.favorites && data.favorites.length
+      : null
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)
@@ -37,6 +49,13 @@ const Menu = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(cartItems)
+      localStorage.setItem('cart', json)
+    }
+    isMounted.current = true
+  }, [cartItems])
   return (
     <div className={styles.search_section}>
       <div
@@ -47,7 +66,7 @@ const Menu = () => {
       >
         {windowWidth <= 767 ? null : (
           <>
-            <Link to='/' className={styles.search_section__logo}>
+            <Link to="/" className={styles.search_section__logo}>
               <img src="../assets/img/logo.svg" alt="logo" />
             </Link>
 
@@ -130,21 +149,31 @@ const Menu = () => {
           </button>
         </div>
         <div className={styles.search_section_links}>
-          <div>
+          <Link to="/personal/favorites">
             <img
               className={styles.search_section_links_heart}
               src="../assets/img/heart.svg"
-              alt="cart"
+              alt="favorites"
             />
-          </div>
-          <div>
+
+            {favoriteCount > 0 ? (
+              <span className={styles.search_section_links_heart_count}>
+                {favoriteCount}
+              </span>
+            ) : null}
+          </Link>
+          <Link to="/cart">
             <img
               className={styles.search_section_links_cart}
               src="../assets/img/cart.svg"
               alt="cart"
             />
-            <span className={styles.search_section_links_cart_count}>5</span>
-          </div>
+            {totalCount > 0 ? (
+              <span className={styles.search_section_links_cart_count}>
+                {totalCount}
+              </span>
+            ) : null}
+          </Link>
         </div>
         {isAuth ? (
           status === 'success' && (

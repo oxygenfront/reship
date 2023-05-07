@@ -22,36 +22,42 @@
         color: #181818
         font-size: 18px
         &.active
-            border-radius: 50px
+            border-radius: 30px
             background: #E5EBF5
             transition: background 0.4s ease-in-out
-        &-arrows
+            &-arrows
+
+        &.active &-arrows
             transform: rotate(225deg)
+            border-right-color: #0540F2
+            border-bottom-color: #0540F2
         &:not(:last-child)
             margin-bottom: 20px
         &-first-block
             display: flex
             justify-content: space-between
-            padding: 13px 57px 26px 0
+            padding: 36px 57px 26px 54px
         &-title
             font-size: 24px
             font-weight: 600
             color: #181818
 
         &-arrows
+
             width: 16px
             height: 16px
             border-right: 4px solid #AEC5F2
             border-bottom: 4px solid #AEC5F2
             transform: rotate(45deg)
             transition: all .4s linear
+
         &-about
             line-height: 24px
             height: 0px
             transition: height 0.4s ease-in-out
             overflow: hidden
-            padding: 0px 50px 0px 0
+            padding: 0px 50px
 
         &.active &-about
-            height: 100px
+            height: 120px
             transition: height 0.4s ease-in-out

@@ -57,13 +57,17 @@ const Footer = () => {
           </div>
           <div className={styles.footer__block_social}>
             <a href="#" className={styles.footer__block_suptitle}>
-              <img src="../assets/img/vkontakte 1.svg" alt="" />
+              <img src="../assets/img/vk.svg" alt="vk" />
             </a>
             <a href="#" className={styles.footer__block_suptitle}>
-              <img src="../assets/img/vkontakte 1.svg" alt="" />
+              <img src="../assets/img/discord.svg" alt="discord" />
             </a>
             <a href="#" className={styles.footer__block_suptitle}>
-              <img src="../assets/img/vkontakte 1.svg" alt="" />
+              <img
+                src="../assets/img/tg-decor.png"
+                alt="telegram"
+                width={'31px'}
+              />
             </a>
           </div>
         </div>

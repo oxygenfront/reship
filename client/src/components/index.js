@@ -14,4 +14,4 @@ export { default as AdminItem } from './AdminItem/AdminItem'
 export { default as AdminPayment } from './AdminPayment/AdminPayment'
 export { default as AdminOrder } from './AdminOrder/AdminOrder'
 export { default as AdminPromocode } from './AdminPromocode/AdminPromocode'
-
+export { default as Comment } from './Comment/Comment'

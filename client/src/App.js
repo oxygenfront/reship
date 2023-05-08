@@ -46,10 +46,7 @@ const App = () => {
     dispatch(fetchItems({ choosenCategorie, searchValue }))
   }, [choosenCategorie])
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    localStorage.setItem('theme', theme)
-  }, [ theme ])
+  
 
   return (
     <>

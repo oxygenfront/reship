@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { addItem, selectCartItemById } from '../../redux/slices/cartSlice'
+import { addItem, minusItem, selectCartItemById } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 import {
   fetchAuthMe,
@@ -35,6 +35,12 @@ const Card = ({ name, image, price, id, old_price }) => {
       count: 0,
     }
     dispatch(addItem(item))
+  }
+  const onClickPlus = () => {
+    dispatch(addItem({ id }));
+  };
+  const onClickMinus = () => {
+    dispatch(minusItem(id));
   }
 
   const addedCount = cartItem ? cartItem.count : 0
@@ -128,13 +134,35 @@ const Card = ({ name, image, price, id, old_price }) => {
         <span className={styles.main_catalog__products_wrapper_item_price}>
           от {price} руб
         </span>
-        <button
+        {addedCount > 0 ? <button
+          
+          className={styles.main_catalog__products_wrapper_item_button}
+        >
+          <div onClick={onClickMinus} className={styles.main_catalog__products_wrapper_item_button_minus_wrapper}><div className={styles.main_catalog__products_wrapper_item_button_minus}></div></div>
+          {addedCount}
+          <button
+            onClick={onClickAdd}
+            className={styles.main_catalog__products_wrapper_item_button_pluses}
+          >
+            <div
+              className={styles.main_catalog__products_wrapper_item_button_pluses_block}
+            >
+              <div
+                className={styles.main_catalog__products_wrapper_item_button_pluses_itemv}
+              ></div>
+              <div
+                className={styles.main_catalog__products_wrapper_item_button_pluses_itemh}
+              ></div>
+            </div>
+          </button>
+        </button> : <button
           onClick={onClickAdd}
           className={styles.main_catalog__products_wrapper_item_button}
         >
           В корзину
-          <span>{addedCount > 0 ? addedCount : null}</span>
-        </button>
+          
+        </button>}
+        
       </div>
     </div>
   )

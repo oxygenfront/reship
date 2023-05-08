@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import { DeliveryItem, FavoriteItem, Menu, PersonItem } from '../components'
+import {
+  Card,
+  DeliveryItem,
+  FavoriteItem,
+  Footer,
+  Menu,
+  PersonItem,
+} from '../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
 import {
   fetchChangeEmail,
   fetchChangePassword,
 } from '../redux/slices/changeSlice'
+import { selectItemsData } from '../redux/slices/itemsSlice'
 
 const Personal = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
+  const { items, itemsStatus = status } = useSelector(selectItemsData)
   const token = localStorage.getItem('token')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
@@ -153,76 +162,84 @@ const Personal = () => {
     <>
       <section className="person">
         <div className="container person__container">
-          <div className="person__card">
-            <div className="person__img-block">
-              <img
-                src="../assets/user_img/default.jpg"
-                alt="avatar"
-                className="person__img"
-              />
-            </div>
-            <div className="person__info">
-              {changeName ? (
-                <div className="person__info-item">
-                  {personName.lastName} {personName.firstName}
-                </div>
-              ) : (
-                <div className="person__info-input-button">
-                  <input
-                    className="person__info-input"
-                    value={personName.lastName}
-                    onChange={updateName}
-                    placeholder="Введите фамилию"
-                    name="lastName"
-                  />
-                  <input
-                    className="person__info-input"
-                    value={personName.firstName}
-                    onChange={updateName}
-                    placeholder="Введите имя"
-                    name="firstName"
-                  />
-                  <button
-                    className="person__info-input_button"
-                    onClick={() => setChangeName(!changeName)}
-                  >
-                    Сохранить
-                  </button>
-                </div>
-              )}
+          <div className="person_top">
+            <p className="person__title">
+              Добрый день,<br></br>
+              {status === 'success' && data.first_name ? (
+                <span>
+                  {data.first_name[0].toUpperCase() + data.first_name.slice(1)}
+                </span>
+              ) : null}
+            </p>
+            <div className="person__card">
+              <div className="person__img-block">
+                <img
+                  src="../assets/user_img/default.jpg"
+                  alt="avatar"
+                  className="person__img"
+                />
+              </div>
+              <div className="person__info">
+                {changeName ? (
+                  <div className="person__info-item">
+                    {personName.lastName} {personName.firstName}
+                  </div>
+                ) : (
+                  <div className="person__info-input-button">
+                    <input
+                      className="person__info-input"
+                      value={personName.lastName}
+                      onChange={updateName}
+                      placeholder="Введите фамилию"
+                      name="lastName"
+                    />
+                    <input
+                      className="person__info-input"
+                      value={personName.firstName}
+                      onChange={updateName}
+                      placeholder="Введите имя"
+                      name="firstName"
+                    />
+                    <button
+                      className="person__info-input_button"
+                      onClick={() => setChangeName(!changeName)}
+                    >
+                      Сохранить
+                    </button>
+                  </div>
+                )}
 
-              {changeMail ? (
-                <div className="person__info-item">{personMail.mail}</div>
-              ) : (
-                <div className="person__info-input-button">
-                  <input
-                    className="person__info-input mail"
-                    value={personMail.mail}
-                    onChange={updateMail}
-                    placeholder="Введите свой email"
-                    name="mail"
-                  />
-                  <button
-                    className="person__info-input_button"
-                    onClick={() => setChangeMail(!changeMail)}
-                  >
-                    Сохранить
-                  </button>
-                </div>
-              )}
+                {changeMail ? null : (
+                  // <div className="person__info-item">{personMail.mail}</div>
+                  <div className="person__info-input-button">
+                    <input
+                      className="person__info-input mail"
+                      value={personMail.mail}
+                      onChange={updateMail}
+                      placeholder="Введите свой email"
+                      name="mail"
+                    />
+                    <button
+                      className="person__info-input_button"
+                      onClick={() => setChangeMail(!changeMail)}
+                    >
+                      Сохранить
+                    </button>
+                  </div>
+                )}
 
-              <button className="person__info-item">
+                {/* <button className="person__info-item">
                 Укажите адрес доставки
-              </button>
+              </button> */}
 
-              <button
-                className="person__info-item"
-                id="settings-conf"
-                onClick={() => setChangeSecret(!changeSecret)}
-              >
-                Настройки конфиденциальности
-                <img src="./assets/img/gear.svg" alt="" />
-              </button>
+                <button
+                  className="person__info-item"
+                  id="settings-conf"
+                  onClick={() => setChangeSecret(!changeSecret)}
+                >
+                  Изменить профиль
+                </button>
+              </div>
             </div>
           </div>
 
@@ -456,50 +473,50 @@ const Personal = () => {
             }
           >
             {windowWidth > 767 ? (
-              <div className="person__buttons buttons__10" id="person-btn">
+              <div className="person__buttons" id="person-btn">
                 <button
                   className={
                     personPages.delHistory
                       ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item'
+                      : 'person__buttons-item buttons__10-item_personal'
                   }
                   id="lk-history"
                   onClick={() => setPersonPages({ delHistory: true })}
                 >
-                  <span>История заказов</span>
+                  <span>Избранные</span>
                 </button>
                 <button
                   className={
                     personPages.delInfo
                       ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item'
+                      : 'person__buttons-item buttons__10-item_personal'
                   }
                   id="lk-wait"
                   onClick={() => setPersonPages({ delInfo: true })}
                 >
-                  <span>Ожидают доставки</span>
+                  <span>Корзина</span>
                 </button>
                 <button
                   className={
                     personPages.favorites
                       ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item'
+                      : 'person__buttons-item buttons__10-item_personal'
                   }
                   id="lk-favorites"
                   onClick={() => setPersonPages({ favorites: true })}
                 >
-                  <span>Избранные товары</span>
+                  <span>Мои данные</span>
                 </button>
                 <button
                   className={
                     personPages.reviews
                       ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item'
+                      : 'person__buttons-item buttons__10-item_personal'
                   }
                   id="lk-reviews"
                   onClick={() => setPersonPages({ reviews: true })}
                 >
-                  <span>Оставить отзыв</span>
+                  <span>Мои заказы</span>
                 </button>
               </div>
             ) : (
@@ -756,8 +773,25 @@ const Personal = () => {
               </div>
             ) : null}
           </div>
+          <div className="person__like">
+            <p className="person__like-title">Возможно вам понравятся</p>
+            <div className="person__like-cards">
+              {itemsStatus === 'success' &&
+                items
+                  .slice(0, 3)
+                  .map((item) => (
+                    <Card
+                      key={item.id}
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                    ></Card>
+                  ))}
+            </div>
+          </div>
         </div>
       </section>
+      <Footer></Footer>
     </>
   )
 }

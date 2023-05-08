@@ -73,9 +73,7 @@ const Menu = () => {
             <Link to="/catalog" className={styles.search_section__catalog}>
               <span>Каталог</span>
 
-              <div className={styles.search_section__catalog_block}>
-                <div className={styles.search_section__catalog_arrow}></div>
-              </div>
+              <div className={styles.search_section__catalog_arrow}></div>
             </Link>
           </>
         )}
@@ -197,20 +195,23 @@ const Menu = () => {
           status === 'success' && (
             <>
               {windowWidth > 767 ? (
-                <>
-                  <Link
-                    to="/personal"
-                    className={styles.search_section__profile_block}
-                  >
-                    <img src="../assets/img/user.svg" alt="user" />
+                <div className={styles.search_section__profile_block}>
+                  <Link to="/personal">
                     {data.first_name ? (
-                      <p>
-                        {data.first_name[0].toUpperCase() +
-                          data.first_name.slice(1)}
-                      </p>
+                      <>
+                        <p>
+                          {data.first_name[0].toUpperCase() +
+                            data.first_name.slice(1)}
+                        </p>
+                      </>
                     ) : null}
                   </Link>
-                </>
+                  <div className={styles.search_section__catalog_block}>
+                    <div
+                      className={styles.search_section__catalog_arrow_profile}
+                    ></div>
+                  </div>
+                </div>
               ) : null}
               {windowWidth > 767 ? (
                 <Link

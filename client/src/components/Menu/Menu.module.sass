@@ -67,6 +67,16 @@
     font-size: 16px
     color: var(--color)
     transition: all 0.2s ease-in-out
+    &_block
+      margin-left: 19px
+      display: flex
+      align-items: center
+      justify-content: center
+      width: 31px
+      height: 31px
+      background: #E8EBF5
+      border-radius: 30px
+      padding-bottom: 5px
     &_arrow
       margin-bottom: 4px
       margin-left: 10px
@@ -76,6 +86,14 @@
       border-bottom: 1px solid
       transform: rotate(45deg)
       transition: all .2s linear
+      &_profile
+
+        width: 11px
+        height: 11px
+        border-right: 1px solid
+        border-bottom: 1px solid
+        transform: rotate(45deg)
+        transition: all .2s linear
   &__search_block
     position: relative
     height: 60px
@@ -168,12 +186,11 @@
     max-width: 200px
     display: flex
     align-items: center
-    background-color: #007dfd
+
     font-size: 18px
-    color: white
+    color: var(--color)
     border-radius: 9px
-    & img
-      margin-right: 15px
+
   &__logout_block
     width: 28px
     display: flex

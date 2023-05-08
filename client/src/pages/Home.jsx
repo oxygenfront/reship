@@ -40,32 +40,32 @@ const Home = () => {
               navigation
             >
               <SwiperSlide className="delpay__slider_item">
-                <span className="delpay__slider_item_step">Шаг1</span>
+                <span className="delpay__slider_item_step">Шаг 1</span>
                 <p className="delpay__slider_item_description">
                   Зарегистрируйте аккаунт<br></br>в нашем интернет-магазине
                 </p>
               </SwiperSlide>
               <SwiperSlide className="delpay__slider_item">
-                <span className="delpay__slider_item_step">Шаг2</span>
+                <span className="delpay__slider_item_step">Шаг 2</span>
                 <p className="delpay__slider_item_description">
                   Добавьте интересующий вас<br></br> товар в корзину
                 </p>
               </SwiperSlide>
               <SwiperSlide className="delpay__slider_item">
-                <span className="delpay__slider_item_step">Шаг3</span>
+                <span className="delpay__slider_item_step">Шаг 3</span>
                 <p className="delpay__slider_item_description">
                   Перейдите в нее для дальнейшего оформления
                 </p>
               </SwiperSlide>
               <SwiperSlide className="delpay__slider_item">
-                <span className="delpay__slider_item_step">Шаг4</span>
+                <span className="delpay__slider_item_step">Шаг 4</span>
                 <p className="delpay__slider_item_description">
                   Заполните требуемые поля <br></br>и произведите оплату с
                   <br></br> помощью удобного способа
                 </p>
               </SwiperSlide>
               <SwiperSlide className="delpay__slider_item">
-                <span className="delpay__slider_item_step">Шаг5</span>
+                <span className="delpay__slider_item_step">Шаг 5</span>
                 <p className="delpay__slider_item_description">
                   Заказ оформлен! Отследить его<br></br> вы сможете в личном
                   кабинете<br></br>
@@ -73,7 +73,7 @@ const Home = () => {
                 </p>
               </SwiperSlide>
               <SwiperSlide className="delpay__slider_item">
-                <span className="delpay__slider_item_step">Шаг6</span>
+                <span className="delpay__slider_item_step">Шаг 6</span>
                 <p className="delpay__slider_item_description">
                   Заказ оформлен! Отследить его<br></br> вы сможете в личном
                   кабинете<br></br>

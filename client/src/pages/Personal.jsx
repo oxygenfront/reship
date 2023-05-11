@@ -473,138 +473,103 @@ const Personal = () => {
             }
           >
             {windowWidth > 767 ? (
-              <div className="person__buttons" id="person-btn">
-                <button
-                  className={
-                    personPages.delHistory
-                      ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item_personal'
-                  }
-                  id="lk-history"
-                  onClick={() => setPersonPages({ delHistory: true })}
-                >
-                  <span>Избранные</span>
-                </button>
-                <button
-                  className={
-                    personPages.delInfo
-                      ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item_personal'
-                  }
-                  id="lk-wait"
-                  onClick={() => setPersonPages({ delInfo: true })}
-                >
-                  <span>Корзина</span>
-                </button>
-                <button
-                  className={
-                    personPages.favorites
-                      ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item_personal'
-                  }
-                  id="lk-favorites"
-                  onClick={() => setPersonPages({ favorites: true })}
-                >
-                  <span>Мои данные</span>
-                </button>
-                <button
-                  className={
-                    personPages.reviews
-                      ? 'person__buttons-item buttons__10-item active'
-                      : 'person__buttons-item buttons__10-item_personal'
-                  }
-                  id="lk-reviews"
-                  onClick={() => setPersonPages({ reviews: true })}
-                >
-                  <span>Мои заказы</span>
-                </button>
+              <div className="person__center_wrapper">
+                <div className="person__buttons" id="person-btn">
+                  <Link
+                    to="/favorites"
+                    className={'person__buttons-item buttons__10-item_personal'}
+                    id="lk-history"
+                  >
+                    <span>Избранные</span>
+                  </Link>
+                  <Link
+                    to="/cart"
+                    className={'person__buttons-item buttons__10-item_personal'}
+                    id="lk-wait"
+                  >
+                    <span>Корзина</span>
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className={'person__buttons-item buttons__10-item_personal'}
+                    id="lk-favorites"
+                  >
+                    <span>Настройки</span>
+                  </Link>
+                  <Link
+                    to="orders"
+                    className={'person__buttons-item buttons__10-item_personal'}
+                    id="lk-reviews"
+                  >
+                    <span>Мои заказы</span>
+                  </Link>
+                </div>
+                <div className="person__orders">
+                  <div className="person__orders-title">
+                    <p>Последние заказы</p>
+                    <img src="" alt="settings" />
+                  </div>
+                  <div className="person__orders-items"></div>
+                </div>
               </div>
             ) : (
               <div className="person__buttons buttons__10" id="person-btn">
                 <div className="person__buttons-flex">
-                  <button
-                    className={
-                      personPages.delHistory
-                        ? 'person__buttons-item buttons__10-item active'
-                        : 'person__buttons-item buttons__10-item'
-                    }
+                  <Link
+                    to="/favorites"
+                    className={'person__buttons-item buttons__10-item_personal'}
                     id="lk-history"
-                    onClick={() => setPersonPages({ delHistory: true })}
                   >
-                    <span>История заказов</span>
-                  </button>
-                  <button
-                    className={
-                      personPages.delInfo
-                        ? 'person__buttons-item buttons__10-item active'
-                        : 'person__buttons-item buttons__10-item'
-                    }
+                    <span>Избранные</span>
+                  </Link>
+                  <Link
+                    to="/cart"
+                    className={'person__buttons-item buttons__10-item_personal'}
                     id="lk-wait"
-                    onClick={() => setPersonPages({ delInfo: true })}
                   >
-                    <span>Ожидают доставки</span>
-                  </button>
-                </div>
-                <div className="person__buttons-flex">
-                  <button
-                    className={
-                      personPages.favorites
-                        ? 'person__buttons-item buttons__10-item active'
-                        : 'person__buttons-item buttons__10-item'
-                    }
+                    <span>Корзина</span>
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className={'person__buttons-item buttons__10-item_personal'}
                     id="lk-favorites"
-                    onClick={() => setPersonPages({ favorites: true })}
                   >
-                    <span>Избранные товары</span>
-                  </button>
-                  <button
-                    className={
-                      personPages.reviews
-                        ? 'person__buttons-item buttons__10-item active'
-                        : 'person__buttons-item buttons__10-item'
-                    }
+                    <span>Настройки</span>
+                  </Link>
+                  <Link
+                    to="orders"
+                    className={'person__buttons-item buttons__10-item_personal'}
                     id="lk-reviews"
-                    onClick={() => setPersonPages({ reviews: true })}
                   >
-                    <span>Оставить отзыв</span>
-                  </button>
+                    <span>Мои заказы</span>
+                  </Link>
                 </div>
               </div>
             )}
 
-            {personPages.delHistory ? (
-              status === 'success' && data.orders.length > 0 ? (
-                data.orders.map((order) => (
-                  <div
-                    key={order.id}
-                    className="person__delivery-history_wrapper"
-                  >
-                    <div className="person__delivery-history_wrapper-title">
-                      Дата покупки: {timeConverter(order.date_start)}
+            {personPages.delHistory
+              ? status === 'success' && data.orders.length > 0
+                ? data.orders.map((order) => (
+                    <div
+                      key={order.id}
+                      className="person__delivery-history_wrapper"
+                    >
+                      <div className="person__delivery-history_wrapper-title">
+                        Дата покупки: {timeConverter(order.date_start)}
+                      </div>
+                      {order.products.map((product) => (
+                        <PersonItem
+                          count={product.count}
+                          name={product.name}
+                          id={product.product_id}
+                          price={product.price}
+                          key={product.product_id}
+                        ></PersonItem>
+                      ))}
                     </div>
-                    {order.products.map((product) => (
-                      <PersonItem
-                        count={product.count}
-                        name={product.name}
-                        id={product.product_id}
-                        price={product.price}
-                        key={product.product_id}
-                      ></PersonItem>
-                    ))}
-                  </div>
-                ))
-              ) : (
-                <div className="person__history-wrapper">
-                  <div className="person__reviews_text-block">
-                    <p>
-                      Вы еще не совершали покупок - вернитесь сюда позднее, а
-                      пока можете <Link to="/catalog">перейти в каталог</Link>,
-                      для выбора товара
-                    </p>
-                  </div>
-                </div>
-              )
-            ) : null}
+                  ))
+                : null
+              : null}
 
             {personPages.delInfo ? (
               data.orders.length > 0 ? (

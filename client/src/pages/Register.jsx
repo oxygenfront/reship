@@ -10,21 +10,12 @@ import {
 
 import { AddressSuggestions } from 'react-dadata'
 const Register = () => {
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth)
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
+  const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const [checkPass, setCheckPass] = useState(true)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [nextPage, setNextPage] = useState(false)
-
+  const [adress, setAdress] = useState('')
   const [regForm, setRegForm] = useState({
     firstName: '',
     lastName: '',
@@ -32,7 +23,7 @@ const Register = () => {
     newPassword: '',
     confirmPassword: '',
     birthdate: '',
-    country: 'хуй',
+    adress_delivery: '',
   })
   const form = {
     first_name: regForm.firstName,
@@ -40,7 +31,7 @@ const Register = () => {
     password: regForm.confirmPassword,
     email: regForm.email,
     birthdate: regForm.birthdate,
-    country: regForm.country,
+    adress_delivery: adress,
   }
   const updateForm = (e) => {
     setRegForm({
@@ -49,9 +40,10 @@ const Register = () => {
     })
   }
 
-  const handleAdress = (e) => {
-    setRegForm({ ...regForm, country: e.value })
-  }
+  // const handleAdress = (e) => {
+  //   console.log(e.target.value)
+  //   setRegForm({ ...regForm, country: e.value })
+  // }
 
   const closeError = (e) => {
     e.preventDefault()
@@ -63,6 +55,7 @@ const Register = () => {
 
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true)
+      console.log(form)
       const data = await dispatch(fetchRegister(form))
       if (!data.payload) {
         return alert('Не удалось зарегистрироваться')
@@ -85,11 +78,21 @@ const Register = () => {
       setCheckPass(false)
     }
   }
-  const dispatch = useDispatch()
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   if (isAuth) {
     return <Navigate to="/" />
   }
+  console.log(adress)
   return (
     <section className="register">
       <div className="container register__container">
@@ -171,19 +174,17 @@ const Register = () => {
               />
               <AddressSuggestions
                 className="register__wrapper-input second-page"
-                // renderOption={('', regForm.country)}
                 setInputValue={regForm.country}
                 token="82173f834fc389954239d4414514d3ce2634ae1e"
-                value={regForm.country}
+                value={adress}
                 onChange={(event) => {
-                  console.log(event)
-                  handleAdress(event.value)
+                  setAdress(event.value)
                 }}
                 inputProps={{
                   placeholder: 'Страна, город',
                   value: regForm.country,
                   onChange: (event) => {
-                    handleAdress(event)
+                    setAdress(event.value)
                   },
                 }}
               />
@@ -201,7 +202,7 @@ const Register = () => {
               </button>
               <button
                 className="register__wrapper-buttons_next second-page"
-                onClick={() => console.log(regForm.country)}
+                onClick={sendForm}
               >
                 Готово
               </button>

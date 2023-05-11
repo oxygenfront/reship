@@ -10,6 +10,7 @@ import { selectCart } from '../../redux/slices/cartSlice'
 import { setChoosenCategorie } from '../../redux/slices/fiterSlice'
 import styles from './Header.module.sass'
 import { set } from '../../redux/slices/themeSlice'
+import { Switch } from '@headlessui/react'
 const Header = () => {
   const [isBurger, setIsBurger] = useState(false)
   const isAuth = useSelector(selectIsAuth)
@@ -41,7 +42,7 @@ const Header = () => {
   useEffect(() => {
     document.documentElement.dataset.theme = theme
     localStorage.setItem('theme', theme)
-  }, [ theme ])
+  }, [theme])
   const onCloseBurger = () => {
     setIsBurger(!isBurger)
   }
@@ -162,10 +163,30 @@ const Header = () => {
         </div>
       ) : null}
       <div className={styles.header__container}>
-        
-
         <div className={styles.header__cont}>
-          <button className="" onClick={handleChange}>CHANGE THEME</button>
+          <div className={styles.header_switch_wrapper}>
+            <Switch
+              checked={theme === 'dark'}
+              onChange={handleChange}
+              className={styles.header_switch}
+            >
+              <span
+                className={
+                  theme === 'light'
+                    ? styles.header_switch_circle
+                    : styles.header_switch_circle_active
+                }
+                aria-hidden="true"
+              />
+              <div className={styles.header_switch_sun}>
+                <img src="../assets/img/sun.svg" alt="sun" />
+              </div>
+              <div className={styles.header_switch_moon}>
+                <img src="../assets/img/moon.svg" alt="moon" />
+              </div>
+            </Switch>
+          </div>
+
           <Link to="/" className={styles.header__delivery}>
             Доставка и оплата
           </Link>
@@ -179,7 +200,6 @@ const Header = () => {
             <Link to="/admin">ADMIN</Link>
           ) : null}
         </div>
-        
 
         <button
           onClick={() => setIsBurger(!isBurger)}

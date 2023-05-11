@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
@@ -7,12 +7,17 @@ import {
   selectIsAuth,
   selectUserData,
 } from '../../redux/slices/authSlice'
-import { selectFilter, setSearchValue } from '../../redux/slices/fiterSlice'
+import {
+  selectFilter,
+  setChoosenCategorie,
+  setSearchValue,
+} from '../../redux/slices/fiterSlice'
 import styles from './Menu.module.sass'
-import { Dialog } from '@headlessui/react'
+import { Dialog, Transition } from '@headlessui/react'
 import { selectItemsData } from '../../redux/slices/itemsSlice'
 import Card from '../Card/Card'
 import { selectCart } from '../../redux/slices/cartSlice'
+import { Menu as DropDown } from '@headlessui/react'
 
 const Menu = () => {
   const dispatch = useDispatch()
@@ -34,12 +39,18 @@ const Menu = () => {
       window.localStorage.removeItem('token')
     }
   }
-  const [isNotEmpty, setIsNotEmpty] = useState(false)
+  const [localCategory, setLocalCategory] = useState('мышки')
+  const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const favoriteCount =
     isAuth && status === 'success'
       ? data.favorites && data.favorites.length
       : null
+
+  const onChangeCategory = useCallback((sort) => {
+    dispatch(setChoosenCategorie(sort))
+  }, [])
+
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)
@@ -70,7 +81,10 @@ const Menu = () => {
               <img src="../assets/img/logo.svg" alt="logo" />
             </Link>
 
-            <Link to="/catalog" className={styles.search_section__catalog}>
+            <Link
+              onClick={() => setIsOpen(true)}
+              className={styles.search_section__catalog}
+            >
               <span>Каталог</span>
 
               <div className={styles.search_section__catalog_arrow}></div>
@@ -82,9 +96,10 @@ const Menu = () => {
             type="text"
             placeholder="Поиск по каталогу"
             className={styles.search_section__search_item}
-            onChange={(e) => dispatch(setSearchValue('123'))}
+            onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
           <Dialog
+            as="div"
             className={styles.modal}
             open={isOpen}
             onClose={() => setIsOpen(false)}
@@ -93,54 +108,129 @@ const Menu = () => {
             <div className={styles.modal_scroll}>
               <div className={styles.modal_container}>
                 <Dialog.Panel>
-                  {searchValue === '' && (
-                    <Dialog.Title>
-                      Введите название продукта и нажмите на поиск
-                    </Dialog.Title>
-                  )}
-
-                  <Dialog.Description></Dialog.Description>
-
-                  {itemsStatus === 'success' &&
-                    searchValue !== '' &&
-                    items
-                      .filter((item) => {
-                        if (
-                          item.name
-                            .toLowerCase()
-                            .includes(searchValue.toLowerCase())
-                        ) {
-                          setIsNotEmpty(true)
-                          return true
-                        } else {
-                          return false
-                        }
-                      })
-                      .map((item) => (
-                        <Card
-                          key={item.id}
-                          id={item.id}
-                          name={item.name}
-                          old_price={item.old_price}
-                          price={item.price}
-                        ></Card>
-                      ))}
-
-                  <button
-                    className={styles.modal_container_close}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    X
-                  </button>
+                  <Dialog.Description className={styles.modal_items}>
+                    <div className={styles.modal_leftcol}>
+                      <ul>
+                        <li
+                          onClick={() => {
+                            setLocalCategoryEn('mouse')
+                            setLocalCategory('мышки')
+                          }}
+                        >
+                          <img
+                            src="../assets/img/microfone.svg"
+                            alt="microfone"
+                          />
+                          Мышки
+                        </li>
+                        <li
+                          onClick={() => {
+                            setLocalCategoryEn('boards')
+                            setLocalCategory('клавиатуры')
+                          }}
+                        >
+                          <img
+                            src="../assets/img/keyboard.svg"
+                            alt="keyboard"
+                          />
+                          Клавиатуры
+                        </li>
+                        <li
+                          onClick={() => {
+                            setLocalCategoryEn('headphones')
+                            setLocalCategory('наушники')
+                          }}
+                        >
+                          <img
+                            src="../assets/img/headphones.svg"
+                            alt="headphones"
+                          />
+                          Наушники
+                        </li>
+                        <li
+                          onClick={() => {
+                            setLocalCategoryEn('microphone')
+                            setLocalCategory('микрофоны')
+                          }}
+                        >
+                          <img
+                            src="../assets/img/microfone.svg"
+                            alt="microfone"
+                          />
+                          Микрофоны
+                        </li>
+                        <li
+                          onClick={() => {
+                            setLocalCategoryEn('accessory')
+                            setLocalCategory('аксессуары')
+                          }}
+                        >
+                          <img src="../assets/img/keyboard.svg" alt="access" />
+                          Аксессуары
+                        </li>
+                        <li
+                          onClick={() => {
+                            setLocalCategoryEn('camera')
+                            setLocalCategory('веб-камеры')
+                          }}
+                        >
+                          <img src="../assets/img/camera.svg" alt="camera" />
+                          Веб-камеры
+                        </li>
+                      </ul>
+                    </div>
+                    <div className={styles.modal_center}>
+                      <div className={styles.modal_center_title}>
+                        <p>Особенности</p>
+                        <p>Бренды</p>
+                      </div>
+                      <div className={styles.modal_center_items}>
+                        <ul>
+                          <li>Беспроводные</li>
+                          <li>С русскими букавами</li>
+                          <li>RGB-подсветка</li>
+                          <li>Эргономичные </li>
+                        </ul>
+                        <ul>
+                          <li>Varmilo</li>
+                          <li>С русскими букавами</li>
+                          <li>RGB-подсветка</li>
+                          <li>Эргономичные </li>
+                        </ul>
+                      </div>
+                      <div className={styles.modal_center_title}>
+                        <p>Размер</p>
+                      </div>
+                      <div className={styles.modal_center_items}>
+                        <ul>
+                          <li>Полноразмерные 100%</li>
+                          <li>Без нампада 75-80% </li>
+                          <li>Без F-ряда 60-65%</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div className={styles.modal_right}>
+                      <Link
+                        to="/catalog"
+                        onClick={() => {
+                          setIsOpen(false)
+                          onChangeCategory('мышки')
+                        }}
+                      >
+                        <img
+                          src={`../assets/img/${localCategoryEn}-main-catalog.png`}
+                          alt="mouse"
+                        />
+                        <span>Просмотреть все {localCategory}</span>
+                      </Link>
+                    </div>
+                  </Dialog.Description>
                 </Dialog.Panel>
               </div>
             </div>
           </Dialog>
 
-          <button
-            onClick={() => setIsOpen(true)}
-            className={styles.search_section__search_block_glass}
-          >
+          <button className={styles.search_section__search_block_glass}>
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>
@@ -206,21 +296,69 @@ const Menu = () => {
                       </>
                     ) : null}
                   </Link>
-                  <div className={styles.search_section__catalog_block}>
-                    <div
-                      className={styles.search_section__catalog_arrow_profile}
-                    ></div>
+
+                  <div className={styles.menu_wrapper}>
+                    <DropDown as="div" className={styles.menu}>
+                      <div>
+                        <DropDown.Button className={styles.menu_button}>
+                          <div className={styles.search_section__catalog_block}>
+                            <div
+                              className={
+                                styles.search_section__catalog_arrow_profile
+                              }
+                            ></div>
+                          </div>
+                        </DropDown.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <DropDown.Items className={styles.menu_items}>
+                          <div className={styles.menu_items_wrapper}>
+                            <DropDown.Item className={styles.menu_items_item}>
+                              <Link to="/personal">Личный кабинет</Link>
+                            </DropDown.Item>
+                            <DropDown.Item
+                              to="/favorites"
+                              className={styles.menu_items_item}
+                            >
+                              <Link>Избранные</Link>
+                            </DropDown.Item>
+                            <DropDown.Item
+                              to="/settings"
+                              className={styles.menu_items_item}
+                            >
+                              <Link>Насйтроки</Link>
+                            </DropDown.Item>
+                            <DropDown.Item
+                              to="/orders"
+                              className={styles.menu_items_item}
+                            >
+                              <Link>Мои Заказы</Link>
+                            </DropDown.Item>
+                            <DropDown.Item
+                              to="/cart"
+                              className={styles.menu_items_item}
+                            >
+                              <Link>Корзина</Link>
+                            </DropDown.Item>
+                            <DropDown.Item
+                              className={styles.menu_items_item_quit}
+                            >
+                              <button onClick={onClickLogout}>Выйти</button>
+                            </DropDown.Item>
+                          </div>
+                        </DropDown.Items>
+                      </Transition>
+                    </DropDown>
                   </div>
                 </div>
-              ) : null}
-              {windowWidth > 767 ? (
-                <Link
-                  to=""
-                  onClick={onClickLogout}
-                  className={styles.search_section__logout_block}
-                >
-                  <img src="../assets/img/free-icon-power.svg" alt="power" />
-                </Link>
               ) : null}
             </>
           )

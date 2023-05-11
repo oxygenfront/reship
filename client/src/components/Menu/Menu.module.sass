@@ -8,7 +8,71 @@
 .modal
   z-index: 50
   position: relative
+  overflow: hidden
+  &_right
 
+    border-radius: 30px
+    width: 256px
+    position: relative
+    span
+
+      position: absolute
+      bottom: 20px
+      color: #fff
+      font-weight: 600
+      font-size: 20px
+      padding-left: 20px
+    img
+      background: #DCDCDC
+      width: 326px
+      height: 315px
+      border-radius: 30px
+  &_center
+    width: 420px
+    &_items
+      margin: 23px 0px
+      display: flex
+      justify-content: space-between
+      ul
+
+        display: flex
+        flex-direction: column
+        gap: 10px
+        li
+    &_title
+      padding: 15px 30px
+      background: #E8EBF5
+      border-radius: 30px
+      display: flex
+      justify-content: space-between
+      p
+        font-weight: 600
+        font-size: 18px
+        color: var(--towhite)
+        &:last-child
+          margin-right: 50px
+  &_items
+    display: flex
+    gap: 40px
+    align-items: flex-start
+  &_leftcol ul
+    display: flex
+    flex-direction: column
+    gap: 10px
+    li
+      display: flex
+      align-items: center
+      font-weight: 500
+      border-radius: 30px
+      padding: 10px
+      &:hover
+        cursor: pointer
+        background: #ececec
+      img
+        padding-right: 8px
+        height: 22px
+
+        color: var(--color)
   &_bg
     position: fixed
     inset: 0
@@ -17,19 +81,20 @@
   &_container
     position: fixed
     margin-top: 208px
-    margin-left: 659px
+    margin-left: 499px
+    overflow: hidden
     inset: 0
-    overflow-y: auto
-    height: 500px
-    width: 600px
-    box-shadow: 0px 0px 5px 1px #9b9b9b
-    padding: 30px 15px
-    display: flex
-    justify-content: center
 
-    border-radius: 10px
+    overflow-y: auto
+    height: 445px
+    width: 1000px
+
+    padding: 30px 15px
+
+    background: #F6F6F6
+    border-radius: 30px
     color: #000
-    background: #f8f8f8
+
     overscroll-behavior: contain
     &_close
       color: #000
@@ -182,7 +247,7 @@
     transition: all 0.2s linear
 
   &__profile_block
-    padding: 0 20px
+    padding: 0 90px 0 0
     max-width: 200px
     display: flex
     align-items: center
@@ -209,6 +274,61 @@
     color: white
 
     transition: all 0.2s linear
+.menu
+
+  display: inline-block
+  text-align: left
+  z-index: 50
+  &_wrapper
+    position: relative
+    display: block
+  &_button
+    background: none
+    display: block
+  &_items
+    position: absolute
+    z-index: 40
+    right: 0px
+    margin-top: 8px
+    width: 210px
+    height: 245px
+    border-radius: 30px
+    background: #fff
+    display: flex
+    justify-content: flex-start
+
+    &_wrapper
+
+      padding: 25px
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: flex-start
+
+    &_item
+
+      padding: 7px
+      text-align: left
+      font-size: 16px
+      font-weight: 500
+      width: 170px
+      background: none
+      border-radius: 30px
+      color: #181818
+      &_quit
+        color: #0540F2
+        padding: 7px
+        text-align: left
+        font-size: 16px
+        font-weight: 500
+        width: 170px
+        background: none
+        border-radius: 30px
+
+      &:hover
+
+        color: #fff
+        background: #416EF2
 
 @media (max-width: 1199px)
   .container

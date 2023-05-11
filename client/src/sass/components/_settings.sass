@@ -1,0 +1,172 @@
+.settings
+    margin-top: 92px
+    &__container
+    &__wrapper
+        display: flex
+        justify-content: space-between
+    &__title
+        font-size: 64px
+        font-weight: 600
+        margin-bottom: 136px
+    &__buttons-block
+        background: #E8EBF5
+        border-radius: 30px
+        width: 352px
+        height: 188px
+        padding: 22px 0 35px 22px
+        &_item
+            border-radius: 30px
+            height: 50px
+            display: flex
+            align-items: center
+            transition: all .2s ease-in-out
+            &:nth-child(1)
+                width: 138px
+            &:nth-child(2)
+                width: 293px
+            &:nth-child(3)
+                width: 170px
+            & span
+                font-size: 20px
+                color: #181818
+                margin-left: 26px
+                margin-right: 26px
+                transition: all .3s linear
+            &.active
+                background: #416EF2
+                & span
+                    color: white
+    &__profile
+        margin-top: 25px
+        &-preview
+            width: 600px
+            display: flex
+            align-items: center
+            position: relative
+            margin-bottom: 106px
+            &_img-block
+                width: 115px
+                height: 115px
+                border-radius: 50%
+                overflow: hidden
+                margin-right: 43px
+                & img
+                    width: 100%
+                    height: 100%
+            &_info-block
+                &_name
+                    font-size: 36px
+                    font-weight: 600
+                    color: #0528F2
+                    margin-bottom: 6px
+                &_about
+                    font-size: 20px
+                    font-weight: 500
+                    color: #181818
+    &__change
+        &-btn
+            position: absolute
+            display: flex
+            justify-content: center
+            align-items: center
+            right: 0
+            top: 0
+            width: 36px
+            height: 36px
+            background: #0528F2
+            border-radius: 50%
+            &.contacts
+                right: 14px
+                top: 14px
+        &_add-adress
+            position: relative
+            width: 36px
+            height: 36px
+            display: flex
+            justify-content: center
+            align-items: center
+            border-radius: 50%
+            background: #AEC5F2
+            margin-left: 20px
+            &:after
+                position: absolute
+                display: block
+                content: ''
+                width: 15px
+                height: 2px
+                background: #0528F2
+                transform: rotate(90deg)
+            &:before
+                position: absolute
+                display: block
+                content: ''
+                width: 15px
+                height: 2px
+                background: #0528F2
+                
+        &_title
+            display: flex
+            align-items: center
+            font-size: 40px
+            font-weight: 600
+            color: #181818
+            margin-bottom: 47px
+        &_block
+            position: relative
+            border: 1px solid #0528F2
+            border-radius: 30px
+            padding: 36px 21px 26px 38px
+            margin-bottom: 219px
+            &_img-block
+               width: 107px
+               height: 107px
+               border-radius: 50%
+               overflow: hidden
+               margin-bottom: 37px
+               & img
+                width: 100%
+                height: 100% 
+            &_title
+                color: #0528F2
+                font-size: 20px
+                font-weight: 600
+                margin-bottom: 24px
+            &_inputs
+                display: flex
+                &:not(:last-child)
+                    margin-bottom: 50px
+                &-wrapper
+                    &:nth-child(1)
+                        margin-right: 39px
+                
+                &-item
+                    background: #E8EBF5
+                    font-size: 16px
+                    font-weight: 500
+                    width: 213px
+                    height: 40px
+                    border-radius: 30px
+                    padding-left: 18px
+            &_buttons
+                width: 100%
+                display: flex
+                justify-content: end
+                &_cancel
+                    font-size: 14px
+                    font-weight: 500
+                    border-radius: 30px
+                    border: 1px solid #0528F2
+                    width: 116px
+                    height: 44px
+                    color: #0528F2
+                    background: none
+                    margin-right: 15px
+                &_save
+                    font-size: 14px
+                    font-weight: 500
+                    width: 200px
+                    height: 44px
+                    color: white
+                    background: #0528F2
+                    border-radius: 30px
+

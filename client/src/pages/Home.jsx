@@ -91,7 +91,7 @@ const Home = () => {
         <div className="container reviews__container">
           <div className="reviews__title">
             Что о нас <span>говорят?</span>
-          </div>
+          </div> 
 
           <Swiper
             className="reviews__slider"

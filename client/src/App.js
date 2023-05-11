@@ -15,6 +15,7 @@ import {
   ForgotMessage,
   AdminPromocodes,
   AdminCreatePromocode,
+  Settings,
 } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
@@ -93,6 +94,7 @@ const App = () => {
           <Route path="/forgot" element={<Forgot></Forgot>}></Route>
           <Route path="/cart" element={<Cart></Cart>}></Route>
           <Route path="/personal" element={<Personal></Personal>}></Route>
+          <Route path="/settings" element={<Settings></Settings>}></Route>
           <Route
             path="/personal/favorites"
             element={<Favorites></Favorites>}

@@ -67,8 +67,17 @@ const Menu = () => {
     }
     isMounted.current = true
   }, [cartItems])
+
+  const [scrollTop, setScrollTop] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollTop(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   return (
-    <div className={styles.search_section}>
+    <div className={styles.search_section} style={scrollTop > 80 ? {transform: 'translateY(-80px)'} : null}>
       <div
         className={classNames(
           styles.container,
@@ -334,7 +343,7 @@ const Menu = () => {
                               to="/settings"
                               className={styles.menu_items_item}
                             >
-                              <Link>Насйтроки</Link>
+                              <Link>Настройки</Link>
                             </DropDown.Item>
                             <DropDown.Item
                               to="/orders"

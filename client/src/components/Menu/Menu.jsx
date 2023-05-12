@@ -77,7 +77,7 @@ const Menu = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   return (
-    <div className={styles.search_section} style={scrollTop > 80 ? {transform: 'translateY(-80px)'} : null}>
+    <div className={styles.search_section} style={scrollTop > 0 ? {transform: 'translateY(-80px)'} : null}>
       <div
         className={classNames(
           styles.container,

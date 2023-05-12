@@ -35,7 +35,7 @@ import { Menu } from './components'
 const App = () => {
   const dispatch = useDispatch()
   const theme = useSelector((state) => state.theme)
-  console.log(theme)
+
   const token = localStorage.getItem('token')
 
   useEffect(() => {
@@ -46,8 +46,6 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchItems({ choosenCategorie, searchValue }))
   }, [choosenCategorie])
-
-  
 
   return (
     <>

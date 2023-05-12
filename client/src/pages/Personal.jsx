@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useEffect, useState, Fragment } from 'react'
+import { Link, Navigate } from 'react-router-dom'
 import {
   Card,
   DeliveryItem,
@@ -7,154 +7,135 @@ import {
   Footer,
   Menu,
   PersonItem,
-} from '../components';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAuth, selectUserData } from '../redux/slices/authSlice';
+} from '../components'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
 import {
   fetchChangeEmail,
   fetchChangePassword,
-} from '../redux/slices/changeSlice';
-import { selectItemsData } from '../redux/slices/itemsSlice';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
+} from '../redux/slices/changeSlice'
+import { selectItemsData } from '../redux/slices/itemsSlice'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper'
+import { Menu as DropDown, Popover } from '@headlessui/react'
+import { DateRangePicker } from 'rsuite'
+
 const Personal = () => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
-  const { data, status } = useSelector(selectUserData);
-  const { items, itemsStatus = status } = useSelector(selectItemsData);
-  const token = localStorage.getItem('token');
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const [personPages, setPersonPages] = useState({
-    delHistory: false,
-    delInfo: false,
-    favorites: false,
-    reviews: false,
-  });
-
-  const [changeName, setChangeName] = useState(true);
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  const { data, status } = useSelector(selectUserData)
+  const { items, itemsStatus = status } = useSelector(selectItemsData)
+  const token = localStorage.getItem('token')
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [sortBy, setSortBy] = useState({
+    date: false,
+    status: false,
+    price: false,
+  })
+  const [isOpen, setIsOpen] = useState(true)
+  const [changeName, setChangeName] = useState(true)
   const [personName, setPersonName] = useState({
     firstName: 'Имя',
     lastName: 'Фамилия',
-  });
+  })
 
   const updateName = (e) => {
     setPersonName({
       ...personName,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
-  const [changeMail, setChangeMail] = useState(true);
-  const [personMail, setPersonMail] = useState({
-    mail: 'email',
-  });
-
-  const updateMail = (e) => {
-    setPersonMail({
-      ...personMail,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const [changeSecret, setChangeSecret] = useState(false);
   const [changeState, setChangeState] = useState({
     changePassword: false,
     changeEmail: false,
-  });
+  })
   const [password, setPassword] = useState({
     password: '',
     new_password: '',
     token,
-  });
+  })
 
   const updatePassword = (e) => {
     setPassword({
       ...password,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const [email, setEmail] = useState({
     new_email: '',
     password: '',
     token,
-  });
+  })
 
   const updateEmail = (e) => {
     setEmail({
       ...email,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
-  const onCloseAll = () => {
-    setChangeState({ changeEmail: false, changePassword: false });
-    setChangeSecret(false);
-  };
   const onClickSavePassword = async () => {
-    const data = await dispatch(fetchChangePassword(password));
+    const data = await dispatch(fetchChangePassword(password))
     if (!data.payload) {
-      return alert('Не удалось изменить пароль');
+      return alert('Не удалось изменить пароль')
     }
     if (data.payload) {
-      return alert('Пароль успешно изменен');
+      return alert('Пароль успешно изменен')
     }
 
     setChangeState({
       changePassword: !changeState.changePassword,
-    });
-    setPassword({ lastPassword: '', newPassword: '' });
-  };
+    })
+    setPassword({ lastPassword: '', newPassword: '' })
+  }
   const onClickSaveEmail = async () => {
-    const data = await dispatch(fetchChangeEmail(email));
+    const data = await dispatch(fetchChangeEmail(email))
     if (!data.payload) {
-      return alert('Не удалось изменить электронную почту');
+      return alert('Не удалось изменить электронную почту')
     }
     if (data.payload) {
-      return alert('Электронная почта успешно изменена');
+      return alert('Электронная почта успешно изменена')
     }
-    setChangeState({ changeEmail: !changeState.changeEmail });
-    setPersonMail({ mail: '' });
-  };
+    setChangeState({ changeEmail: !changeState.changeEmail })
+  }
   function timeConverter(UNIX_timestamp) {
-    const date = new Date(UNIX_timestamp);
+    const date = new Date(UNIX_timestamp)
 
     return date.toLocaleString('ru-US', {
       day: 'numeric',
       year: 'numeric',
       month: 'long',
-    });
+    })
   }
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     if (status === 'success') {
       setPersonName({
         firstName: data.first_name,
         lastName: data.last_name,
-      });
-      setPersonMail({ mail: data.email });
+      })
     }
-  }, [status]);
+  }, [status])
 
-  useEffect(() => {
-    setPersonPages({ delHistory: true });
-  }, []);
   if (status === 'success' && !isAuth) {
-    return <Navigate to='/'></Navigate>;
+    return <Navigate to="/"></Navigate>
   }
   if (status === 'success') {
-    data.favorites.map((order) => console.log(order));
+    data.favorites.map((order) => console.log(order))
   }
+
   return (
     // <>
     //   <section className="person">
@@ -756,10 +737,10 @@ const Personal = () => {
     //   <Footer></Footer>
     // </>
     <>
-      <div className='personal'>
-        <div className='personal__container container'>
-          <div className='personal__user-block'>
-            <div className='personal__user-block_name'>
+      <div className="personal">
+        <div className="personal__container container">
+          <div className="personal__user-block">
+            <div className="personal__user-block_name">
               Добрый день, <br />{' '}
               {status === 'success' && data.first_name ? (
                 <span>
@@ -767,21 +748,21 @@ const Personal = () => {
                 </span>
               ) : null}
             </div>
-            <div className='personal__user-block_profile'>
-              <div className='personal__user-block_profile_img-block'>
+            <div className="personal__user-block_profile">
+              <div className="personal__user-block_profile_img-block">
                 <img
-                  src='../assets/user_img/default.jpg'
-                  alt='avatar'
-                  className='person__img'
+                  src="../assets/user_img/default.jpg"
+                  alt="avatar"
+                  className="person__img"
                 />
               </div>
-              <div className='personal__user-block_profile_right-block'>
-                <div className='personal__user-block_profile_right-block_name'>
+              <div className="personal__user-block_profile_right-block">
+                <div className="personal__user-block_profile_right-block_name">
                   {personName.firstName} {personName.lastName}
                 </div>
                 <Link
-                  to='/settings'
-                  className='personal__user-block_profile_right-block_button'
+                  to="/settings"
+                  className="personal__user-block_profile_right-block_button"
                 >
                   Изменить профиль
                 </Link>
@@ -789,106 +770,229 @@ const Personal = () => {
             </div>
           </div>
 
-          <div className='personal__middle-block'>
-            <div className='personal__middle-block_buttons'>
-              <div className='personal__middle-block_buttons_item'>
+          <div className="personal__middle-block">
+            <div className="personal__middle-block_buttons">
+              <Link
+                to="/personal/favorites"
+                className="personal__middle-block_buttons_item"
+              >
                 Избранные
-              </div>
-              <div className='personal__middle-block_buttons_item'>Корзина</div>
-              <div className='personal__middle-block_buttons_item'>
+              </Link>
+              <Link to="/cart" className="personal__middle-block_buttons_item">
+                Корзина
+              </Link>
+              <Link
+                to="/settings"
+                className="personal__middle-block_buttons_item"
+              >
                 Настройки
-              </div>
-              <div className='personal__middle-block_buttons_item'>
+              </Link>
+              <Link
+                to="/orders"
+                className="personal__middle-block_buttons_item"
+              >
                 Мои заказы
-              </div>
+              </Link>
             </div>
-            <div className='personal__middle-block_latest-orders'>
-              <div className='personal__middle-block_latest-orders_header'>
+            <div className="personal__middle-block_latest-orders">
+              <div className="personal__middle-block_latest-orders_header">
                 <span>Последние заказы</span>
-                <button>
-                  <img src='../assets/img/settings-button.png' alt='' />
-                </button>
+                <div className="personal__middle-block_latest-orders_menu_wrapper">
+                  {console.log(isOpen)}
+                  <DropDown
+                    as="div"
+                    className="personal__middle-block_latest-orders_menu"
+                  >
+                    {({ open }) => (
+                      <>
+                        <div>
+                          <DropDown.Button className="">
+                            <button onClick={() => setIsOpen(!isOpen)}>
+                              <img
+                                src="../assets/img/settings-button.png"
+                                alt="settings"
+                              />
+                            </button>
+                          </DropDown.Button>
+                        </div>
+                        {isOpen && (
+                          <DropDown.Items
+                            static
+                            className="personal__middle-block_latest-orders_menu_items"
+                          >
+                            <p className="personal__middle-block_latest-orders_menu_items-title">
+                              Сортировать по
+                            </p>
+
+                            <div className="personal__middle-block_latest-orders_menu_items-wrapper">
+                              <DropDown.Item
+                                onClick={(e) => {
+                                  setSortBy({ date: !sortBy.date })
+                                }}
+                                className="personal__middle-block_latest-orders_menu_items-item"
+                              >
+                                <div className="">
+                                  <p>Дате</p>
+                                  <div className="personal__middle-block_latest-orders_menu_items-item_pluses">
+                                    <div className="personal__middle-block_latest-orders_menu_items-item_pluses_block">
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemv"></div>
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemh"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DropDown.Item>
+                              {sortBy.date === true ? (
+                                <DateRangePicker
+                                  isoWeek={true}
+                                  character=" до "
+                                  appearance="subtle"
+                                  size="xs"
+                                  placeholder={'Укажите период'}
+                                  showOneCalendar={true}
+                                  preventOverflow={false}
+                                ></DateRangePicker>
+                              ) : null}
+                              <DropDown.Item
+                                onClick={(e) => {
+                                  setSortBy({ status: !sortBy.status })
+                                  e.cancelBubble = true
+                                }}
+                                className="personal__middle-block_latest-orders_menu_items-item"
+                              >
+                                <div className="">
+                                  <p>Статусу заказа</p>
+                                  <div className="personal__middle-block_latest-orders_menu_items-item_pluses">
+                                    <div className="personal__middle-block_latest-orders_menu_items-item_pluses_block">
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemv"></div>
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemh"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DropDown.Item>
+                              {sortBy.status === true ? (
+                                <div className="personal__middle-block_latest-orders_menu_items-item_status-wrapper">
+                                  <ul>
+                                    <li>Отменено</li>
+                                    <li>Получено</li>
+                                    <li>Ожидает получения</li>
+                                  </ul>
+                                </div>
+                              ) : null}
+                              <DropDown.Item
+                                onClick={() =>
+                                  setSortBy({ price: !sortBy.price })
+                                }
+                                className="personal__middle-block_latest-orders_menu_items-item"
+                              >
+                                <div className="">
+                                  <p>Цене</p>
+                                  <div className="personal__middle-block_latest-orders_menu_items-item_pluses">
+                                    <div className="personal__middle-block_latest-orders_menu_items-item_pluses_block">
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemv"></div>
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemh"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </DropDown.Item>
+                              {sortBy.price === true ? (
+                                <div className="personal__middle-block_latest-orders_menu_items-item_status-wrapper">
+                                  <ul>
+                                    <li>От наибольшей</li>
+                                    <li>От наименьшей</li>
+                                  </ul>
+                                </div>
+                              ) : null}
+                            </div>
+                          </DropDown.Items>
+                        )}
+                      </>
+                    )}
+                  </DropDown>
+                </div>
               </div>
-              <div className='personal__middle-block_latest-orders_items-block'>
-                <div className='personal__middle-block_latest-orders_items-block_item'>
-                  <div className='personal__middle-block_latest-orders_items-block_item-up'>
-                    <div className='personal__middle-block_latest-orders_items-block_item-up_img-block'>
-                      <img src='../assets/products_img/1.png' alt='' />
+              <div className="personal__middle-block_latest-orders_items-block">
+                <div className="personal__middle-block_latest-orders_items-block_item">
+                  <div className="personal__middle-block_latest-orders_items-block_item-up">
+                    <div className="personal__middle-block_latest-orders_items-block_item-up_img-block">
+                      <img src="../assets/products_img/1.png" alt="" />
                     </div>
-                    <div className='personal__middle-block_latest-orders_items-block_item-up_info'>
-                      <div className='personal__middle-block_latest-orders_items-block_item-up_info-name'>
+                    <div className="personal__middle-block_latest-orders_items-block_item-up_info">
+                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-name">
                         Logitech G Pro
                       </div>
-                      <div className='personal__middle-block_latest-orders_items-block_item-up_info-color'>
+                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-color">
                         Черная
                       </div>
                     </div>
-                    <div className='personal__middle-block_latest-orders_items-block_item-up_info-more'>
-                      <div className='personal__middle-block_latest-orders_items-block_item-up_info-more_status'>
+                    <div className="personal__middle-block_latest-orders_items-block_item-up_info-more">
+                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-more_status">
                         Получено
                       </div>
-                      <div className='personal__middle-block_latest-orders_items-block_item-up_info-more_price'>
+                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-more_price">
                         6 800 руб
                       </div>
                     </div>
                   </div>
-                  <div className='personal__middle-block_latest-orders_items-block_item-bottom'>
-                    <div className='personal__middle-block_latest-orders_items-block_item-bottom_date'>
+                  <div className="personal__middle-block_latest-orders_items-block_item-bottom">
+                    <div className="personal__middle-block_latest-orders_items-block_item-bottom_date">
                       Сен 26, 2023
                     </div>
-                    <div className='personal__middle-block_latest-orders_items-block_item-bottom_count'>
+                    <div className="personal__middle-block_latest-orders_items-block_item-bottom_count">
                       1шт
                     </div>
                   </div>
                 </div>
 
-                <button className='personal__middle-block_latest-orders_items-block_all'>
+                <Link
+                  to="/orders"
+                  className="personal__middle-block_latest-orders_items-block_all"
+                >
                   Все заказы <span></span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
 
-          <div className='personal__reviews-block'>
-            <div className='personal__reviews-block_title'>Мои отзывы</div>
+          <div className="personal__reviews-block">
+            <div className="personal__reviews-block_title">Мои отзывы</div>
             <Swiper
               modules={[Navigation]}
               navigation
               speed={1300}
               slidesPerView={2}
               spaceBetween={40}
-              className='personal__reviews-block_slider'
+              className="personal__reviews-block_slider"
             >
-              <SwiperSlide className='personal__reviews-block_slider-item'>
-                <div className='personal__reviews-block_slider-item_header'>
-                  <div className='personal__reviews-block_slider-item_header_left-block'>
-                    <div className='personal__reviews-block_slider-item_header_img-block'>
-                      <img src='../assets/img/logitech-lk.png' alt='' />
+              <SwiperSlide className="personal__reviews-block_slider-item">
+                <div className="personal__reviews-block_slider-item_header">
+                  <div className="personal__reviews-block_slider-item_header_left-block">
+                    <div className="personal__reviews-block_slider-item_header_img-block">
+                      <img src="../assets/img/logitech-lk.png" alt="" />
                     </div>
-                    <div className='personal__reviews-block_slider-item_header_info'>
-                      <div className='personal__reviews-block_slider-item_header_info_name'>
+                    <div className="personal__reviews-block_slider-item_header_info">
+                      <div className="personal__reviews-block_slider-item_header_info_name">
                         Logitech G Pro
                       </div>
-                      <div className='personal__reviews-block_slider-item_header_info_color'>
+                      <div className="personal__reviews-block_slider-item_header_info_color">
                         Черный
                       </div>
                     </div>
                   </div>
-                  <div className='personal__reviews-block_slider-item_header_right-block'>
-                    <div className='personal__reviews-block_slider-item_header_stars'>
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
+                  <div className="personal__reviews-block_slider-item_header_right-block">
+                    <div className="personal__reviews-block_slider-item_header_stars">
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
                     </div>
-                    <div className='personal__reviews-block_slider-item_header_date'>
+                    <div className="personal__reviews-block_slider-item_header_date">
                       Сен 26, 2023
                     </div>
                   </div>
                 </div>
-                <hr className='hr' />
-                <div className='personal__reviews-block_slider-item_review'>
+                <hr className="hr" />
+                <div className="personal__reviews-block_slider-item_review">
                   <span>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Dolore itaque labore minima culpa porro eligendi sed error
@@ -897,36 +1001,36 @@ const Personal = () => {
                   </span>
                 </div>
               </SwiperSlide>
-              <SwiperSlide className='personal__reviews-block_slider-item'>
-                <div className='personal__reviews-block_slider-item_header'>
-                  <div className='personal__reviews-block_slider-item_header_left-block'>
-                    <div className='personal__reviews-block_slider-item_header_img-block'>
-                      <img src='../assets/img/logitech-lk.png' alt='' />
+              <SwiperSlide className="personal__reviews-block_slider-item">
+                <div className="personal__reviews-block_slider-item_header">
+                  <div className="personal__reviews-block_slider-item_header_left-block">
+                    <div className="personal__reviews-block_slider-item_header_img-block">
+                      <img src="../assets/img/logitech-lk.png" alt="" />
                     </div>
-                    <div className='personal__reviews-block_slider-item_header_info'>
-                      <div className='personal__reviews-block_slider-item_header_info_name'>
+                    <div className="personal__reviews-block_slider-item_header_info">
+                      <div className="personal__reviews-block_slider-item_header_info_name">
                         Logitech G Pro
                       </div>
-                      <div className='personal__reviews-block_slider-item_header_info_color'>
+                      <div className="personal__reviews-block_slider-item_header_info_color">
                         Черный
                       </div>
                     </div>
                   </div>
-                  <div className='personal__reviews-block_slider-item_header_right-block'>
-                    <div className='personal__reviews-block_slider-item_header_stars'>
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
+                  <div className="personal__reviews-block_slider-item_header_right-block">
+                    <div className="personal__reviews-block_slider-item_header_stars">
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
                     </div>
-                    <div className='personal__reviews-block_slider-item_header_date'>
+                    <div className="personal__reviews-block_slider-item_header_date">
                       Сен 26, 2023
                     </div>
                   </div>
                 </div>
-                <hr className='hr' />
-                <div className='personal__reviews-block_slider-item_review'>
+                <hr className="hr" />
+                <div className="personal__reviews-block_slider-item_review">
                   <span>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Dolore itaque labore minima culpa porro eligendi sed error
@@ -935,36 +1039,36 @@ const Personal = () => {
                   </span>
                 </div>
               </SwiperSlide>
-              <SwiperSlide className='personal__reviews-block_slider-item'>
-                <div className='personal__reviews-block_slider-item_header'>
-                  <div className='personal__reviews-block_slider-item_header_left-block'>
-                    <div className='personal__reviews-block_slider-item_header_img-block'>
-                      <img src='../assets/img/logitech-lk.png' alt='' />
+              <SwiperSlide className="personal__reviews-block_slider-item">
+                <div className="personal__reviews-block_slider-item_header">
+                  <div className="personal__reviews-block_slider-item_header_left-block">
+                    <div className="personal__reviews-block_slider-item_header_img-block">
+                      <img src="../assets/img/logitech-lk.png" alt="" />
                     </div>
-                    <div className='personal__reviews-block_slider-item_header_info'>
-                      <div className='personal__reviews-block_slider-item_header_info_name'>
+                    <div className="personal__reviews-block_slider-item_header_info">
+                      <div className="personal__reviews-block_slider-item_header_info_name">
                         Logitech G Pro
                       </div>
-                      <div className='personal__reviews-block_slider-item_header_info_color'>
+                      <div className="personal__reviews-block_slider-item_header_info_color">
                         Черный
                       </div>
                     </div>
                   </div>
-                  <div className='personal__reviews-block_slider-item_header_right-block'>
-                    <div className='personal__reviews-block_slider-item_header_stars'>
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
-                      <img src='../assets/img/star-review.png' alt='' />
+                  <div className="personal__reviews-block_slider-item_header_right-block">
+                    <div className="personal__reviews-block_slider-item_header_stars">
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
+                      <img src="../assets/img/star-review.png" alt="" />
                     </div>
-                    <div className='personal__reviews-block_slider-item_header_date'>
+                    <div className="personal__reviews-block_slider-item_header_date">
                       Сен 26, 2023
                     </div>
                   </div>
                 </div>
-                <hr className='hr' />
-                <div className='personal__reviews-block_slider-item_review'>
+                <hr className="hr" />
+                <div className="personal__reviews-block_slider-item_review">
                   <span>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Dolore itaque labore minima culpa porro eligendi sed error
@@ -976,15 +1080,23 @@ const Personal = () => {
             </Swiper>
           </div>
 
-          <div className='personal__interesting'>
-            <Card></Card>
-            <Card></Card>
-            <Card></Card>
+          <div className="personal__interesting">
+            {itemsStatus === 'success' &&
+              items
+                .slice(0, 3)
+                .map((item) => (
+                  <Card
+                    key={item.id}
+                    id={item.id}
+                    name={item.name}
+                    price={item.price}
+                  ></Card>
+                ))}
           </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Personal;
+export default Personal

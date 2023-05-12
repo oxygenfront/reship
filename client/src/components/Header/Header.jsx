@@ -27,7 +27,7 @@ const Header = () => {
       window.localStorage.removeItem('token')
     }
   }
-  console.log(theme)
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   useEffect(() => {

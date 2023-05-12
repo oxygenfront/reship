@@ -7,7 +7,7 @@ import date_correct from "date-fns";
 const url = "http://localhost:5000";
 
 const transporter = nodemailer.createTransport({
-  port: 465, // true for 465, false for other ports
+  port: 465,
   host: "smtp.gmail.com",
   auth: {
     user: "semenov2denis2@gmail.com",

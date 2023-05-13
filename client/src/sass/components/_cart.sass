@@ -1,27 +1,57 @@
 .cart
     margin-top: calc(120px + 82px)
     margin-bottom: 89px
+    &__all
+        display: flex
+        gap: 30px
+        align-items: flex-start
+    &__delivery
+        &-items
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            width: 640px
+            border: 1px solid #0540F2
+            border-radius: 30px
     &__title
-        font-size: 29px
-        margin-bottom: 62px
+        font-weight: 600
+        font-size: 64px
+        margin-bottom: 90px
         & span
-            color: #007DFD
+            color: rgba(5, 64, 242, 1)
     &__wrapper
         margin-bottom: 62px
-        border-radius: 15px
+
     &__total-wrapper
-        border-radius: 29px
-        padding: 56px 62px
-        background-color: #020202
+        width: 448px
+        border-radius: 30px
+        padding: 35px 40px
+        background: #E8EBF5
         display: flex
         justify-content: space-between
-        margin-bottom: 63px
+        margin-bottom: 30px
+        &-title
+            font-size: 36px
+            font-weight: 600
+            color: var(--color)
+            margin-bottom: 25px
         &-info
             font-size: 20px
             display: flex
             flex-direction: column
             justify-content: space-between
             width: 100%
+            &_items
+                border-bottom: 2px solid rgba(5, 64, 242, 0.08)
+                padding-bottom: 33px
+                margin-bottom: 20px
+                &_item
+                    font-size: 14px
+                    display: flex
+                    align-items: center
+                    justify-content: space-between
+
             &_suptotal
                 width: 100%
                 display: flex
@@ -30,11 +60,15 @@
             &_suptotal:nth-child(2)
                 margin-bottom: 46px
             &_suptotal span
-                color: #007DFD
+                color: #0540F2
             &_total
                 display: flex
                 justify-content: space-between
                 font-size: 33px
+                font-weight: 600
+                color: #0540F2
+                span
+                    font-weight: 600
         &-price
             font-size: 33px
             display: flex
@@ -42,23 +76,38 @@
             justify-content: flex-end
         &-buttons
             display: flex
-            justify-content: space-between
+
+            flex-direction: column
+            gap: 20px
             &_link
-                background-color: #007DFD
+                display: flex
+                align-items: center
+                justify-content: center
+                background: #0540F2
+                height: 73px
+                width: 433px
+                border-radius: 30px
                 font-size: 20px
-                padding: 25px 127px
+                font-weight: 600
+                color: #f6f6f6
+                white-space: nowrap
             &_inp
-                height: 75px
-                width: 407px
-                color: white
-                border: solid 2px white
-                border-radius: 15px
+                height: 73px
+                width: 433px
+                color: rgba(24, 24, 24, 0.6)
+                background: #E8EBF5
+                border-radius: 30px
                 font-size: 20px
-                padding: 0 30px
+                padding-left: 30px
                 &::placeholder
-                    text-align: center
-                    color: white
-                    font-size: 20px
+                    color: rgba(24, 24, 24, 0.6)
+                    font-size: 16px
+            &_button
+                position: relative
+            &_img
+                position: absolute
+                bottom: 0px
+                left: -45px
 
     &__buttons
         display: flex

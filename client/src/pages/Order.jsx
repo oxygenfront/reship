@@ -6,11 +6,12 @@ import { fetchCreateOrder } from '../redux/slices/orderSlice'
 import { fetchAuthMe } from '../redux/slices/authSlice'
 
 import { clearItems, selectCart } from '../redux/slices/cartSlice'
+import { getCartFromLS } from '../utils/getCartFromLs'
 const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
-  const { items } = useSelector(selectCart)
-
+  const { cartItems } = getCartFromLS()
+  console.log(cartItems)
   const initialState = {
     init: '',
     number: '',
@@ -36,7 +37,7 @@ const Order = () => {
     promocode: window.localStorage.getItem('promocode')
       ? window.localStorage.getItem('promocode')
       : '',
-    basket: JSON.stringify(items),
+    basket: JSON.stringify(cartItems),
   })
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {

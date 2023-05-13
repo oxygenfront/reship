@@ -1,182 +1,113 @@
-.person
-    &__delivery
-        &_history
-            display: flex
-            align-items: center
-            justify-content: center
-            height: auto
-            &_mess
-                font-size: 20px
-                padding: 24px 35px
-                margin: 100px 355px
-                border-radius: 20px
-                background-color: white
-                color: black
-            &_wrapper
-                display: none
-                width: 100%
-                height: auto
-                border-radius: 30px
-                &.active
-                    display: block
-                &_title
-                    text-align: center
-                    font-size: 20px
-                    margin-bottom: 40px
+.personal
+    margin-top: 134px
+    &__container
+
+    &__middle_block
+        display: flex
+        justify-content: space-between
+        margin-bottom: 148px
+
+        &_latest_orders
+            width: 352px
+
+            &_header
+                display: flex
+                justify-content: space-between
+                align-items: center
+                margin-bottom: 24px
+                & span
+                    font-size: 26px
+                    font-weight: 600
+                    color: var(--color)
+                & button
+                    background: none
+                    width: 20px
+                    height: 17px
+                    & img
+                        width: 100%
+                        height: 100%
+            &_items_block
                 &_item
                     display: flex
-                    justify-content: space-between
-                    align-items: center
-                    height: 260px
-                    background: #020202
-                    border-radius: 15px
-                    padding: 0 62px
+                    flex-direction: column
+                    justify-content: space-evenly
+                    background: #E8EBF5
+                    border-radius: 30px
+                    padding: 20px 24px 13px 29px
                     &:not(:last-child)
-                        margin-bottom: 36px
-                    &_img_block
-                        width: 136px
-                        height: 136px
+                        margin-bottom: 24px
+                    &_up
                         display: flex
-                        justify-content: center
-                        align-items: center
-                        background: white
-                        border-radius: 20px
-                        & img
-                            width: 90%
-                            height: 80%
-                            border-radius: 20px
-
-                    &_name
-                        display: flex
-                        justify-content: center
-                        align-items: center
-                        width: 150px
-                        height: 60px
-                        font-size: 22px
-                    &_number
-                        display: flex
-                        justify-content: center
-                        align-items: center
-                        background-color: #007DFD
-                        color: white
-                        border-radius: 50%
-                        width: 34px
-                        height: 34px
-                        & span
-                    &_price
-                        font-size: 22px
-                    &_status
-                        width: 126px
-                        height: 43px
-                        display: flex
-                        justify-content: center
-                        align-items: center
-                        border-radius: 13px
-                        background-color: #2DB118
-                        color: white
-                        font-weight: 700
-                        &_deliv
-                            background-color: #007DFD
-                        &_return
-                            background-color: #3D3D3D33
-                    &_buttons
-                        height: 104px
-                        width: 181px
-                        font-size: 18px
-                        display: flex
-                        flex-direction: column
+                        align-items: flex-end
                         justify-content: space-between
-                        & div
-                            width: 100%
-                            background: #007DFD
-                            &:last-child
-                                background: white
-                                color: black
-@media (max-width: 991px)
-    .person
-        &__delivery
-            &_history
-                &_mess
-                &_wrapper
-                    height: 180px
-                    &.active
-                    &_title
-                    &_item
-                        height: 200px
-                        padding: 0 30px
-                        &:not(:last-child)
+                        margin-bottom: 8px
                         &_img_block
-                        &_name
-                            width: 110px
-                        &_number
-                            & span
-                        &_price
-                        &_status
-                            &_deliv
-                            &_return
-                        &_buttons
-                            & div
-                                &:last-child
-@media (max-width: 767px)
-    .person
-        &__delivery
-            &_history
-                &_mess
-                &_wrapper
-                    &.active
-                    &_title
-                    &_item
-                        padding: 0 20px
-                        &:not(:last-child)
-                        &_img_block
-                            width: 115px
-                            height: 115px
-
-                        &_name
-                            width: 85px
-                            font-size: 18px
-                        &_number
-                            width: 26px
-                            height: 26px
-                            & span
+                            width: 80px
+                            height: 60px
+                            & img
+                                width: 100%
+                                height: 100%
+                                object-fit: cover
+                                object-position: 10% 10%
+                        &_info
+                            margin-bottom: 13px
+                            &_name
+                                font-size: 16px
+                                font-weight: 500
+                                margin-bottom: 3px
+                            &_color
+                                color: #181818B2
                                 font-size: 14px
-                        &_price
-                            font-size: 19px
-                        &_status
-                            width: 90px
-                            height: 36px
-                            font-size: 15px
-                            &_deliv
-                            &_return
-                        &_buttons
-                            & div
-                                &:last-child
-@media (max-width: 575px)
-    .person
-        &__delivery
-            &_history
-                &_mess
-                &_wrapper
-                    &.active
-                    &_title
-                    &_item
-                        flex-direction: column
-                        padding: unset
-                        width: 300px
-                        height: 380px
-                        padding: 30px 0
-                        &:not(:last-child)
-                            margin-bottom: 70px
-                        &_img_block
-                        &_name
-                            height: unset
-                            width: 100%
-                        &_number
-                            & span
-                        &_price
-                        &_status
-                            &_deliv
-                            &_return
-                        &_buttons
-                            & div
-                                &:last-child
+                                font-weight: 500
+                        &_info_more
+                            display: flex
+                            flex-direction: column
+                            align-items: end
+                            margin-bottom: 8px
+                            &_status
+                                width: 63px
+                                height: 20px
+                                display: flex
+                                justify-content: center
+                                align-items: center
+
+                                background: #0540F2
+                                color: white
+                                font-size: 10px
+                                font-weight: 500
+                                margin-bottom: 6px
+                                border-radius: 30px
+                            &_price
+                                color: #0540F2
+                                font-size: 20px
+                                font-weight: 600
+
+                    &_bottom
+                        display: flex
+                        justify-content: space-between
+                        &_date
+                            color: #181818B2
+                            font-size: 14px
+                            font-weight: 500
+                        &_count
+                            color: #181818B2
+                            font-size: 14px
+                            font-weight: 500
+                &_all
+                    width: 100%
+                    height: 41px
+                    background: #E8EBF5
+                    border-radius: 30px
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    font-size: 16px
+                    font-weight: 500
+                    & span
+                        margin-left: 7px
+                        margin-bottom: 3px
+                        width: 10px
+                        height: 10px
+                        border-right: 1px solid #181818
+                        border-bottom: 1px solid #181818
+                        transform: rotate(45deg)

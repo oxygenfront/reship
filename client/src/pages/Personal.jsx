@@ -32,7 +32,8 @@ const Personal = () => {
     status: false,
     price: false,
   })
-  const [isOpen, setIsOpen] = useState(true)
+  const [calendarValue, setCalendarValue] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
   const [changeName, setChangeName] = useState(true)
   const [personName, setPersonName] = useState({
     firstName: 'Имя',
@@ -135,6 +136,18 @@ const Personal = () => {
   if (status === 'success') {
     data.favorites.map((order) => console.log(order))
   }
+  // if (calendarValue.length > 0) {
+  //   console.log(calendarValue[0].toLocaleString().slice(0, 10))
+  //   const timeStamp = new Date(
+  //     calendarValue[0]
+  //       .toLocaleString()
+  //       .slice(0, 10)
+  //       .split('.')
+  //       .reverse()
+  //       .join('.')
+  //   ).getTime()
+  //   console.log(timeStamp)
+  // }
 
   return (
     // <>
@@ -843,6 +856,8 @@ const Personal = () => {
                               </DropDown.Item>
                               {sortBy.date === true ? (
                                 <DateRangePicker
+                                  onChange={(value) => setCalendarValue(value)}
+                                  value={calendarValue}
                                   isoWeek={true}
                                   character=" до "
                                   appearance="subtle"
@@ -911,37 +926,9 @@ const Personal = () => {
                 </div>
               </div>
               <div className="personal__middle-block_latest-orders_items-block">
-                <div className="personal__middle-block_latest-orders_items-block_item">
-                  <div className="personal__middle-block_latest-orders_items-block_item-up">
-                    <div className="personal__middle-block_latest-orders_items-block_item-up_img-block">
-                      <img src="../assets/products_img/1.png" alt="" />
-                    </div>
-                    <div className="personal__middle-block_latest-orders_items-block_item-up_info">
-                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-name">
-                        Logitech G Pro
-                      </div>
-                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-color">
-                        Черная
-                      </div>
-                    </div>
-                    <div className="personal__middle-block_latest-orders_items-block_item-up_info-more">
-                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-more_status">
-                        Получено
-                      </div>
-                      <div className="personal__middle-block_latest-orders_items-block_item-up_info-more_price">
-                        6 800 руб
-                      </div>
-                    </div>
-                  </div>
-                  <div className="personal__middle-block_latest-orders_items-block_item-bottom">
-                    <div className="personal__middle-block_latest-orders_items-block_item-bottom_date">
-                      Сен 26, 2023
-                    </div>
-                    <div className="personal__middle-block_latest-orders_items-block_item-bottom_count">
-                      1шт
-                    </div>
-                  </div>
-                </div>
+                <PersonItem></PersonItem>
+                <PersonItem></PersonItem>
+                <PersonItem></PersonItem>
 
                 <Link
                   to="/orders"

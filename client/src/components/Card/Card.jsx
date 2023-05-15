@@ -121,13 +121,13 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               }
               style={{
                 backgroundImage: `url('/assets/products_img/${id}.png')`,
-                backgroundSize: 250,
+                backgroundSize: 'cover',
               }}
             ></SwiperSlide>
             <SwiperSlide
               style={{
                 backgroundImage: `url('/assets/products_img/${id}.png')`,
-                backgroundSize: 250,
+                backgroundSize: 'cover',
               }}
               className={
                 styles.main_catalog__products_wrapper_item_slider_slide
@@ -136,7 +136,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
             <SwiperSlide
               style={{
                 backgroundImage: `url('/assets/products_img/${id}.png')`,
-                backgroundSize: 250,
+                backgroundSize: 'cover',
               }}
               className={
                 styles.main_catalog__products_wrapper_item_slider_slide
@@ -168,7 +168,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                     }
                   ></div>
                 </div>
-                {addedCount}
+                <span>{addedCount}</span>
                 <button
                   onClick={onClickAdd}
                   className={

@@ -4,18 +4,18 @@ import { Route, Routes } from 'react-router-dom'
 
 import Header from './components/Header/Header'
 
-import './sass/index.sass'
 import {
   Admin,
   AdminChange,
-  AdminOrders,
   AdminCreate,
+  AdminCreatePromocode,
+  AdminOrders,
   AdminPayments,
+  AdminPromocodes,
   Favorites,
   ForgotMessage,
-  AdminPromocodes,
-  AdminCreatePromocode,
   Settings,
+  Orders
 } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
@@ -26,11 +26,12 @@ import Login from './pages/Login'
 import Order from './pages/Order'
 import Personal from './pages/Personal'
 import Register from './pages/Register'
-import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
+import { fetchAuthMe } from './redux/slices/authSlice'
+import './sass/index.sass'
 
-import { fetchItems } from './redux/slices/itemsSlice'
-import { selectFilter } from './redux/slices/fiterSlice'
 import { Footer, Menu } from './components'
+import { selectFilter } from './redux/slices/fiterSlice'
+import { fetchItems } from './redux/slices/itemsSlice'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -93,6 +94,7 @@ const App = () => {
           <Route path="/cart" element={<Cart></Cart>}></Route>
           <Route path="/personal" element={<Personal></Personal>}></Route>
           <Route path="/settings" element={<Settings></Settings>}></Route>
+          <Route path="/orders" element={<Orders></Orders>}></Route>
           <Route
             path="/personal/favorites"
             element={<Favorites></Favorites>}

@@ -43,8 +43,8 @@
             display: flex
             flex-direction: column
             justify-content: space-between
-            height: 380px
-            width: 330px
+            height: 100%
+            width: 100%
             &_category
                 position: absolute
                 display: flex
@@ -71,7 +71,7 @@
             &:hover .main_catalog__products_wrapper_item_favorite
                 opacity: 1
             &_title
-                font-size: 28px
+                font-size: 24px
                 color: var(--towhite)
                 font-weight: 700
             &_bottom_block
@@ -88,15 +88,17 @@
                 color: #0540F2
                 font-weight: 500
                 font-size: 16px
-                padding: 15px 27px
+                padding: 13px 18px
                 border-radius: 30px
                 background-color: var(--background-color)
                 transition: background-color 0.3s ease-in-out
+                & span
+                    width: 20px
                 &_minus
                     display: flex
                     justify-content: center
                     align-items: center
-                    width: 23px
+                    width: 12px
                     height: 2px
                     background: #0540F2
                     &_wrapper
@@ -104,31 +106,28 @@
                         align-items: center
                         justify-content: center
                         background: none
-                        width: 23px
-                        height: 23px
+                        width: 13px
+                        height: 20px
                         border-radius: 50%
-                        
-                        
-
                 &_pluses
                     display: flex
                     align-items: center
                     justify-content: center
                     background: none
-                    width: 23px
-                    height: 23px
+                    width: 13px
+                    height: 13px
                     border-radius: 50%
                     &_block
                     &_itemv
-                        height: 23px
+                        height: 12px
                         width: 2px
                         background-color: #0540F2
-                        transform: translateX(11px)
+                        transform: translateX(5px)
                     &_itemh
-                        width: 23px
+                        width: 12px
                         height: 2px
                         background-color: #0540F2
-                        transform: translateY(-12px)
+                        transform: translateY(-7px)
                 &_plus
                     width: 9px
                     height: 2px

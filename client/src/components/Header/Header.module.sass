@@ -1,6 +1,7 @@
 .header
   height: 80px
-  background-color: #e8ebf5
+  background-color: var(--togray)
+
   &_switch
 
     position: relative
@@ -196,14 +197,26 @@
   color: #007dfd
 
 .header__delivery
+  color: var(--color)
   transition: all 0.2s ease-in-out
   &:hover
-    color: #007dfd
+    color: #AEC5F2
 
 .header__faq
+  color: var(--color)
   transition: all 0.2s ease-in-out
   &:hover
-    color: #007dfd
+    color: #AEC5F2
+.header__comments
+  color: var(--color)
+  transition: all 0.2s ease-in-out
+  &:hover
+    color: #AEC5F2
+.header__admin
+  color: var(--color)
+  transition: all 0.2s ease-in-out
+  &:hover
+    color: #AEC5F2
 @keyframes burgerAnimate
   0%
     right: -300px

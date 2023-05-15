@@ -8,6 +8,7 @@ export const fetchItems = createAsyncThunk(
     const { data } = await axios.get(
       `/getProducts?&query=${searchValue}&category=${choosenCategorie}`
     )
+    console.log(data)
 
     return data
   }

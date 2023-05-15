@@ -1073,6 +1073,7 @@ const Personal = () => {
                 .slice(0, 3)
                 .map((item) => (
                   <Card
+                    view="grid"
                     key={item.id}
                     id={item.id}
                     name={item.name}

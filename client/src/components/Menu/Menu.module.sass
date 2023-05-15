@@ -39,9 +39,10 @@
         flex-direction: column
         gap: 10px
         li
+          color: var(--color)
     &_title
       padding: 15px 30px
-      background: #E8EBF5
+      background: var(--togray)
       border-radius: 30px
       display: flex
       justify-content: space-between
@@ -65,9 +66,11 @@
       font-weight: 500
       border-radius: 30px
       padding: 10px
+      color: var(--color)
       &:hover
         cursor: pointer
-        background: #ececec
+
+        background: var(--tolightgray)
       img
         padding-right: 8px
         height: 22px
@@ -85,13 +88,12 @@
     overflow: hidden
     inset: 0
 
-    overflow-y: auto
     height: 445px
     width: 1000px
 
     padding: 30px 15px
 
-    background: #F6F6F6
+    background: var(--background-color)
     border-radius: 30px
     color: #000
 
@@ -183,6 +185,7 @@
     justify-content: space-between
     align-items: center
     &:hover
+
       cursor: pointer
     &_cart
 

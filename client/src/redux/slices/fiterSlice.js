@@ -4,6 +4,8 @@ const initialState = {
   choosenCategorie: '',
   choosenSort: '',
   searchValue: '',
+  choosenPrice: '',
+  choosenBrand: '',
 }
 
 export const filterSlice = createSlice({
@@ -19,12 +21,23 @@ export const filterSlice = createSlice({
     setSearchValue(state, action) {
       state.searchValue = action.payload
     },
+    setChoosenPrice(state, action) {
+      state.choosenPrice = action.payload
+    },
+    setChoosenBrand(state, action) {
+      state.choosenBrand = action.payload
+    },
   },
 })
 
 export const selectFilter = (state) => state.filter
 export const selectSort = (state) => state.filter.choosenSort
 
-export const { setChoosenCategorie, setChoosenSort, setSearchValue } =
-  filterSlice.actions
+export const {
+  setChoosenCategorie,
+  setChoosenSort,
+  setSearchValue,
+  setChoosenPrice,
+  setChoosenBrand,
+} = filterSlice.actions
 export default filterSlice.reducer

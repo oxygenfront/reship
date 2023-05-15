@@ -30,7 +30,7 @@ import { fetchAuthMe, selectIsAuth } from './redux/slices/authSlice'
 
 import { fetchItems } from './redux/slices/itemsSlice'
 import { selectFilter } from './redux/slices/fiterSlice'
-import { Menu } from './components'
+import { Footer, Menu } from './components'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -101,6 +101,7 @@ const App = () => {
           <Route path="/catalog" element={<Catalog></Catalog>}></Route>
           <Route path="/forgot/message" element={<ForgotMessage />}></Route>
         </Routes>
+        <Footer></Footer>
       </div>
     </>
   )

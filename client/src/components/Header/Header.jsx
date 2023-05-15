@@ -196,8 +196,11 @@ const Header = () => {
           <Link to="/" className={styles.header__comments}>
             Отзывы
           </Link>
+
           {isAuth && status === 'success' && data.admin === 1 ? (
-            <Link to="/admin">ADMIN</Link>
+            <Link to="/admin" className={styles.header__admin}>
+              ADMIN
+            </Link>
           ) : null}
         </div>
 

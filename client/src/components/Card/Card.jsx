@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom'
-import { addItem, minusItem, selectCartItemById } from '../../redux/slices/cartSlice'
+import {
+  addItem,
+  minusItem,
+  removeItem,
+  selectCartItemById,
+} from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
 import {
   fetchAuthMe,
@@ -16,7 +21,7 @@ import classNames from 'classnames'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 
-const Card = ({ name, image, price, id, old_price }) => {
+const Card = ({ name, image, price, id, old_price, view, description }) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
@@ -37,10 +42,13 @@ const Card = ({ name, image, price, id, old_price }) => {
     dispatch(addItem(item))
   }
   const onClickPlus = () => {
-    dispatch(addItem({ id }));
-  };
+    dispatch(addItem({ id }))
+  }
   const onClickMinus = () => {
-    dispatch(minusItem(id));
+    dispatch(minusItem(id))
+  }
+  const onClickRemove = () => {
+    dispatch(removeItem(id))
   }
 
   const addedCount = cartItem ? cartItem.count : 0
@@ -85,86 +93,187 @@ const Card = ({ name, image, price, id, old_price }) => {
     return <Navigate to="/login"></Navigate>
   }
   return (
-    <div className={styles.main_catalog__products_wrapper_item}>
-      <div className={styles.main_catalog__products_wrapper_item_category}>
-        <span>Хит продаж</span>
-      </div>
-      <button
-        onClick={onChangeFavorite}
-        className={styles.main_catalog__products_wrapper_item_favorite}
-      >
-        {isFavorite ? (
-          <img src="/assets/img/active-heart-main-catalog.png"></img>
-        ) : (
-          <img src="/assets/img/heart-main-catalog.png"></img>
-        )}
-      </button>
-      <Swiper
-        className={styles.main_catalog__products_wrapper_item_slider}
-        modules={[Pagination]}
-        pagination={{ clickable: true }}
-        centeredSlides={true}
-      >
-        <SwiperSlide
-          className={styles.main_catalog__products_wrapper_item_slider_slide}
-          style={{
-            backgroundImage: `url('/assets/products_img/${id}.png')`,
-            backgroundSize: 250,
-          }}
-        ></SwiperSlide>
-        <SwiperSlide
-          style={{
-            backgroundImage: `url('/assets/products_img/${id}.png')`,
-            backgroundSize: 250,
-          }}
-          className={styles.main_catalog__products_wrapper_item_slider_slide}
-        ></SwiperSlide>
-        <SwiperSlide
-          style={{
-            backgroundImage: `url('/assets/products_img/${id}.png')`,
-            backgroundSize: 250,
-          }}
-          className={styles.main_catalog__products_wrapper_item_slider_slide}
-        ></SwiperSlide>
-      </Swiper>
-      <div className={styles.main_catalog__products_wrapper_item_title}>
-        {name}
-      </div>
-      <div className={styles.main_catalog__products_wrapper_item_bottom_block}>
-        <span className={styles.main_catalog__products_wrapper_item_price}>
-          от {price} руб
-        </span>
-        {addedCount > 0 ? <button
-          
-          className={styles.main_catalog__products_wrapper_item_button}
-        >
-          <div onClick={onClickMinus} className={styles.main_catalog__products_wrapper_item_button_minus_wrapper}><div className={styles.main_catalog__products_wrapper_item_button_minus}></div></div>
-          {addedCount}
+    <>
+      {view === 'grid' ? (
+        <div className={styles.main_catalog__products_wrapper_item}>
+          <div className={styles.main_catalog__products_wrapper_item_category}>
+            <span>Хит продаж</span>
+          </div>
           <button
-            onClick={onClickAdd}
-            className={styles.main_catalog__products_wrapper_item_button_pluses}
+            onClick={onChangeFavorite}
+            className={styles.main_catalog__products_wrapper_item_favorite}
           >
-            <div
-              className={styles.main_catalog__products_wrapper_item_button_pluses_block}
-            >
-              <div
-                className={styles.main_catalog__products_wrapper_item_button_pluses_itemv}
-              ></div>
-              <div
-                className={styles.main_catalog__products_wrapper_item_button_pluses_itemh}
-              ></div>
-            </div>
+            {isFavorite ? (
+              <img src="/assets/img/active-heart-main-catalog.png"></img>
+            ) : (
+              <img src="/assets/img/heart-main-catalog.png"></img>
+            )}
           </button>
-        </button> : <button
-          onClick={onClickAdd}
-          className={styles.main_catalog__products_wrapper_item_button}
-        >
-          В корзину
-          
-        </button>}
-        
-      </div>
-    </div>
+          <Swiper
+            className={styles.main_catalog__products_wrapper_item_slider}
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            centeredSlides={true}
+          >
+            <SwiperSlide
+              className={
+                styles.main_catalog__products_wrapper_item_slider_slide
+              }
+              style={{
+                backgroundImage: `url('/assets/products_img/${id}.png')`,
+                backgroundSize: 250,
+              }}
+            ></SwiperSlide>
+            <SwiperSlide
+              style={{
+                backgroundImage: `url('/assets/products_img/${id}.png')`,
+                backgroundSize: 250,
+              }}
+              className={
+                styles.main_catalog__products_wrapper_item_slider_slide
+              }
+            ></SwiperSlide>
+            <SwiperSlide
+              style={{
+                backgroundImage: `url('/assets/products_img/${id}.png')`,
+                backgroundSize: 250,
+              }}
+              className={
+                styles.main_catalog__products_wrapper_item_slider_slide
+              }
+            ></SwiperSlide>
+          </Swiper>
+          <div className={styles.main_catalog__products_wrapper_item_title}>
+            {name}
+          </div>
+          <div
+            className={styles.main_catalog__products_wrapper_item_bottom_block}
+          >
+            <span className={styles.main_catalog__products_wrapper_item_price}>
+              от {price} руб
+            </span>
+            {addedCount > 0 ? (
+              <button
+                className={styles.main_catalog__products_wrapper_item_button}
+              >
+                <div
+                  onClick={addedCount > 1 ? onClickMinus : onClickRemove}
+                  className={
+                    styles.main_catalog__products_wrapper_item_button_minus_wrapper
+                  }
+                >
+                  <div
+                    className={
+                      styles.main_catalog__products_wrapper_item_button_minus
+                    }
+                  ></div>
+                </div>
+                {addedCount}
+                <button
+                  onClick={onClickAdd}
+                  className={
+                    styles.main_catalog__products_wrapper_item_button_pluses
+                  }
+                >
+                  <div
+                    className={
+                      styles.main_catalog__products_wrapper_item_button_pluses_block
+                    }
+                  >
+                    <div
+                      className={
+                        styles.main_catalog__products_wrapper_item_button_pluses_itemv
+                      }
+                    ></div>
+                    <div
+                      className={
+                        styles.main_catalog__products_wrapper_item_button_pluses_itemh
+                      }
+                    ></div>
+                  </div>
+                </button>
+              </button>
+            ) : (
+              <button
+                onClick={onClickAdd}
+                className={styles.main_catalog__products_wrapper_item_button}
+              >
+                В корзину
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="catalog__main_item">
+          <Link to={`/item/${id}`} className="catalog__main_item_left">
+            <img src={`../assets/products_img/${id}.png`} alt="" />
+          </Link>
+          <div className="catalog__main_item_mid">
+            <Link to={`/item/${id}`} className="catalog__main_item_mid-title">
+              {name}
+            </Link>
+            <div className="catalog__main_item_mid-subtitle">{description}</div>
+          </div>
+          <div className="catalog__main_item_right">
+            <div className="catalog__main_item_right-price">от {price} руб</div>
+            <div className="catalog__main_item_right-rating">
+              <img src="../assets/img/star-review.png" alt="" />
+              <span>4.5</span>
+              <span>5 отзывов</span>
+            </div>
+            {addedCount > 0 ? (
+              <div
+                className={styles.main_catalog__products_wrapper_item_button}
+              >
+                <div
+                  onClick={addedCount > 1 ? onClickMinus : onClickRemove}
+                  className={
+                    styles.main_catalog__products_wrapper_item_button_minus_wrapper
+                  }
+                >
+                  <div
+                    className={
+                      styles.main_catalog__products_wrapper_item_button_minus
+                    }
+                  ></div>
+                </div>
+                {addedCount}
+                <button
+                  onClick={onClickAdd}
+                  className={
+                    styles.main_catalog__products_wrapper_item_button_pluses
+                  }
+                >
+                  <div
+                    className={
+                      styles.main_catalog__products_wrapper_item_button_pluses_block
+                    }
+                  >
+                    <div
+                      className={
+                        styles.main_catalog__products_wrapper_item_button_pluses_itemv
+                      }
+                    ></div>
+                    <div
+                      className={
+                        styles.main_catalog__products_wrapper_item_button_pluses_itemh
+                      }
+                    ></div>
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={onClickAdd}
+                className="catalog__main_item_right-add"
+              >
+                В корзину
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

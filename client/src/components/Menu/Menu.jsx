@@ -68,16 +68,19 @@ const Menu = () => {
     isMounted.current = true
   }, [cartItems])
 
-  const [scrollTop, setScrollTop] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0)
 
   useEffect(() => {
-    const handleScroll = () => setScrollTop(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrollTop(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   return (
-    <div className={styles.search_section} style={scrollTop > 0 ? {transform: 'translateY(-80px)'} : null}>
+    <div
+      className={styles.search_section}
+      style={scrollTop > 0 ? { transform: 'translateY(-80px)' } : null}
+    >
       <div
         className={classNames(
           styles.container,
@@ -117,7 +120,7 @@ const Menu = () => {
             <div className={styles.modal_scroll}>
               <div className={styles.modal_container}>
                 <Dialog.Panel>
-                  <Dialog.Description className={styles.modal_items}>
+                  <div className={styles.modal_items}>
                     <div className={styles.modal_leftcol}>
                       <ul>
                         <li
@@ -190,8 +193,12 @@ const Menu = () => {
                     </div>
                     <div className={styles.modal_center}>
                       <div className={styles.modal_center_title}>
-                        <p>Особенности</p>
-                        <p>Бренды</p>
+                        <div>
+                          <p>Особенности</p>
+                        </div>
+                        <div>
+                          <p>Бренды</p>
+                        </div>
                       </div>
                       <div className={styles.modal_center_items}>
                         <ul>
@@ -208,7 +215,9 @@ const Menu = () => {
                         </ul>
                       </div>
                       <div className={styles.modal_center_title}>
-                        <p>Размер</p>
+                        <div>
+                          <p>Размер</p>
+                        </div>
                       </div>
                       <div className={styles.modal_center_items}>
                         <ul>
@@ -223,7 +232,7 @@ const Menu = () => {
                         to="/catalog"
                         onClick={() => {
                           setIsOpen(false)
-                          onChangeCategory('мышки')
+                          onChangeCategory(localCategory)
                         }}
                       >
                         <img
@@ -233,7 +242,7 @@ const Menu = () => {
                         <span>Просмотреть все {localCategory}</span>
                       </Link>
                     </div>
-                  </Dialog.Description>
+                  </div>
                 </Dialog.Panel>
               </div>
             </div>

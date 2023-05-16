@@ -22,7 +22,9 @@ class ApiPostController {
       !tools.checkJsonKey(request.body, "first_name") ||
       !tools.checkJsonKey(request.body, "last_name") ||
       !tools.checkJsonKey(request.body, "password") ||
-      !tools.checkJsonKey(request.body, "email")
+      !tools.checkJsonKey(request.body, "email") ||
+      !tools.checkJsonKey(request.body, "adress_delivery") ||
+      !tools.checkJsonKey(request.body, "date_of_birth_unix")
     ) {
       return response
         .status(400)
@@ -33,6 +35,8 @@ class ApiPostController {
     let last_name = tools.delInjection(request.body.last_name);
     let password = tools.delInjection(request.body.password);
     let email = tools.delInjection(request.body.email);
+    let adress_delivery = tools.delInjection(request.body.adress_delivery);
+    let date_of_birth_unix = tools.delInjection(request.body.date_of_birth_unix);
 
     database.query(
       'SELECT * FROM `users` WHERE email="' + email + '"',
@@ -47,18 +51,18 @@ class ApiPostController {
           let new_token = "reship.api." + tools.createToken(50);
 
           database.query(
-            "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`) VALUES " +
-              `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '', '${new_token}', '${Date.now()}', '${crypto
+            "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`) VALUES " +
+              `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '${adress_delivery}', '${new_token}', '${Date.now()}', '${crypto
                 .createHash("md5")
                 .update(password)
                 .digest("hex")}', '1', '${JSON.stringify(
                 []
-              )}', '0', '${JSON.stringify([])}');`,
+              )}', '0', '${JSON.stringify([])}', '${date_of_birth_unix}');`,
             (error, rows, fields) => {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 1.2 });
+                  .json({ error: "Ошибка на сервере", bcode: 1.2});
               }
 
               let activation_code = tools.createToken(50);

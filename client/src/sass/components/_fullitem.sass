@@ -1,0 +1,176 @@
+.fullitem
+    margin-top: 184px
+    &__card
+        display: flex
+        justify-content: space-between
+        &-wrapper
+            background: #E8EBF5
+            padding: 45px 0 98px 0
+            margin-bottom: 88px
+        &-breadcrumb
+            display: block
+            height: 17px
+            width: 439px
+            margin-bottom: 20px
+        &-sliders
+            width: 550px
+        &-slider
+            position: relative
+            &_big
+                &-wrapper
+
+                    margin-bottom: 53px
+                &-item
+                    width: 100%
+                    height: 350px
+                    border-radius: 30px
+                    overflow: hidden
+                    & img
+                        width: 100%
+                        height: 100%
+            &_small
+                &-wrapper
+                    width: 73%
+                    position: unset !important
+                    & .swiper-pagination
+                        bottom: -50px !important
+                    & .swiper-button-next.swiper-button-disabled, & .swiper-button-prev.swiper-button-disabled
+                        border: 2px solid #0528F2
+                        background: transparent
+                        opacity: 1
+                    & .swiper-button-next.swiper-button-disabled
+                        &:after
+                            border-color: #0528F2
+                        &:before
+                            background: #0528F2
+                    & .swiper-button-prev.swiper-button-disabled
+                        &:after
+                            border-color: #0528F2
+                        &:before
+                            background: #0528F2
+                    & .swiper-button-prev, & .swiper-button-next
+                        width: 33px
+                        height: 33px
+                        background: #0528F2
+                        border: 2px solid #0528F2
+                        border-radius: 50%
+                    & .swiper-button-prev
+                        left: 498px
+                        top: 790px
+                    & .swiper-button-next
+                        top: 790px
+                        left: 996px
+                    & .swiper-button-next:after
+                        position: absolute
+                        right: 15px
+                        content: ''
+                        width: 10px
+                        height: 10px
+                        border-right: 2px solid white
+                        border-bottom: 2px solid white
+                        transform: rotate(-45deg)
+                    & .swiper-button-next:before
+                        position: absolute
+                        content: ''
+                        width: 15px
+                        height: 2px
+                        background: white
+                        right: 14px
+
+                    & .swiper-button-prev:after
+                        position: absolute
+                        left: 15px
+                        content: ''
+                        width: 10px
+                        height: 10px
+                        border-right: 2px solid white
+                        border-bottom: 2px solid white
+                        transform: rotate(135deg)
+                    & .swiper-button-prev:before
+                        position: absolute
+                        content: ''
+                        width: 15px
+                        height: 2px
+                        background: white
+                        left: 13px
+
+                &-item
+                    display: flex !important
+                    width: 122px !important
+                    height: 80px !important
+                    transition: all .3s linear
+                    align-items: center
+                    justify-content: center
+                    border-radius: 25px
+                    overflow: hidden
+                    &.swiper-slide-active
+                        border: 1px solid #0540F2
+                    & img
+                        width: 80%
+                        height: 80%
+                        object-fit: cover
+                        object-position: center
+        &_info
+            &-wrapper
+                width: 535px
+            &-name
+                line-height: 77.45px
+                font-size: 64px
+                font-weight: 500
+                color: #181818
+                margin-bottom: 39px
+            &-params
+                display: flex
+                justify-content: space-between
+                margin-bottom: 26px
+                &_block
+                    & p
+                        font-size: 20px
+                        margin-bottom: 12px
+                        color: #181818B2
+                    &-wrapper
+                        display: flex
+                    &_button
+                        padding: 4px 19px
+                        background: #0540F2
+                        border-radius: 30px
+                        &.noItem
+                            background: #416EF233
+                            &:before
+                                position: absolute
+                                display: block
+                                content: ''
+                                width: 43px
+                                height: 3px
+                                background: #E8EBF5
+                                transform: rotate(-45deg) translate(-20px, -5px)
+
+                        & span
+                            color: white
+                            text-transform: uppercase
+                            font-size: 16px
+                            font-weight: 500
+                        &:not(:last-child)
+                            margin-right: 5px
+                    &_text
+                        font-size: 16px
+                        font-weight: 500
+                        color: #0540F2
+                        background: none
+                        &:not(:last-child)
+                            margin-right: 24px
+            &-bottom
+                display: flex
+                justify-content: space-between
+                align-items: center
+                & span
+                    font-size: 24px
+                    color: #0540F2
+                    font-weight: 500
+                & button
+                    background: none
+                    padding: 14px 32px
+                    font-size: 20px
+                    border-radius: 30px
+                    border: 1px solid #0540F2
+                    color: #0540F2

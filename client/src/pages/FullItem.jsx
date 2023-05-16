@@ -17,10 +17,9 @@ import {
 } from '../redux/slices/favoriteSlice';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {Navigation} from 'swiper';
+import { Thumbs, Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/bundle';
-import 'swiper/css/navigation';
 
 const FullItem = () => {
   const [openFull, setOpenFull] = useState(false);
@@ -31,6 +30,7 @@ const FullItem = () => {
   const token = localStorage.getItem('token');
   const { data, userStatus = status } = useSelector(selectUserData);
   const [navigate, setNavigate] = useState(false);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [parametr, setParametr] = useState('');
   const [color, setColor] = useState('');
@@ -90,151 +90,119 @@ const FullItem = () => {
     return <Navigate to='/login'></Navigate>;
   }
   const renderStatus = Boolean(status === 'success');
-
   return (
-    <section className='card-section'>
-      <div className='container card-section__container'>
-        <div className='card-section__slider_wrapper'>
-          <div className='card-section__slider'>
-            {/* <img src={`../assets/products_img/${id}.png`} alt="" /> */}
+    <div className='fullitem'>
+      <div className='fullitem__card-wrapper'>
+        <div className='fullitem__card-breadcrumb container'></div>
+        <div className='fullitem__card container'>
+          <div className='fullitem__card-sliders'>
             <Swiper
-              direction='vertical'
-              slidesPerView={3}
-              spaceBetween={17}
-              modules={[Navigation]}
-              navigation
-              centeredSlides={true}
-              // loop={true}
-              className='card-section__slider'
+              className='fullitem__card-slider_big-wrapper'
+              modules={[Thumbs]}
+              spaceBetween={60}
+              slidesPerView={1}
+              speed={1000}
+              onSwiper={setThumbsSwiper}
             >
-              <SwiperSlide className='card-section__slider_item'>1</SwiperSlide>
-              <SwiperSlide className='card-section__slider_item'>2</SwiperSlide>
-              <SwiperSlide className='card-section__slider_item'>3</SwiperSlide>
-              <SwiperSlide className='card-section__slider_item'>4</SwiperSlide>
-              <SwiperSlide className='card-section__slider_item'>5</SwiperSlide>
-              <SwiperSlide className='card-section__slider_item'>6</SwiperSlide>
-              <SwiperSlide className='card-section__slider_item'>7</SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_big-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+            </Swiper>
+            <Swiper
+              className='fullitem__card-slider_small-wrapper'
+              modules={[Navigation, Thumbs]}
+              navigation
+              loop
+              centeredSlides
+              slideToClickedSlide
+              thumbs={{ swiper: thumbsSwiper }}
+              slidesPerView={3}
+              spaceBetween={15}
+              speed={1000}
+            >
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
+              <SwiperSlide className='fullitem__card-slider_small-item'>
+                <img src='../assets/img/nigger.jpg' alt='' />
+              </SwiperSlide>
             </Swiper>
           </div>
-          <div className='card-section__img-block'>
-            <img
-              src={`../assets/products_img/${id}.png`}
-              className='fiol'
-              alt='iphone'
-            />
-          </div>
-        </div>
-
-        <div className='card-section__about'>
-          <div className='card-section__about-name'>{item.name}</div>
-          <div className='card-section__about-info'>
-            {renderStatus &&
-              JSON.stringify(item.description_small)
-                .replaceAll('"', '')
-                .split('\\n')
-                .map((str, index) => <p key={index}>{str}</p>)}
-          </div>
-
-          <div
-            className={
-              openFull
-                ? 'card-section__about-info-more-active'
-                : 'card-section__about-info-more'
-            }
-          >
-            <div className='card-section__about-info'>
-              {renderStatus &&
-                JSON.stringify(item.description_full)
-                  .replaceAll('"', '')
-                  .split('\\n')
-                  .map((str, index) => <p key={index}>{str}</p>)}
+          <div className='fullitem__card_info-wrapper'>
+            <div className='fullitem__card_info-name'>
+              Mistel Barocco MD600RGB Black
+            </div>
+            <div className='fullitem__card_info-params'>
+              <div className='fullitem__card_info-params_block'>
+                <p>Переключатели</p>
+                <div className='fullitem__card_info-params_block-wrapper'>
+                  <button className='fullitem__card_info-params_block_button'>
+                    <span>br</span>
+                  </button>
+                  <button className='fullitem__card_info-params_block_button noItem'>
+                    <span>r</span>
+                  </button>
+                </div>
+              </div>
+              <div className='fullitem__card_info-params_block'>
+                <p>Раскладка</p>
+                <div className='fullitem__card_info-params_block-wrapper'>
+                  <button className='fullitem__card_info-params_block_text'>
+                    Русская
+                  </button>
+                  <button className='fullitem__card_info-params_block_text'>
+                    Английская
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className='fullitem__card_info-bottom'>
+              <span>14 200 руб</span>
+              <button>В корзину</button>
             </div>
           </div>
-          <button
-            onClick={() => setOpenFull(!openFull)}
-            className='card-section__about-btn show'
-          >
-            Полный список характеристик
-          </button>
-          <button className='card-section__about-btn no-show'>
-            Скрыть список характеристик
-          </button>
-        </div>
-
-        <hr className='card-section__hr' />
-
-        <div className='card-section__choice'>
-          <div className='card-section__choice-block'>
-            <div className='card-section__choice-purchase'>
-              <span>{item.price} ₽</span>
-              <Link to='/cart' onClick={onClickAdd}>
-                <span>Купить</span>
-              </Link>
-            </div>
-            <div className='card-section__choice-blue-blocks'>
-              <button
-                onClick={onClickAdd}
-                className='card-section__choice-blue-blocks_item'
-              >
-                <img src='../assets/img/bag-white.svg' alt='' />
-              </button>
-              <button
-                onClick={onChangeFavorite}
-                className='card-section__choice-blue-blocks_item'
-              >
-                <img
-                  width={'26px'}
-                  src={
-                    isFavorite
-                      ? '../assets/img/heart-white.svg'
-                      : '../assets/img/heart-empty.svg'
-                  }
-                  alt=''
-                />
-              </button>
-            </div>
-          </div>
-
-          <div className='card-section__choice-char'>
-            {renderStatus && item.category === 'клавиатуры' ? (
-              JSON.parse(item.parameters).svitchi.map((param) => (
-                <button
-                  onClick={() => setParametr(param)}
-                  key={param}
-                  className={
-                    parametr === param
-                      ? 'card-section__choice-char_item-active'
-                      : 'card-section__choice-char_item'
-                  }
-                >
-                  {param}
-                </button>
-              ))
-            ) : (
-              <></>
-            )}
-          </div>
-
-          {renderStatus && JSON.parse(item.colors_avail).length > 0 ? (
-            <div className='card-section__choice-color'>
-              {JSON.parse(item.colors_avail).map((param, index) => (
-                <button
-                  className={
-                    color === param
-                      ? 'card-section__choice-color-item-active'
-                      : 'card-section__choice-color-item'
-                  }
-                  key={param}
-                  onClick={() => setColor(param)}
-                >
-                  {param}
-                </button>
-              ))}
-            </div>
-          ) : null}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

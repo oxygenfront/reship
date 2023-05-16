@@ -56,7 +56,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route
-            path="item/:id"
+            path=/* "item/:id" */'item'
             element={
               <Suspense fallback={<div>Идёт загрузка...</div>}>
                 <FullItem></FullItem>

@@ -1,8 +1,19 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, { useCallback } from 'react'
 import styles from './Footer.module.sass'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  selectFilter,
+  setChoosenCategorie,
+} from '../../redux/slices/fiterSlice'
 
 const Footer = () => {
+  const dispatch = useDispatch()
+  const { choosenCategorie } = useSelector(selectFilter)
+  const onChangeCategory = useCallback((sort) => {
+    dispatch(setChoosenCategorie(sort))
+  }, [])
   return (
     <footer className={styles.footer}>
       <div className={classNames(styles.container, styles.footer__container)}>
@@ -14,18 +25,27 @@ const Footer = () => {
         </div>
         <div className={styles.footer__blocks}>
           <div className={styles.footer__block}>
-            <a href="#" className={styles.footer__block_suptitle}>
+            <Link
+              onClick={() => onChangeCategory('клавиатуры')}
+              to="/catalog"
+              className={styles.footer__block_suptitle}
+            >
               Клавиатуры
-            </a>
-            <a href="#" className={styles.footer__block_suptitle}>
+            </Link>
+            <Link
+              to="/catalog"
+              onClick={() => onChangeCategory('аксессуары')}
+              className={styles.footer__block_suptitle}
+            >
               Аксессуары
-            </a>
-            <a href="#" className={styles.footer__block_suptitle}>
+            </Link>
+            <Link
+              onClick={() => onChangeCategory('мышки')}
+              to="/catalog"
+              className={styles.footer__block_suptitle}
+            >
               Мышки
-            </a>
-            <a href="#" className={styles.footer__block_suptitle}>
-              Ремонт и апгрейд
-            </a>
+            </Link>
           </div>
           <div className={styles.footer__block}>
             <a href="#" className={styles.footer__block_suptitle}>

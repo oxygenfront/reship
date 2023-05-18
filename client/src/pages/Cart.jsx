@@ -38,11 +38,10 @@ const Cart = () => {
 
   if (totalCount === 0) {
     return (
-      <div className="person__delivery-history">
-        <div className="container person__delivery-history__container">
-          <div className="person__delivery-history-mess">
-            Вернитесь сюда позднее, а пока можете{' '}
-            <Link to="/catalog">перейти в каталог</Link>, для выбора товара
+      <div className="cart__empty_wrapper">
+        <div className="container cart__empty_container">
+          <div className="cart__empty">
+            У вас пока нет<br></br> товаров корзине
           </div>
         </div>
       </div>

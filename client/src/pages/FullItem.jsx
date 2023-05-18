@@ -25,6 +25,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Thumbs, Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/bundle'
+import { Comment, FullItemSlider } from '../components'
 
 const FullItem = () => {
   const [openFull, setOpenFull] = useState(false)
@@ -35,7 +36,7 @@ const FullItem = () => {
   const token = localStorage.getItem('token')
   const { data, userStatus = status } = useSelector(selectUserData)
   const [navigate, setNavigate] = useState(false)
-  const [thumbsSwiper, setThumbsSwiper] = useState(null)
+
   const [isFavorite, setIsFavorite] = useState(false)
   const [parametr, setParametr] = useState('')
   const [color, setColor] = useState('')
@@ -110,76 +111,7 @@ const FullItem = () => {
         <div className="fullitem__card-breadcrumb container"></div>
         <div className="fullitem__card container">
           <div className="fullitem__card-sliders">
-            <Swiper
-              className="fullitem__card-slider_big-wrapper"
-              modules={[Thumbs]}
-              spaceBetween={60}
-              slidesPerView={1}
-              speed={1000}
-              onSwiper={setThumbsSwiper}
-            >
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_big-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-            </Swiper>
-            <Swiper
-              className="fullitem__card-slider_small-wrapper"
-              modules={[Navigation, Thumbs]}
-              navigation
-              loop
-              centeredSlides
-              slideToClickedSlide
-              thumbs={{ swiper: thumbsSwiper }}
-              slidesPerView={3}
-              spaceBetween={15}
-              speed={1000}
-            >
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-              <SwiperSlide className="fullitem__card-slider_small-item">
-                <img src={`../assets/products_img/${id}.png`} alt="" />
-              </SwiperSlide>
-            </Swiper>
+            <FullItemSlider id={id}></FullItemSlider>
           </div>
           <div className="fullitem__card_info-wrapper">
             <div className="fullitem__card_info-name">{item.name}</div>
@@ -268,6 +200,79 @@ const FullItem = () => {
               )}
             </div>
           </div>
+        </div>
+      </div>
+      <div className="fullitem__description container">
+        <div className="fullitem__description_left">
+          <div className="">
+            <p>Описание</p>
+            <div className="fullitem__description_left_description">
+              {item.description_full}
+            </div>
+          </div>
+          <div className="">
+            <p>Особенности</p>
+            <div className="fullitem__description_left_spec">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
+              similique temporibus quaerat nihil distinctio earum nulla delectus
+              blanditiis ut quia. Facere sequi quos odio ullam harum qui
+              suscipit molestiae dolore id accusantium quasi sint, soluta aut
+              quae illo iure! Ut possimus, recusandae nisi nostrum doloribus hic
+              similique officiis et consectetur.
+            </div>
+          </div>
+        </div>
+        <div className="fullitem__description_right">
+          <p>Характеристика</p>
+          <div className="fullitem__description_right_har">
+            <div className="fullitem__description_right_har_item">
+              <div className="fullitem__description_right_har_item_left">
+                Материал клавиш
+              </div>
+              <div className="fullitem__description_right_har_item_right">
+                Doubleshot
+              </div>
+            </div>
+            <div className="fullitem__description_right_har_item">
+              <div className="fullitem__description_right_har_item_left">
+                Материал клавиш
+              </div>
+              <div className="fullitem__description_right_har_item_right">
+                Doubleshot
+              </div>
+            </div>
+            <div className="fullitem__description_right_har_item">
+              <div className="fullitem__description_right_har_item_left">
+                Материал клавиш
+              </div>
+              <div className="fullitem__description_right_har_item_right">
+                Doubleshot
+              </div>
+            </div>
+            <div className="fullitem__description_right_har_item">
+              <div className="fullitem__description_right_har_item_left">
+                Материал клавиш
+              </div>
+              <div className="fullitem__description_right_har_item_right">
+                Doubleshot
+              </div>
+            </div>
+            <div className="fullitem__description_right_har_item">
+              <div className="fullitem__description_right_har_item_left">
+                Материал клавиш
+              </div>
+              <div className="fullitem__description_right_har_item_right">
+                Doubleshot
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="fullitem__comments container">
+        <p className="fullitem__comments_title">Отзывы</p>
+        <div className="fullitem__comments_items">
+          <Comment></Comment>
+          <Comment></Comment>
         </div>
       </div>
     </div>

@@ -31,6 +31,7 @@ const Catalog = () => {
   if (choosenCategorie === '') {
     return <Navigate to="/"></Navigate>
   }
+
   return (
     <section className="catalog">
       <div className="catalog__container container">
@@ -226,7 +227,7 @@ const Catalog = () => {
                   : 'catalog__main_wrapper_flex'
               }
             >
-              {status === 'success' &&
+              {status === 'success' && items.length > 0 ? (
                 items.map((item) => (
                   <Card
                     description={item.description_small}
@@ -236,7 +237,10 @@ const Catalog = () => {
                     price={item.price}
                     id={item.id}
                   ></Card>
-                ))}
+                ))
+              ) : (
+                <div className="catalog__empty">Не найдено</div>
+              )}
             </div>
           </div>
         </div>

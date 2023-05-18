@@ -1,5 +1,75 @@
 .fullitem
     margin-top: 184px
+    &__comments
+        margin-bottom: 201px
+        &_items
+            display: flex
+            flex-direction: column
+            gap: 35px
+        &_title
+            font-weight: 600
+            font-size: 40px
+            margin-bottom: 58px
+            color: #181818
+    &__description
+        display: flex
+        align-items: flex-start
+        gap: 32px
+        margin-bottom: 100px
+
+        &_right
+            &_har
+                width: 450px
+                border: 1px solid #0540f2
+                padding: 21px 29px
+                border-radius: 30px
+                display: flex
+                flex-direction: column
+                gap: 13px
+                &_item
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+
+                    &:not(:last-child)
+                        padding-bottom: 17px
+                        border-bottom: 2px solid var(--togray)
+
+                    &_left
+                        padding: 10px 20px
+                        background: var(--togray)
+                        border-radius: 30px
+                        color: #0540F2
+                        font-weight: 500
+                        font-size: 14px
+                    &_right
+                        font-weight: 500
+                        font-size: 14px
+                        color: var(--color)
+            p
+                font-weight: 600
+                font-size: 40px
+
+                margin-bottom: 35px
+                color: var(--color)
+        &_left
+            width: 642px
+            gap: 30px
+            p
+                font-weight: 600
+                font-size: 40px
+                margin-bottom: 30px
+                color: var(--color)
+            &_description
+                padding: 24px 28px
+                border: 1px solid #0540F2
+                border-radius: 30px
+                margin-bottom: 70px
+            &_spec
+                padding: 26px 23px
+                border: 1px solid #0540F2
+                border-radius: 30px
+
     &__card
         display: flex
         justify-content: space-between

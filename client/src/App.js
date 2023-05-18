@@ -15,7 +15,7 @@ import {
   Favorites,
   ForgotMessage,
   Settings,
-  Orders
+  Orders,
 } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
@@ -56,7 +56,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route
-            path=/* "item/:id" */'item'
+            path="item/:id"
             element={
               <Suspense fallback={<div>Идёт загрузка...</div>}>
                 <FullItem></FullItem>

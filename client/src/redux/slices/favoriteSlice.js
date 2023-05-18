@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../axios'
+import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
 
 export const fetchAddFavorite = createAsyncThunk(
   'items/fetchAddFavorite',
@@ -17,15 +18,31 @@ export const fetchDeleteFavorite = createAsyncThunk(
     return data
   }
 )
+const { favorites } = localStorage.getItem('favorites')
 
 const initialState = {
   items: [],
   status: 'loading', // 'loading', 'success', 'error'
 }
+
 const favoriteSlice = createSlice({
-  name: 'items',
+  name: 'favorites',
   initialState,
-  reducers: {},
+  reducers: {
+    addFavorite(state, action) {
+      state.items.push(action.payload)
+    },
+
+    removeFavorite(state, action) {
+      console.log(action.payload)
+      state.items = state.items.filter(
+        (obj) => obj.product_id !== action.payload
+      )
+    },
+    clearFavorite(state) {
+      state.items = []
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAddFavorite.pending, (state, action) => {
       state.status = 'loading'
@@ -45,6 +62,7 @@ const favoriteSlice = createSlice({
 
 export const selectFavoritesData = (state) => state.items
 
-export const {} = favoriteSlice.actions
+export const { addFavorite, removeFavorite, clearFavorite } =
+  favoriteSlice.actions
 
 export default favoriteSlice.reducer

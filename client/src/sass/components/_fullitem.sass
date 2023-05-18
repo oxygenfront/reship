@@ -1,10 +1,80 @@
 .fullitem
     margin-top: 184px
+    &__comments
+        margin-bottom: 201px
+        &_items
+            display: flex
+            flex-direction: column
+            gap: 35px
+        &_title
+            font-weight: 600
+            font-size: 40px
+            margin-bottom: 58px
+            color: #181818
+    &__description
+        display: flex
+        align-items: flex-start
+        gap: 32px
+        margin-bottom: 100px
+
+        &_right
+            &_har
+                width: 450px
+                border: 1px solid #0540f2
+                padding: 21px 29px
+                border-radius: 30px
+                display: flex
+                flex-direction: column
+                gap: 13px
+                &_item
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+
+                    &:not(:last-child)
+                        padding-bottom: 17px
+                        border-bottom: 2px solid var(--togray)
+
+                    &_left
+                        padding: 10px 20px
+                        background: var(--togray)
+                        border-radius: 30px
+                        color: #0540F2
+                        font-weight: 500
+                        font-size: 14px
+                    &_right
+                        font-weight: 500
+                        font-size: 14px
+                        color: var(--color)
+            p
+                font-weight: 600
+                font-size: 40px
+
+                margin-bottom: 35px
+                color: var(--color)
+        &_left
+            width: 642px
+            gap: 30px
+            p
+                font-weight: 600
+                font-size: 40px
+                margin-bottom: 30px
+                color: var(--color)
+            &_description
+                padding: 24px 28px
+                border: 1px solid #0540F2
+                border-radius: 30px
+                margin-bottom: 70px
+            &_spec
+                padding: 26px 23px
+                border: 1px solid #0540F2
+                border-radius: 30px
+
     &__card
         display: flex
         justify-content: space-between
         &-wrapper
-            background: #E8EBF5
+            background: var(--togray)
             padding: 45px 0 98px 0
             margin-bottom: 88px
         &-breadcrumb
@@ -117,7 +187,7 @@
                 line-height: 77.45px
                 font-size: 64px
                 font-weight: 500
-                color: #181818
+                color: var(--color)
                 margin-bottom: 39px
             &-params
                 display: flex
@@ -163,11 +233,80 @@
                 display: flex
                 justify-content: space-between
                 align-items: center
+                &_buttons
+                    display: flex
+                    align-items: center
+                    gap: 15px
+                    &_button
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        gap: 13px
+                        height: 54px
+                        font-size: 16px
+                        border: 2px solid #0540F2
+                        color: #0540F2
+                        font-weight: 500
+                        font-size: 16px
+                        width: 106px
+                        border-radius: 30px
+
+                        &_minus
+                            display: flex
+                            justify-content: center
+                            align-items: center
+                            width: 12px
+                            height: 2px
+                            background: #0540F2
+                            &_wrapper
+                                display: flex
+                                align-items: center
+                                justify-content: center
+                                background: none
+                                width: 13px
+                                height: 20px
+                                border-radius: 50%
+                        &_pluses
+                            display: flex
+                            align-items: center
+                            justify-content: center
+                            background: none
+                            width: 13px
+                            height: 13px
+                            border-radius: 50%
+                            &_block
+                            &_itemv
+                                height: 12px
+                                width: 2px
+                                background-color: #0540F2
+                                transform: translateX(5px)
+                            &_itemh
+                                width: 12px
+                                height: 2px
+                                background-color: #0540F2
+                                transform: translateY(-7px)
+                    &_plus
+                        width: 9px
+                        height: 2px
+                        background-color: #007DFD
+                        transform: translateY(-5.5px)
+
+                    &_cart
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        width: 171px
+                        height: 47px
+                        background: #0540F2
+                        color: #fff
+                        border-radius: 30px
+                        font-weight: 500
+                        font-size: 16px
                 & span
                     font-size: 24px
                     color: #0540F2
                     font-weight: 500
-                & button
+                &_btn
                     background: none
                     padding: 14px 32px
                     font-size: 20px

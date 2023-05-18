@@ -9,7 +9,11 @@ import {
 import styles from './FavoriteItem.module.sass'
 import { Link, Navigate } from 'react-router-dom'
 import { fetchAuthMe, selectIsAuth } from '../../redux/slices/authSlice'
-import { fetchDeleteFavorite } from '../../redux/slices/favoriteSlice'
+import {
+  clearFavorite,
+  fetchDeleteFavorite,
+  removeFavorite,
+} from '../../redux/slices/favoriteSlice'
 
 const FavoriteItem = ({ name, price, image, id }) => {
   const dispatch = useDispatch()
@@ -33,30 +37,16 @@ const FavoriteItem = ({ name, price, image, id }) => {
   const onClickPlus = () => {
     dispatch(addItem({ id }))
   }
-  const onClickRemove = () => {
-    dispatch(removeItem(id))
-  }
 
   const onClickMinus = () => {
     dispatch(minusItem(id))
   }
-  const onDeleteFavorite = async () => {
-    if (!isAuth) {
-      console.log('not auth')
-      return setNavigate(true)
-    }
-
-    const data = await dispatch(fetchDeleteFavorite({ product_id: id, token }))
-    dispatch(fetchAuthMe(token))
-    if (!data.payload) {
-      return alert('Не удалось удалить товар из избранных')
-    } else {
-      dispatch(fetchAuthMe(token))
-      return
-    }
+  const onClickDelete = () => {
+    dispatch(removeFavorite(id))
+    console.log('delete')
   }
-  if (navigate) {
-    return <Navigate to="/login"></Navigate>
+  const onClickClear = () => {
+    dispatch(clearFavorite())
   }
 
   return (
@@ -88,7 +78,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
           </div>
           <div className={styles.person__favorites_wrapper_items_item_buttons}>
             <button
-              onClick={onDeleteFavorite}
+              onClick={onClickClear}
               className={styles.person__favorites_wrapper_items_item_delete}
             >
               Удалить

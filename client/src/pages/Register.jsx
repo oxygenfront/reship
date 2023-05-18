@@ -25,12 +25,15 @@ const Register = () => {
     birthdate: '',
     adress_delivery: '',
   })
+  const timeStamp = new Date(
+    regForm.birthdate.toLocaleString().split('-').reverse().join('.')
+  ).getTime()
   const form = {
     first_name: regForm.firstName,
     last_name: regForm.lastName,
     password: regForm.confirmPassword,
     email: regForm.email,
-    birthdate: regForm.birthdate,
+    date_of_birth_unix: timeStamp,
     adress_delivery: adress,
   }
   const updateForm = (e) => {

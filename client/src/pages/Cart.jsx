@@ -38,11 +38,10 @@ const Cart = () => {
 
   if (totalCount === 0) {
     return (
-      <div className="person__delivery-history">
-        <div className="container person__delivery-history__container">
-          <div className="person__delivery-history-mess">
-            Вернитесь сюда позднее, а пока можете{' '}
-            <Link to="/catalog">перейти в каталог</Link>, для выбора товара
+      <div className="cart__empty_wrapper">
+        <div className="container cart__empty_container">
+          <div className="cart__empty">
+            У вас пока нет<br></br> товаров корзине
           </div>
         </div>
       </div>
@@ -79,7 +78,10 @@ const Cart = () => {
                 <div className="cart__total-wrapper-title">Ваши покупки</div>
                 <div className="cart__total-wrapper-info_items">
                   {cartItems.map((item) => (
-                    <div className="cart__total-wrapper-info_items_item">
+                    <div
+                      key={item.id}
+                      className="cart__total-wrapper-info_items_item"
+                    >
                       <p>{item.name}</p>
                       <p>{item.count} шт</p>
                       <p>{item.price} руб</p>

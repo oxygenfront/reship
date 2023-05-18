@@ -18,6 +18,8 @@ import { selectItemsData } from '../../redux/slices/itemsSlice'
 import Card from '../Card/Card'
 import { selectCart } from '../../redux/slices/cartSlice'
 import { Menu as DropDown } from '@headlessui/react'
+import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
+import { addFavorite } from '../../redux/slices/favoriteSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
@@ -26,7 +28,8 @@ const Menu = () => {
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
   const { searchValue } = useSelector(selectFilter)
-
+  const { favorites } =
+    status === 'success' ? getFavoritesFromLs(data.favorites) : []
   const { items, itemsStatus = status } = useSelector(selectItemsData)
   const { cartItems } = useSelector(selectCart)
 
@@ -42,10 +45,7 @@ const Menu = () => {
   const [localCategory, setLocalCategory] = useState('мышки')
   const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const favoriteCount =
-    isAuth && status === 'success'
-      ? data.favorites && data.favorites.length
-      : null
+  const favoriteCount = favorites ? favorites.length : null
 
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort))
@@ -63,10 +63,13 @@ const Menu = () => {
   useEffect(() => {
     if (isMounted.current) {
       const json = JSON.stringify(cartItems)
+      const favJson = JSON.stringify(favorites)
+
       localStorage.setItem('cart', json)
+      localStorage.setItem('favorites', favJson)
     }
     isMounted.current = true
-  }, [cartItems])
+  }, [cartItems, favorites])
 
   const [scrollTop, setScrollTop] = useState(0)
 
@@ -343,7 +346,7 @@ const Menu = () => {
                               <Link to="/personal">Личный кабинет</Link>
                             </DropDown.Item>
                             <DropDown.Item
-                              to="/favorites"
+                              to="/personal/favorites"
                               className={styles.menu_items_item}
                             >
                               <Link>Избранные</Link>

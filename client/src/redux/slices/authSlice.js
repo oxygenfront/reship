@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../axios'
+import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
 
 export const fetchAuth = createAsyncThunk('auth/fetchAuth', async (params) => {
   const { data } = await axios.post('/auth', params)
@@ -10,6 +11,7 @@ export const fetchAuthMe = createAsyncThunk(
   async (token) => {
     const { data } = await axios.get(`/getUser?token=${token}`)
     console.log(data)
+
     return data
   }
 )

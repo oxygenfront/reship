@@ -1,4 +1,5 @@
 export { default as Accordeon } from './Accordeon'
+export { default as FullItemSlider } from './FullItemSlider'
 export { default as CatalogMain } from './CatalogMain'
 export { default as Card } from './Card/Card'
 export { default as CartItem } from './CartItem/CartItem'

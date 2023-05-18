@@ -1795,6 +1795,168 @@ class ApiPostController {
       }
     );
   }
+
+  async changeDateOfBirth(request, response) {
+    const requiredKeys = ["token", "new_date_of_birth"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 29 });
+    }
+
+    const { token, new_date_of_birth } = requestData;
+
+    const sanitizedValues = {
+      new_date_of_birth: tools.delInjection(new_date_of_birth),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 29.1 });
+        }
+
+        if (rows.length == 1) {
+          database.query(`UPDATE \`users\` SET \`date_of_birth\` = '${sanitizedValues.new_date_of_birth}' WHERE \`token\` = '${sanitizedValues.token}';`, (error, rows) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: "Ошибка на сервере", bcode: 29.3 });
+            }
+
+            return response
+              .status(400)
+              .json({ new_date_of_birth: sanitizedValues.new_date_of_birth });
+          })
+        }
+        else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 29.2 });
+        }
+      }
+    )
+
+
+  }
+
+  async changeNumberTel(request, response) {
+    const requiredKeys = ["token", "new_number_tel"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 30 });
+    }
+
+    const { token, new_number_tel } = requestData;
+
+    const sanitizedValues = {
+      new_number_tel: tools.delInjection(new_number_tel),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 30.1 });
+        }
+
+        if (rows.length == 1) {
+          database.query(`UPDATE \`users\` SET \`number_tel\` = '${sanitizedValues.new_number_tel}' WHERE \`token\` = '${sanitizedValues.token}';`, (error, rows) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: "Ошибка на сервере", bcode: 30.3 });
+            }
+
+            return response
+              .status(400)
+              .json({ new_number_tel: sanitizedValues.new_number_tel });
+          })
+        }
+        else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 30.2 });
+        }
+      }
+    )
+
+
+  }
+
+  async changeCountry(request, response) {
+    const requiredKeys = ["token", "new_country"];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 31 });
+    }
+
+    const { token, new_country } = requestData;
+
+    const sanitizedValues = {
+      new_country: tools.delInjection(new_country),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 31.1 });
+        }
+
+        if (rows.length == 1) {
+          database.query(`UPDATE \`users\` SET \`country\` = '${sanitizedValues.new_country}' WHERE \`token\` = '${sanitizedValues.token}';`, (error, rows) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: "Ошибка на сервере", bcode: 31.3 });
+            }
+
+            return response
+              .status(400)
+              .json({ new_country: sanitizedValues.new_country });
+          })
+        }
+        else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 31.2 });
+        }
+      }
+    )
+
+
+  }
 }
 
 export default new ApiPostController();

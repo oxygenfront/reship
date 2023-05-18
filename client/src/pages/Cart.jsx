@@ -79,7 +79,10 @@ const Cart = () => {
                 <div className="cart__total-wrapper-title">Ваши покупки</div>
                 <div className="cart__total-wrapper-info_items">
                   {cartItems.map((item) => (
-                    <div className="cart__total-wrapper-info_items_item">
+                    <div
+                      key={item.id}
+                      className="cart__total-wrapper-info_items_item"
+                    >
                       <p>{item.name}</p>
                       <p>{item.count} шт</p>
                       <p>{item.price} руб</p>

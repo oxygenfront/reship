@@ -8,14 +8,17 @@ import {
   selectUserData,
 } from '../redux/slices/authSlice'
 import { fetchDeleteFavorite } from '../redux/slices/favoriteSlice'
+import { getFavoritesFromLs } from '../utils/getFavoritesFromLs'
 
 const Favorites = () => {
   const dispatch = useDispatch()
   const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
-
+  const { favorites } =
+    status === 'success' ? getFavoritesFromLs(data.favorites) : []
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)
@@ -36,7 +39,7 @@ const Favorites = () => {
             </div>
             <div className="favorites_items">
               {status === 'success' &&
-                data.favorites.map((item) => (
+                favorites.map((item) => (
                   <FavoriteItem
                     name={item.name}
                     id={item.product_id}

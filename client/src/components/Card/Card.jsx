@@ -153,7 +153,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               от {price} руб
             </span>
             {addedCount > 0 ? (
-              <button
+              <div
                 className={styles.main_catalog__products_wrapper_item_button}
               >
                 <div
@@ -192,7 +192,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                     ></div>
                   </div>
                 </button>
-              </button>
+              </div>
             ) : (
               <button
                 onClick={onClickAdd}

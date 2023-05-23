@@ -18,112 +18,118 @@ const transporter = nodemailer.createTransport({
 
 class ApiPostController {
   async registration(request, response) {
-    if (
-      !tools.checkJsonKey(request.body, "first_name") ||
-      !tools.checkJsonKey(request.body, "last_name") ||
-      !tools.checkJsonKey(request.body, "password") ||
-      !tools.checkJsonKey(request.body, "email") ||
-      !tools.checkJsonKey(request.body, "adress_delivery") ||
-      !tools.checkJsonKey(request.body, "date_of_birth_unix")
-    ) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 1 });
-    }
-
-    let first_name = tools.delInjection(request.body.first_name);
-    let last_name = tools.delInjection(request.body.last_name);
-    let password = tools.delInjection(request.body.password);
-    let email = tools.delInjection(request.body.email);
-    let adress_delivery = tools.delInjection(request.body.adress_delivery);
-    let date_of_birth_unix = tools.delInjection(request.body.date_of_birth_unix);
-
-    database.query(
-      'SELECT * FROM `users` WHERE email="' + email + '"',
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 1.1 });
-        }
-
-        if (rows.length == 0) {
-          let new_token = "reship.api." + tools.createToken(50);
-
-          database.query(
-            "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`) VALUES " +
-              `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '${adress_delivery}', '${new_token}', '${Date.now()}', '${crypto
-                .createHash("md5")
-                .update(password)
-                .digest("hex")}', '1', '${JSON.stringify(
-                []
-              )}', '0', '${JSON.stringify([])}', '${date_of_birth_unix}');`,
-            (error, rows, fields) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 1.2});
-              }
-
-              let activation_code = tools.createToken(50);
-
-              let mailData = {
-                from: "[RESHIP] Активация аккаунта",
-                to: email,
-                subject: "[RESHIP] Активация аккаунта",
-                text:
-                  `Активируйте аккаунт по ссылке: ${url}/api/activateEmail?code=` +
-                  activation_code,
-              };
-
-              // transporter.sendMail(mailData, function (err, info) {
-              //   if (err) {
-              //     return response.status(400).json({
-              //       error: 'Указана несуществующая почта.',
-              //       bcode: 1.3,
-              //     });
-              //   } else {
-              //     database.query(
-              //       "INSERT INTO `activate_email` (`email`, `code`) VALUES ('" +
-              //         email +
-              //         "', '" +
-              //         activation_code +
-              //         "');",
-              //       (error, rows, fields) => {
-              //         if (error) {
-              //           return response
-              //             .status(500)
-              //             .json({ error: 'Ошибка на сервере', bcode: error });
-              //         }
-
-              //         return response.status(400).json({ token: new_token });
-              //       }
-              //     );
-              //   }
-              // });
-
-              database.query(
-                `INSERT INTO \`activate_email\` (\`email\`, \`code\`) VALUES ('${email}', '${activation_code}');`,
-                (error, rows, fields) => {
-                  if (error) {
-                    return response
-                      .status(500)
-                      .json({ error: "Ошибка на сервере", bcode: 1.3 });
-                  }
-
-                  response.header("Authorization", new_token);
-                  return response.json({ token: new_token });
-                }
-              );
-            }
-          );
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Данная электронная почта занята.", bcode: 1.5 });
-        }
+    try {
+      if (
+        !tools.checkJsonKey(request.body, "first_name") ||
+        !tools.checkJsonKey(request.body, "last_name") ||
+        !tools.checkJsonKey(request.body, "password") ||
+        !tools.checkJsonKey(request.body, "email") ||
+        !tools.checkJsonKey(request.body, "adress_delivery") ||
+        !tools.checkJsonKey(request.body, "date_of_birth_unix")
+      ) {
+        return response
+          .status(400)
+          .json({ error: "Некорректные данные.", bcode: 1 });
       }
-    );
+
+      let first_name = tools.delInjection(request.body.first_name);
+      let last_name = tools.delInjection(request.body.last_name);
+      let password = tools.delInjection(request.body.password);
+      let email = tools.delInjection(request.body.email);
+      let adress_delivery = JSON.parse(request.body.adress_delivery);
+      let date_of_birth_unix = tools.delInjection(request.body.date_of_birth_unix);
+
+      database.query(
+        'SELECT * FROM `users` WHERE email="' + email + '"',
+        (error, rows, fields) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ error: "Ошибка на сервере", bcode: 1.1 });
+          }
+
+          if (rows.length == 0) {
+            let new_token = "reship.api." + tools.createToken(50);
+
+            database.query(
+              "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`) VALUES " +
+                `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '${JSON.stringify(adress_delivery)}', '${new_token}', '${Date.now()}', '${crypto
+                  .createHash("md5")
+                  .update(password)
+                  .digest("hex")}', '1', '${JSON.stringify(
+                  []
+                )}', '0', '${JSON.stringify([])}', '${date_of_birth_unix}');`,
+              (error, rows, fields) => {
+                if (error) {
+                  return response
+                    .status(500)
+                    .json({ error: "Ошибка на сервере", bcode: 1.2});
+                }
+
+                let activation_code = tools.createToken(50);
+
+                let mailData = {
+                  from: "[RESHIP] Активация аккаунта",
+                  to: email,
+                  subject: "[RESHIP] Активация аккаунта",
+                  text:
+                    `Активируйте аккаунт по ссылке: ${url}/api/activateEmail?code=` +
+                    activation_code,
+                };
+
+                // transporter.sendMail(mailData, function (err, info) {
+                //   if (err) {
+                //     return response.status(400).json({
+                //       error: 'Указана несуществующая почта.',
+                //       bcode: 1.3,
+                //     });
+                //   } else {
+                //     database.query(
+                //       "INSERT INTO `activate_email` (`email`, `code`) VALUES ('" +
+                //         email +
+                //         "', '" +
+                //         activation_code +
+                //         "');",
+                //       (error, rows, fields) => {
+                //         if (error) {
+                //           return response
+                //             .status(500)
+                //             .json({ error: 'Ошибка на сервере', bcode: error });
+                //         }
+
+                //         return response.status(400).json({ token: new_token });
+                //       }
+                //     );
+                //   }
+                // });
+
+                database.query(
+                  `INSERT INTO \`activate_email\` (\`email\`, \`code\`) VALUES ('${email}', '${activation_code}');`,
+                  (error, rows, fields) => {
+                    if (error) {
+                      return response
+                        .status(500)
+                        .json({ error: "Ошибка на сервере", bcode: 1.3 });
+                    }
+
+                    response.header("Authorization", new_token);
+                    return response.json({ token: new_token });
+                  }
+                );
+              }
+            );
+          } else {
+            return response
+              .status(400)
+              .json({ error: "Данная электронная почта занята.", bcode: 1.5 });
+          }
+        }
+      );
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Произошла неизвестная ошибка.", bcode: 1.11111 });
+    }
   }
 
   async getProducts(request, response) {

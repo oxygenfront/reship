@@ -6,6 +6,138 @@
     padding: 50px
     border: 2px solid #0540F2
     border-radius: 30px
+    &_submit
+        background: #0528F2
+        border-radius: 30px
+        color: #fff
+        width: 264px
+        height: 55px
+    &_delivery
+        margin-bottom: 100px
+        &_items
+            display: flex
+            flex-direction: column
+            gap: 20px
+        &_item
+            width: 640px
+            height: 123px
+            border: 1px solid #0528F2
+            border-radius: 30px
+            padding: 25px 23px
+            &_title
+                font-weight: 600
+                font-size: 20px
+                color: var(--color)
+            &_price
+                font-weight: 600
+                font-size: 20px
+                color: #0528F2
+            &_top
+                display: flex
+                justify-content: space-between
+                align-items: center
+                margin-bottom: 10px
+    &_adress
+        margin-bottom: 75px
+        &_items
+            display: grid
+            grid-template-columns: repeat(3, 311px)
+            gap: 20px
+        &_item
+            height: 105px
+            width: 311px
+            background: var(--togray)
+            border-radius: 30px
+            padding: 17px 24px
+            &_title
+                font-weight: 600
+                font-size: 20px
+                color: #0528F2
+
+    &__total
+        &_delivery
+            font-size: 14px
+            display: flex
+            align-items: center
+            justify-content: space-between
+            border-bottom: 2px solid rgba(5, 64, 242, 0.08)
+            padding-bottom: 16px
+            margin-bottom: 30px
+        &_items
+            border-bottom: 2px solid rgba(5, 64, 242, 0.08)
+            padding-bottom: 25px
+            margin-bottom: 20px
+        &_item
+            font-size: 14px
+            display: flex
+            align-items: center
+            justify-content: space-between
+        &_wrapper
+            padding: 40px 32px
+            width: 450px
+            background: #E8EBF5
+            border-radius: 30px
+
+    &_buyer
+        &_items
+            display: flex
+            gap: 30px
+        &_title
+            font-size: 40px
+            font-weight: 600
+            color: var(--color)
+            margin-bottom: 40px
+        &_item
+            &_buttons
+                margin-top: 90px
+                display: flex
+                justify-content: flex-end
+                gap: 15px
+                &_1
+                    width: 116px
+                    height: 44px
+                    color: #0528F2
+                    background: none
+                    border: 1px solid #0528F2
+                    border-radius: 30px
+                &_2
+                    width: 198px
+                    height: 44px
+                    background: #0528F2
+                    border-radius: 30px
+                    color: #fff
+            &_inputs
+                display: grid
+                grid-template-columns: repeat(2, 242px)
+                gap: 20px 80px
+                &_input
+                    &_wrapper
+                        input
+                            height: 38px
+                            background: #E8EBF5
+                            border-radius: 30px
+
+                    &_title
+                        color: #0528F2
+                        font-weight: 600
+                        font-size: 20px
+                        margin-bottom: 10px
+            &_wrapper
+
+                padding: 15px 30px
+                padding-top: 30px
+                border: 1px solid #0528F2
+                border-radius: 30px
+                width: 640px
+                height: 376px
+                margin-bottom: 75px
+    &__title
+        font-size: 64px
+        font-weight: 600
+        color: var(--color)
+        margin-bottom: 130px
+        span
+            color: rgba(5, 40, 242, 1)
     &__form
         display: flex
         flex-direction: column

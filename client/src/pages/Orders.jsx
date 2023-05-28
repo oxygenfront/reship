@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Timeline } from 'rsuite'
+import { fetchGetOrdersById, selectOrderData } from '../redux/slices/orderSlice'
+import { selectUserData } from '../redux/slices/authSlice'
 
 function Orders() {
+  const dispatch = useDispatch()
+  const {data, status}  = useSelector(selectUserData)
+  const {orders = data} = useSelector(selectOrderData)
   const [info, setInfo] = useState('')
-  useEffect(() => {}, [])
+  useEffect(() => {status === 'success' && dispatch(fetchGetOrdersById({customer_id: data.id}))}, [status])
+  console.log(orders);
   return (
     <div className="orders">
       <div className="orders__container container">

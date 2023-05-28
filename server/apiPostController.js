@@ -5,6 +5,7 @@ import nodemailer from "nodemailer";
 import date_correct from "date-fns";
 
 const url = "http://localhost:5000";
+const logging = "[LOGGING]" 
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -15,6 +16,10 @@ const transporter = nodemailer.createTransport({
   },
   secure: true,
 });
+
+function log(text) {
+  console.log(`${logging} ${Date.now()} ${text}`)
+}
 
 class ApiPostController {
   async registration(request, response) {
@@ -37,7 +42,9 @@ class ApiPostController {
       let password = tools.delInjection(request.body.password);
       let email = tools.delInjection(request.body.email);
       let adress_delivery = JSON.parse(request.body.adress_delivery);
-      let date_of_birth_unix = tools.delInjection(request.body.date_of_birth_unix);
+      let date_of_birth_unix = tools.delInjection(
+        request.body.date_of_birth_unix
+      );
 
       database.query(
         'SELECT * FROM `users` WHERE email="' + email + '"',
@@ -53,7 +60,9 @@ class ApiPostController {
 
             database.query(
               "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`) VALUES " +
-                `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '${JSON.stringify(adress_delivery)}', '${new_token}', '${Date.now()}', '${crypto
+                `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '${JSON.stringify(
+                  adress_delivery
+                )}', '${new_token}', '${Date.now()}', '${crypto
                   .createHash("md5")
                   .update(password)
                   .digest("hex")}', '1', '${JSON.stringify(
@@ -63,7 +72,7 @@ class ApiPostController {
                 if (error) {
                   return response
                     .status(500)
-                    .json({ error: "Ошибка на сервере", bcode: 1.2});
+                    .json({ error: "Ошибка на сервере", bcode: 1.2 });
                 }
 
                 let activation_code = tools.createToken(50);
@@ -1007,6 +1016,7 @@ class ApiPostController {
       "postal_code",
       "promocode",
       "basket",
+      "token",
     ];
 
     const requestData = request.body;
@@ -1031,6 +1041,7 @@ class ApiPostController {
       postal_code,
       promocode,
       basket,
+      token,
     } = requestData;
 
     const sanitizedValues = {
@@ -1044,6 +1055,7 @@ class ApiPostController {
       postal_code: tools.delInjection(postal_code),
       promocode: tools.delInjection(promocode),
       basket: JSON.parse(basket),
+      token: tools.delInjection(token),
     };
 
     let customer_id = -1;
@@ -1836,27 +1848,27 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          database.query(`UPDATE \`users\` SET \`date_of_birth\` = '${sanitizedValues.new_date_of_birth}' WHERE \`token\` = '${sanitizedValues.token}';`, (error, rows) => {
-            if (error) {
-              return response
-                .status(500)
-                .json({ error: "Ошибка на сервере", bcode: 29.3 });
-            }
+          database.query(
+            `UPDATE \`users\` SET \`date_of_birth\` = '${sanitizedValues.new_date_of_birth}' WHERE \`token\` = '${sanitizedValues.token}';`,
+            (error, rows) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 29.3 });
+              }
 
-            return response
-              .status(400)
-              .json({ new_date_of_birth: sanitizedValues.new_date_of_birth });
-          })
-        }
-        else {
+              return response
+                .status(400)
+                .json({ new_date_of_birth: sanitizedValues.new_date_of_birth });
+            }
+          );
+        } else {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 29.2 });
         }
       }
-    )
-
-
+    );
   }
 
   async changeNumberTel(request, response) {
@@ -1890,27 +1902,27 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          database.query(`UPDATE \`users\` SET \`number_tel\` = '${sanitizedValues.new_number_tel}' WHERE \`token\` = '${sanitizedValues.token}';`, (error, rows) => {
-            if (error) {
-              return response
-                .status(500)
-                .json({ error: "Ошибка на сервере", bcode: 30.3 });
-            }
+          database.query(
+            `UPDATE \`users\` SET \`number_tel\` = '${sanitizedValues.new_number_tel}' WHERE \`token\` = '${sanitizedValues.token}';`,
+            (error, rows) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 30.3 });
+              }
 
-            return response
-              .status(400)
-              .json({ new_number_tel: sanitizedValues.new_number_tel });
-          })
-        }
-        else {
+              return response
+                .status(400)
+                .json({ new_number_tel: sanitizedValues.new_number_tel });
+            }
+          );
+        } else {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 30.2 });
         }
       }
-    )
-
-
+    );
   }
 
   async changeCountry(request, response) {
@@ -1944,27 +1956,111 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          database.query(`UPDATE \`users\` SET \`country\` = '${sanitizedValues.new_country}' WHERE \`token\` = '${sanitizedValues.token}';`, (error, rows) => {
-            if (error) {
-              return response
-                .status(500)
-                .json({ error: "Ошибка на сервере", bcode: 31.3 });
-            }
+          database.query(
+            `UPDATE \`users\` SET \`country\` = '${sanitizedValues.new_country}' WHERE \`token\` = '${sanitizedValues.token}';`,
+            (error, rows) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 31.3 });
+              }
 
-            return response
-              .status(400)
-              .json({ new_country: sanitizedValues.new_country });
-          })
-        }
-        else {
+              return response
+                .status(400)
+                .json({ new_country: sanitizedValues.new_country });
+            }
+          );
+        } else {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 31.2 });
         }
       }
-    )
+    );
+  }
+
+  async changeBasicInfo(request, response) {
+    const requiredKeys = [
+      "token",
+      "new_country",
+      "new_date_of_birth",
+      "new_number_tel",
+    ];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 31 });
+    }
+
+    const { token, new_country, new_date_of_birth, new_number_tel } = requestData;
+
+    const sanitizedValues = {
+      new_country: tools.delInjection(new_country),
+      new_date_of_birth: tools.delInjection(new_date_of_birth),
+      new_number_tel: tools.delInjection(new_number_tel),
+      token: tools.delInjection(token),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 31.1 });
+        }
+
+        if (rows.length == 1) {
+          if (sanitizedValues.new_country !== '') {
+            database.query(
+              `UPDATE \`users\` SET \`country\` = '${sanitizedValues.new_country}' WHERE \`token\` = '${sanitizedValues.token}';`,
+              (error, rows) => {
+                if (error) {
+                  log('Error 31.2 ')
+                }
+              }
+            );
+          }
+
+          if (sanitizedValues.new_date_of_birth !== '') {
+            database.query(
+              `UPDATE \`users\` SET \`date_of_birth\` = '${sanitizedValues.new_date_of_birth}' WHERE \`token\` = '${sanitizedValues.token}';`,
+              (error, rows) => {
+                if (error) {
+                  log('Error 31.3')
+                }
+              }
+            );
+          }
+
+          if (sanitizedValues.new_number_tel !== '') {
+            database.query(
+              `UPDATE \`users\` SET \`number_tel\` = '${sanitizedValues.new_number_tel}' WHERE \`token\` = '${sanitizedValues.token}';`,
+              (error, rows) => {
+                if (error) {
+                  log('Error 31.5')
+                }
+              }
+            );
+          }
+
+          return response
+            .json({ message: "Успех"});
 
 
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 31.4 });
+        }
+      }
+    );
   }
 }
 

@@ -90,6 +90,7 @@ router.post("/changeDateOfBirth", apiPostController.changeDateOfBirth);
 router.post("/changeNumberTel", apiPostController.changeNumberTel);
 router.post("/changeCountry", apiPostController.changeCountry);
 router.post("/checkPromocode", apiPostController.checkPromocode);
+router.post("/changeBasicInfo", apiPostController.changeBasicInfo);
 router.post(
   "/changeAvatar",
   upload_user_avatar.single("photo"),

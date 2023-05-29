@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 import date_correct from "date-fns";
 
 const url = "http://localhost:5000";
-const logging = "[LOGGING]" 
+const logging = "[LOGGING]";
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
 });
 
 function log(text) {
-  console.log(`${logging} ${Date.now()} ${text}`)
+  console.log(`${logging} ${Date.now()} ${text}`);
 }
 
 class ApiPostController {
@@ -1190,7 +1190,8 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey) {
+
+    if (missingKey && request.query.hasOwnProperty("type")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 18 });
@@ -1202,6 +1203,27 @@ class ApiPostController {
       customer_id: tools.delInjection(customer_id),
     };
 
+    const type = request.query.type;
+
+    let type_string = 0;
+
+    switch (type) {
+      case "completed":
+        type_string = 1;
+        break;
+      case "waited":
+        type_string = 0;
+        break;
+      case "no_payed":
+        type_string = -1;
+        break;
+      case "all":
+        type_string = 5;
+        break;
+    }
+
+    console.log(type_string);
+
     database.query(
       `SELECT * FROM \`orders\` WHERE customer_id='${sanitizedValues.customer_id}'`,
       (error, rows, fields) => {
@@ -1211,11 +1233,19 @@ class ApiPostController {
             .json({ error: "Ошибка на сервере", bcode: 18.1 });
         }
 
+        let ready_json = [];
+
         for (let i = 0; i < rows.length; i++) {
-          rows[i].products = JSON.parse(rows[i].products);
+          if (
+            parseInt(rows[i]["status"]) === type_string ||
+            type_string === 5
+          ) {
+            rows[i].products = JSON.parse(rows[i].products);
+            ready_json.push(rows[i]);
+          }
         }
 
-        response.json(rows);
+        response.json(ready_json);
       }
     );
   }
@@ -1998,7 +2028,8 @@ class ApiPostController {
         .json({ error: "Некорректные данные.", bcode: 31 });
     }
 
-    const { token, new_country, new_date_of_birth, new_number_tel } = requestData;
+    const { token, new_country, new_date_of_birth, new_number_tel } =
+      requestData;
 
     const sanitizedValues = {
       new_country: tools.delInjection(new_country),
@@ -2017,47 +2048,174 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          if (sanitizedValues.new_country !== '') {
+          if (sanitizedValues.new_country !== "") {
             database.query(
               `UPDATE \`users\` SET \`country\` = '${sanitizedValues.new_country}' WHERE \`token\` = '${sanitizedValues.token}';`,
               (error, rows) => {
                 if (error) {
-                  log('Error 31.2 ')
+                  log("Error 31.2 ");
                 }
               }
             );
           }
 
-          if (sanitizedValues.new_date_of_birth !== '') {
+          if (sanitizedValues.new_date_of_birth !== "") {
             database.query(
               `UPDATE \`users\` SET \`date_of_birth\` = '${sanitizedValues.new_date_of_birth}' WHERE \`token\` = '${sanitizedValues.token}';`,
               (error, rows) => {
                 if (error) {
-                  log('Error 31.3')
+                  log("Error 31.3");
                 }
               }
             );
           }
 
-          if (sanitizedValues.new_number_tel !== '') {
+          if (sanitizedValues.new_number_tel !== "") {
             database.query(
               `UPDATE \`users\` SET \`number_tel\` = '${sanitizedValues.new_number_tel}' WHERE \`token\` = '${sanitizedValues.token}';`,
               (error, rows) => {
                 if (error) {
-                  log('Error 31.5')
+                  log("Error 31.5");
                 }
               }
             );
           }
 
-          return response
-            .json({ message: "Успех"});
-
-
+          return response.json({ message: "Успех" });
         } else {
           return response
             .status(400)
             .json({ error: "Ошибка доступа.", bcode: 31.4 });
+        }
+      }
+    );
+  }
+
+  async changeDelivery(request, response) {
+    try {
+      const requiredKeys = ["token", "new_delivery"];
+
+      const requestData = request.body;
+
+      const missingKey = requiredKeys.find(
+        (key) => !requestData.hasOwnProperty(key)
+      );
+      if (missingKey) {
+        return response
+          .status(400)
+          .json({ error: "Некорректные данные.", bcode: 32 });
+      }
+
+      const { token, new_delivery } = requestData;
+
+      const sanitizedValues = {
+        new_delivery: JSON.parse(new_delivery),
+        token: tools.delInjection(token),
+      };
+
+      database.query(
+        `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+        (error, rows, fields) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ error: "Ошибка на сервере", bcode: 32.1 });
+          }
+
+          if (rows.length == 1) {
+            database.query(
+              `UPDATE \`users\` SET \`adress_delivery\` = '${JSON.stringify(
+                sanitizedValues.new_delivery
+              )}' WHERE \`token\` = '${sanitizedValues.token}';`,
+              (error, rows) => {
+                if (error) {
+                  return response
+                    .status(500)
+                    .json({ error: "Ошибка на сервере", bcode: 32.3 });
+                }
+
+                response.json({
+                  adress_delivery: sanitizedValues.new_delivery,
+                });
+              }
+            );
+          } else {
+            return response
+              .status(400)
+              .json({ error: "Ошибка доступа.", bcode: 32.2 });
+          }
+        }
+      );
+    } catch {
+      return response
+        .status(400)
+        .json({ error: "Незвестная ошибка", bcode: 32.11111 });
+    }
+  }
+
+  async createReview(request, response) {
+    const requiredKeys = [
+      "token",
+      "rating",
+      "text",
+      "date_timestamp",
+      "product_id",
+    ];
+
+    const requestData = request.body;
+
+    const missingKey = requiredKeys.find(
+      (key) => !requestData.hasOwnProperty(key)
+    );
+    if (missingKey) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 33 });
+    }
+
+    const { token, rating, text, date_timestamp, product_id } = requestData;
+
+    const sanitizedValues = {
+      token: JSON.parse(token),
+      rating: tools.delInjection(rating),
+      text: tools.delInjection(text),
+      date_timestamp: tools.delInjection(date_timestamp),
+      product_id: tools.delInjection(product_id),
+    };
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      (error, rows_user, fields) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 33.1 });
+        }
+
+        if (rows.length == 1) {
+          database.query(
+            `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`) VALUES ('${rows_user[0]["id"]}', '${sanitizedValues.rating}', '${sanitizedValues.text}', '${sanitizedValues.product_id}', '${sanitizedValues.date_timestamp}');`,
+            (error, rows_review) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 33.3 });
+              }
+
+              database.query(`SELECT * FROM \`products\` WHERE id=${product_id};`, (error, rows_product) => {
+                if (error) {
+                  return response
+                    .status(500)
+                    .json({ error: "Ошибка на сервере", bcode: 33.4 });
+                }
+                // response.json({"author_first_name": rows_user[0]["first_name"], "author_last_name": rows_user[0]["last_name"], "" "rating": sanitizedValues.rating, "text": sanitizedValues.text})
+              })
+            }
+          );
+        } else {
+          return response
+            .status(400)
+            .json({ error: "Ошибка доступа.", bcode: 33.2 });
         }
       }
     );

@@ -84,16 +84,14 @@ router.post("/addBasket", apiPostController.addBasket);
 router.post("/deleteFavorites", apiPostController.deleteFavorites);
 router.post("/deleteBasket", apiPostController.deleteBasket);
 router.post("/createOrder", apiPostController.createOrder);
-router.get("/getOrdersByCustomerId", apiPostController.getOrdersByCustomerId);
+router.post("/getOrdersByCustomerId", apiPostController.getOrdersByCustomerId);
 router.get("/getOrder", apiPostController.getOrder);
-router.post("/changeDateOfBirth", apiPostController.changeDateOfBirth);
-router.post("/changeNumberTel", apiPostController.changeNumberTel);
-router.post("/changeCountry", apiPostController.changeCountry);
 router.post("/checkPromocode", apiPostController.checkPromocode);
 router.post("/changeBasicInfo", apiPostController.changeBasicInfo);
+router.post("/changeDelivery", apiPostController.changeDelivery);
+router.post("/createReview", apiPostController.createReview);
 router.post(
   "/changeAvatar",
-  upload_user_avatar.single("photo"),
   apiPostController.changeAvatar
 );
 

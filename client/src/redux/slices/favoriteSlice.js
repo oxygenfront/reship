@@ -18,7 +18,7 @@ export const fetchDeleteFavorite = createAsyncThunk(
     return data
   }
 )
-const { favorites } = localStorage.getItem('favorites')
+// const { favorites } = localStorage.getItem('favorites')
 
 const initialState = {
   items: [],

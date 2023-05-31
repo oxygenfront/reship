@@ -40,6 +40,9 @@
         gap: 10px
         li
           color: var(--color)
+          &:hover
+            cursor: pointer
+            color: #AEC5F2
     &_title
       padding: 15px 30px
       background: var(--togray)
@@ -139,6 +142,9 @@
     font-size: 16px
     color: var(--color)
     transition: all 0.2s ease-in-out
+
+    &:hover
+      color: #AEC5F2
     &_block
       margin-left: 19px
       display: flex
@@ -264,6 +270,11 @@
     color: var(--color)
     border-radius: 9px
 
+    p
+      transition: all 0.2s linear
+      &:hover
+        color: #AEC5F2
+
   &__logout_block
     width: 28px
     display: flex
@@ -336,6 +347,29 @@
 
         color: #fff
         background: #416EF2
+.searchmodal
+  &_container
+    position: fixed
+    margin-top: 178px
+    margin-left: 699px
+    overflow: hidden
+    inset: 0
+
+    height: fit-content
+    width: 470px
+
+    padding: 30px 15px
+
+    background: var(--background-color)
+    border-radius: 30px
+    color: #000
+
+    overscroll-behavior: contain
+  &_top
+    display: flex
+    justify-content: space-between
+    padding-bottom: 20px
+    border-bottom: 2px solid var(--togray)
 
 @media (max-width: 1199px)
   .container

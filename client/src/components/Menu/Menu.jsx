@@ -36,6 +36,7 @@ const Menu = () => {
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
   const theme = useSelector((state) => state.theme)
   const [isOpen, setIsOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
@@ -250,8 +251,31 @@ const Menu = () => {
               </div>
             </div>
           </Dialog>
-
-          <button className={styles.search_section__search_block_glass}>
+          <Dialog
+            as="div"
+            className={styles.modal}
+            open={searchOpen}
+            onClose={() => setSearchOpen(false)}
+          >
+            <div className={styles.modal_bg} aria-hidden="true"></div>
+            <div className={styles.modal_scroll}>
+              <div className={styles.searchmodal_container}>
+                <Dialog.Panel>
+                  <div className={styles.searchmodal_wrapper}>
+                    <div className={styles.searchmodal_top}>
+                      <p>История</p>
+                      <p>Очистить</p>
+                    </div>
+                    
+                  </div>
+                </Dialog.Panel>
+              </div>
+            </div>
+          </Dialog>
+          <button
+            onClick={() => setSearchOpen(true)}
+            className={styles.search_section__search_block_glass}
+          >
             <i className="fa-solid fa-magnifying-glass"></i>
           </button>
         </div>

@@ -1,17 +1,22 @@
- import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isEmail } from 'validator'
 import InputMask from 'react-input-mask'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreateOrder } from '../redux/slices/orderSlice'
-import { fetchAuthMe } from '../redux/slices/authSlice'
+import { fetchAuthMe, selectUserData } from '../redux/slices/authSlice'
 
 import { clearItems, selectCart } from '../redux/slices/cartSlice'
 import { getCartFromLS } from '../utils/getCartFromLs'
+import { calcTotalPrice } from '../utils/calcTotalPrice'
 const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
+  const { data, status } = useSelector(selectUserData)
   const { cartItems } = getCartFromLS()
+  const totalPrice = calcTotalPrice(cartItems)
   console.log(cartItems)
+  const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
+  const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
   const initialState = {
     init: '',
     number: '',
@@ -23,6 +28,7 @@ const Order = () => {
     postal_code: '',
     promocode: '',
     basket: [],
+    customer_id: '',
   }
   const [order, setOrder] = useState({
     init: '',
@@ -46,7 +52,9 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
-
+  useEffect(() => {
+    status === 'success' && setOrder({ customer_id: data.id })
+  }, [status])
   async function sendForm(e) {
     e.preventDefault()
     if (!isEmail(order.email)) {
@@ -71,83 +79,132 @@ const Order = () => {
   }
   return (
     <section className="auth">
-      <div className="container auth__container">
-        <h1 className="auth__title">Оформление заказа</h1>
-        <div className="main-form main-form_order">
-          <form className="main-form__form" action="">
-            <input
-              className="main-form__form-input"
-              name="init"
-              value={order.init}
-              onChange={updateOrder}
-              type="text"
-              placeholder="ФИО получателя"
-            />
-            <InputMask
-              className="main-form__form-input"
-              name="number"
-              mask="+7 (999) 999-99-99"
-              placeholder="+7 (___) ___-__-__"
-              value={order.number}
-              onChange={updateOrder}
-              type="text"
-            />
-            <input
-              className="main-form__form-input"
-              name="email"
-              value={order.email}
-              onChange={updateOrder}
-              type="text"
-              placeholder="E-mail получателя"
-            />
-            <input
-              className="main-form__form-input"
-              name="city"
-              value={order.city}
-              onChange={updateOrder}
-              type="text"
-              placeholder="Город"
-            />
-            <input
-              className="main-form__form-input"
-              name="street"
-              value={order.street}
-              onChange={updateOrder}
-              type="text"
-              placeholder="Улица"
-            />
-            <input
-              className="main-form__form-input"
-              name="number_home"
-              value={order.number_home}
-              onChange={updateOrder}
-              type="text"
-              placeholder="Номер дома/строения"
-            />
-            <input
-              className="main-form__form-input"
-              name="number_flat"
-              value={order.number_flat}
-              onChange={updateOrder}
-              type="text"
-              placeholder="Номер квартиры *"
-            />
-            <input
-              className="main-form__form-input"
-              name="postal_code"
-              value={order.postal_code}
-              onChange={updateOrder}
-              type="text"
-              placeholder="Почтовый индекс"
-            />
-            <input
-              className="main-form__form-btn"
-              type="submit"
-              value="Перейти к оплате"
-              onClick={sendForm}
-            />
-          </form>
+      <div className="container main-form_container">
+        <h1 className="main-form__title">
+          Оформление<br></br> <span>заказа</span>
+        </h1>
+        <div className="main-form_buyer">
+          <div className="main-form_buyer_title">Покупатель</div>
+          <div className="main-form_buyer_items">
+            <div className="main-form_buyer_item_wrapper">
+              <div className="main-form_buyer_item_inputs">
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Имя
+                  </div>
+                  <input type="text" name="" id="" />
+                </div>
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Фамилия
+                  </div>
+                  <input type="text" name="" id="" />
+                </div>
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Номер телефона
+                  </div>
+                  <input type="text" name="" id="" />
+                </div>
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Электронная почта
+                  </div>
+                  <input type="text" name="" id="" />
+                </div>
+              </div>
+              <div className="main-form_buyer_item_buttons">
+                <button className="main-form_buyer_item_buttons_1">
+                  Отменить
+                </button>
+                <button className="main-form_buyer_item_buttons_2">
+                  Сохранить изменения
+                </button>
+              </div>
+            </div>
+            <div className="main-form_buyer_item">
+              <div className="main-form__total_wrapper">
+                <div className="">
+                  <div className="main-form__total_items">
+                    {cartItems.map((item) => (
+                      <div key={item.id} className="main-form__total_item">
+                        <p>{item.name}</p>
+                        <p>{item.count} шт</p>
+                        <p>{item.price} руб</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="main-form__total_delivery">
+                    <p>Доставка</p>
+                    <p>300 руб</p>
+                  </div>
+                </div>
+
+                <div className="cart__total-wrapper-info_total">
+                  Итог{' '}
+                  <span>
+                    {window.localStorage.getItem('promocode')
+                      ? Math.round(
+                          (totalPrice + deliveryPrice) *
+                            (1 - window.localStorage.getItem('promocode') / 100)
+                        )
+                      : totalPrice + deliveryPrice}{' '}
+                    руб
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+        <div className="main-form_adress">
+          <div className="main-form_buyer_title">Адрес</div>
+          <div className="main-form_adress_items">
+            <div className="main-form_adress_item">
+              <div className="main-form_adress_item_title">
+                <p>Адрес 1</p>
+              </div>
+              <p>Москва, Ленинский проспект, кв31</p>
+            </div>
+            <div className="main-form_adress_item">
+              <div className="main-form_adress_item_title">
+                <p>Адрес 2</p>
+              </div>
+              <p>Москва, Ленинский проспект, кв31</p>
+            </div>
+          </div>
+        </div>
+        <div className="main-form_delivery">
+          <div className="main-form_buyer_title">Доставка</div>
+          <div className="main-form_delivery_items">
+            <div className="main-form_delivery_item">
+              <div className="main-form_delivery_item_top">
+                <div className="main-form_delivery_item_title">
+                  Доставка CDEK
+                </div>
+                <div className="main-form_delivery_item_price">500руб</div>
+              </div>
+              <div className="">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                expedita consequatur sapiente saepe nihil suscipit dignissimos
+                magni iste explicabo nesciunt!
+              </div>
+            </div>
+            <div className="main-form_delivery_item">
+              <div className="main-form_delivery_item_top">
+                <div className="main-form_delivery_item_title">
+                  Доставка CDEK
+                </div>
+                <div className="main-form_delivery_item_price">500руб</div>
+              </div>
+              <div className="">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+                expedita consequatur sapiente saepe nihil suscipit dignissimos
+                magni iste explicabo nesciunt!
+              </div>
+            </div>
+          </div>
+        </div>
+        <button className="main-form_submit">Подтвердить заказ</button>
       </div>
     </section>
   )

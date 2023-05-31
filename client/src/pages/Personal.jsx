@@ -346,9 +346,9 @@ const Personal = () => {
             <Swiper
               modules={[Navigation]}
               navigation
-              speed={1300}
+              speed={1300} 
               slidesPerView={2}
-              spaceBetween={40}
+              spaceBetween={45}
               className="personal__reviews-block_slider"
             >
               <SwiperSlide className="personal__reviews-block_slider-item">

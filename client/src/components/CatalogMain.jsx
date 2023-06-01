@@ -69,7 +69,7 @@ function CatalogMain() {
             modules={[Pagination, Navigation, A11y]}
             pagination={{ clickable: true }}
             slidesPerView="auto"
-            spaceBetween={60}
+            spaceBetween={80}
             navigation
             speed={1000}
           >

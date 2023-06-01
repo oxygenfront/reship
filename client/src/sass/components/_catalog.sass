@@ -18,6 +18,8 @@ input[type="checkbox"]
     &:checked::before
         background-color: #0540F2
 
+        margin-bottom: 1px
+
 .catalog
     margin-bottom: 100px
     &__empty
@@ -54,11 +56,47 @@ input[type="checkbox"]
                 & span
                     font-size: 18px
                     font-weight: 600
-                    color: #181818
+                    color: var(--color)
                     margin-right: 25px
                 &_popup
                     margin-right: 42px
                     background: none
+                &_menu
+                    display: inline-block
+                    text-align: left
+                    z-index: 50
+                    position: relative
+                    &_button
+                        margin-right: 42px
+                        background: none
+                        img
+                            background: var(--background-color)
+                    &_items
+                        position: absolute
+                        z-index: 40
+                        right: 0px
+                        margin-top: 8px
+                        width: 210px
+                        height: 116px
+                        border-radius: 30px
+                        background: var(--togray)
+                        display: flex
+                        justify-content: flex-start
+                        &_wrapper
+                            padding: 23px
+                            display: flex
+                            flex-direction: column
+                            justify-content: center
+                            align-items: flex-start
+                    &_item
+                        padding: 4px 0 4px 11px
+                        text-align: left
+                        font-size: 16px
+                        font-weight: 500
+                        width: 160px
+                        background: none
+                        border-radius: 30px
+                        color: var(--color)
                 &_row
                     display: flex
                     justify-content: center
@@ -131,7 +169,7 @@ input[type="checkbox"]
                     display: -webkit-box
                     font-size: 16px
                     font-weight: 500
-                    color: #181818
+                    color: var(--color)
                     overflow: hidden
                     text-overflow: ellipsis
             &_right
@@ -139,7 +177,7 @@ input[type="checkbox"]
                 &-price
                     font-size: 20px
                     font-weight: 500
-                    color: #181818
+                    color: var(--color)
                     margin-bottom: 15px
                 &-rating
                     margin-bottom: 41px
@@ -151,6 +189,7 @@ input[type="checkbox"]
                     padding: 11px 20px
                     border: 2px solid #0540F2
                     color: #0540F2
+                    background: none
                     border-radius: 30px
                     font-size: 19px
                     font-weight: 500

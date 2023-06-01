@@ -1,21 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from '../../axios'
 
-export const fetchChangePassword = createAsyncThunk(
-  'auth/fetchChangePassword',
+export const fetchChangeBasic = createAsyncThunk(
+  'auth/fetchChangeBasic',
   async (params) => {
-    const { data } = await axios.post('/changePassword', params)
+    const { data } = await axios.post('/changeBasicInfo', params)
     return data
   }
 )
-export const fetchChangeEmail = createAsyncThunk(
-  'auth/fetchChangeEmail',
-  async (params) => {
-    const { data } = await axios.post(`/changeEmail`, params)
-    console.log(data)
-    return data
-  }
-)
+
 
 const initialState = {
   data: null,
@@ -26,32 +19,18 @@ const changeSlice = createSlice({
   name: 'change',
   initialState,
   reducers: {
-    logout: (state) => {
-      state.data = null
-    },
+    
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchChangePassword.pending, (state, action) => {
+    builder.addCase(fetchChangeBasic.pending, (state, action) => {
       state.status = 'loading'
       state.data = null
     })
-    builder.addCase(fetchChangePassword.fulfilled, (state, action) => {
+    builder.addCase(fetchChangeBasic.fulfilled, (state, action) => {
       state.data = action.payload
       state.status = 'success'
     })
-    builder.addCase(fetchChangePassword.rejected, (state, action) => {
-      state.status = 'error'
-      state.data = null
-    })
-    builder.addCase(fetchChangeEmail.pending, (state, action) => {
-      state.status = 'loading'
-      state.data = null
-    })
-    builder.addCase(fetchChangeEmail.fulfilled, (state, action) => {
-      state.data = action.payload
-      state.status = 'success'
-    })
-    builder.addCase(fetchChangeEmail.rejected, (state, action) => {
+    builder.addCase(fetchChangeBasic.rejected, (state, action) => {
       state.status = 'error'
       state.data = null
     })

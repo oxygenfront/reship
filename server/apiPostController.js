@@ -2013,6 +2013,7 @@ class ApiPostController {
   async changeBasicInfo(request, response) {
     const requiredKeys = [
       "token",
+      "new_email",
       "new_country",
       "new_date_of_birth",
       "new_number_tel",
@@ -2029,13 +2030,14 @@ class ApiPostController {
         .json({ error: "Некорректные данные.", bcode: 31 });
     }
 
-    const { token, new_country, new_date_of_birth, new_number_tel } =
+    const { token, new_email, new_country, new_date_of_birth, new_number_tel } =
       requestData;
 
     const sanitizedValues = {
       new_country: tools.delInjection(new_country),
       new_date_of_birth: tools.delInjection(new_date_of_birth),
       new_number_tel: tools.delInjection(new_number_tel),
+      new_email: tools.delInjection(new_email),
       token: tools.delInjection(token),
     };
 
@@ -2077,6 +2079,16 @@ class ApiPostController {
               (error, rows) => {
                 if (error) {
                   log("Error 31.5");
+                }
+              }
+            );
+          }
+          if (sanitizedValues.new_email !== "") {
+            database.query(
+              `UPDATE \`users\` SET \`email\` = '${sanitizedValues.new_email}' WHERE \`token\` = '${sanitizedValues.token}';`,
+              (error, rows) => {
+                if (error) {
+                  log("Error 31.6");
                 }
               }
             );

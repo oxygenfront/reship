@@ -10,10 +10,7 @@ import {
 } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
-import {
-  fetchChangeEmail,
-  fetchChangePassword,
-} from '../redux/slices/changeSlice'
+
 import { selectItemsData } from '../redux/slices/itemsSlice'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
@@ -77,30 +74,30 @@ const Personal = () => {
     })
   }
 
-  const onClickSavePassword = async () => {
-    const data = await dispatch(fetchChangePassword(password))
-    if (!data.payload) {
-      return alert('Не удалось изменить пароль')
-    }
-    if (data.payload) {
-      return alert('Пароль успешно изменен')
-    }
+  // const onClickSavePassword = async () => {
+  //   const data = await dispatch(fetchChangePassword(password))
+  //   if (!data.payload) {
+  //     return alert('Не удалось изменить пароль')
+  //   }
+  //   if (data.payload) {
+  //     return alert('Пароль успешно изменен')
+  //   }
 
-    setChangeState({
-      changePassword: !changeState.changePassword,
-    })
-    setPassword({ lastPassword: '', newPassword: '' })
-  }
-  const onClickSaveEmail = async () => {
-    const data = await dispatch(fetchChangeEmail(email))
-    if (!data.payload) {
-      return alert('Не удалось изменить электронную почту')
-    }
-    if (data.payload) {
-      return alert('Электронная почта успешно изменена')
-    }
-    setChangeState({ changeEmail: !changeState.changeEmail })
-  }
+  //   setChangeState({
+  //     changePassword: !changeState.changePassword,
+  //   })
+  //   setPassword({ lastPassword: '', newPassword: '' })
+  // }
+  // const onClickSaveEmail = async () => {
+  //   const data = await dispatch(fetchChangeEmail(email))
+  //   if (!data.payload) {
+  //     return alert('Не удалось изменить электронную почту')
+  //   }
+  //   if (data.payload) {
+  //     return alert('Электронная почта успешно изменена')
+  //   }
+  //   setChangeState({ changeEmail: !changeState.changeEmail })
+  // }
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
 
@@ -346,9 +343,9 @@ const Personal = () => {
             <Swiper
               modules={[Navigation]}
               navigation
-              speed={1300}
+              speed={1300} 
               slidesPerView={2}
-              spaceBetween={40}
+              spaceBetween={45}
               className="personal__reviews-block_slider"
             >
               <SwiperSlide className="personal__reviews-block_slider-item">

@@ -181,7 +181,7 @@ const Menu = () => {
                             setLocalCategory('аксессуары')
                           }}
                         >
-                          <img src="../assets/img/keyboard.svg" alt="access" />
+                          <img src="../assets/img/accessory.svg" alt="access" />
                           Аксессуары
                         </li>
                         <li
@@ -266,7 +266,6 @@ const Menu = () => {
                       <p>История</p>
                       <p>Очистить</p>
                     </div>
-                    
                   </div>
                 </Dialog.Panel>
               </div>

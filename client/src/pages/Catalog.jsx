@@ -10,11 +10,12 @@ import { fetchFullItem } from '../redux/slices/fullItemSlice'
 import { selectItemsData } from '../redux/slices/itemsSlice'
 import { RangeSlider, InputGroup, InputNumber } from 'rsuite'
 import { Navigate } from 'react-router-dom'
+import { Menu as DropDown } from '@headlessui/react'
 
 const Catalog = () => {
   const dispatch = useDispatch()
   const { items, status } = useSelector(selectItemsData)
-
+  const theme = useSelector((state) => state.theme)
   const { choosenCategorie, searchValue } = useSelector(selectFilter)
   const [choosenView, setChoosenView] = useState('grid')
   const onChangeCategory = useCallback((sort) => {
@@ -202,20 +203,62 @@ const Catalog = () => {
 
               <div className="catalog__main_filters-main">
                 <span>Сортировка</span>
-                <button className="catalog__main_filters-main_popup">
-                  <img src="../assets/img/arrows-sort.png" alt="" />
-                </button>
+                <DropDown as="div" className="catalog__main_filters-main_menu">
+                  <div className="catalog__main_filters-main_menu_button">
+                    <DropDown.Button>
+                      <div>
+                        <img
+                          src={
+                            theme === 'white'
+                              ? '../assets/img/arrows-sort.png'
+                              : '../assets/img/arrows-black.png'
+                          }
+                          alt=""
+                        />
+                      </div>
+                    </DropDown.Button>
+                  </div>
+
+                  <DropDown.Items className="catalog__main_filters-main_menu_items">
+                    <div className="catalog__main_filters-main_menu_items_wrapper">
+                      <DropDown.Item className="catalog__main_filters-main_menu_item">
+                        <div>По популярности</div>
+                      </DropDown.Item>
+                      <DropDown.Item className="catalog__main_filters-main_menu_item">
+                        <div>Подоророже</div>
+                      </DropDown.Item>
+                      <DropDown.Item className="catalog__main_filters-main_menu_item">
+                        <div>Подешевле</div>
+                      </DropDown.Item>
+                    </div>
+                  </DropDown.Items>
+                </DropDown>
+
                 <button
                   onClick={() => setChoosenView('flex')}
                   className="catalog__main_filters-main_row"
                 >
-                  <img src="../assets/img/filter-row-main.png" alt="" />
+                  <img
+                    src={
+                      choosenView === 'flex'
+                        ? '../assets/img/filter-row-active.png'
+                        : '../assets/img/filter-row-main.png'
+                    }
+                    alt=""
+                  />
                 </button>
                 <button
                   onClick={() => setChoosenView('grid')}
                   className="catalog__main_filters-main_grid"
                 >
-                  <img src="../assets/img/filter-grid-main.png" alt="" />
+                  <img
+                    src={
+                      choosenView === 'grid'
+                        ? '../assets/img/filter-grid-active.png'
+                        : '../assets/img/filter-grid-main.png'
+                    }
+                    alt=""
+                  />
                 </button>
               </div>
             </div>

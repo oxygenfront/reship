@@ -343,7 +343,7 @@ const Personal = () => {
             <Swiper
               modules={[Navigation]}
               navigation
-              speed={1300} 
+              speed={1300}
               slidesPerView={2}
               spaceBetween={45}
               className="personal__reviews-block_slider"
@@ -464,12 +464,13 @@ const Personal = () => {
               </SwiperSlide>
             </Swiper>
           </div>
-
-          <div className="personal__interesting">
-            {itemsStatus === 'success' &&
-              items
-                .slice(0, 3)
-                .map((item) => (
+          {itemsStatus === 'success' && items.length > 0 ? (
+            <div className="personal__interesting_wrapper">
+              <h1 className="personal__interesting_title">
+                Возможно вам понравятся
+              </h1>
+              <div className="personal__interesting">
+                {items.slice(0, 3).map((item) => (
                   <Card
                     view="grid"
                     key={item.id}
@@ -478,7 +479,9 @@ const Personal = () => {
                     price={item.price}
                   ></Card>
                 ))}
-          </div>
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </>

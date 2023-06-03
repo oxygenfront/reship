@@ -14,7 +14,7 @@ const Order = () => {
   const { data, status } = useSelector(selectUserData)
   const { cartItems } = getCartFromLS()
   const totalPrice = calcTotalPrice(cartItems)
-  console.log(cartItems)
+
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
   const initialState = {
@@ -55,6 +55,7 @@ const Order = () => {
   useEffect(() => {
     status === 'success' && setOrder({ customer_id: data.id })
   }, [status])
+  console.log(order)
   async function sendForm(e) {
     e.preventDefault()
     if (!isEmail(order.email)) {
@@ -92,19 +93,19 @@ const Order = () => {
                   <div className="main-form_buyer_item_inputs_input_title">
                     Имя
                   </div>
-                  <input type="text" name="" id="" />
+                  <input type="text" name="init" id="" onChange={updateOrder} />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Фамилия
                   </div>
-                  <input type="text" name="" id="" />
+                  <input type="text" name="init" id="" onChange={updateOrder} />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Номер телефона
                   </div>
-                  <input type="text" name="" id="" />
+                  <input type="text" />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">

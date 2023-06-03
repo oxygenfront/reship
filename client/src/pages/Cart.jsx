@@ -36,18 +36,6 @@ const Cart = () => {
     setPromocode('')
   }
 
-  if (totalCount === 0) {
-    return (
-      <div className="cart__empty_wrapper">
-        <div className="container cart__empty_container">
-          <div className="cart__empty">
-            У вас пока нет<br></br> товаров корзине
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <section className="cart">
       <div className="container cart__container">
@@ -56,83 +44,100 @@ const Cart = () => {
             Моя <span>корзина</span>
           </h1>
         </div>
-        <div className="cart__all">
-          <div className="cart__wrapper">
-            <div className="cart__delivery-items ">
-              {cartItems.map((item) => (
-                <CartItem
-                  key={item.id}
-                  color={item.color}
-                  name={item.name}
-                  count={item.count}
-                  price={item.price}
-                  id={item.id}
-                ></CartItem>
-              ))}
-            </div>
-          </div>
-
-          <div className="cart__total">
-            <div className="cart__total-wrapper">
-              <div className="cart__total-wrapper-info">
-                <div className="cart__total-wrapper-title">Ваши покупки</div>
-                <div className="cart__total-wrapper-info_items">
-                  {cartItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="cart__total-wrapper-info_items_item"
-                    >
-                      <p>{item.name}</p>
-                      <p>{item.count} шт</p>
-                      <p>{item.price} руб</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="cart__total-wrapper-info_total">
-                  Итог{' '}
-                  <span>
-                    {window.localStorage.getItem('promocode')
-                      ? Math.round(
-                          (totalPrice + deliveryPrice) *
-                            (1 - window.localStorage.getItem('promocode') / 100)
-                        )
-                      : totalPrice + deliveryPrice}{' '}
-                    ₽
-                  </span>
-                </div>
+        {totalCount === 0 ? (
+          <div className="cart__empty_wrapper">
+            <div className="container cart__empty_container">
+              <div
+                style={{
+                  backgroundImage: `url('../assets/img/no-item.png')`,
+                  backgroundSize: 'cover',
+                }}
+                className="cart__empty"
+              >
+                У вас пока нет<br></br> товаров корзине
               </div>
             </div>
-            <div className="cart__total-wrapper-buttons">
-              <form action="">
-                <input
-                  value={promocode}
-                  onChange={(e) => setPromocode(e.target.value)}
-                  type="text"
-                  className="cart__total-wrapper-buttons_inp"
-                  placeholder="Введите промокод"
-                />
-                <button
-                  className="cart__total-wrapper-buttons_button"
-                  onClick={sendForm}
-                  type="submit"
-                >
-                  <img
-                    className="cart__total-wrapper-buttons_img"
-                    src="../assets/img/arrow-next.png"
-                    alt="check"
+          </div>
+        ) : (
+          <div className="cart__all">
+            <div className="cart__wrapper">
+              <div className="cart__delivery-items ">
+                {cartItems.map((item) => (
+                  <CartItem
+                    key={item.id}
+                    color={item.color}
+                    name={item.name}
+                    count={item.count}
+                    price={item.price}
+                    id={item.id}
+                  ></CartItem>
+                ))}
+              </div>
+            </div>
+
+            <div className="cart__total">
+              <div className="cart__total-wrapper">
+                <div className="cart__total-wrapper-info">
+                  <div className="cart__total-wrapper-title">Ваши покупки</div>
+                  <div className="cart__total-wrapper-info_items">
+                    {cartItems.map((item) => (
+                      <div
+                        key={item.id}
+                        className="cart__total-wrapper-info_items_item"
+                      >
+                        <p>{item.name}</p>
+                        <p>{item.count} шт</p>
+                        <p>{item.price} руб</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="cart__total-wrapper-info_total">
+                    Итог{' '}
+                    <span>
+                      {window.localStorage.getItem('promocode')
+                        ? Math.round(
+                            (totalPrice + deliveryPrice) *
+                              (1 -
+                                window.localStorage.getItem('promocode') / 100)
+                          )
+                        : totalPrice + deliveryPrice}{' '}
+                      ₽
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="cart__total-wrapper-buttons">
+                <form action="">
+                  <input
+                    value={promocode}
+                    onChange={(e) => setPromocode(e.target.value)}
+                    type="text"
+                    className="cart__total-wrapper-buttons_inp"
+                    placeholder="Введите промокод"
                   />
-                </button>
-              </form>
-              <Link
-                to="/order"
-                className="cart__total-wrapper-buttons_link buttons__16"
-              >
-                Продолжить оформление
-              </Link>
+                  <button
+                    className="cart__total-wrapper-buttons_button"
+                    onClick={sendForm}
+                    type="submit"
+                  >
+                    <img
+                      className="cart__total-wrapper-buttons_img"
+                      src="../assets/img/arrow-next.png"
+                      alt="check"
+                    />
+                  </button>
+                </form>
+                <Link
+                  to="/order"
+                  className="cart__total-wrapper-buttons_link buttons__16"
+                >
+                  Продолжить оформление
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

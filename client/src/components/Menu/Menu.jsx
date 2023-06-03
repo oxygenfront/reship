@@ -251,7 +251,7 @@ const Menu = () => {
               </div>
             </div>
           </Dialog>
-          <Dialog
+          {/* <Dialog
             as="div"
             className={styles.modal}
             open={searchOpen}
@@ -270,13 +270,13 @@ const Menu = () => {
                 </Dialog.Panel>
               </div>
             </div>
-          </Dialog>
-          <button
-            onClick={() => setSearchOpen(true)}
+          </Dialog> */}
+          <Link
+            to="/catalog"
             className={styles.search_section__search_block_glass}
           >
             <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
+          </Link>
         </div>
         <div className={styles.search_section_links}>
           <Link to="/personal/favorites">

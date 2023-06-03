@@ -214,17 +214,21 @@
         padding: 45px 29px
   .faq
     &__title
-      font-size: 28px
+      font-size: 40px
+      span
+        font-size: 40px
     &__item
       &-first-block
         padding-right: 27px
-        padding-left: 30px
+        padding-left: 35px
       &-title
         font-size: 19px
       &:not(:last-child)
         margin-bottom: 30px
   .faq__item.active .faq__item-about
-    height: 146px
+    transition: height 0.3s ease-in-out
+    height: 175px
+    padding-bottom: 15px
   .main-form
     &__grid
       display: block
@@ -362,7 +366,9 @@
       flex-direction: column
       align-items: center
     &__title
-      font-size: 20px
+      font-size: 40px
+      span
+        font-size: 40px
     &__item
       &-title
         font-size: 16px

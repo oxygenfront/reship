@@ -344,8 +344,8 @@ const Personal = () => {
               modules={[Navigation]}
               navigation
               speed={1300}
-              slidesPerView={2}
-              spaceBetween={45}
+              slidesPerView={windowWidth < 767 ? 1 : 2}
+              spaceBetween={windowWidth < 575 ? 10 : 45}
               className="personal__reviews-block_slider"
             >
               <SwiperSlide className="personal__reviews-block_slider-item">
@@ -464,7 +464,38 @@ const Personal = () => {
               </SwiperSlide>
             </Swiper>
           </div>
-          {itemsStatus === 'success' && items.length > 0 ? (
+          {windowWidth < 1199 ? (
+            <div>
+              <h1 className="personal__interesting_title">
+                Возможно вам понравятся
+              </h1>
+              <div className="personal__interesting_slider_wrapper">
+                <Swiper
+                  modules={[Navigation]}
+                  navigation
+                  speed={1300}
+                  slidesPerView={windowWidth < 1199 ? 2 : 0}
+                  spaceBetween={windowWidth < 767 ? 10 : 45}
+                  className="personal__interesting_slider"
+                >
+                  {itemsStatus === 'success' &&
+                    items.slice(0, 3).map((item) => (
+                      <>
+                        <SwiperSlide className="personal__interesting_slider-item">
+                          <Card
+                            view={'grid'}
+                            id={item.id}
+                            price={item.price}
+                            name={item.name}
+                            key={item.id}
+                          ></Card>
+                        </SwiperSlide>
+                      </>
+                    ))}
+                </Swiper>
+              </div>
+            </div>
+          ) : itemsStatus === 'success' && items.length > 0 ? (
             <div className="personal__interesting_wrapper">
               <h1 className="personal__interesting_title">
                 Возможно вам понравятся

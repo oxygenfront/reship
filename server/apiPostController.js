@@ -169,6 +169,7 @@ class ApiPostController {
           response_json.colors = JSON.parse(response_json.colors);
           response_json.colors_avail = JSON.parse(response_json.colors_avail);
           response_json.parameters = JSON.parse(response_json.parameters);
+          response_json.image_link = JSON.parse(response_json.image_link);
           response_json.parameters_avail = JSON.parse(
             response_json.parameters_avail
           );
@@ -208,6 +209,7 @@ class ApiPostController {
         response_json.colors = JSON.parse(response_json.colors);
         response_json.colors_avail = JSON.parse(response_json.colors_avail);
         response_json.parameters = JSON.parse(response_json.parameters);
+        response_json.image_link = JSON.parse(response_json.image_link);
         response_json.parameters_avail = JSON.parse(
           response_json.parameters_avail
         );
@@ -549,6 +551,7 @@ class ApiPostController {
         response_json.colors = JSON.parse(response_json.colors);
         response_json.colors_avail = JSON.parse(response_json.colors_avail);
         response_json.parameters = JSON.parse(response_json.parameters);
+        response_json.image_link = JSON.parse(response_json.image_link);
         response_json.parameters_avail = JSON.parse(
           response_json.parameters_avail
         );
@@ -561,87 +564,97 @@ class ApiPostController {
   }
 
   async createProduct(request, response) {
-    if (
-      !tools.checkJsonKey(request.body, "name") ||
-      !tools.checkJsonKey(request.body, "description_small") ||
-      !tools.checkJsonKey(request.body, "description_full") ||
-      !tools.checkJsonKey(request.body, "old_price") ||
-      !tools.checkJsonKey(request.body, "price") ||
-      !tools.checkJsonKey(request.body, "availability") ||
-      !tools.checkJsonKey(request.body, "colors") ||
-      !tools.checkJsonKey(request.body, "colors_avail") ||
-      !tools.checkJsonKey(request.body, "parameters") ||
-      !tools.checkJsonKey(request.body, "parameters_avail") ||
-      !tools.checkJsonKey(request.body, "image_link") ||
-      !tools.checkJsonKey(request.body, "category") ||
-      !tools.checkJsonKey(request.body, "token")
-    ) {
+    try {
+      if (
+        !tools.checkJsonKey(request.body, "name") ||
+        !tools.checkJsonKey(request.body, "description_small") ||
+        !tools.checkJsonKey(request.body, "description_full") ||
+        !tools.checkJsonKey(request.body, "old_price") ||
+        !tools.checkJsonKey(request.body, "price") ||
+        !tools.checkJsonKey(request.body, "availability") ||
+        !tools.checkJsonKey(request.body, "colors") ||
+        !tools.checkJsonKey(request.body, "colors_avail") ||
+        !tools.checkJsonKey(request.body, "parameters") ||
+        !tools.checkJsonKey(request.body, "parameters_avail") ||
+        !tools.checkJsonKey(request.body, "image_links") ||
+        !tools.checkJsonKey(request.body, "category") ||
+        !tools.checkJsonKey(request.body, "token")
+      ) {
+        return response
+          .status(400)
+          .json({ error: "Некорректные данные.", bcode: 11 });
+      }
+
+      const name = tools.delInjection(request.body.name);
+      const description_small = tools.delInjection(
+        request.body.description_small
+      );
+
+      const description_full = tools.delInjection(
+        request.body.description_full
+      );
+
+      const old_price = tools.delInjection(request.body.old_price);
+      const price = tools.delInjection(request.body.price);
+      const availability = tools.delInjection(request.body.availability);
+
+      const colors = JSON.parse(request.body.colors);
+      const colors_avail = JSON.parse(request.body.colors_avail);
+      const parameters = JSON.parse(request.body.parameters);
+      const parameters_avail = JSON.parse(request.body.parameters_avail);
+
+      const image_links = JSON.parse(request.body.image_links);
+      const category = tools.delInjection(request.body.category);
+
+      const token = tools.delInjection(request.body.token);
+
+      database.query(
+        `SELECT * FROM \`users\` WHERE token='${token}'`,
+        (error, rows, fields) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ error: "Ошибка на сервере", bcode: 11.1 });
+          }
+
+          if (rows.length == 1) {
+            if (rows[0].admin == 0) {
+              return response.json({
+                error: "У вас недостаточно прав.",
+                bcode: 11.3,
+              });
+            } else {
+              database.query(
+                `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
+                  colors
+                )}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(
+                  parameters
+                )}', '${JSON.stringify(
+                  parameters_avail
+                )}', '${JSON.stringify(image_links)}', '${category}', '');`,
+                (error, rows, fields) => {
+                  if (error) {
+                    return response
+                      .status(500)
+                      .json({ error: "Ошибка на сервере", bcode: 11.4 , e:error});
+                  }
+
+                  return response.json({ product_id: rows.insertId });
+                }
+              );
+            }
+          } else {
+            return response
+              .status(400)
+              .json({ error: "Ошибка доступа.", bcode: 11.2 });
+          }
+        }
+      );
+    } catch {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 11 });
+        .json({ error: "Неизвестная ошибка.", bcode: 11.11111 });
     }
-
-    const name = tools.delInjection(request.body.name);
-    const description_small = tools.delInjection(
-      request.body.description_small
-    );
-    const description_full = tools.delInjection(request.body.description_full);
-    const old_price = tools.delInjection(request.body.old_price);
-    const price = tools.delInjection(request.body.price);
-    const availability = tools.delInjection(request.body.availability);
-
-    const colors = JSON.parse(request.body.colors);
-    const colors_avail = JSON.parse(request.body.colors_avail);
-    const parameters = JSON.parse(request.body.parameters);
-    const parameters_avail = JSON.parse(request.body.parameters_avail);
-
-    const image_link = tools.delInjection(request.body.image_link);
-    const category = tools.delInjection(request.body.category);
-
-    const token = tools.delInjection(request.body.token);
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 11.1 });
-        }
-
-        if (rows.length == 1) {
-          if (rows[0].admin == 0) {
-            return response.json({
-              error: "У вас недостаточно прав.",
-              bcode: 11.3,
-            });
-          } else {
-            database.query(
-              `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
-                colors
-              )}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(
-                parameters
-              )}', '${JSON.stringify(
-                parameters_avail
-              )}', '${image_link}', '${category}');`,
-              (error, rows, fields) => {
-                if (error) {
-                  return response
-                    .status(500)
-                    .json({ error: "Ошибка на сервере", bcode: 11.4 });
-                }
-
-                return response.json({ product_id: rows.insertId });
-              }
-            );
-          }
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 11.2 });
-        }
-      }
-    );
   }
 
   async changeProduct(request, response) {

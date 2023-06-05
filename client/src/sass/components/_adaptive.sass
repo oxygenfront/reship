@@ -1,6 +1,31 @@
 @media (max-width: 1199px)
   .container
     max-width: 960px
+  .main-form
+    &_container
+
+    &__title
+      font-size: 56px
+    &_buyer
+      &_title
+        font-size: 36px
+      &_items
+        flex-wrap: wrap
+        margin-bottom: 70px
+  .cart
+    &__title
+      font-size: 56px
+    &__all
+      flex-wrap: wrap
+    &__total
+      &-wrapper
+        width: 640px
+        &-buttons
+          width: 640px
+          &_inp
+            width: 100%
+          &_link
+            width: 100%
   .personal
 
     &__interesting
@@ -142,6 +167,18 @@
     &__items-block
       grid-template-columns: repeat(3, 295px)
 @media (max-width: 991px)
+  .main-form
+
+    &_adress
+      &_items
+        display: flex
+        flex-direction: column
+    &_buyer
+      &_item
+        &_inputs
+          gap: 20px 10px
+        &_wrapper
+          width: 520px
   .personal
     &__middle-block
       flex-wrap: wrap
@@ -202,6 +239,7 @@
           font-size: 19px
 
   .main-catalog
+
     &__buttons
       width: 69%
     &__preview
@@ -246,12 +284,12 @@
     &__total-wrapper-buttons
       &_link
         padding: 24px 55px
-      &_inp
-        width: 360px
+
 @media (max-width: 767px)
 
   .container
     max-width: 540px
+
   .reviews
     &__main-block
       align-items: center
@@ -292,21 +330,23 @@
           width: 500px !important
   .cart
     &__title
-      text-align: center
+      font-size: 42px
+    &__delivery
+      &-items
+        width: 540px
     &__total
       &-wrapper
-        padding: 50px 40px
+        width: 540px
+        &-buttons
+          width: 540px
+          &_inp
+            width: 100%
         &-info
           &_total
             font-size: 30px
           &_suptotal
             font-size: 18px
-    &__total-wrapper-buttons
-      &_link
-        padding: 24px 42px
-      &_inp
-        width: 250px
-        padding: 0 39px
+
   .desc-section
     &__flex-block_txt
       font-size: 21px
@@ -411,34 +451,74 @@
 @media (max-width: 575px)
   .container
     max-width: 400px
-  .cart__title
-    text-align: center
-  .cart
-    margin-bottom: 40px
-    &__wrapper
-      margin-bottom: 40px
-
+  .main-form
+    &_payment
+      margin-bottom: 50px
+    &_submit
+      width: 202px
+      height: 45px
+      font-size: 16px
     &__total
-      display: flex
-      flex-direction: column
-      align-items: center
-      &-wrapper
-        margin-bottom: 40px
-        padding: 20px 19px
-        width: 300px
-        height: 300px
-        flex-direction: column
-        justify-content: center
-        &-buttons
+      &_delivery
+        font-size: 12px
+      &_item
+        font-size: 12px
+        p
+          &:first-child
+            width: 179px
+      &_wrapper
+        width: 370px
+        padding: 27px
+    &__title
+      font-size: 40px
+      margin-bottom: 73px
+      span
+        font-weight: 600
+    &_buyer
+      &_title
+        font-size: 32px
+      &_item
+        &_buttons
+          margin-top: 53px
+        &_inputs
+          display: flex
           flex-direction: column
-          height: 180px
-          justify-content: space-between
-        &-price
-          align-items: center
-        &-info_suptotal
-          font-size: 17px
-          & span
-            margin-left: 4px
+          &_input
+            &_title
+              font-size: 16px
+
+        &_wrapper
+          width: 359px
+          height: 503px
+  .cart
+    margin-bottom: 140px
+
+    &__title
+      font-size: 36px
+    &__delivery
+      &-items
+        width: 361px
+    &__total
+      &-wrapper
+        width: 361px
+        &-title
+          font-size: 32px
+
+        &-buttons
+          width: 361px
+          &_inp
+            height: 50px
+          &_link
+            font-size: 16px
+            height: 50px
+        &-info
+          &_items
+            &_item
+              font-size: 12px
+          &_total
+            font-size: 20px
+          &_suptotal
+            font-size: 18px
 
   .desc-section__benefits-cards
     height: 650px

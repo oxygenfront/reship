@@ -130,9 +130,9 @@ const Personal = () => {
   if (status === 'success' && !isAuth) {
     return <Navigate to="/"></Navigate>
   }
-  if (status === 'success') {
-    data.favorites.map((order) => console.log(order))
-  }
+  // if (status === 'success') {
+  //   data.favorites.map((order) => console.log(order))
+  // }
   // if (calendarValue.length > 0) {
   //   console.log(calendarValue[0].toLocaleString().slice(0, 10))
   //   const timeStamp = new Date(
@@ -481,13 +481,15 @@ const Personal = () => {
                   {itemsStatus === 'success' &&
                     items.slice(0, 3).map((item) => (
                       <>
-                        <SwiperSlide className="personal__interesting_slider-item">
+                        <SwiperSlide
+                          key={item.id}
+                          className="personal__interesting_slider-item"
+                        >
                           <Card
                             view={'grid'}
                             id={item.id}
                             price={item.price}
                             name={item.name}
-                            key={item.id}
                           ></Card>
                         </SwiperSlide>
                       </>

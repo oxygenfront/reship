@@ -133,10 +133,7 @@ const Menu = () => {
                             setLocalCategory('мышки')
                           }}
                         >
-                          <img
-                            src="../assets/img/microfone.svg"
-                            alt="microfone"
-                          />
+                          <img src="../assets/img/mouse.svg" alt="mouse" />
                           Мышки
                         </li>
                         <li

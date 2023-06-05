@@ -1,6 +1,156 @@
 @media (max-width: 1199px)
   .container
     max-width: 960px
+  .main-form
+    &_container
+
+    &__title
+      font-size: 56px
+    &_buyer
+      &_title
+        font-size: 36px
+      &_items
+        flex-wrap: wrap
+        margin-bottom: 70px
+  .cart
+    &__title
+      font-size: 56px
+    &__all
+      flex-wrap: wrap
+    &__total
+      &-wrapper
+        width: 640px
+        &-buttons
+          width: 640px
+          &_inp
+            width: 100%
+          &_link
+            width: 100%
+  .personal
+
+    &__interesting
+      margin-bottom: 100px
+      &_title
+        font-size: 32px
+        margin-bottom: 40px
+      &_slider
+        width: 913px
+        margin: 0 auto
+        margin-bottom: 150px
+        position: unset !important
+        &_wrapper
+          position: relative
+
+        &_item
+          margin-bottom: 100px
+        & .swiper-button-next.swiper-button-disabled, & .swiper-button-prev.swiper-button-disabled
+          border: 2px solid #0528F2
+          background: transparent
+          opacity: 1
+        & .swiper-button-next.swiper-button-disabled
+          &:after
+            border-color: #0528F2
+          &:before
+            background: #0528F2
+        & .swiper-button-prev.swiper-button-disabled
+          &:after
+            border-color: #0528F2
+          &:before
+            background: #0528F2
+        & .swiper-button-prev, & .swiper-button-next
+          width: 45px
+          height: 45px
+          background: #0528F2
+          border: 2px solid #0528F2
+          border-radius: 50%
+        & .swiper-button-prev
+
+          top: 410px
+          left: 360px
+        & .swiper-button-next
+
+          top: 410px
+          left: 510px
+        & .swiper-button-next:after
+          position: absolute
+          right: 15px
+          content: ''
+          width: 10px
+          height: 10px
+          border-right: 2px solid white
+          border-bottom: 2px solid white
+          transform: rotate(-45deg)
+        & .swiper-button-next:before
+          position: absolute
+          content: ''
+          width: 15px
+          height: 2px
+          background: white
+          right: 14px
+
+        & .swiper-button-prev:after
+          position: absolute
+          left: 15px
+          content: ''
+          width: 10px
+          height: 10px
+          border-right: 2px solid white
+          border-bottom: 2px solid white
+          transform: rotate(135deg)
+        & .swiper-button-prev:before
+          position: absolute
+          content: ''
+          width: 15px
+          height: 2px
+          background: white
+          left: 14px
+    &__reviews-block
+      &_title
+        font-size: 32px
+        margin-bottom: 35px
+
+      &_slider
+
+        width: 913px
+        top: 0px
+        & .swiper-button-prev
+
+          top: 370px
+          left: 370px
+        & .swiper-button-next
+          top: 370px
+          right: 370px
+
+        &-item
+          margin: 0 auto
+          width: 434px !important
+          padding: 24px 7px 5px 7px
+          span
+            padding: 0px 7px 35px 5px
+          &_header
+            &_img-block
+              display: flex
+              justify-content: flex-start
+              width: 60px
+              img
+                width: 100%
+    &__user-block
+      justify-content: flex-start
+      flex-wrap: wrap
+      gap: 30px
+      &_name
+        font-size: 54px
+      &_profile
+
+    &__middle-block
+      justify-content: flex-start
+
+      gap: 50px
+      &_buttons
+        gap: 25px
+        grid-template-columns: 226px 322px
+      &_latest-orders
+
   .main-catalog
     &__buttons
       width: 52%
@@ -12,20 +162,58 @@
         &-item
           width: 180px
           height: 190px
-  .person__reviews-buttons-item
-    font-size: 17px
-  .delpay__grid
-    grid-template-columns: repeat(3, 280px)
-    &-item
-      width: 285px
-      padding: 55px 28px
+
   .catalog
     &__items-block
       grid-template-columns: repeat(3, 295px)
 @media (max-width: 991px)
-  .person__reviews
-    &-buttons
-      
+  .main-form
+
+    &_adress
+      &_items
+        display: flex
+        flex-direction: column
+    &_buyer
+      &_item
+        &_inputs
+          gap: 20px 10px
+        &_wrapper
+          width: 520px
+  .personal
+    &__middle-block
+      flex-wrap: wrap
+    &__interesting
+
+      &_slider
+        width: 713px
+
+        & .swiper-button-prev
+
+          top: 410px
+          left: 270px
+        & .swiper-button-next
+
+          top: 410px
+          left: 405px
+
+    &__reviews-block
+
+      &_slider
+
+        width: 713px
+
+        & .swiper-button-prev
+
+          top: 350px
+          left: 270px
+        & .swiper-button-next
+          top: 350px
+          right: 240px
+
+        &-item
+
+          width: 334px !important
+
   .container
     max-width: 720px
   .desc-section
@@ -51,6 +239,7 @@
           font-size: 19px
 
   .main-catalog
+
     &__buttons
       width: 69%
     &__preview
@@ -81,30 +270,11 @@
           height: 70px
           font-size: 20px
           padding: 23px 30px
-  .delpay
-    &__grid
-      grid-template-columns: repeat(2, 320px)
-      grid-row-gap: 35px
-      &-item
-        width: 320px
-        padding: 55px 45px
+
   .faq
     &__title
       font-size: 38px
-  .person
-    &__buttons-item
-      font-size: 16px
-      padding: 10px
-    &__favorites-wrapper-items
-      grid-template-columns: repeat(3, 210px)
-    &__info
-      width: 60%
-    &__secret-change
-      &-block
-        width: 100%
-      &-confirm
-        padding: 10px 4px
-        width: 30%
+
   .catalog
     &-section-search__search-block
       width: 476px
@@ -113,61 +283,70 @@
   .cart
     &__total-wrapper-buttons
       &_link
-          padding: 24px 55px
-      &_inp
-          width: 360px
+        padding: 24px 55px
+
 @media (max-width: 767px)
-  
+
   .container
     max-width: 540px
+
   .reviews
     &__main-block
       align-items: center
-  .person
-    &__card
-      padding: 30px
-    &__img-block
-      width: 160px
-      height: 160px
-    &__info
-      width: 57%
-    &__delivery-info_block
-      height: 210px
-    &__delivery-items
-      display: grid
-      grid-template-columns: repeat(2, 240px)
-      justify-content: space-between
-      &_item_img
-        width: 130px
-        height: 130px
-    &__delivery-links
-      width: 100%
-      height: 100px
-      flex-direction: column
-      align-items: center
-      &_track
-        width: 163px
-      &_deliv
-        width: 250px
-    &__secret
-      width: 100%
+  .personal
+    &__user-block
+      &_name
+        font-size: 44px
+    &__interesting
+
+      &_slider
+        width: 540px
+
+        & .swiper-button-prev
+
+          top: 410px
+          left: 190px
+        & .swiper-button-next
+
+          top: 410px
+          left: 340px
+
+    &__reviews-block
+
+      &_slider
+
+        width: 500px
+
+        & .swiper-button-prev
+
+          top: 350px
+          left: 170px
+        & .swiper-button-next
+          top: 350px
+          right: 140px
+
+        &-item
+
+          width: 500px !important
   .cart
     &__title
-      text-align: center
+      font-size: 42px
+    &__delivery
+      &-items
+        width: 540px
     &__total
       &-wrapper
-        padding: 50px 40px
+        width: 540px
+        &-buttons
+          width: 540px
+          &_inp
+            width: 100%
         &-info
           &_total
             font-size: 30px
           &_suptotal
             font-size: 18px
-    &__total-wrapper-buttons
-      &_link
-          padding: 24px 42px
-      &_inp
-          width: 250px
-          padding: 0 39px
+
   .desc-section
     &__flex-block_txt
       font-size: 21px
@@ -214,17 +393,21 @@
         padding: 45px 29px
   .faq
     &__title
-      font-size: 28px
+      font-size: 40px
+      span
+        font-size: 40px
     &__item
       &-first-block
         padding-right: 27px
-        padding-left: 30px
+        padding-left: 35px
       &-title
         font-size: 19px
       &:not(:last-child)
         margin-bottom: 30px
   .faq__item.active .faq__item-about
-    height: 146px
+    transition: height 0.3s ease-in-out
+    height: 175px
+    padding-bottom: 15px
   .main-form
     &__grid
       display: block
@@ -264,41 +447,79 @@
     &-section-search__search-block
       width: 476px
     &__items-block
-      grid-template-columns: repeat(2, 247px)     
+      grid-template-columns: repeat(2, 247px)
 @media (max-width: 575px)
   .container
     max-width: 400px
-  .cart__title
-    text-align: center
-  .cart
-    margin-bottom: 40px
-    &__wrapper
-      margin-bottom: 40px
-
+  .main-form
+    &_payment
+      margin-bottom: 50px
+    &_submit
+      width: 202px
+      height: 45px
+      font-size: 16px
     &__total
-      display: flex
-      flex-direction: column
-      align-items: center
-      &-wrapper
-        margin-bottom: 40px
-        padding: 20px 19px
-        width: 300px
-        height: 300px
-        flex-direction: column
-        justify-content: center
-        &-buttons
+      &_delivery
+        font-size: 12px
+      &_item
+        font-size: 12px
+        p
+          &:first-child
+            width: 179px
+      &_wrapper
+        width: 370px
+        padding: 27px
+    &__title
+      font-size: 40px
+      margin-bottom: 73px
+      span
+        font-weight: 600
+    &_buyer
+      &_title
+        font-size: 32px
+      &_item
+        &_buttons
+          margin-top: 53px
+        &_inputs
+          display: flex
           flex-direction: column
-          height: 180px
-          justify-content: space-between
-        &-price
-          align-items: center
-        &-info_suptotal
-          font-size: 17px
-          & span
-            margin-left: 4px
-  .person__delivery-items
-    grid-template-columns: repeat(1, 300px)
-    justify-content: center
+          &_input
+            &_title
+              font-size: 16px
+
+        &_wrapper
+          width: 359px
+          height: 503px
+  .cart
+    margin-bottom: 140px
+
+    &__title
+      font-size: 36px
+    &__delivery
+      &-items
+        width: 361px
+    &__total
+      &-wrapper
+        width: 361px
+        &-title
+          font-size: 32px
+
+        &-buttons
+          width: 361px
+          &_inp
+            height: 50px
+          &_link
+            font-size: 16px
+            height: 50px
+        &-info
+          &_items
+            &_item
+              font-size: 12px
+          &_total
+            font-size: 20px
+          &_suptotal
+            font-size: 18px
+
   .desc-section__benefits-cards
     height: 650px
     flex-direction: column
@@ -362,7 +583,9 @@
       flex-direction: column
       align-items: center
     &__title
-      font-size: 20px
+      font-size: 40px
+      span
+        font-size: 40px
     &__item
       &-title
         font-size: 16px
@@ -370,37 +593,100 @@
     font-size: 15px
   .auth__title
     font-size: 27px
-  .person
-    &__delivery
-      &-history
+  .swiper-button-next
+    top: 30px
+  .personal
+    &__interesting
+      margin-bottom: 100px
+      &_title
+        margin-bottom: 40px
+      &_slider
+        width: 367px
+        margin-bottom: 150px
+        position: unset !important
+
         &_wrapper
-          display: flex
-          flex-direction: column
-          align-items: center 
-    &__img-block
-      margin-right: unset
-      margin-bottom: 34px
-    &__info
-      width: unset
-    &__card
-      flex-direction: column
-      align-items: center
-      height: unset
-    &__favorites-wrapper-items
-      grid-template-columns: repeat(1, 270px)
-      justify-content: center
-    &__secret
-      height: unset
-      margin: 0 0 40px 0
-      &-wrapper
-        align-items: unset
-        width: 100%
-      &-change-block
-        &-adaptive
-          width: 230px
-        &-wrapper
-          &.adaptive
+          position: relative
+        &-item
+          margin-bottom: 100px
+          width: 178px !important
+        & .swiper-button-prev
+
+          top: 400px
+          left: 110px
+        & .swiper-button-next
+
+          top: 400px
+          left: 190px
+
+    &__reviews-block
+      &_title
+        font-size: 26px
+        margin-bottom: 35px
+
+      &_slider
+
+        width: 354px
+        top: 0px
+        & .swiper-button-prev
+
+          top: 350px
+          left: 130px
+        & .swiper-button-next
+          top: 350px
+          right: 130px
+
+        &-item
+          margin: 0 auto
+          width: 354px !important
+          padding: 24px 7px 0px 7px
+          span
+            padding: 0px 7px 2px
+          &_header
+            &_img-block
+              display: flex
+              justify-content: flex-start
+              width: 60px
+              img
+                width: 100%
+
+    &__middle-block
+      flex-wrap: wrap
+      &_latest-orders
+        width: 360px
+      &_buttons
+        grid-template-columns: 150px 205px
+        grid-template-rows: 159px 159px
+        gap: 15px 20px
+        margin-bottom: 60px
+        &_item
+          font-size: 20px
+          padding-left: 15px
+          padding-bottom: 15px
+    &__container
+      padding: 0px 8px 0px 8px
+      margin: 0
+    &__user-block
+      flex-wrap: wrap
+      padding-left: 10px
+      &_name
+        font-size: 40px
+        margin-bottom: 21px
+      &_profile
+        width: 233px
+        height: 62px
+        &_right-block
+          &_button
+            font-size: 12px
+          &_name
+            font-size: 16px
+        &_img-block
+          width: 42px
+          height: 42px
+          img
+
             width: 100%
+            height: 100%
 
   .catalog
     &__title
@@ -412,4 +698,4 @@
     &-section-search__search-block
       width: 100%
     &__items-block
-      grid-template-columns: repeat(1, 270px)  
+      grid-template-columns: repeat(1, 270px)

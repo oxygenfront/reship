@@ -29,15 +29,17 @@ const Catalog = () => {
   const categories = [...set]
 
   const [rangeValue, setRangeValue] = useState([2000, 12000])
-  if (choosenCategorie === '') {
+  if (searchValue === '' && choosenCategorie === '') {
     return <Navigate to="/"></Navigate>
   }
-
+  console.log(searchValue, choosenCategorie)
   return (
     <section className="catalog">
       <div className="catalog__container container">
         <div className="catalog__title">
-          {choosenCategorie[0].toUpperCase() + choosenCategorie.slice(1)}
+          {searchValue !== ''
+            ? searchValue[0].toUpperCase() + searchValue.slice(1)
+            : choosenCategorie[0].toUpperCase() + choosenCategorie.slice(1)}
         </div>
         <div className="catalog__wrapper">
           <div className="catalog__sort">
@@ -114,7 +116,7 @@ const Catalog = () => {
               </label>
             </div>
             <div className="catalog__sort-block">
-              <div className="catalog__sort_title">Категория</div>
+              <div className="catalog__sort_title">Тип </div>
               <label
                 htmlFor="category7"
                 className="catalog__sort_checkbox-name"
@@ -282,7 +284,15 @@ const Catalog = () => {
                   ></Card>
                 ))
               ) : (
-                <div className="catalog__empty">Не найдено</div>
+                <div
+                  style={{
+                    backgroundImage: `url('../assets/img/no-item.png')`,
+                    backgroundSize: 'cover',
+                  }}
+                  className="catalog__empty"
+                >
+                  Не найдено
+                </div>
               )}
             </div>
           </div>

@@ -109,43 +109,50 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               <img src="/assets/img/heart-main-catalog.png"></img>
             )}
           </button>
-          <Swiper
-            className={styles.main_catalog__products_wrapper_item_slider}
-            modules={[Pagination]}
-            pagination={{ clickable: true }}
-            centeredSlides={true}
+          <Link to={`/item/${id}`}>
+            {' '}
+            <Swiper
+              className={styles.main_catalog__products_wrapper_item_slider}
+              modules={[Pagination]}
+              pagination={{ clickable: true }}
+              centeredSlides={true}
+            >
+              <SwiperSlide
+                className={
+                  styles.main_catalog__products_wrapper_item_slider_slide
+                }
+                style={{
+                  backgroundImage: `url('/assets/products_img/${id}.png')`,
+                  backgroundSize: 'cover',
+                }}
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/products_img/${id}.png')`,
+                  backgroundSize: 'cover',
+                }}
+                className={
+                  styles.main_catalog__products_wrapper_item_slider_slide
+                }
+              ></SwiperSlide>
+              <SwiperSlide
+                style={{
+                  backgroundImage: `url('/assets/products_img/${id}.png')`,
+                  backgroundSize: 'cover',
+                }}
+                className={
+                  styles.main_catalog__products_wrapper_item_slider_slide
+                }
+              ></SwiperSlide>
+            </Swiper>
+          </Link>
+
+          <Link
+            to={`/item/${id}`}
+            className={styles.main_catalog__products_wrapper_item_title}
           >
-            <SwiperSlide
-              className={
-                styles.main_catalog__products_wrapper_item_slider_slide
-              }
-              style={{
-                backgroundImage: `url('/assets/products_img/${id}.png')`,
-                backgroundSize: 'cover',
-              }}
-            ></SwiperSlide>
-            <SwiperSlide
-              style={{
-                backgroundImage: `url('/assets/products_img/${id}.png')`,
-                backgroundSize: 'cover',
-              }}
-              className={
-                styles.main_catalog__products_wrapper_item_slider_slide
-              }
-            ></SwiperSlide>
-            <SwiperSlide
-              style={{
-                backgroundImage: `url('/assets/products_img/${id}.png')`,
-                backgroundSize: 'cover',
-              }}
-              className={
-                styles.main_catalog__products_wrapper_item_slider_slide
-              }
-            ></SwiperSlide>
-          </Swiper>
-          <div className={styles.main_catalog__products_wrapper_item_title}>
             {name}
-          </div>
+          </Link>
           <div
             className={styles.main_catalog__products_wrapper_item_bottom_block}
           >

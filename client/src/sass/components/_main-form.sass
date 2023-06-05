@@ -12,31 +12,84 @@
         color: #fff
         width: 264px
         height: 55px
-    &_delivery
+    &_payment
         margin-bottom: 100px
         &_items
             display: flex
             flex-direction: column
             gap: 20px
+
+            &_item
+
+                text-align: left
+                display: flex
+                gap: 115px
+
+                padding-bottom: 17px
+                &:not(:last-child)
+                    border-bottom: 2px solid #E8EBF5
+
+                &_bank
+                    width: 85px
+
         &_item
-            width: 640px
-            height: 123px
+            width: 604px
+            height: 265px
             border: 1px solid #0528F2
             border-radius: 30px
-            padding: 25px 23px
-            &_title
-                font-weight: 600
-                font-size: 20px
-                color: var(--color)
-            &_price
-                font-weight: 600
-                font-size: 20px
-                color: #0528F2
-            &_top
+            padding: 18px 20px
+            &_sm
+                padding: 14px
+                width: 361px
+                border: 1px solid #0528F2
+                border-radius: 30px
+                &_title
+                    width: 143px
+                    height: 37px
+                    background: var(--togray)
+                    border-radius: 30px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    font-weight: 600
+                    color: #0528F2
+                    &_bank
+                        width: 89px
+                        height: 37px
+                        background: var(--togray)
+                        border-radius: 30px
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        font-weight: 600
+                        color: #0528F2
+                &_wrapper
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+                    &:not(:last-child)
+                        border-bottom: 2px solid #E8EBF5
+                        margin-bottom: 20px
+                        padding-bottom: 13px
+            &_titles
                 display: flex
                 justify-content: space-between
                 align-items: center
-                margin-bottom: 10px
+                margin-bottom: 30px
+                background: var(--togray)
+                border-radius: 30px
+                height: 41px
+                padding: 0px 20px 0px 10px
+
+            &_title
+                font-weight: 600
+                font-size: 20px
+                color: #0528F2
+                &_bank
+                    font-weight: 600
+                    font-size: 20px
+                    color: #0528F2
+                    width: 100px
     &_adress
         margin-bottom: 75px
         &_items
@@ -75,7 +128,7 @@
         &_wrapper
             padding: 40px 32px
             width: 450px
-            background: #E8EBF5
+            background: var(--togray)
             border-radius: 30px
 
     &_buyer
@@ -113,8 +166,9 @@
                 &_input
                     &_wrapper
                         input
+                            padding-left: 10px
                             height: 38px
-                            background: #E8EBF5
+                            background: var(--tolightgray)
                             border-radius: 30px
 
                     &_title

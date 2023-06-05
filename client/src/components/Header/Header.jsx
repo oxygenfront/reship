@@ -54,7 +54,7 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      {isBurger ? (
+      {/* {isBurger ? (
         <div className={styles.header__adaptive_burger_background}>
           <div className={styles.header__adaptive_burger}>
             <div className={styles.header__adaptive_burger_wrapper}>
@@ -161,7 +161,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      ) : null} */}
       <div className={styles.header__container}>
         <div className={styles.header__cont}>
           <div className={styles.header_switch_wrapper}>
@@ -204,7 +204,7 @@ const Header = () => {
           ) : null}
         </div>
 
-        <button
+        {/* <button
           onClick={() => setIsBurger(!isBurger)}
           className={
             isBurger
@@ -215,7 +215,7 @@ const Header = () => {
           <div className={styles.header__adaptive_burger_button_line}></div>
           <div className={styles.header__adaptive_burger_button_line}></div>
           <div className={styles.header__adaptive_burger_button_line}></div>
-        </button>
+        </button> */}
       </div>
     </header>
   )

@@ -23,7 +23,8 @@
     margin-bottom: 40px
     color: #0528F2
   &__title
-    width: 18.57%
+    font-size: 24px
+    margin-bottom: 30px
   &__blocks
     width: 100%
     display: flex
@@ -38,8 +39,49 @@
         color: #aec5f2
     &_social
       display: flex
+      align-items: center
       gap: 20px
-    &-suptitle
-
+    &_suptitle
+      font-size: 18px
+      font-weight: 400
       &:not(:last-child)
-        margin-bottom: 11px
+        margin-bottom: 8px
+@media (max-width: 1199px)
+  .footer
+    &__title
+@media (max-width: 991px)
+  .footer
+    &__container
+      padding: 0 25px
+@media (max-width: 767px)
+  .footer
+    &__title
+      font-size: 20px
+    &__block
+      &_social
+        img
+          width: 26px
+      &_suptitle
+        font-size: 14px
+@media (max-width: 575px)
+
+  .footer
+    &__container
+      flex-wrap: wrap
+      max-width: 390px
+      padding: 0px 10px
+    &__titles
+      flex-wrap: wrap
+      justify-content: flex-start
+      gap: 73px
+    &__title
+      font-size: 16px
+      margin-bottom: 10px
+    &__block
+
+      &_social
+        align-items: flex-start
+        img
+          width: 18px
+      &_suptitle
+        font-size: 12px

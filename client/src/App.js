@@ -30,7 +30,7 @@ import { fetchAuthMe } from './redux/slices/authSlice'
 import './sass/index.sass'
 
 import { Footer, Menu } from './components'
-import { selectFilter } from './redux/slices/fiterSlice'
+import { selectFilter, setSearchValue } from './redux/slices/fiterSlice'
 import { fetchItems } from './redux/slices/itemsSlice'
 import axios from './axios'
 
@@ -47,7 +47,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchItems({ choosenCategorie, searchValue }))
-  }, [choosenCategorie])
+  }, [choosenCategorie, searchValue])
 
   return (
     <>

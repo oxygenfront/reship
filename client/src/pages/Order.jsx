@@ -14,7 +14,8 @@ const Order = () => {
   const { data, status } = useSelector(selectUserData)
   const { cartItems } = getCartFromLS()
   const totalPrice = calcTotalPrice(cartItems)
-  console.log(cartItems)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
   const initialState = {
@@ -52,9 +53,7 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
-  useEffect(() => {
-    status === 'success' && setOrder({ customer_id: data.id })
-  }, [status])
+
   async function sendForm(e) {
     e.preventDefault()
     if (!isEmail(order.email)) {
@@ -77,6 +76,21 @@ const Order = () => {
 
     console.log(isValidEmail)
   }
+
+  useEffect(() => {
+    status === 'success' && setOrder({ customer_id: data.id })
+  }, [status])
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  console.log(order)
+
   return (
     <section className="auth">
       <div className="container main-form_container">
@@ -92,19 +106,19 @@ const Order = () => {
                   <div className="main-form_buyer_item_inputs_input_title">
                     Имя
                   </div>
-                  <input type="text" name="" id="" />
+                  <input type="text" name="init" id="" onChange={updateOrder} />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Фамилия
                   </div>
-                  <input type="text" name="" id="" />
+                  <input type="text" name="init" id="" onChange={updateOrder} />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Номер телефона
                   </div>
-                  <input type="text" name="" id="" />
+                  <input type="text" />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
@@ -173,36 +187,117 @@ const Order = () => {
             </div>
           </div>
         </div>
-        <div className="main-form_delivery">
-          <div className="main-form_buyer_title">Доставка</div>
-          <div className="main-form_delivery_items">
-            <div className="main-form_delivery_item">
-              <div className="main-form_delivery_item_top">
-                <div className="main-form_delivery_item_title">
-                  Доставка CDEK
+        <div className="main-form_payment">
+          <div className="main-form_buyer_title">Оплата/Реквизиты</div>
+          {windowWidth < 767 ? (
+            <div className="main-form_payment_wrapper">
+              <div className="main-form_payment_container">
+                <div className="main-form_payment_items">
+                  <div className="main-form_payment_item_sm">
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title_bank">
+                        Банк
+                      </p>
+                      <p>Сбербанк</p>
+                    </div>
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title">
+                        Номер карты
+                      </p>
+                      <p>2202203605915232</p>
+                    </div>
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title">
+                        Получатель
+                      </p>
+                      <p>Давид Б</p>
+                    </div>
+                  </div>
+                  <div className="main-form_payment_item_sm">
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title_bank">
+                        Банк
+                      </p>
+                      <p>Тинькофф</p>
+                    </div>
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title">
+                        Номер карты
+                      </p>
+                      <p> 2200700802202126</p>
+                    </div>
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title">
+                        Получатель
+                      </p>
+                      <p>Давид Б</p>
+                    </div>
+                  </div>
+                  <div className="main-form_payment_item_sm">
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title_bank">
+                        Банк
+                      </p>
+                      <p>Райффайзен</p>
+                    </div>
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title">
+                        Номер карты
+                      </p>
+                      <p> 2200300514540200</p>
+                    </div>
+                    <div className="main-form_payment_item_sm_wrapper">
+                      <p className="main-form_payment_item_sm_title">
+                        Получатель
+                      </p>
+                      <p>Давид Б</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="main-form_delivery_item_price">500руб</div>
-              </div>
-              <div className="">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                expedita consequatur sapiente saepe nihil suscipit dignissimos
-                magni iste explicabo nesciunt!
               </div>
             </div>
-            <div className="main-form_delivery_item">
-              <div className="main-form_delivery_item_top">
-                <div className="main-form_delivery_item_title">
-                  Доставка CDEK
+          ) : (
+            <div className="main-form_payment_wrapper">
+              <div className="main-form_payment_container">
+                <div className="main-form_payment_item">
+                  <div className="main-form_payment_item_titles">
+                    <div className="main-form_payment_item_title_bank">
+                      Банк
+                    </div>
+                    <div className="main-form_payment_item_title">
+                      Номер карты
+                    </div>
+                    <div className="main-form_payment_item_title">
+                      Получатель
+                    </div>
+                  </div>
+                  <div className="main-form_payment_items">
+                    <div className="main-form_payment_items_item">
+                      <p className="main-form_payment_items_item_bank">
+                        Сбербанк
+                      </p>
+                      <p>2202203605915232</p>
+                      <p>Давид Б</p>
+                    </div>
+                    <div className="main-form_payment_items_item">
+                      <p className="main-form_payment_items_item_bank">
+                        Тинькофф
+                      </p>
+                      <p> 2200700802202126</p>
+                      <p>Давид Б</p>
+                    </div>
+                    <div className="main-form_payment_items_item">
+                      <p className="main-form_payment_items_item_bank">
+                        Райффайзен
+                      </p>
+                      <p> 2200300514540200</p>
+                      <p>Давид Б</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="main-form_delivery_item_price">500руб</div>
-              </div>
-              <div className="">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
-                expedita consequatur sapiente saepe nihil suscipit dignissimos
-                magni iste explicabo nesciunt!
               </div>
             </div>
-          </div>
+          )}
         </div>
         <button className="main-form_submit">Подтвердить заказ</button>
       </div>

@@ -243,7 +243,7 @@
     font-size: 16px
     margin-left: 22px
 
-    color: #007dfd
+    color: var(--color)
   input
     background: none
     &::placeholder
@@ -393,6 +393,7 @@
     max-width: 540px
     // align-items: center
   .search_section
+    max-width: 540px
     &__catalog
       width: 25%
     &__search_block
@@ -407,8 +408,23 @@
         width: 35px
         height: 35px
 @media (max-width: 575px)
+  .search_section
+    max-width: 390px
+    &__logo
+      img
+        width: 33px
+        height: 22px
+    &__catalog
+      padding: 0px 9px 0px 5px
+      height: 32px
+      width: 77px
+      font-size: 12px
+      &_arrow
+        margin-left: 6px
+        width: 7px
+        height: 7px
   .container
-    max-width: 100%
+    max-width: 300px
   // .search_section
   //   &__search_block
   //     width: 100%

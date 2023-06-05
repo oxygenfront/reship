@@ -7,6 +7,10 @@ input[type="checkbox"]
     border-radius: 5px
     background: #E8EBF5
     outline: none
+    &:hover
+
+        cursor: pointer
+
     &::before
         content: ''
         display: inline-block
@@ -15,6 +19,7 @@ input[type="checkbox"]
         background-color: #E8EBF5
         border-radius: 5px
         transition: all 0.3s ease-in-out
+
     &:checked::before
         background-color: #0540F2
 
@@ -23,7 +28,9 @@ input[type="checkbox"]
 .catalog
     margin-bottom: 100px
     &__empty
-        width: 400px
+        padding-top: 100px
+        width: 500px
+        height: 515px
         font-weight: 600
         font-size: 40px
         margin-left: 30px
@@ -97,6 +104,11 @@ input[type="checkbox"]
                         background: none
                         border-radius: 30px
                         color: var(--color)
+                        &:hover
+                            transition: background 0.2s ease-in
+
+                            cursor: pointer
+                            background: #AEC5F2
                 &_row
                     display: flex
                     justify-content: center
@@ -195,7 +207,7 @@ input[type="checkbox"]
                     font-weight: 500
     &__sort
         width: 256px
-        height: 910px
+        height: fit-content
         border-radius: 30px
         margin-right: 30px
         border: 1px solid #0540F2

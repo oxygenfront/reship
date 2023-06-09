@@ -1593,6 +1593,7 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
+    
     if (missingKey) {
       return response
         .status(400)

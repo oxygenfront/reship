@@ -578,6 +578,10 @@ class ApiPostController {
         !tools.checkJsonKey(request.body, "parameters_avail") ||
         !tools.checkJsonKey(request.body, "image_links") ||
         !tools.checkJsonKey(request.body, "category") ||
+        // !tools.checkJsonKey(request.body, "info_category") ||
+        !tools.checkJsonKey(request.body, "brand") ||
+        !tools.checkJsonKey(request.body, "feature") ||
+        !tools.checkJsonKey(request.body, "type") ||
         !tools.checkJsonKey(request.body, "token")
       ) {
         return response
@@ -597,11 +601,15 @@ class ApiPostController {
       const old_price = tools.delInjection(request.body.old_price);
       const price = tools.delInjection(request.body.price);
       const availability = tools.delInjection(request.body.availability);
+      // const info_category = tools.delInjection(request.body.info_category);
+      const brand = tools.delInjection(request.body.brand);
+      const feature = tools.delInjection(request.body.feature);
 
       const colors = JSON.parse(request.body.colors);
       const colors_avail = JSON.parse(request.body.colors_avail);
       const parameters = JSON.parse(request.body.parameters);
       const parameters_avail = JSON.parse(request.body.parameters_avail);
+      const type = JSON.parse(request.body.type);
 
       const image_links = JSON.parse(request.body.image_links);
       const category = tools.delInjection(request.body.category);
@@ -625,13 +633,13 @@ class ApiPostController {
               });
             } else {
               database.query(
-                `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
+                `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`, \`brand\`, \`feature\`, \`type\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
                   colors
                 )}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(
                   parameters
                 )}', '${JSON.stringify(parameters_avail)}', '${JSON.stringify(
                   image_links
-                )}', '${category}', '');`,
+                )}', '${category}', '', '${brand}', '${feature}', '${JSON.stringify(type)}');`,
                 (error, rows, fields) => {
                   if (error) {
                     return response

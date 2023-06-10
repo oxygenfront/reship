@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react'
 import InputMask from 'react-input-mask'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUserData } from '../redux/slices/authSlice'
-import { fetchChangeBasic } from '../redux/slices/changeSlice'
+import {
+  fetchChangeBasic,
+  fetchChangeDelivery,
+  fetchChangePassword,
+} from '../redux/slices/changeSlice'
 
 function Settings() {
   const dispatch = useDispatch()
@@ -12,6 +16,12 @@ function Settings() {
     profile: true,
     contacts: false,
     adress: false,
+    password: false,
+  })
+  const [changePassword, setChangePassword] = useState({
+    curr_password: '',
+    new_password: '',
+    conf_password: '',
   })
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
@@ -38,13 +48,14 @@ function Settings() {
     country: '',
     city: '',
     street: '',
-    postal_code: '',
     flat_number: '',
+    postal_code: '',
   })
   const [change, setChange] = useState({
     profile: false,
     contacts: false,
     adress: false,
+    password: false,
   })
 
   const updateProfile = (e) => {
@@ -56,6 +67,18 @@ function Settings() {
   const updateContacts = (e) => {
     setChangeContacts({
       ...changeContacts,
+      [e.target.name]: e.target.value,
+    })
+  }
+  const updateAdress = (e) => {
+    setChangeAdress({
+      ...changeAdress,
+      [e.target.name]: e.target.value,
+    })
+  }
+  const updatePassword = (e) => {
+    setChangePassword({
+      ...changePassword,
       [e.target.name]: e.target.value,
     })
   }
@@ -82,18 +105,62 @@ function Settings() {
     }
   }
 
+  const onClickSaveDelivery = async () => {
+    const data = await dispatch(
+      fetchChangeDelivery({
+        new_delivery: JSON.stringify({
+          adress: Object.values(changeAdress).join(', '),
+        }),
+        token,
+      })
+    )
+    console.log(data)
+    if (!data.payload) {
+      return alert('Не удалось изменить адрес')
+    }
+    if (data.payload) {
+      return alert('Адрес успешно изменен')
+    }
+  }
+  const onClickSavePassword = async () => {
+    const data = await dispatch(
+      fetchChangePassword({
+        password: changePassword.curr_password,
+        new_password: changePassword.new_password,
+        token,
+      })
+    )
+    if (!data.payload) {
+      return alert('Не удалось изменить пароль')
+    }
+    if (data.payload) {
+      return alert('Пароль успешно изменен')
+    }
+
+    setChangePassword({ curr_password: '', new_password: '' })
+  }
+
   useEffect(() => {
     if (status === 'success') {
+      const adress = JSON.parse(data.adress_delivery)?.adress.split(',')
       setChangeProfile({
         first_name: data.first_name,
         last_name: data.last_name,
       })
       setChangeContacts({
         new_email: data.email,
-        new_country: data.adress_delivery,
+        new_country: JSON.parse(data.adress_delivery).adress,
 
         new_date: timeConverter(data.date_of_birth),
         new_number_tel: '+77771007777',
+      })
+
+      setChangeAdress({
+        country: 'Россия',
+        city: adress[0] === 'Россия' ? adress[1] : adress[0],
+        street: adress[0] === 'Россия' ? adress[2] : adress[1] || '',
+        flat_number: adress[0] === 'Россия' ? adress[3] : adress[2] || '',
+        postal_code: adress[0] === 'Россия' ? adress[4] : adress[3] || '',
       })
     }
   }, [status])
@@ -141,6 +208,18 @@ function Settings() {
               >
                 <span>Мои адреса</span>
               </div>
+              <div
+                onClick={() => (
+                  setActive({ password: true }), setChange({ profile: false })
+                )}
+                className={
+                  active.password
+                    ? 'settings__buttons-block_item active'
+                    : 'settings__buttons-block_item'
+                }
+              >
+                <span>Изменение пароля</span>
+              </div>
             </div>
 
             <div className="settings__change-wrapper">
@@ -156,7 +235,7 @@ function Settings() {
                           {data.first_name} {data.last_name}
                         </div>
                         <div className="settings__profile-preview_info-block_about">
-                          {data.adress_delivery} <br />
+                          {changeAdress.country}, {changeAdress.city} <br />
                           {new Date(Date.now()).getFullYear() -
                             new Date(data.date_of_birth).getFullYear()}{' '}
                           лет
@@ -379,6 +458,9 @@ function Settings() {
                             Страна
                           </div>
                           <input
+                            value={changeAdress.country}
+                            onChange={updateAdress}
+                            name="country"
                             type="text"
                             className="settings__change_block_inputs-item"
                           />
@@ -388,6 +470,9 @@ function Settings() {
                             Город
                           </div>
                           <input
+                            value={changeAdress.city}
+                            onChange={updateAdress}
+                            name="city"
                             type="text"
                             className="settings__change_block_inputs-item"
                           />
@@ -399,6 +484,9 @@ function Settings() {
                             Улица
                           </div>
                           <input
+                            value={changeAdress.street}
+                            onChange={updateAdress}
+                            name="street"
                             type="text"
                             className="settings__change_block_inputs-item"
                           />
@@ -408,6 +496,9 @@ function Settings() {
                             Почтовый индекс
                           </div>
                           <input
+                            value={changeAdress.postal_code}
+                            onChange={updateAdress}
+                            name="postal_code"
                             type="text"
                             className="settings__change_block_inputs-item"
                           />
@@ -419,6 +510,9 @@ function Settings() {
                             Квартира
                           </div>
                           <input
+                            value={changeAdress.flat_number}
+                            onChange={updateAdress}
+                            name="flat_number"
                             type="text"
                             className="settings__change_block_inputs-item"
                           />
@@ -431,7 +525,10 @@ function Settings() {
                         >
                           Отменить
                         </button>
-                        <button className="settings__change_block_buttons_save">
+                        <button
+                          className="settings__change_block_buttons_save"
+                          onClick={onClickSaveDelivery}
+                        >
                           Сохранить изменения
                         </button>
                       </div>
@@ -477,6 +574,105 @@ function Settings() {
                         <div className="settings__change_block_inputs-wrapper">
                           <div className="settings__change_block_title">
                             Квартира
+                          </div>
+                          <div className="settings__change_block_inputs-item"></div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : null}
+              {active.password ? (
+                <div className="settings__change">
+                  <div className="settings__change_title">Изменение пароля</div>
+
+                  {change.password ? (
+                    <div className="settings__change_block">
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
+                            Текущий пароль
+                          </div>
+                          <input
+                            onChange={updatePassword}
+                            value={changePassword.curr_password}
+                            name="curr_password"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                          />
+                        </div>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
+                            Новый пароль
+                          </div>
+                          <input
+                            onChange={updatePassword}
+                            value={changePassword.new_password}
+                            name="new_password"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                          />
+                        </div>
+                      </div>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
+                            Повторите пароль
+                          </div>
+
+                          <input
+                            onChange={updatePassword}
+                            value={changePassword.conf_password}
+                            name="conf_password"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                          />
+                        </div>
+                      </div>
+                      <div className="settings__change_block_buttons">
+                        <button
+                          className="settings__change_block_buttons_cancel"
+                          onClick={() => setChange({ password: false })}
+                        >
+                          Отменить
+                        </button>
+                        <button
+                          onClick={onClickSavePassword}
+                          className="settings__change_block_buttons_save"
+                        >
+                          Сохранить изменения
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="settings__change_block">
+                      <button
+                        className="settings__change-btn contacts"
+                        onClick={() =>
+                          setChange({ password: !change.password })
+                        }
+                      >
+                        <img src="../assets/img/pen-edit.png" alt="" />
+                      </button>
+
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
+                            Текущий пароль
+                          </div>
+                          <div className="settings__change_block_inputs-item"></div>
+                        </div>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
+                            Новый пароль
+                          </div>
+                          <div className="settings__change_block_inputs-item"></div>
+                        </div>
+                      </div>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
+                            Повторите пароль
                           </div>
                           <div className="settings__change_block_inputs-item"></div>
                         </div>

@@ -74,20 +74,6 @@ const Personal = () => {
     })
   }
 
-  // const onClickSavePassword = async () => {
-  //   const data = await dispatch(fetchChangePassword(password))
-  //   if (!data.payload) {
-  //     return alert('Не удалось изменить пароль')
-  //   }
-  //   if (data.payload) {
-  //     return alert('Пароль успешно изменен')
-  //   }
-
-  //   setChangeState({
-  //     changePassword: !changeState.changePassword,
-  //   })
-  //   setPassword({ lastPassword: '', newPassword: '' })
-  // }
   // const onClickSaveEmail = async () => {
   //   const data = await dispatch(fetchChangeEmail(email))
   //   if (!data.payload) {

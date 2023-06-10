@@ -52,14 +52,14 @@ const Register = () => {
     e.preventDefault()
     setCheckPass(true)
   }
-
+  
   const sendForm = async (e) => {
     e.preventDefault()
-
+    
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true)
       console.log(form)
-      const data = await dispatch(fetchRegister(form))
+      const data = await dispatch(fetchRegister({...form, adress_delivery: JSON.stringify({adress})}))
       if (!data.payload) {
         return alert('Не удалось зарегистрироваться')
       }

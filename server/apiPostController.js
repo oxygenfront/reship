@@ -59,7 +59,7 @@ class ApiPostController {
             let new_token = "reship.api." + tools.createToken(50);
 
             database.query(
-              "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`) VALUES " +
+              "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`, `number_tel`, `country`) VALUES " +
                 `('${first_name}', '${last_name}', '${email}', '/client/public/assets/user_img/default.jpg', '${JSON.stringify(
                   adress_delivery
                 )}', '${new_token}', '${Date.now()}', '${crypto
@@ -67,12 +67,12 @@ class ApiPostController {
                   .update(password)
                   .digest("hex")}', '1', '${JSON.stringify(
                   []
-                )}', '0', '${JSON.stringify([])}', '${date_of_birth_unix}');`,
+                )}', '0', '${JSON.stringify([])}', '${date_of_birth_unix}', '', '');`,
               (error, rows, fields) => {
                 if (error) {
                   return response
                     .status(500)
-                    .json({ error: "Ошибка на сервере", bcode: 1.2 });
+                    .json({ error: "Ошибка на сервере", bcode: 1.2, e:error });
                 }
 
                 let activation_code = tools.createToken(50);

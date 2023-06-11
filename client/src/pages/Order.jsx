@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { isEmail } from 'validator'
 import InputMask from 'react-input-mask'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { fetchCreateOrder } from '../redux/slices/orderSlice'
-import { fetchAuthMe, selectUserData } from '../redux/slices/authSlice'
+import { fetchAuthMe } from '../redux/slices/authSlice'
 
-import { clearItems, selectCart } from '../redux/slices/cartSlice'
+import { clearItems } from '../redux/slices/cartSlice'
 import { getCartFromLS } from '../utils/getCartFromLs'
 import { calcTotalPrice } from '../utils/calcTotalPrice'
 const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
-  const { data, status } = useSelector(selectUserData)
+
   const { cartItems } = getCartFromLS()
   const totalPrice = calcTotalPrice(cartItems)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
@@ -19,27 +19,20 @@ const Order = () => {
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
   const initialState = {
-    init: '',
+    first_name: '',
+    last_name: '',
     number: '',
     email: '',
-    city: '',
-    street: '',
-    number_home: '',
-    number_flat: '',
-    postal_code: '',
+    adress: '',
     promocode: '',
     basket: [],
-    customer_id: '',
   }
   const [order, setOrder] = useState({
-    init: '',
+    first_name: '',
+    last_name: '',
     number: '',
     email: '',
-    city: '',
-    street: '',
-    number_home: '',
-    number_flat: '',
-    postal_code: '',
+    adress: '',
     token,
     promocode: window.localStorage.getItem('promocode')
       ? window.localStorage.getItem('promocode')
@@ -70,16 +63,14 @@ const Order = () => {
       localStorage.removeItem('promocode')
       dispatch(clearItems())
       dispatch(fetchAuthMe(token))
+      setOrder(initialState)
     }
-    setOrder(initialState)
+
     setIsValidEmail(isEmail(order.email))
 
     console.log(isValidEmail)
   }
 
-  useEffect(() => {
-    status === 'success' && setOrder({ customer_id: data.id })
-  }, [status])
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)
@@ -106,25 +97,51 @@ const Order = () => {
                   <div className="main-form_buyer_item_inputs_input_title">
                     Имя
                   </div>
-                  <input type="text" name="init" id="" onChange={updateOrder} />
+                  <input
+                    type="text"
+                    name="first_name"
+                    id=""
+                    value={order.first_name}
+                    onChange={updateOrder}
+                  />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Фамилия
                   </div>
-                  <input type="text" name="init" id="" onChange={updateOrder} />
+                  <input
+                    type="text"
+                    name="last_name"
+                    id=""
+                    value={order.last_name}
+                    onChange={updateOrder}
+                  />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Номер телефона
                   </div>
-                  <input type="text" />
+                  <InputMask
+                    name="number"
+                    type="text"
+                    mask="+7 (999) 999-99-99"
+                    onChange={updateOrder}
+                    value={order.number}
+                    placeholder="+7 (___) ___-__-__"
+                    className="settings__change_block_inputs-item"
+                  />
                 </div>
                 <div className="main-form_buyer_item_inputs_input_wrapper">
                   <div className="main-form_buyer_item_inputs_input_title">
                     Электронная почта
                   </div>
-                  <input type="text" name="" id="" />
+                  <input
+                    type="text"
+                    id=""
+                    name="email"
+                    value={order.email}
+                    onChange={updateOrder}
+                  />
                 </div>
               </div>
               <div className="main-form_buyer_item_buttons">
@@ -177,13 +194,28 @@ const Order = () => {
               <div className="main-form_adress_item_title">
                 <p>Адрес 1</p>
               </div>
-              <p>Москва, Ленинский проспект, кв31</p>
+              <p
+                onClick={(e) =>
+                  setOrder({
+                    ...order,
+                    adress: JSON.stringify({ adress: e.target.innerHTML }),
+                  })
+                }
+              >
+                Москва, Ленинский проспект, кв31
+              </p>
             </div>
             <div className="main-form_adress_item">
               <div className="main-form_adress_item_title">
                 <p>Адрес 2</p>
               </div>
-              <p>Москва, Ленинский проспект, кв31</p>
+              <p
+                onClick={(e) =>
+                  setOrder({ ...order, adress: e.target.innerHTML })
+                }
+              >
+                Москва, Ленинский проспект, кв32
+              </p>
             </div>
           </div>
         </div>
@@ -299,7 +331,9 @@ const Order = () => {
             </div>
           )}
         </div>
-        <button className="main-form_submit">Подтвердить заказ</button>
+        <button className="main-form_submit" onClick={sendForm}>
+          Подтвердить заказ
+        </button>
       </div>
     </section>
   )

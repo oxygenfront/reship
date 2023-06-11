@@ -86,8 +86,9 @@
 
   &_container
     position: fixed
+    margin: 0 auto
     margin-top: 208px
-    margin-left: 499px
+
     overflow: hidden
     inset: 0
 
@@ -119,6 +120,7 @@
   top: 0
   width: 100%
   z-index: 50
+
   &__container
     display: flex
     justify-content: space-between
@@ -136,7 +138,7 @@
     height: 42px
     display: flex
     justify-content: center
-    border: 1px solid #0540F2
+    border: 1px solid #416EF2
     border-radius: 30px
     align-items: center
     font-size: 16px
@@ -180,7 +182,7 @@
     align-items: center
     justify-content: space-between
 
-    border: 1px solid #0540F2
+    border: 1px solid #416EF2
     border-radius: 50px
 
     font-size: 23px
@@ -206,7 +208,7 @@
         position: absolute
         top: -6px
         right: -23px
-        background: #0540F2
+        background: #416EF2
         border-radius: 10px
     &_heart
       padding-top: 3px
@@ -221,7 +223,7 @@
         position: absolute
         top: -6px
         right: 38px
-        background: #0540F2
+        background: #416EF2
         border-radius: 10px
 
   &__search_block_glass
@@ -248,6 +250,7 @@
     background: none
     &::placeholder
       color: var(--color)
+      opacity: 0.5
 
   &__registr_block
     width: 14.68%
@@ -287,7 +290,7 @@
     display: flex
     justify-content: center
     align-items: center
-    background: #0540F2
+    background: #416EF2
     border-radius: 30px
     font-size: 18px
     color: white
@@ -298,20 +301,24 @@
   display: inline-block
   text-align: left
   z-index: 50
+
   &_wrapper
     position: relative
     display: block
+
   &_button
     background: none
     display: block
+
   &_items
+
     position: absolute
     z-index: 40
     right: 0px
     margin-top: 8px
     width: 210px
     border-radius: 30px
-    background: var(--togray)
+    background: var(--background-color)
     display: flex
     justify-content: flex-start
 
@@ -334,7 +341,7 @@
       border-radius: 30px
       color: var(--color)
       &_quit
-        color: #0540F2
+        color: #416EF2
         padding: 8px 0 0 11px
         text-align: left
         font-size: 16px

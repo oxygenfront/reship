@@ -128,3 +128,16 @@
         height: 3px
         background: white
         left: 13px
+@media (max-width: 1199px)
+    .reviews
+        &__slider
+            &_slide
+                &_item
+                    width: 440px !important
+@media (max-width: 991px)
+    .reviews
+        &__slider
+            &_slide
+                &_item
+                    &:not(:last-child)
+                        margin-bottom: 40px

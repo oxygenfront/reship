@@ -2,30 +2,41 @@
   .container
     max-width: 960px
   .main-catalog
-    &__buttons
-      width: 52%
-    &__preview
-      &-lg
-        height: 400px
-        width: 250px
-      &-sm
+    &__slider
+      & .swiper-button-prev
+        left: -100px
+      & .swiper-button-next
+        right: -100px
+      &-slide
+        width: 283px !important
+        height: 270px !important
+    &__lg
+      &-items
         &-item
-          width: 180px
-          height: 190px
+          width: 430px
+          height: 450px
+    &__products-wrapper
+      grid-template-columns: repeat(3, 280px)
   .person__reviews-buttons-item
     font-size: 17px
-  .delpay__grid
-    grid-template-columns: repeat(3, 280px)
-    &-item
-      width: 285px
-      padding: 55px 28px
+  .delpay
+    &__slider
+      &_item
+        width: 435px !important
+      & .swiper-button-prev
+        left: 390px
+        top: 290px
+      & .swiper-button-next
+        right: 410px
+        top: 290px
+
   .catalog
     &__items-block
       grid-template-columns: repeat(3, 295px)
 @media (max-width: 991px)
   .person__reviews
     &-buttons
-      
+
   .container
     max-width: 720px
   .desc-section
@@ -51,24 +62,20 @@
           font-size: 19px
 
   .main-catalog
-    &__buttons
-      width: 69%
-    &__preview
-      flex-direction: column
-      &-lg
-        height: 490px
+    &__slider
+      & .swiper-button-prev
+        left: -100px
+      & .swiper-button-next
+        right: -100px
+      &-slide
+        width: 330px !important
+        height: 290px !important
+    &__products-wrapper
+      grid-template-columns: repeat(2, 305px)
+    &__lg-items
+      &-item
         width: 330px
-        & img
-          width: 100%
-      &-sm
-        flex-direction: unset
-        &-item
-          width: 160px
-          height: 190px
-      &_lg-wrapper
-        display: flex
-        justify-content: space-between
-        margin-bottom: 30px
+        height: 380px
   .reviews
     &__main-block
       &__links
@@ -82,12 +89,55 @@
           font-size: 20px
           padding: 23px 30px
   .delpay
-    &__grid
-      grid-template-columns: repeat(2, 320px)
-      grid-row-gap: 35px
-      &-item
-        width: 320px
-        padding: 55px 45px
+    &__slider
+      &_item
+        padding: 0
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-direction: column
+        width: 100% !important
+        &_step
+        &_description
+          text-align: center
+          font-size: 30px
+      & .swiper-button-prev
+        left: 290px
+        top: 290px
+      & .swiper-button-next
+        right: 290px
+        top: 290px
+  .reviews
+    &__title
+      text-align: center
+    &__slider
+      position: unset
+      &-wrapper
+        position: relative
+      &-slide
+        height: unset !important
+        &_two-items
+          flex-direction: column
+          align-items: center
+      & .swiper-button-prev
+        left: 280px
+        top: 950px
+      & .swiper-button-next
+        right: 280px
+        top: 950px
+  .review__banner
+    &-title
+      width: 453px
+    &-decoration
+      &.s
+      &.m
+      &.l
+      &.xl
+        right: 12px
+        bottom: 145px
+        width: 100px
+        height: 100px
+
   .faq
     &__title
       font-size: 38px
@@ -113,11 +163,11 @@
   .cart
     &__total-wrapper-buttons
       &_link
-          padding: 24px 55px
+        padding: 24px 55px
       &_inp
-          width: 360px
+        width: 360px
 @media (max-width: 767px)
-  
+
   .container
     max-width: 540px
   .reviews
@@ -164,10 +214,10 @@
             font-size: 18px
     &__total-wrapper-buttons
       &_link
-          padding: 24px 42px
+        padding: 24px 42px
       &_inp
-          width: 250px
-          padding: 0 39px
+        width: 250px
+        padding: 0 39px
   .desc-section
     &__flex-block_txt
       font-size: 21px
@@ -183,40 +233,56 @@
         &_bottom
           font-size: 15px
   .main-catalog
-    &__buttons
-      width: 93%
-    &__preview
-      &-lg
-        height: 423px
-        width: 240px
-      &-sm
-        &-item
-          width: 120px
-          height: 150px
-          font-size: 18px
-  .reviews
-    &__main-block
-      &-title
-        font-size: 37px
-      &__links
-        width: unset
-        &-link
-          padding: 24px 23px
-          font-size: 20px
-        &-desc
-          font-size: 18px
-          padding: 22px 24px
-  .delpay
-    &__grid
-      grid-template-columns: repeat(2, 240px)
+    &__title
+      text-align: center
+    &__slider
+      & .swiper-button-prev
+        left: -100px
+      & .swiper-button-next
+        right: -100px
+      &-slide
+        width: 100% !important
+        height: 290px !important
+    &__products-wrapper
+      grid-template-columns: repeat(1, 305px)
+      justify-content: center
+    &__lg-items
+      flex-direction: column
+      align-items: center
       &-item
-        width: 240px
-        padding: 45px 29px
+        width: 80%
+        height: 450px
+        &:not(:last-child)
+          margin-bottom: 36px
+  .reviews
+    &__slider
+      &-wrapper
+      &-slide
+        &_two-items
+      & .swiper-button-prev
+        left: 190px
+        top: 950px
+      & .swiper-button-next
+        right: 190px
+        top: 950px
+  .delpay
+    &__slider
+      &_item
+        &_step
+        &_description
+          font-size: 25px
+      & .swiper-button-prev
+        left: 185px
+        top: 290px
+      & .swiper-button-next
+        right: 185px
+        top: 290px
+    
   .faq
     &__title
-      font-size: 40px
+      font-size: 45px
       span
-        font-size: 40px
+        font-size: 45px
     &__item
       &-first-block
         padding-right: 27px
@@ -268,10 +334,10 @@
     &-section-search__search-block
       width: 476px
     &__items-block
-      grid-template-columns: repeat(2, 247px)     
+      grid-template-columns: repeat(2, 247px)
 @media (max-width: 575px)
   .container
-    max-width: 400px
+    max-width: 100%
   .cart__title
     text-align: center
   .cart
@@ -319,26 +385,33 @@
       &_bottom
         font-size: 20px
   .main-catalog
-    &__container
-      display: flex
-      flex-direction: column
-      align-items: center
     &__title
-      font-size: 37px
-    &__buttons
-      width: 100%
+      text-align: left
+    &__slider
+      margin-bottom: 138px
+      &-sm_title
+        font-size: 30px
+      &-slide
+        width: 100% !important
+        height: 200px !important
+      & .swiper-button-prev
+        top: 300px
+        left: 190px
+      & .swiper-button-next
+        top: 300px
+        right: 190px
+      & .swiper-pagination
+        bottom: 0 !important
+    &__lg-items
       &-item
-        padding: 8px
-    &__preview
-      &-lg
-        width: 350px
-        height: 564px
-        margin-bottom: 50px
-      &-sm
+        width: 100%
+        height: 550px
         &:not(:last-child)
-          margin-bottom: 20px
-        &-item
-          width: 165px
+          margin-bottom: 36px
+    &__products-buttons
+      margin-right: auto
+      margin-left: auto
+      
   .reviews
     &__main-block
       align-items: center
@@ -347,19 +420,7 @@
       &__links
         width: unset
   .delpay
-    &__container
-      display: flex
-      flex-direction: column
-      align-items: center
-    &__title
-      font-size: 37px
-    &__suptitle
-      font-size: 19px
-    &__grid
-      grid-template-columns: repeat(1, 320px)
-      &-item
-        padding: 73px 45px
-        width: 320px
+    
   .faq
     &__container
       display: flex
@@ -382,7 +443,7 @@
         &_wrapper
           display: flex
           flex-direction: column
-          align-items: center 
+          align-items: center
     &__img-block
       margin-right: unset
       margin-bottom: 34px
@@ -418,4 +479,4 @@
     &-section-search__search-block
       width: 100%
     &__items-block
-      grid-template-columns: repeat(1, 270px)  
+      grid-template-columns: repeat(1, 270px)

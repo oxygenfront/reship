@@ -1,0 +1,110 @@
+
+.modal
+	z-index: 50
+	position: relative
+	overflow: hidden
+	&_title
+		color: var(--color)
+		font-size: 40px
+		font-weight: 600
+		margin-bottom: 43px
+	&_bg
+		position: fixed
+		inset: 0
+		background-color: rgba(0, 0, 0, 0.3)
+
+	&_container
+		position: fixed
+		margin: 0 auto
+		margin-top: 150px
+		overflow: hidden
+		inset: 0
+
+		height: 694px
+		width: 637px
+
+		padding: 30px
+
+		background: var(--background-color)
+		border-radius: 30px
+		color: #000
+
+		overscroll-behavior: contain
+.item
+	border: 1px solid #416EF2
+	border-radius: 30px
+	display: flex
+	justify-content: space-between
+	align-items: flex-start
+	padding-top: 25px
+	padding-right: 15px
+	height: 102px
+	margin-bottom: 35px
+
+	&_checkbox
+		margin-bottom: 35px
+		display: flex
+		align-items: center
+		font-weight: 600
+		font-size: 16px
+		color: var(--color)
+		input
+			margin-left: 10px
+	&_inp
+		resize: none
+		width: 577px
+		height: 140px
+		padding-left: 10px
+		display: flex
+		align-items: flex-start
+		background: var(--togray)
+		border-radius: 30px
+		color: var(--color)
+		padding: 20px
+		margin-bottom: 22px
+	&_title
+		p
+			color: var(--color)
+			font-weight: 500
+			font-size: 16px
+			margin-bottom: 10px
+	&_right
+		span
+			font-weight: 600
+			font-size: 20px
+			color: #416EF2
+	&_left
+		display: flex
+	&_img
+		img
+			width: 80px
+	&_wrapper
+		width: 408px
+	&_titles
+		display: flex
+		justify-content: space-between
+		align-items: center
+		margin-bottom: 22px
+		color: var(--color)
+		font-weight: 500
+		font-size: 16px
+		margin-bottom: 10px
+.btns
+	width: 550px
+	display: flex
+	justify-content: flex-end
+	gap: 15px
+	&_cancel
+		color: #416EF2
+		border: 1px solid #2356F3
+		border-radius: 30px
+		font-weight: 500
+		font-size: 16px
+		width: 123px
+		height: 44px
+	&_submit
+		width: 145px
+		height: 44px
+		color: #fff
+		background: #416EF2
+		border-radius: 30px

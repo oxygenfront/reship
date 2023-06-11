@@ -21,7 +21,7 @@
     display: flex
     justify-content: space-between
     margin-bottom: 40px
-    color: #0528F2
+    color: #416EF2
   &__title
     font-size: 24px
     margin-bottom: 30px
@@ -50,15 +50,26 @@
   .footer
     &__title
 @media (max-width: 991px)
-
+  .footer
+    &__container
+      padding: 0 25px
 @media (max-width: 767px)
-
+  .footer
+    &__title
+      font-size: 20px
+    &__block
+      &_social
+        img
+          width: 26px
+      &_suptitle
+        font-size: 14px
 @media (max-width: 575px)
 
   .footer
     &__container
       flex-wrap: wrap
       max-width: 390px
+      padding: 0px 10px
     &__titles
       flex-wrap: wrap
       justify-content: flex-start
@@ -69,7 +80,8 @@
     &__block
 
       &_social
+        align-items: flex-start
         img
-          width: 24px
+          width: 18px
       &_suptitle
         font-size: 12px

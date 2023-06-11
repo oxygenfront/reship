@@ -100,8 +100,8 @@ const Cart = () => {
                             (totalPrice + deliveryPrice) *
                               (1 -
                                 window.localStorage.getItem('promocode') / 100)
-                          )
-                        : totalPrice + deliveryPrice}{' '}
+                          ).toLocaleString()
+                        : (totalPrice + deliveryPrice).toLocaleString()}
                       ₽
                     </span>
                   </div>

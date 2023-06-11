@@ -13,9 +13,11 @@ export const fetchCreateOrder = createAsyncThunk(
 export const fetchGetOrdersById = createAsyncThunk(
   'order/fetchGetOrderById',
   async (id) => {
-    
-    const { data } = await axios.post('/getOrdersByCustomerId', id)
-    console.log(data)
+    const { data } = await axios.post(
+      `/getOrdersByCustomerId?&type=${id.type}`,
+      id
+    )
+
     return data
   }
 )
@@ -23,6 +25,8 @@ export const fetchGetOrdersById = createAsyncThunk(
 const initialState = {
   data: null,
   status: 'loading',
+  orders: [],
+  ordersStatus: 'loading',
 }
 
 const orderSlice = createSlice({
@@ -43,16 +47,16 @@ const orderSlice = createSlice({
       state.data = null
     })
     builder.addCase(fetchGetOrdersById.pending, (state, action) => {
-      state.status = 'loading'
-      state.data = null
+      state.ordersStatus = 'loading'
+      state.orders = []
     })
     builder.addCase(fetchGetOrdersById.fulfilled, (state, action) => {
-      state.data = action.payload
-      state.status = 'success'
+      state.orders = action.payload
+      state.ordersStatus = 'success'
     })
     builder.addCase(fetchGetOrdersById.rejected, (state, action) => {
-      state.status = 'error'
-      state.data = null
+      state.ordersStatus = 'error'
+      state.orders = []
     })
   },
 })

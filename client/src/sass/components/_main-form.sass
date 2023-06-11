@@ -4,39 +4,92 @@
     align-items: flex-start
 
     padding: 50px
-    border: 2px solid #0540F2
+    border: 2px solid #416EF2
     border-radius: 30px
     &_submit
-        background: #0528F2
+        background: #416EF2
         border-radius: 30px
         color: #fff
         width: 264px
         height: 55px
-    &_delivery
+    &_payment
         margin-bottom: 100px
         &_items
             display: flex
             flex-direction: column
             gap: 20px
+
+            &_item
+
+                text-align: left
+                display: flex
+                gap: 115px
+
+                padding-bottom: 17px
+                &:not(:last-child)
+                    border-bottom: 2px solid #E8EBF5
+
+                &_bank
+                    width: 85px
+
         &_item
-            width: 640px
-            height: 123px
-            border: 1px solid #0528F2
+            width: 604px
+            height: 265px
+            border: 1px solid #416EF2
             border-radius: 30px
-            padding: 25px 23px
-            &_title
-                font-weight: 600
-                font-size: 20px
-                color: var(--color)
-            &_price
-                font-weight: 600
-                font-size: 20px
-                color: #0528F2
-            &_top
+            padding: 18px 20px
+            &_sm
+                padding: 14px
+                width: 361px
+                border: 1px solid #416EF2
+                border-radius: 30px
+                &_title
+                    width: 143px
+                    height: 37px
+                    background: var(--togray)
+                    border-radius: 30px
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    font-weight: 600
+                    color: #416EF2
+                    &_bank
+                        width: 89px
+                        height: 37px
+                        background: var(--togray)
+                        border-radius: 30px
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        font-weight: 600
+                        color: #416EF2
+                &_wrapper
+                    display: flex
+                    justify-content: space-between
+                    align-items: center
+                    &:not(:last-child)
+                        border-bottom: 2px solid #E8EBF5
+                        margin-bottom: 20px
+                        padding-bottom: 13px
+            &_titles
                 display: flex
                 justify-content: space-between
                 align-items: center
-                margin-bottom: 10px
+                margin-bottom: 30px
+                background: var(--togray)
+                border-radius: 30px
+                height: 41px
+                padding: 0px 20px 0px 10px
+
+            &_title
+                font-weight: 600
+                font-size: 20px
+                color: #416EF2
+                &_bank
+                    font-weight: 600
+                    font-size: 20px
+                    color: #416EF2
+                    width: 100px
     &_adress
         margin-bottom: 75px
         &_items
@@ -52,7 +105,7 @@
             &_title
                 font-weight: 600
                 font-size: 20px
-                color: #0528F2
+                color: #416EF2
 
     &__total
         &_delivery
@@ -96,14 +149,14 @@
                 &_1
                     width: 116px
                     height: 44px
-                    color: #0528F2
+                    color: #416EF2
                     background: none
-                    border: 1px solid #0528F2
+                    border: 1px solid #416EF2
                     border-radius: 30px
                 &_2
                     width: 198px
                     height: 44px
-                    background: #0528F2
+                    background: #416EF2
                     border-radius: 30px
                     color: #fff
             &_inputs
@@ -119,7 +172,7 @@
                             border-radius: 30px
 
                     &_title
-                        color: #0528F2
+                        color: #416EF2
                         font-weight: 600
                         font-size: 20px
                         margin-bottom: 10px
@@ -127,7 +180,7 @@
 
                 padding: 15px 30px
                 padding-top: 30px
-                border: 1px solid #0528F2
+                border: 1px solid #416EF2
                 border-radius: 30px
                 width: 640px
                 height: 376px

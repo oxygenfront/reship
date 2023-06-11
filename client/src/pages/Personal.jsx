@@ -74,20 +74,6 @@ const Personal = () => {
     })
   }
 
-  // const onClickSavePassword = async () => {
-  //   const data = await dispatch(fetchChangePassword(password))
-  //   if (!data.payload) {
-  //     return alert('Не удалось изменить пароль')
-  //   }
-  //   if (data.payload) {
-  //     return alert('Пароль успешно изменен')
-  //   }
-
-  //   setChangeState({
-  //     changePassword: !changeState.changePassword,
-  //   })
-  //   setPassword({ lastPassword: '', newPassword: '' })
-  // }
   // const onClickSaveEmail = async () => {
   //   const data = await dispatch(fetchChangeEmail(email))
   //   if (!data.payload) {
@@ -130,9 +116,9 @@ const Personal = () => {
   if (status === 'success' && !isAuth) {
     return <Navigate to="/"></Navigate>
   }
-  if (status === 'success') {
-    data.favorites.map((order) => console.log(order))
-  }
+  // if (status === 'success') {
+  //   data.favorites.map((order) => console.log(order))
+  // }
   // if (calendarValue.length > 0) {
   //   console.log(calendarValue[0].toLocaleString().slice(0, 10))
   //   const timeStamp = new Date(
@@ -344,8 +330,8 @@ const Personal = () => {
               modules={[Navigation]}
               navigation
               speed={1300}
-              slidesPerView={2}
-              spaceBetween={45}
+              slidesPerView={windowWidth < 767 ? 1 : 2}
+              spaceBetween={windowWidth < 575 ? 10 : 45}
               className="personal__reviews-block_slider"
             >
               <SwiperSlide className="personal__reviews-block_slider-item">
@@ -464,7 +450,40 @@ const Personal = () => {
               </SwiperSlide>
             </Swiper>
           </div>
-          {itemsStatus === 'success' && items.length > 0 ? (
+          {windowWidth < 1199 ? (
+            <div>
+              <h1 className="personal__interesting_title">
+                Возможно вам понравятся
+              </h1>
+              <div className="personal__interesting_slider_wrapper">
+                <Swiper
+                  modules={[Navigation]}
+                  navigation
+                  speed={1300}
+                  slidesPerView={windowWidth < 1199 ? 2 : 0}
+                  spaceBetween={windowWidth < 767 ? 10 : 45}
+                  className="personal__interesting_slider"
+                >
+                  {itemsStatus === 'success' &&
+                    items.slice(0, 3).map((item) => (
+                      <>
+                        <SwiperSlide
+                          key={item.id}
+                          className="personal__interesting_slider-item"
+                        >
+                          <Card
+                            view={'grid'}
+                            id={item.id}
+                            price={item.price}
+                            name={item.name}
+                          ></Card>
+                        </SwiperSlide>
+                      </>
+                    ))}
+                </Swiper>
+              </div>
+            </div>
+          ) : itemsStatus === 'success' && items.length > 0 ? (
             <div className="personal__interesting_wrapper">
               <h1 className="personal__interesting_title">
                 Возможно вам понравятся

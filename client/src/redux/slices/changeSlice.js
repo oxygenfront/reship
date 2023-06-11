@@ -8,7 +8,20 @@ export const fetchChangeBasic = createAsyncThunk(
     return data
   }
 )
-
+export const fetchChangePassword = createAsyncThunk(
+  'auth/fetchChangePassword',
+  async (params) => {
+    const { data } = await axios.post('/changePassword', params)
+    return data
+  }
+)
+export const fetchChangeDelivery = createAsyncThunk(
+  'auth/fetchChangeDelivery',
+  async (params) => {
+    const { data } = await axios.post('/changeDelivery', params)
+    return data
+  }
+)
 
 const initialState = {
   data: null,
@@ -18,9 +31,7 @@ const initialState = {
 const changeSlice = createSlice({
   name: 'change',
   initialState,
-  reducers: {
-    
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchChangeBasic.pending, (state, action) => {
       state.status = 'loading'
@@ -31,6 +42,18 @@ const changeSlice = createSlice({
       state.status = 'success'
     })
     builder.addCase(fetchChangeBasic.rejected, (state, action) => {
+      state.status = 'error'
+      state.data = null
+    })
+    builder.addCase(fetchChangePassword.pending, (state, action) => {
+      state.status = 'loading'
+      state.data = null
+    })
+    builder.addCase(fetchChangePassword.fulfilled, (state, action) => {
+      state.data = action.payload
+      state.status = 'success'
+    })
+    builder.addCase(fetchChangePassword.rejected, (state, action) => {
       state.status = 'error'
       state.data = null
     })

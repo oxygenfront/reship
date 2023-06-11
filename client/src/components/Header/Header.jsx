@@ -186,16 +186,17 @@ const Header = () => {
               </div>
             </Switch>
           </div>
-
-          <Link to="/" className={styles.header__delivery}>
-            Доставка и оплата
-          </Link>
-          <Link to="/" className={styles.header__faq}>
-            FAQ
-          </Link>
-          <Link to="/" className={styles.header__comments}>
-            Отзывы
-          </Link>
+          <div className={styles.header_center}>
+            <Link to="/" className={styles.header__delivery}>
+              Доставка и оплата
+            </Link>
+            <Link to="/" className={styles.header__faq}>
+              FAQ
+            </Link>
+            <Link to="/" className={styles.header__comments}>
+              Отзывы
+            </Link>
+          </div>
 
           {isAuth && status === 'success' && data.admin === 1 ? (
             <Link to="/admin" className={styles.header__admin}>

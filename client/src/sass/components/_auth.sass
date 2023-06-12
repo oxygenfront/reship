@@ -1,17 +1,45 @@
 .auth
     margin-top: calc( 120px + 10px )
     margin-bottom: 107px
+    &__button
+        background: #0540F2
+        border-radius: 30px
+        width: 146px
+        height: 47px
+        color: #fff
+    &__bottom
+        display: flex
+        justify-content: space-between
+        align-items: center
+    &__form
+        &-input
+            width: 363px
+            height: 48px
+            padding-left: 25px
+            background: #E8EBF5
+            border-radius: 30px
+            font-size: 16px
+            margin-bottom: 18px
+            &:nth-child(1)
+                margin-top: 25px
+
+    &_wrapper
+        width: 541px
+        height: 613px
+        border: 2px solid #0540F2
+        border-radius: 30px
+        padding: 40px
     &__container
         display: flex
         flex-direction: column
         align-items: center
+
     &__title
         font-weight: 700
         color: var(--towhite)
         font-size: 48px
         margin-bottom: 30px
-        padding-bottom: 30px
-        border-bottom: 2px solid #E8EBF5
+
         width: 100%
         &-reg
             text-align: center
@@ -20,8 +48,9 @@
     &__links
         width: 100%
         display: flex
-        justify-content: space-evenly
+        gap: 10px
         font-size: 17px
+        margin-bottom: 150px
         &-auth
             width: 50%
     &__reg

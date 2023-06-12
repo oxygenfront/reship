@@ -2,7 +2,8 @@ import classNames from 'classnames'
 import React from 'react'
 import styles from './PersonItem.module.sass'
 
-const PersonItem = ({ id, status, image, price, count, name }) => {
+const PersonItem = ({ id, status, color, price, count, name }) => {
+  console.log(id)
   return (
     <div
       className={styles.personal__middle_block_latest_orders_items_block_item}
@@ -17,7 +18,7 @@ const PersonItem = ({ id, status, image, price, count, name }) => {
             styles.personal__middle_block_latest_orders_items_block_item_up_img_block
           }
         >
-          <img src="../assets/products_img/1.png" alt="" />
+          <img src={`../assets/products_img/${id}.png`} alt="" />
         </div>
         <div
           className={
@@ -29,14 +30,14 @@ const PersonItem = ({ id, status, image, price, count, name }) => {
               styles.personal__middle_block_latest_orders_items_block_item_up_info_name
             }
           >
-            Logitech G Pro
+            {name}
           </div>
           <div
             className={
               styles.personal__middle_block_latest_orders_items_block_item_up_info_color
             }
           >
-            Черная
+            {color}
           </div>
         </div>
         <div
@@ -56,7 +57,7 @@ const PersonItem = ({ id, status, image, price, count, name }) => {
               styles.personal__middle_block_latest_orders_items_block_item_up_info_more_price
             }
           >
-            6 800 руб
+            {price.toLocaleString()} руб
           </div>
         </div>
       </div>
@@ -77,7 +78,7 @@ const PersonItem = ({ id, status, image, price, count, name }) => {
             styles.personal__middle_block_latest_orders_items_block_item_bottom_count
           }
         >
-          1шт
+          {count} шт
         </div>
       </div>
     </div>

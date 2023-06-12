@@ -19,3 +19,4 @@ export { default as Settings } from './Settings'
 export { default as Orders } from './Orders'
 
 export { default as Favorites } from './Favorites'
+export { default as NewPassword } from './NewPassword'

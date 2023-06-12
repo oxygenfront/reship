@@ -1,24 +1,20 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { Link, Navigate } from 'react-router-dom'
-import {
-  Card,
-  DeliveryItem,
-  FavoriteItem,
-  Footer,
-  Menu,
-  PersonItem,
-} from '../components'
+import { Card, DeliveryItem, PersonItem } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
 
 import { selectItemsData } from '../redux/slices/itemsSlice'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper'
-import { Menu as DropDown, Popover } from '@headlessui/react'
+import { Menu as DropDown } from '@headlessui/react'
 import { DateRangePicker } from 'rsuite'
+import { fetchGetOrdersById, selectOrderData } from '../redux/slices/orderSlice'
 
 const Personal = () => {
   const dispatch = useDispatch()
+  const { orders, ordersStatus } = useSelector(selectOrderData)
+
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
   const { items, itemsStatus = status } = useSelector(selectItemsData)
@@ -31,59 +27,13 @@ const Personal = () => {
   })
   const [calendarValue, setCalendarValue] = useState([])
   const [isOpen, setIsOpen] = useState(false)
-  const [changeName, setChangeName] = useState(true)
+  const [sortStatus, setSortStatus] = useState('all')
+  const [sortPrice, setSortPrice] = useState('')
   const [personName, setPersonName] = useState({
     firstName: 'Имя',
     lastName: 'Фамилия',
   })
 
-  const updateName = (e) => {
-    setPersonName({
-      ...personName,
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  const [changeState, setChangeState] = useState({
-    changePassword: false,
-    changeEmail: false,
-  })
-  const [password, setPassword] = useState({
-    password: '',
-    new_password: '',
-    token,
-  })
-
-  const updatePassword = (e) => {
-    setPassword({
-      ...password,
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  const [email, setEmail] = useState({
-    new_email: '',
-    password: '',
-    token,
-  })
-
-  const updateEmail = (e) => {
-    setEmail({
-      ...email,
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  // const onClickSaveEmail = async () => {
-  //   const data = await dispatch(fetchChangeEmail(email))
-  //   if (!data.payload) {
-  //     return alert('Не удалось изменить электронную почту')
-  //   }
-  //   if (data.payload) {
-  //     return alert('Электронная почта успешно изменена')
-  //   }
-  //   setChangeState({ changeEmail: !changeState.changeEmail })
-  // }
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
 
@@ -93,6 +43,10 @@ const Personal = () => {
       month: 'long',
     })
   }
+  useEffect(() => {
+    status === 'success' &&
+      dispatch(fetchGetOrdersById({ customer_id: data.id, type: sortStatus }))
+  }, [status])
 
   useEffect(() => {
     function handleResize() {
@@ -131,6 +85,7 @@ const Personal = () => {
   //   ).getTime()
   //   console.log(timeStamp)
   // }
+  console.log(orders)
 
   return (
     <>
@@ -195,7 +150,6 @@ const Personal = () => {
               <div className="personal__middle-block_latest-orders_header">
                 <span>Последние заказы</span>
                 <div className="personal__middle-block_latest-orders_menu_wrapper">
-                  {console.log(isOpen)}
                   <DropDown
                     as="div"
                     className="personal__middle-block_latest-orders_menu"
@@ -271,9 +225,36 @@ const Personal = () => {
                               {sortBy.status === true ? (
                                 <div className="personal__middle-block_latest-orders_menu_items-item_status-wrapper">
                                   <ul>
-                                    <li>Отменено</li>
-                                    <li>Получено</li>
-                                    <li>Ожидает получения</li>
+                                    <li
+                                      className={
+                                        sortStatus === 'no_payed'
+                                          ? 'active'
+                                          : null
+                                      }
+                                      onClick={() => setSortStatus('no_payed')}
+                                    >
+                                      Отменено
+                                    </li>
+                                    <li
+                                      className={
+                                        sortStatus === 'completed'
+                                          ? 'active'
+                                          : null
+                                      }
+                                      onClick={() => setSortStatus('completed')}
+                                    >
+                                      Получено
+                                    </li>
+                                    <li
+                                      className={
+                                        sortStatus === 'waited'
+                                          ? 'active'
+                                          : null
+                                      }
+                                      onClick={() => setSortStatus('waited')}
+                                    >
+                                      Ожидает получения
+                                    </li>
                                   </ul>
                                 </div>
                               ) : null}
@@ -310,9 +291,22 @@ const Personal = () => {
                 </div>
               </div>
               <div className="personal__middle-block_latest-orders_items-block">
-                <PersonItem></PersonItem>
-                <PersonItem></PersonItem>
-                <PersonItem></PersonItem>
+                {ordersStatus === 'success' && orders.length > 0 ? (
+                  orders.map((order) =>
+                    order.products.map((product) => (
+                      <PersonItem
+                        key={product.id}
+                        id={product.id}
+                        name={product.name}
+                        price={product.price}
+                        color={product.color}
+                        count={product.count}
+                      ></PersonItem>
+                    ))
+                  )
+                ) : (
+                  <img src="..assets/img/no-item/png" alt="no-item"></img>
+                )}
 
                 <Link
                   to="/orders"
@@ -466,19 +460,17 @@ const Personal = () => {
                 >
                   {itemsStatus === 'success' &&
                     items.slice(0, 3).map((item) => (
-                      <>
-                        <SwiperSlide
-                          key={item.id}
-                          className="personal__interesting_slider-item"
-                        >
+                      <div key={item.id}>
+                        <SwiperSlide className="personal__interesting_slider-item">
                           <Card
+                            key={item.id}
                             view={'grid'}
                             id={item.id}
                             price={item.price}
                             name={item.name}
                           ></Card>
                         </SwiperSlide>
-                      </>
+                      </div>
                     ))}
                 </Swiper>
               </div>

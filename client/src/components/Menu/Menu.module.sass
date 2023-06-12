@@ -244,8 +244,26 @@
     height: 60px
     font-size: 16px
     margin-left: 22px
-
+    position: relative
     color: var(--color)
+    &_close
+
+      cursor: pointer
+
+      top: 20px
+      left: 10px
+      &::before &::after
+        content: ""
+        position: absolute
+        width: 24px
+        height: 4px
+        background: blue
+      &::before
+        transform: rotate(45deg)
+      &::after
+
+        transform: rotate(-45deg)
+
   input
     background: none
     &::placeholder
@@ -264,7 +282,7 @@
     transition: all 0.2s linear
 
   &__profile_block
-    padding: 0 90px 0 0
+
     max-width: 200px
     display: flex
     align-items: center

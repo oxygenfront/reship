@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
@@ -32,25 +32,31 @@ const Menu = () => {
     status === 'success' ? getFavoritesFromLs(data.favorites) : []
   const { items, itemsStatus = status } = useSelector(selectItemsData)
   const { cartItems } = useSelector(selectCart)
+  const theme = useSelector((state) => state.theme)
 
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
-  const theme = useSelector((state) => state.theme)
+
   const [isOpen, setIsOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [scrollTop, setScrollTop] = useState(0)
+  const [localCategory, setLocalCategory] = useState('мышки')
+  const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
+  const favoriteCount = favorites ? favorites.length : null
+
+  const onChangeCategory = useCallback((sort) => {
+    dispatch(setChoosenCategorie(sort))
+  }, [])
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
       window.localStorage.removeItem('token')
     }
   }
-  const [localCategory, setLocalCategory] = useState('мышки')
-  const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const favoriteCount = favorites ? favorites.length : null
-
-  const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort))
-  }, [])
+  const onClickClear = () => {
+    dispatch(setSearchValue(''))
+  }
 
   useEffect(() => {
     function handleResize() {
@@ -71,8 +77,6 @@ const Menu = () => {
     }
     isMounted.current = true
   }, [cartItems, favorites])
-
-  const [scrollTop, setScrollTop] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => setScrollTop(window.scrollY)
@@ -109,11 +113,15 @@ const Menu = () => {
         )}
         <div className={styles.search_section__search_block}>
           <input
+            value={searchValue}
             type="text"
             placeholder="Поиск по каталогу"
             className={styles.search_section__search_item}
             onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
+          {searchValue ? (
+            <div className={styles.search_section__search_item_close}></div>
+          ) : null}
           <Dialog
             as="div"
             className={styles.modal}

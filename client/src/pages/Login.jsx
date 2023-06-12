@@ -45,12 +45,12 @@ const Login = () => {
     <div>
       <section className="auth">
         <div className="container auth__container">
-          <div className="main-form">
+          <div className="auth_wrapper">
             <h1 className="auth__title">Войти</h1>
-
-            <form className="main-form__form" action="">
+            <hr className="hr"></hr>
+            <form className="auth__form" action="">
               <input
-                className="main-form__form-input"
+                className="auth__form-input"
                 name="email"
                 value={authForm.email}
                 onChange={updateAuthForm}
@@ -58,24 +58,27 @@ const Login = () => {
                 placeholder="Адрес электронной почты"
               />
               <input
-                className="main-form__form-input"
+                className="auth__form-input"
                 name="password"
                 value={authForm.password}
                 onChange={updateAuthForm}
                 type="password"
                 placeholder="Пароль"
               />
-              <button className="buttons__19" type="submit" onClick={sendForm}>
-                Выполнить вход
-              </button>
             </form>
             <div className="auth__links">
-              <Link to="/forgot" className="auth__forgot">
-                Забыли пароль?
-              </Link>
+              Новый пользователь?
               <Link to="/register" className="auth__reg">
-                Зарегистрироваться
+                Зарегистрируйтесь
               </Link>
+            </div>
+            <div className="auth__bottom">
+              <Link to="/forgot" className="auth__reg">
+                Забыл пароль
+              </Link>
+              <button className="auth__button" type="submit" onClick={sendForm}>
+                Выполнить вход
+              </button>
             </div>
           </div>
         </div>

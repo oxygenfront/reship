@@ -28,17 +28,18 @@
                         height: 100%
             &_items_block
                 &_item
+                    height: 150px
                     display: flex
                     flex-direction: column
                     justify-content: space-evenly
                     background: var(--togray)
                     border-radius: 30px
-                    padding: 20px 24px 13px 29px
+                    padding: 15px 15px 13px 15px
                     &:not(:last-child)
                         margin-bottom: 24px
                     &_up
                         display: flex
-                        align-items: flex-end
+                        align-items: center
                         justify-content: space-between
                         margin-bottom: 8px
                         &_img_block
@@ -52,6 +53,7 @@
                         &_info
                             margin-bottom: 13px
                             &_name
+                                width: 120px
                                 font-size: 16px
                                 font-weight: 500
                                 margin-bottom: 3px
@@ -81,6 +83,7 @@
                                 color: #416EF2
                                 font-size: 20px
                                 font-weight: 600
+                                white-space: nowrap
 
                     &_bottom
                         display: flex

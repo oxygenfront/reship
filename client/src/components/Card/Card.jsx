@@ -284,4 +284,4 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
   )
 }
 
-export default Card
+export default React.memo(Card)

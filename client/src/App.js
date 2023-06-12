@@ -16,6 +16,7 @@ import {
   ForgotMessage,
   Settings,
   Orders,
+  NewPassword,
 } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
@@ -103,6 +104,7 @@ const App = () => {
           <Route path="/order" element={<Order></Order>}></Route>
           <Route path="/catalog" element={<Catalog></Catalog>}></Route>
           <Route path="/forgot/message" element={<ForgotMessage />}></Route>
+          <Route path="/forgot/new_password" element={<NewPassword />}></Route>
         </Routes>
         <Footer></Footer>
       </div>

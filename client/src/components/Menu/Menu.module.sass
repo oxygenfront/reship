@@ -120,6 +120,7 @@
   top: 0
   width: 100%
   z-index: 50
+  border-bottom: 1px solid #E8EBF5
 
   &__container
     display: flex
@@ -264,7 +265,6 @@
     transition: all 0.2s linear
 
   &__profile_block
-    padding: 0 90px 0 0
     max-width: 200px
     display: flex
     align-items: center
@@ -378,27 +378,27 @@
     padding-bottom: 20px
     border-bottom: 2px solid var(--togray)
 
-// @media (max-width: 1199px)
-//   .container
-//     max-width: 960px
-//   .search_section__profile_block
-//     max-width: 160px
+@media (max-width: 1199px)
+  .container
+    max-width: 960px
+  // .search_section__profile_block
+  //   max-width: 160px
 
-// @media (max-width: 991px)
-//   .container
-//     max-width: 720px
-//   .search_section
-//     &__catalog
-//       font-size: 18px
-//       width: 24%
-//     &__search_block
-//       width: 46%
-//     &__login_block
-//       width: 15%
-// @media (max-width: 767px)
-//   .container
-//     max-width: 540px
-//     // align-items: center
+@media (max-width: 991px)
+  .container
+    max-width: 720px
+  // .search_section
+  //   &__catalog
+  //     font-size: 18px
+  //     width: 24%
+  //   &__search_block
+  //     width: 46%
+  //   &__login_block
+  //     width: 15%
+@media (max-width: 767px)
+  .container
+    max-width: 540px
+    // align-items: center
 //   .search_section
 //     max-width: 540px
 //     &__catalog
@@ -414,7 +414,9 @@
 //       & img
 //         width: 35px
 //         height: 35px
-// @media (max-width: 575px)
+@media (max-width: 575px)
+  .container
+    max-width: 300px
 //   .search_section
 //     max-width: 390px
 //     &__logo
@@ -430,8 +432,6 @@
 //         margin-left: 6px
 //         width: 7px
 //         height: 7px
-//   .container
-//     max-width: 300px
 //   // .search_section
 //   //   &__search_block
 //   //     width: 100%

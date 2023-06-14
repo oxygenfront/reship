@@ -163,7 +163,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               <div
                 className={styles.main_catalog__products_wrapper_item_button}
               >
-                <div
+                <button
                   onClick={addedCount > 1 ? onClickMinus : onClickRemove}
                   className={
                     styles.main_catalog__products_wrapper_item_button_minus_wrapper
@@ -174,7 +174,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                       styles.main_catalog__products_wrapper_item_button_minus
                     }
                   ></div>
-                </div>
+                </button>
                 <span>{addedCount}</span>
                 <button
                   onClick={onClickAdd}

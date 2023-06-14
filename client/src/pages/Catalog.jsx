@@ -33,7 +33,13 @@ const Catalog = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
+  
+  useEffect(() => {
+    if (windowWidth > 767) {
+      setShowFilters(false)
+    }
+  }, [windowWidth])
+  
   if (status === 'success') {
     items.map((item) => set.add(item.category));
   }
@@ -43,7 +49,14 @@ const Catalog = () => {
   if (searchValue === '' && choosenCategorie === '') {
     return <Navigate to='/'></Navigate>;
   }
-  console.log(searchValue, choosenCategorie);
+
+  // const fnShowFilters = () => {
+  //   if (windowWidth > 767) {
+  //     setShowFilters(false)
+  //   }
+  // }
+
+  
   return (
     <section className='catalog'>
       <div className='catalog__container container'>

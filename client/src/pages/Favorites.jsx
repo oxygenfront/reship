@@ -28,6 +28,9 @@ const Favorites = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+  if (!isAuth) {
+    return <Navigate to="/" />
+  }
 
   return (
     <>

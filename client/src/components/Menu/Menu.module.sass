@@ -59,26 +59,34 @@
     display: flex
     gap: 40px
     align-items: flex-start
-  &_leftcol ul
-    display: flex
-    flex-direction: column
-    gap: 10px
-    li
+  &_leftcol
+    &_active
+      background: #416EF2
+      color: #fff !important
+    ul
       display: flex
-      align-items: center
-      font-weight: 500
-      border-radius: 30px
-      padding: 10px
-      color: var(--color)
-      &:hover
-        cursor: pointer
+      flex-direction: column
+      gap: 10px
 
-        background: var(--tolightgray)
-      img
-        padding-right: 8px
-        height: 22px
-
+      li
+        display: flex
+        align-items: center
+        font-weight: 500
+        border-radius: 30px
+        padding: 10px
         color: var(--color)
+
+        &:hover
+          cursor: pointer
+
+          background: var(--tolightgray)
+
+        img
+          padding-right: 8px
+          height: 22px
+
+          color: var(--color)
+
   &_bg
     position: fixed
     inset: 0

@@ -1,7 +1,7 @@
-export const getFavoritesFromLs = (data) => {
-  const ls = localStorage.getItem('favorites')
+export const getFavoritesFromLs = () => {
+  const data = localStorage.getItem('favorites')
 
-  const favorites = ls ? data : []
+  const favorites = data ? JSON.parse(data) : []
   return {
     favorites,
   }

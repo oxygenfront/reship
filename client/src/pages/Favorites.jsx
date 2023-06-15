@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+
 import { FavoriteItem } from '../components'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-  fetchAuthMe,
-  selectIsAuth,
-  selectUserData,
-} from '../redux/slices/authSlice'
-import { fetchDeleteFavorite } from '../redux/slices/favoriteSlice'
-import { getFavoritesFromLs } from '../utils/getFavoritesFromLs'
+import { useSelector } from 'react-redux'
+
+import { selectFavorites } from '../redux/slices/favoriteSlice'
 
 const Favorites = () => {
-  const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
-  const token = localStorage.getItem('token')
-  const { data, status } = useSelector(selectUserData)
-  const { favorites } =
-    status === 'success' ? getFavoritesFromLs(data.favorites) : []
+  const { favorites } = useSelector(selectFavorites)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-
+  const theme = useSelector((state) => state.theme)
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)
@@ -28,9 +18,6 @@ const Favorites = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-  if (!isAuth) {
-    return <Navigate to="/" />
-  }
 
   return (
     <>
@@ -41,15 +28,33 @@ const Favorites = () => {
               <h1>Избранное</h1>
             </div>
             <div className="favorites_items">
-              {status === 'success' &&
+              {favorites.length > 0 ? (
                 favorites.map((item) => (
                   <FavoriteItem
                     name={item.name}
-                    id={item.product_id}
-                    key={item.product_id}
+                    id={item.id}
+                    key={item.id}
                     price={item.price}
                   ></FavoriteItem>
-                ))}
+                ))
+              ) : (
+                <div className="cart__empty_wrapper">
+                  <div className="container cart__empty_container">
+                    <div
+                      style={{
+                        backgroundImage:
+                          theme === 'dark'
+                            ? `url('../assets/img/no-item black theme.png')`
+                            : `url('../assets/img/no-item.png')`,
+                        backgroundSize: 'cover',
+                      }}
+                      className="cart__empty"
+                    >
+                      У вас пока нет<br></br> товара в избранном
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -45,9 +45,6 @@ const FavoriteItem = ({ name, price, image, id }) => {
     dispatch(removeFavorite(id))
     console.log('delete')
   }
-  const onClickClear = () => {
-    dispatch(clearFavorite())
-  }
 
   return (
     <>
@@ -78,7 +75,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
           </div>
           <div className={styles.person__favorites_wrapper_items_item_buttons}>
             <button
-              onClick={onClickClear}
+              onClick={onClickDelete}
               className={styles.person__favorites_wrapper_items_item_delete}
             >
               Удалить

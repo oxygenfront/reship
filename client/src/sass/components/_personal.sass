@@ -1,5 +1,19 @@
 .personal
     margin-top: 134px
+    &__empty
+        width: 255px !important
+        height: 255px !important
+        padding-top: 20px
+        font-weight: 600
+        font-size: 32px
+        width: 500px
+        height: 500px
+        color: #416EF2
+        img
+            width: 100%
+        &_wrapper
+            margin-top: 10px
+            margin-bottom: 150px
     &__container
     &__user-block
         display: flex
@@ -70,7 +84,13 @@
                     background: #AEC5F2
         &_latest-orders
             width: 352px
+            &_items
 
+                &_noitem
+                    width: 200px
+
+                    img
+                        width: 100%
             &_menu
 
                 display: inline-block
@@ -91,6 +111,7 @@
                     background: var(--background-color)
                     border: 1px solid #416EF2
                     padding-bottom: 20px
+
                     &-title
                         height: 50px
                         display: flex

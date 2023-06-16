@@ -11,7 +11,7 @@ import { fetchCheckPromocode } from '../redux/slices/cartSlice'
 const Cart = () => {
   const dispatch = useDispatch()
   const { cartItems } = useSelector(selectCart)
-
+  const theme = useSelector((state) => state.theme)
   const totalPrice = calcTotalPrice(cartItems)
   console.log(totalPrice)
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
@@ -49,7 +49,10 @@ const Cart = () => {
             <div className="container cart__empty_container">
               <div
                 style={{
-                  backgroundImage: `url('../assets/img/no-item.png')`,
+                  backgroundImage:
+                    theme === 'dark'
+                      ? `url('../assets/img/no-item black theme.png')`
+                      : `url('../assets/img/no-item.png')`,
                   backgroundSize: 'cover',
                 }}
                 className="cart__empty"

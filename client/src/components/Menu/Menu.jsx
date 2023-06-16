@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import {
   logout,
   selectIsAuth,
@@ -19,7 +19,7 @@ import Card from '../Card/Card'
 import { selectCart } from '../../redux/slices/cartSlice'
 import { Menu as DropDown } from '@headlessui/react'
 import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
-import { addFavorite } from '../../redux/slices/favoriteSlice'
+import { addFavorite, selectFavorites } from '../../redux/slices/favoriteSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
@@ -28,8 +28,7 @@ const Menu = () => {
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
   const { searchValue } = useSelector(selectFilter)
-  const { favorites } =
-    status === 'success' ? getFavoritesFromLs(data.favorites) : []
+  const { favorites } = useSelector(selectFavorites)
   const { items, itemsStatus = status } = useSelector(selectItemsData)
   const { cartItems } = useSelector(selectCart)
   const theme = useSelector((state) => state.theme)
@@ -52,6 +51,7 @@ const Menu = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
       window.localStorage.removeItem('token')
+      return <Navigate to="/"></Navigate>
     }
   }
   const onClickClear = () => {
@@ -136,6 +136,11 @@ const Menu = () => {
                     <div className={styles.modal_leftcol}>
                       <ul>
                         <li
+                          className={
+                            localCategory === 'мышки'
+                              ? styles.modal_leftcol_active
+                              : null
+                          }
                           onClick={() => {
                             setLocalCategoryEn('mouse')
                             setLocalCategory('мышки')
@@ -145,6 +150,11 @@ const Menu = () => {
                           Мышки
                         </li>
                         <li
+                          className={
+                            localCategory === 'клавиатуры'
+                              ? styles.modal_leftcol_active
+                              : null
+                          }
                           onClick={() => {
                             setLocalCategoryEn('boards')
                             setLocalCategory('клавиатуры')
@@ -157,6 +167,11 @@ const Menu = () => {
                           Клавиатуры
                         </li>
                         <li
+                          className={
+                            localCategory === 'наушники'
+                              ? styles.modal_leftcol_active
+                              : null
+                          }
                           onClick={() => {
                             setLocalCategoryEn('headphones')
                             setLocalCategory('наушники')
@@ -169,6 +184,11 @@ const Menu = () => {
                           Наушники
                         </li>
                         <li
+                          className={
+                            localCategory === 'микрофоны'
+                              ? styles.modal_leftcol_active
+                              : null
+                          }
                           onClick={() => {
                             setLocalCategoryEn('microphone')
                             setLocalCategory('микрофоны')
@@ -181,6 +201,11 @@ const Menu = () => {
                           Микрофоны
                         </li>
                         <li
+                          className={
+                            localCategory === 'аксессуары'
+                              ? styles.modal_leftcol_active
+                              : null
+                          }
                           onClick={() => {
                             setLocalCategoryEn('accessory')
                             setLocalCategory('аксессуары')
@@ -190,6 +215,11 @@ const Menu = () => {
                           Аксессуары
                         </li>
                         <li
+                          className={
+                            localCategory === 'веб-камеры'
+                              ? styles.modal_leftcol_active
+                              : null
+                          }
                           onClick={() => {
                             setLocalCategoryEn('camera')
                             setLocalCategory('веб-камеры')

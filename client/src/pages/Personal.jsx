@@ -14,7 +14,7 @@ import { fetchGetOrdersById, selectOrderData } from '../redux/slices/orderSlice'
 const Personal = () => {
   const dispatch = useDispatch()
   const { orders, ordersStatus } = useSelector(selectOrderData)
-
+  const theme = useSelector((state) => state.theme)
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
   const { items, itemsStatus = status } = useSelector(selectItemsData)
@@ -305,15 +305,31 @@ const Personal = () => {
                     ))
                   )
                 ) : (
-                  <img src="..assets/img/no-item/png" alt="no-item"></img>
+                  <div className="personal__empty_wrapper">
+                    <div className="container personal__empty_container">
+                      <div
+                        style={{
+                          backgroundImage:
+                            theme === 'dark'
+                              ? `url('../assets/img/no-item black theme.png')`
+                              : `url('../assets/img/no-item.png')`,
+                          backgroundSize: 'cover',
+                        }}
+                        className="personal__empty"
+                      >
+                        Пусто
+                      </div>
+                    </div>
+                  </div>
                 )}
-
-                <Link
-                  to="/orders"
-                  className="personal__middle-block_latest-orders_items-block_all"
-                >
-                  Все заказы <span></span>
-                </Link>
+                {ordersStatus === 'success' && orders.length > 0 ? (
+                  <Link
+                    to="/orders"
+                    className="personal__middle-block_latest-orders_items-block_all"
+                  >
+                    Все заказы <span></span>
+                  </Link>
+                ) : null}
               </div>
             </div>
           </div>
@@ -459,8 +475,8 @@ const Personal = () => {
                   className="personal__interesting_slider"
                 >
                   {itemsStatus === 'success' &&
-                    items.slice(0, 3).map((item) => (
-                      <div key={item.id}>
+                    items.slice(0, 3).map((item, index) => (
+                      <div key={index}>
                         <SwiperSlide className="personal__interesting_slider-item">
                           <Card
                             key={item.id}

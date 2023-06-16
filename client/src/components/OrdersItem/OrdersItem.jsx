@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { Timeline } from 'rsuite'
 import styles from './OrdersItem.module.sass'
 import { Dialog } from '@headlessui/react'
+import StarList from '../StarRating/StarList'
+import StarsList from '../StarRating/StarList'
 
 const OrdersItem = ({ id, name, color, count, price }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -66,6 +68,7 @@ const OrdersItem = ({ id, name, color, count, price }) => {
                       <div className={styles.item_title}>
                         <p>Оцените товар</p>
                       </div>
+                      <StarsList />
                       <textarea
                         type="text"
                         name="comment"

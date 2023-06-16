@@ -5,7 +5,7 @@ import fullItem from './slices/fullItemSlice'
 import auth from './slices/authSlice'
 import filter from './slices/fiterSlice'
 import admin from './slices/adminSlice'
-import favorite from './slices/favoriteSlice'
+import favorites from './slices/favoriteSlice'
 import change from './slices/changeSlice'
 import order from './slices/orderSlice'
 import theme from './slices/themeSlice'
@@ -18,9 +18,9 @@ export const store = configureStore({
     auth,
     filter,
     admin,
-    favorite,
+    favorites,
     change,
     order,
-    theme
+    theme,
   },
 })

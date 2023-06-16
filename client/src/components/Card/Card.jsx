@@ -14,17 +14,21 @@ import {
   selectUserData,
 } from '../../redux/slices/authSlice'
 import {
+  addFavorite,
   fetchAddFavorite,
   fetchDeleteFavorite,
+  removeFavorite,
+  selectFavorites,
 } from '../../redux/slices/favoriteSlice'
-import classNames from 'classnames'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
+import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
 
 const Card = ({ name, image, price, id, old_price, view, description }) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
+  const { favorites } = useSelector(selectFavorites)
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
   const [navigate, setNavigate] = useState(false)
@@ -55,38 +59,33 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
 
   const [isFavorite, setIsFavorite] = useState(false)
   useEffect(() => {
-    if (status === 'success' && isAuth) {
-      const ids = data.favorites.map((item) => item.product_id)
+    const ids = favorites.map((item) => item.id)
 
-      setIsFavorite(ids.includes(Number(id)))
-    }
-  }, [status])
+    setIsFavorite(ids.includes(Number(id)))
+  }, [])
 
-  const onChangeFavorite = async () => {
-    if (!isAuth) {
-      console.log('not auth')
-      return setNavigate(true)
-    }
+  const onChangeFavorite = () => {
+    // if (!isAuth) {
+    //   console.log('not auth')
+    //   return setNavigate(true)
+    // }
     if (!isFavorite) {
-      const data = await dispatch(fetchAddFavorite({ product_id: id, token }))
-      if (!data.payload) {
-        return alert('Не удалось добавить товар в избранные')
-      } else {
-        dispatch(fetchAuthMe(token))
-        return setIsFavorite(true)
-      }
+      dispatch(
+        addFavorite({
+          id,
+          name,
+          image,
+          price,
+          color,
+        })
+      )
+
+      return setIsFavorite(true)
     }
     if (isFavorite) {
-      const data = await dispatch(
-        fetchDeleteFavorite({ product_id: id, token })
-      )
-      dispatch(fetchAuthMe(token))
-      if (!data.payload) {
-        return alert('Не удалось удалить товар из избранных')
-      } else {
-        dispatch(fetchAuthMe(token))
-        return setIsFavorite(false)
-      }
+      dispatch(removeFavorite(id))
+
+      return setIsFavorite(false)
     }
   }
   if (navigate) {
@@ -163,7 +162,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               <div
                 className={styles.main_catalog__products_wrapper_item_button}
               >
-                <div
+                <button
                   onClick={addedCount > 1 ? onClickMinus : onClickRemove}
                   className={
                     styles.main_catalog__products_wrapper_item_button_minus_wrapper
@@ -174,7 +173,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                       styles.main_catalog__products_wrapper_item_button_minus
                     }
                   ></div>
-                </div>
+                </button>
                 <span>{addedCount}</span>
                 <button
                   onClick={onClickAdd}

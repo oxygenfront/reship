@@ -1,27 +1,10 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from '../../axios'
+import { createSlice } from '@reduxjs/toolkit'
 import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
 
-export const fetchAddFavorite = createAsyncThunk(
-  'items/fetchAddFavorite',
-  async (params) => {
-    const { data } = await axios.post(`/addFavorites`, params)
-
-    return data
-  }
-)
-export const fetchDeleteFavorite = createAsyncThunk(
-  'items/fetchDeleteFavorite',
-  async (params) => {
-    const { data } = await axios.post(`/deleteFavorites`, params)
-
-    return data
-  }
-)
-// const { favorites } = localStorage.getItem('favorites')
+const { favorites } = getFavoritesFromLs()
 
 const initialState = {
-  items: [],
+  favorites,
   status: 'loading', // 'loading', 'success', 'error'
 }
 
@@ -30,37 +13,23 @@ const favoriteSlice = createSlice({
   initialState,
   reducers: {
     addFavorite(state, action) {
-      state.items.push(action.payload)
+      console.log(action)
+      state.favorites.push(action.payload)
     },
 
     removeFavorite(state, action) {
       console.log(action.payload)
-      state.items = state.items.filter(
-        (obj) => obj.product_id !== action.payload
+      state.favorites = state.favorites.filter(
+        (obj) => obj.id !== action.payload
       )
     },
     clearFavorite(state) {
       state.items = []
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchAddFavorite.pending, (state, action) => {
-      state.status = 'loading'
-      state.items = []
-    })
-    builder.addCase(fetchAddFavorite.fulfilled, (state, action) => {
-      state.items = action.payload
-      state.status = 'success'
-    })
-    builder.addCase(fetchAddFavorite.rejected, (state, action) => {
-      console.log(action)
-      state.status = 'error'
-      state.items = []
-    })
-  },
 })
 
-export const selectFavoritesData = (state) => state.items
+export const selectFavorites = (state) => state.favorites
 
 export const { addFavorite, removeFavorite, clearFavorite } =
   favoriteSlice.actions

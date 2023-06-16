@@ -17,8 +17,11 @@ import {
   selectUserData,
 } from '../redux/slices/authSlice'
 import {
+  addFavorite,
   fetchAddFavorite,
   fetchDeleteFavorite,
+  removeFavorite,
+  selectFavorites,
 } from '../redux/slices/favoriteSlice'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -28,13 +31,10 @@ import 'swiper/css/bundle'
 import { Comment, FullItemSlider } from '../components'
 
 const FullItem = () => {
-  const [openFull, setOpenFull] = useState(false)
   const { id } = useParams()
   const { item, status } = useSelector(selectFullItemData)
   const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
-  const token = localStorage.getItem('token')
-  const { data, userStatus = status } = useSelector(selectUserData)
+  const { favorites } = useSelector(selectFavorites)
   const [navigate, setNavigate] = useState(false)
 
   const [isFavorite, setIsFavorite] = useState(false)
@@ -62,39 +62,28 @@ const FullItem = () => {
   }
 
   useEffect(() => {
-    if (userStatus === 'success' && isAuth) {
-      const ids = data.favorites.map((item) => item.product_id)
+    const ids = favorites.map((item) => item.id)
 
-      setIsFavorite(ids.includes(Number(id)))
-    }
-  }, [data])
-  const onChangeFavorite = async () => {
-    if (!isAuth) {
-      console.log('not auth')
-      return setNavigate(true)
-    }
+    setIsFavorite(ids.includes(Number(id)))
+  }, [])
+  const onChangeFavorite = () => {
     if (!isFavorite) {
-      const data = await dispatch(
-        fetchAddFavorite({ product_id: Number(id), token })
+      dispatch(
+        addFavorite({
+          id,
+          name: item.name,
+          image: item.image,
+          price: item.price,
+          color: item.color,
+        })
       )
-      if (!data.payload) {
-        return alert('Не удалось добавить товар в избранные')
-      } else {
-        dispatch(fetchAuthMe(token))
-        return setIsFavorite(true)
-      }
+
+      return setIsFavorite(true)
     }
     if (isFavorite) {
-      const data = await dispatch(
-        fetchDeleteFavorite({ product_id: Number(id), token })
-      )
-      dispatch(fetchAuthMe(token))
-      if (!data.payload) {
-        return alert('Не удалось удалить товар из избранных')
-      } else {
-        dispatch(fetchAuthMe(token))
-        return setIsFavorite(false)
-      }
+      dispatch(removeFavorite(id))
+
+      return setIsFavorite(false)
     }
   }
   useEffect(() => {

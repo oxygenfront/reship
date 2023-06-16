@@ -36,7 +36,7 @@ input[type="checkbox"]
         margin-left: 30px
         color: #416EF2
     &__title
-        margin-top: 180px
+        margin-top: 194px
         margin-bottom: 105px
         font-size: 64px
         font-weight: 600
@@ -48,6 +48,7 @@ input[type="checkbox"]
         &_wrapper_grid
             display: grid
             grid-template-columns: repeat(3, 256px)
+            justify-content: space-between
             gap: 80px 30px
         &_wrapper_flex
             display: flex
@@ -64,6 +65,7 @@ input[type="checkbox"]
                     font-size: 18px
                     font-weight: 600
                     color: var(--color)
+                & div span
                     margin-right: 25px
                 &_popup
                     margin-right: 42px
@@ -71,12 +73,12 @@ input[type="checkbox"]
                 &_menu
                     display: inline-block
                     text-align: left
-                    z-index: 50
                     position: relative
                     &_button
                         margin-right: 42px
                         background: none
                         img
+                            transition: all .3s ease-in-out
                             background: var(--background-color)
                     &_items
                         position: absolute
@@ -100,7 +102,7 @@ input[type="checkbox"]
                         text-align: left
                         font-size: 16px
                         font-weight: 500
-                        width: 160px
+                        // width: 160px
                         background: none
                         border-radius: 30px
                         color: var(--color)
@@ -160,6 +162,9 @@ input[type="checkbox"]
             &:not(:last-child)
                 margin-bottom: 68px
             &_left
+                display: flex
+                justify-content: center
+                align-items: center
                 width: 300px
                 border-radius: 30px
                 overflow: hidden
@@ -168,6 +173,7 @@ input[type="checkbox"]
                     width: 100%
                     height: 100%
                     object-fit: cover
+                    object-position: center
             &_mid
                 width: 271px
                 &-title
@@ -227,7 +233,7 @@ input[type="checkbox"]
                 justify-content: space-between
                 align-items: center
                 font-size: 16px
-                font-weight: 500
+                font-weight: 700
                 color: var(--color)
             &.mb73
                 margin-bottom: 73px
@@ -293,3 +299,95 @@ input[type="checkbox"]
                         border: 1px solid #416EF2
                         color: #416EF2
                         background: transparent
+@media (max-width: 1199px)
+    .catalog
+        &__main
+            &_item
+                &_left
+                    width: 200px
+                    height: 180px
+                    & img
+                        width: 100%
+                        height: 100%
+            &_wrapper
+                &_grid
+                    grid-template-columns: repeat(2, 300px)
+@media (max-width: 991px)
+    .catalog
+        &__main
+            &_wrapper
+                &_grid
+                    grid-template-columns: repeat(1, 350px)
+                    justify-content: center
+            &_filters
+                flex-direction: column
+                align-items: center
+                &_popular
+                    margin-bottom: 20px
+@media (max-width: 767px)
+    .catalog
+        &__wrapper
+            position: relative
+        &__title
+            margin-top: 150px
+            margin-bottom: 60px
+            font-size: 50px
+        &__sort
+            width: 35vw
+            position: absolute
+            top: 50px
+            left: 0
+            padding-top: 45px
+            &-block hr
+                margin-top: 0
+        &__main
+            margin-bottom: 800px
+
+            &_wrapper
+                &_grid
+                    grid-template-columns: repeat(2, 250px)
+            &_filters
+                &-main
+                    width: 100%
+                    justify-content: space-between
+                    & > div:first-child span
+                        cursor: pointer,
+                        position: relative,
+                        z-index: 10,
+                &_popular
+                    width: 100%
+@media (max-width: 575px)
+    input[type=checkbox], input[type=checkbox]::before
+        width: 12px
+        height: 12px
+    .catalog
+        &__sort
+            top: 50px
+            width: 43%
+            padding: 45px 7px 15px 7px
+            &_title
+                font-size: 21px
+            &-block label
+                font-size: 14px
+        &__title
+            font-size: 40px
+        &__main
+            &_filters
+                &-main
+
+                    &_menu
+                        &_item
+                            font-size: 14px
+                            padding-right: 11px
+                        &_items
+                            width: 172px
+                            &_wrapper
+                                padding: 15px
+                        &_button
+                            margin-right: 0
+            &_wrapper
+                &_grid
+                    grid-template-columns: repeat(1, 100%)
+@media (max-width: 384px)
+    .catalog__sort
+        top: 87px

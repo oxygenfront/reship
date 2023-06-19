@@ -49,7 +49,8 @@ const CartItem = ({ id, price, color, count, name }) => {
               styles.cart__delivery_items_item_name
             )}
           >
-            {name} {color !== '' ? ', ' + color : ''}
+            {name}
+            <span>{color}</span>
           </Link>
         </div>
 

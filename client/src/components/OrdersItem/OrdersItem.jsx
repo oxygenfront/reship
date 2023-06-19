@@ -9,7 +9,15 @@ import StarsList from '../StarRating/StarList'
 
 const OrdersItem = ({ id, name, color, count, price }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const token = localStorage.getItem('token')
   const [modalOpen, setModalOpen] = useState(false)
+  const [review, setReview] = useState({
+    token,
+    rating: 5,
+    text: '',
+    date_timestamp: new Date.now(),
+    product_id: id,
+  })
   console.log(modalOpen)
   return (
     <div className="orders__item">

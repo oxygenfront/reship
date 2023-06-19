@@ -7,22 +7,16 @@ import {
   selectCartItemById,
 } from '../../redux/slices/cartSlice'
 import styles from './FavoriteItem.module.sass'
-import { Link, Navigate } from 'react-router-dom'
-import { fetchAuthMe, selectIsAuth } from '../../redux/slices/authSlice'
-import {
-  clearFavorite,
-  fetchDeleteFavorite,
-  removeFavorite,
-} from '../../redux/slices/favoriteSlice'
+import { Link } from 'react-router-dom'
 
-const FavoriteItem = ({ name, price, image, id }) => {
+import { removeFavorite } from '../../redux/slices/favoriteSlice'
+
+const FavoriteItem = ({ name, price, image, id, color }) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
-  const isAuth = useSelector(selectIsAuth)
-  const token = localStorage.getItem('token')
+
   const addedCount = cartItem ? cartItem.count : 0
-  const [navigate, setNavigate] = useState(false)
-  const [color, setColor] = useState('')
+
   const onClickAdd = () => {
     const item = {
       id,

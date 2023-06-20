@@ -90,6 +90,8 @@ router.post("/checkPromocode", apiPostController.checkPromocode);
 router.post("/changeBasicInfo", apiPostController.changeBasicInfo);
 router.post("/changeDelivery", apiPostController.changeDelivery);
 router.post("/createReview", apiPostController.createReview);
+router.get("/getReviewsForProductId", apiPostController.getReviewsForProductId);
+router.get("/getReviewsFromAuthor", apiPostController.getReviewsFromAuthor);
 router.post(
   "/changeAvatar",
   apiPostController.changeAvatar

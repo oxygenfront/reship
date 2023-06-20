@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { isEmail } from 'validator'
 import InputMask from 'react-input-mask'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreateOrder } from '../redux/slices/orderSlice'
-import { fetchAuthMe } from '../redux/slices/authSlice'
-
+import { fetchAuthMe, selectUserData } from '../redux/slices/authSlice'
+import { Navigate } from 'react-router-dom'
 import { clearItems } from '../redux/slices/cartSlice'
 import { getCartFromLS } from '../utils/getCartFromLs'
 import { calcTotalPrice } from '../utils/calcTotalPrice'
 const Order = () => {
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
-
+  const { data, status } = useSelector(selectUserData)
   const { cartItems } = getCartFromLS()
   const totalPrice = calcTotalPrice(cartItems)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
@@ -27,6 +27,12 @@ const Order = () => {
     promocode: '',
     basket: [],
   }
+  const [adress, setAdress] = useState({
+    region: '',
+    city: '',
+    street: '',
+    postal_code: '',
+  })
   const [order, setOrder] = useState({
     first_name: '',
     last_name: '',
@@ -46,6 +52,12 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
+  function updateAdress(e) {
+    setAdress({
+      ...adress,
+      [e.target.name]: e.target.value,
+    })
+  }
 
   async function sendForm(e) {
     e.preventDefault()
@@ -54,7 +66,11 @@ const Order = () => {
       setIsValidEmail(isEmail(order.email))
       return
     }
-
+    setOrder({
+      ...order,
+      adress: JSON.stringify({ adress: Object.values(adress).join(', ') }),
+    })
+    console.log(order)
     const data = await dispatch(fetchCreateOrder(order))
     if (!data.payload) {
       alert('Не удалось создать заказ')
@@ -63,12 +79,14 @@ const Order = () => {
       localStorage.removeItem('promocode')
       dispatch(clearItems())
       dispatch(fetchAuthMe(token))
+      setAdress({ region: '', street: '', postal_code: '', city: '' })
       setOrder(initialState)
     }
 
     setIsValidEmail(isEmail(order.email))
 
     console.log(isValidEmail)
+    return <Navigate to="/"></Navigate>
   }
 
   useEffect(() => {
@@ -81,7 +99,7 @@ const Order = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
   console.log(order)
-
+  console.log(Object.values(adress).join(', '))
   return (
     <section className="auth">
       <div className="container main-form_container">
@@ -190,9 +208,9 @@ const Order = () => {
         <div className="main-form_adress">
           <div className="main-form_buyer_title">Адрес</div>
           <div className="main-form_adress_items">
-            <div className="main-form_adress_item">
+            {/* <div className="main-form_adress_item">
               <div className="main-form_adress_item_title">
-                <p>Адрес 1</p>
+                <p>Адрес</p>
               </div>
               <p
                 onClick={(e) =>
@@ -202,20 +220,70 @@ const Order = () => {
                   })
                 }
               >
-                Москва, Ленинский проспект, кв31
+                {status === 'success' &&
+                  JSON.parse(data.adress_delivery).adress}
               </p>
-            </div>
-            <div className="main-form_adress_item">
-              <div className="main-form_adress_item_title">
-                <p>Адрес 2</p>
+            </div> */}
+            <div className="main-form_buyer_item_wrapper">
+              <div className="main-form_buyer_item_inputs">
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Регион/область
+                  </div>
+                  <input
+                    type="text"
+                    name="region"
+                    id=""
+                    value={adress.region}
+                    onChange={updateAdress}
+                  />
+                </div>
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Город
+                  </div>
+                  <input
+                    type="text"
+                    name="city"
+                    id=""
+                    value={adress.city}
+                    onChange={updateAdress}
+                  />
+                </div>
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Адрес проживания
+                  </div>
+                  <input
+                    placeholder="Улица, дом,подьезд, кв"
+                    type="text"
+                    id=""
+                    name="street"
+                    value={adress.street}
+                    onChange={updateAdress}
+                  />
+                </div>
+                <div className="main-form_buyer_item_inputs_input_wrapper">
+                  <div className="main-form_buyer_item_inputs_input_title">
+                    Почтовый индекс
+                  </div>
+                  <input
+                    type="text"
+                    id=""
+                    name="postal_code"
+                    value={adress.postal_code}
+                    onChange={updateAdress}
+                  />
+                </div>
               </div>
-              <p
-                onClick={(e) =>
-                  setOrder({ ...order, adress: e.target.innerHTML })
-                }
-              >
-                Москва, Ленинский проспект, кв32
-              </p>
+              <div className="main-form_buyer_item_buttons">
+                <button className="main-form_buyer_item_buttons_1">
+                  Отменить
+                </button>
+                <button className="main-form_buyer_item_buttons_2">
+                  Сохранить изменения
+                </button>
+              </div>
             </div>
           </div>
         </div>

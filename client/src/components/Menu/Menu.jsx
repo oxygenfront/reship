@@ -279,6 +279,9 @@ const Menu = () => {
                           alt="mouse"
                         />
                         <span>Просмотреть все {localCategory}</span>
+                        <div className={styles.swiper_button_next_wrapper}>
+                          <div className={styles.swiper_button_next}></div>
+                        </div>
                       </Link>
                     </div>
                   </div>

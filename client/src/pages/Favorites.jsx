@@ -18,7 +18,7 @@ const Favorites = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-
+  
   return (
     <>
       <section className="favorites">

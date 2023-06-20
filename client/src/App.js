@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
@@ -31,13 +31,11 @@ import { fetchAuthMe } from './redux/slices/authSlice'
 import './sass/index.sass'
 
 import { Footer, Menu } from './components'
-import { selectFilter, setSearchValue } from './redux/slices/fiterSlice'
+import { selectFilter } from './redux/slices/fiterSlice'
 import { fetchItems } from './redux/slices/itemsSlice'
-import axios from './axios'
 
 const App = () => {
   const dispatch = useDispatch()
-  const theme = useSelector((state) => state.theme)
 
   const token = localStorage.getItem('token')
 

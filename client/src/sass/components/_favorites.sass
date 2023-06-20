@@ -1,7 +1,6 @@
 .favorites
 	&_wrapper
 		margin-top: 150px
-
 	&_container
 	&_title
 		font-weight: 600
@@ -12,5 +11,9 @@
 		display: flex
 		flex-direction: column
 		gap: 40px
-		width: 720px
 		margin-bottom: 100px
+
+@media (max-width: 575px)
+	.favorites
+		&_wrapper
+			max-width: 100% !important

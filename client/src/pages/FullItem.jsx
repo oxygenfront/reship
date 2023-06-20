@@ -92,6 +92,7 @@ const FullItem = () => {
   if (navigate) {
     return <Navigate to="/login"></Navigate>
   }
+  console.log(color)
 
   const renderStatus = Boolean(status === 'success')
   return (
@@ -105,28 +106,49 @@ const FullItem = () => {
           <div className="fullitem__card_info-wrapper">
             <div className="fullitem__card_info-name">{item.name}</div>
             <div className="fullitem__card_info-params">
-              <div className="fullitem__card_info-params_block">
-                <p>Переключатели</p>
-                <div className="fullitem__card_info-params_block-wrapper">
-                  <button className="fullitem__card_info-params_block_button">
-                    <span>br</span>
-                  </button>
-                  <button className="fullitem__card_info-params_block_button noItem">
-                    <span>r</span>
-                  </button>
+              {item.category === 'клавиатуры' ? (
+                <>
+                  <div className="fullitem__card_info-params_block">
+                    <p>Переключатели</p>
+                    <div className="fullitem__card_info-params_block-wrapper">
+                      <button className="fullitem__card_info-params_block_button">
+                        <span>br</span>
+                      </button>
+                      <button className="fullitem__card_info-params_block_button noItem">
+                        <span>r</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="fullitem__card_info-params_block">
+                    <p>Раскладка</p>
+                    <div className="fullitem__card_info-params_block-wrapper">
+                      <button className="fullitem__card_info-params_block_text">
+                        Русская
+                      </button>
+                      <button className="fullitem__card_info-params_block_text">
+                        Английская
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="fullitem__card_info-params_block">
+                  <p>Цвет</p>
+                  <div className="fullitem__card_info-params_block-wrapper">
+                    {renderStatus &&
+                      JSON.parse(item.colors).map((color) => (
+                        <button
+                          onClick={(e) => setColor(e.target.value)}
+                          className="fullitem__card_info-params_block_text"
+                          key={color}
+                          value={color}
+                        >
+                          {color[0].toUpperCase() + color.slice(1)}
+                        </button>
+                      ))}
+                  </div>
                 </div>
-              </div>
-              <div className="fullitem__card_info-params_block">
-                <p>Раскладка</p>
-                <div className="fullitem__card_info-params_block-wrapper">
-                  <button className="fullitem__card_info-params_block_text">
-                    Русская
-                  </button>
-                  <button className="fullitem__card_info-params_block_text">
-                    Английская
-                  </button>
-                </div>
-              </div>
+              )}
             </div>
             <div className="fullitem__card_info-bottom">
               <span>{item.price} руб</span>

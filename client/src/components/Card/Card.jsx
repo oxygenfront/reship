@@ -121,13 +121,13 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                   styles.main_catalog__products_wrapper_item_slider_slide
                 }
                 style={{
-                  backgroundImage: `url('/assets/products_img/${id}.png')`,
+                  backgroundImage: `url('${image}')`,
                   backgroundSize: 'cover',
                 }}
               ></SwiperSlide>
               <SwiperSlide
                 style={{
-                  backgroundImage: `url('/assets/products_img/${id}.png')`,
+                  backgroundImage: `url('${image}')`,
                   backgroundSize: 'cover',
                 }}
                 className={
@@ -136,7 +136,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               ></SwiperSlide>
               <SwiperSlide
                 style={{
-                  backgroundImage: `url('/assets/products_img/${id}.png')`,
+                  backgroundImage: `url('${image}')`,
                   backgroundSize: 'cover',
                 }}
                 className={

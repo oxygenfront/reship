@@ -177,6 +177,7 @@ function CatalogMain() {
               .slice(0, 6)
               .map((item) => (
                 <Card
+                  image={item.image_link}
                   view={'grid'}
                   id={item.id}
                   price={item.price}

@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react'
+import { Suspense, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
 
@@ -29,7 +29,7 @@ import Personal from './pages/Personal'
 import Register from './pages/Register'
 import { fetchAuthMe } from './redux/slices/authSlice'
 import './sass/index.sass'
-
+import { debounce } from 'lodash'
 import { Footer, Menu } from './components'
 import { selectFilter } from './redux/slices/fiterSlice'
 import { fetchItems } from './redux/slices/itemsSlice'
@@ -42,11 +42,19 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchAuthMe(token))
   }, [])
-  const { choosenCategorie, searchValue } = useSelector(selectFilter)
+  const { choosenCategorie, searchValue, choosenPrice, choosenSort } =
+    useSelector(selectFilter)
 
   useEffect(() => {
-    dispatch(fetchItems({ choosenCategorie, searchValue }))
-  }, [choosenCategorie, searchValue])
+    dispatch(
+      debounce(
+        fetchItems(
+          { choosenCategorie, searchValue, choosenPrice, choosenSort },
+          2000
+        )
+      )
+    )
+  }, [choosenCategorie, searchValue, choosenPrice, choosenSort])
 
   return (
     <>

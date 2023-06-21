@@ -4,7 +4,7 @@ const initialState = {
   choosenCategorie: '',
   choosenSort: '',
   searchValue: '',
-  choosenPrice: '',
+  choosenPrice: [2000, 12000],
   choosenBrand: '',
 }
 

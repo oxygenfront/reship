@@ -14,7 +14,7 @@ export const fetchGetOrdersById = createAsyncThunk(
   'order/fetchGetOrderById',
   async (id) => {
     const { data } = await axios.post(
-      `/getOrdersByCustomerId?&type=${id.type}`,
+      `/getOrdersByCustomerId?&type=${id.type}&customer_id=${id.customer_id}`,
       id
     )
 

@@ -507,7 +507,7 @@ function Settings() {
                       <div className="settings__change_block_inputs">
                         <div className="settings__change_block_inputs-wrapper">
                           <div className="settings__change_block_title">
-                            Квартира
+                            Дом
                           </div>
                           <input
                             value={changeAdress.flat_number}
@@ -547,13 +547,18 @@ function Settings() {
                           <div className="settings__change_block_title">
                             Страна
                           </div>
-                          <div className="settings__change_block_inputs-item" />
+
+                          <div className="settings__change_block_inputs-item">
+                            {changeAdress.country}
+                          </div>
                         </div>
                         <div className="settings__change_block_inputs-wrapper">
                           <div className="settings__change_block_title">
                             Город
                           </div>
-                          <div className="settings__change_block_inputs-item" />
+                          <div className="settings__change_block_inputs-item">
+                            {changeAdress.city}
+                          </div>
                         </div>
                       </div>
                       <div className="settings__change_block_inputs">
@@ -561,21 +566,27 @@ function Settings() {
                           <div className="settings__change_block_title">
                             Улица
                           </div>
-                          <div className="settings__change_block_inputs-item" />
+                          <div className="settings__change_block_inputs-item">
+                            {changeAdress.street}
+                          </div>
                         </div>
                         <div className="settings__change_block_inputs-wrapper">
                           <div className="settings__change_block_title">
                             Почтовый индекс
                           </div>
-                          <div className="settings__change_block_inputs-item"></div>
+                          <div className="settings__change_block_inputs-item">
+                            {changeAdress.postal_code}
+                          </div>
                         </div>
                       </div>
                       <div className="settings__change_block_inputs">
                         <div className="settings__change_block_inputs-wrapper">
                           <div className="settings__change_block_title">
-                            Квартира
+                            Дом
                           </div>
-                          <div className="settings__change_block_inputs-item"></div>
+                          <div className="settings__change_block_inputs-item">
+                            {changeAdress.flat_number}
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -80,7 +80,7 @@ router.post("/changeEmail", apiPostController.changeEmail);
 router.get("/activateEmail", apiPostController.activateEmail);
 router.post("/recoveryPassword", apiPostController.recoveryPassword);
 router.post("/addFavorites", apiPostController.addFavorites);
-router.post("/addBasket", apiPostController.addBasket);
+// router.post("/addBasket", apiPostController.addBasket);
 router.post("/deleteFavorites", apiPostController.deleteFavorites);
 router.post("/deleteBasket", apiPostController.deleteBasket);
 router.post("/createOrder", apiPostController.createOrder);

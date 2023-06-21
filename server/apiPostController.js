@@ -223,8 +223,8 @@ class ApiPostController {
           response_json_new.push(response_json);
           continue;
         }
-
-        if (response_json.name.includes(query)) {
+        
+        if (response_json.name.toLowerCase().includes(query.toLowerCase())) {
           response_json_new.push(response_json);
         }
       }

@@ -24,6 +24,32 @@ function log(text) {
   console.log(`${logging} ${Date.now()} ${text}`);
 }
 
+function compare_highest(a, b) {
+  const priceA = a.summ_price;
+  const priceB = b.summ_price;
+
+  let comparison = 0;
+  if (priceA < priceB) {
+    comparison = 1;
+  } else if (priceA > priceB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
+function compare_lowest(a, b) {
+  const priceA = a.summ_price;
+  const priceB = b.summ_price;
+
+  let comparison = 0;
+  if (priceA > priceB) {
+    comparison = 1;
+  } else if (priceA < priceB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
 class ApiPostController {
   async registration(request, response) {
     try {
@@ -736,7 +762,7 @@ class ApiPostController {
       parameters: JSON.parse(parameters),
       parameters_avail: JSON.parse(parameters_avail),
 
-      image_link: tools.delInjection(image_link),
+      image_link: JSON.parse(image_link),
       category: tools.delInjection(category),
       token: tools.delInjection(token),
     };
@@ -1096,7 +1122,6 @@ class ApiPostController {
 
           if (rows.length == 1) {
             customer_id = rows[0].id;
-            basket_json = JSON.parse(rows[0].basket);
           }
 
           if (basket_json.length < 1) {
@@ -1105,8 +1130,13 @@ class ApiPostController {
               .json({ error: "В корзине нет товаров", bcode: 17.4 });
           }
 
+          let full_price = 0;
+          for (let i = 0; i < basket_json.length; i++) {
+            full_price += basket_json[i].price;
+          }
+
           database.query(
-            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?)",
+            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?)",
             [
               sanitizedValues.first_name,
               sanitizedValues.last_name,
@@ -1116,6 +1146,7 @@ class ApiPostController {
               customer_id,
               Date.now(),
               JSON.stringify(basket_json),
+              full_price
             ],
             (error, rows_order) => {
               if (error) {
@@ -1134,10 +1165,6 @@ class ApiPostController {
                   }
 
                   let old_price = 0;
-                  let full_price = 0;
-                  for (let i = 0; i < basket_json.length; i++) {
-                    full_price += basket_json[i].price;
-                  }
 
                   old_price = full_price;
 
@@ -1215,27 +1242,17 @@ class ApiPostController {
   }
 
   async getOrdersByCustomerId(request, response) {
-    const requiredKeys = ["customer_id"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-
-    if (missingKey && request.query.hasOwnProperty("type")) {
+    if (
+      !request.query.hasOwnProperty('type') || 
+      !request.query.hasOwnProperty('customer_id')
+    ) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 18 });
     }
 
-    const { customer_id } = requestData;
-
-    const sanitizedValues = {
-      customer_id: tools.delInjection(customer_id),
-    };
-
-    const type = request.query.type;
+    const type = tools.delInjection(request.query.type);
+    const customer_id = tools.delInjection(request.query.customer_id);
 
     let type_string = 0;
 
@@ -1255,7 +1272,7 @@ class ApiPostController {
     }
 
     database.query(
-      `SELECT * FROM \`orders\` WHERE customer_id='${sanitizedValues.customer_id}'`,
+      `SELECT * FROM \`orders\` WHERE customer_id='${customer_id}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -1270,8 +1287,29 @@ class ApiPostController {
             parseInt(rows[i]["status"]) === type_string ||
             type_string === 5
           ) {
+
+            if (request.query.date_start !== undefined && request.query.date_end !== undefined) {
+              const if_date = parseInt(request.query.date_start) < parseInt(rows[i].date_start) < parseInt(request.query.date_end)
+              if (!if_date) {
+                continue
+              }
+            }
+            if (request.query.price_start !== undefined && request.query.price_end !== undefined) {
+              const if_price = parseInt(request.query.price_start) < parseInt(rows[i].summ_price) < parseInt(request.query.price_end)
+              if (!if_price) {
+                continue
+              }
+            }
             rows[i].products = JSON.parse(rows[i].products);
             ready_json.push(rows[i]);
+          }
+        }
+
+        if (request.query.price_filter !== undefined) {
+          if (request.query.price_filter === 'highest') {
+            ready_json.sort(compare_highest)
+          } else {
+            ready_json.sort(compare_lowest)
           }
         }
 

@@ -23,7 +23,7 @@ const Register = () => {
     newPassword: '',
     confirmPassword: '',
     birthdate: '',
-    adress_delivery: '',
+    adress_delivery: adress,
   });
   const timeStamp = new Date(
     regForm.birthdate.toLocaleString().split('-').reverse().join('.')
@@ -43,11 +43,6 @@ const Register = () => {
     });
   };
 
-  // const handleAdress = (e) => {
-  //   console.log(e.target.value)
-  //   setRegForm({ ...regForm, country: e.value })
-  // }
-
   const closeError = (e) => {
     e.preventDefault();
     setCheckPass(true);
@@ -55,7 +50,7 @@ const Register = () => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-
+    
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true);
       console.log(form);
@@ -77,7 +72,7 @@ const Register = () => {
         email: '',
         password: { newPassword: '', confirmPassword: '' },
         birthdate: '',
-        country: '',
+        adress_delivery: '',
       });
     } else {
       setCheckPass(false);
@@ -179,14 +174,17 @@ const Register = () => {
               />
               <AddressSuggestions
                 className='register__wrapper-input second-page'
-                setInputValue={regForm.country}
+                setInputValue={regForm.adress_delivery}
                 token='82173f834fc389954239d4414514d3ce2634ae1e'
                 value={regForm.adress_delivery}
+                onChange={(event) => {
+                  setAdress(event.value);
+                }}
                 inputProps={{
                   placeholder: 'Страна, город',
-                  value: regForm.adress_delivery,
+                  value: adress,
                   onChange: (event) => {
-                    setAdress(event.value);
+                    setAdress(event.target.value);
                   },
                 }}
               />

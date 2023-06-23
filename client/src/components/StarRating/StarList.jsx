@@ -1,12 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
+import { BodyReviewContext } from '../OrdersItem/OrdersItem';
 
-import Star from './Star'
+import Star from './Star';
 
 function StarsList() {
-  const maxValue = 5
+  const { maxValue } = useContext(BodyReviewContext);
+
   return (
     <div
-      className="star-rating"
+      className='star-rating'
       style={{
         display: 'flex',
         width: '140px',
@@ -15,12 +17,12 @@ function StarsList() {
       }}
     >
       {[...Array(maxValue)].map((star, index) => {
-        const value = index + 1
+        const value = index + 1;
 
-        return <Star key={index} value={value} />
+        return <Star key={index} value={value} />;
       })}
     </div>
-  )
+  );
 }
 
-export default StarsList
+export default StarsList;

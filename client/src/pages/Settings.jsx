@@ -94,9 +94,8 @@ function Settings() {
   const onClickSaveContacts = async () => {
     console.log(timeStamp)
     console.log(changeContacts)
-
+    setChange(!change.contacts)
     const data = await dispatch(fetchChangeBasic({ ...changeContacts, token }))
-    console.log(data)
     if (!data.payload) {
       return alert('Не удалось изменить контактную информацию')
     }

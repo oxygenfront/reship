@@ -6,7 +6,7 @@ function Star({ value }) {
   const obj = {
     emptyColor: '#fff',
     fillColor: '#416EF2',
-    height: '',
+    height: 33,
     hover: '',
     rating: '',
     setHover: '',

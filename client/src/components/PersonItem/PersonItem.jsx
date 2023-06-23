@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import styles from './PersonItem.module.sass'
 
-const PersonItem = ({ id, status, color, price, count, name }) => {
+const PersonItem = ({ id, image, status, color, price, count, name }) => {
   console.log(id)
   return (
     <div
@@ -18,7 +18,7 @@ const PersonItem = ({ id, status, color, price, count, name }) => {
             styles.personal__middle_block_latest_orders_items_block_item_up_img_block
           }
         >
-          <img src={`../assets/products_img/${id}.png`} alt="" />
+          <img src={image[0]} alt="" />
         </div>
         <div
           className={

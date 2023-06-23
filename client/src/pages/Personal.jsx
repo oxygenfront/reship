@@ -33,6 +33,7 @@ const Personal = () => {
     firstName: 'Имя',
     lastName: 'Фамилия',
   })
+  console.log(sortPrice)
 
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
@@ -45,8 +46,14 @@ const Personal = () => {
   }
   useEffect(() => {
     status === 'success' &&
-      dispatch(fetchGetOrdersById({ customer_id: data.id, type: sortStatus }))
-  }, [status])
+      dispatch(
+        fetchGetOrdersById({
+          customer_id: data.id,
+          type: sortStatus,
+          price: sortPrice,
+        })
+      )
+  }, [status, sortPrice, sortStatus])
 
   useEffect(() => {
     function handleResize() {
@@ -233,7 +240,7 @@ const Personal = () => {
                                       }
                                       onClick={() => setSortStatus('no_payed')}
                                     >
-                                      Отменено
+                                      Не оплачено
                                     </li>
                                     <li
                                       className={
@@ -277,8 +284,30 @@ const Personal = () => {
                               {sortBy.price === true ? (
                                 <div className="personal__middle-block_latest-orders_menu_items-item_status-wrapper">
                                   <ul>
-                                    <li>От наибольшей</li>
-                                    <li>От наименьшей</li>
+                                    <li
+                                      className={
+                                        sortPrice === 'highest'
+                                          ? 'active'
+                                          : null
+                                      }
+                                      onClick={() => {
+                                        setSortPrice('highest')
+                                      }}
+                                      value="highest"
+                                    >
+                                      От наибольшей
+                                    </li>
+                                    <li
+                                      className={
+                                        sortPrice === 'lowest' ? 'active' : null
+                                      }
+                                      onClick={() => {
+                                        setSortPrice('lowest')
+                                      }}
+                                      value="lowest"
+                                    >
+                                      От наименьшей
+                                    </li>
                                   </ul>
                                 </div>
                               ) : null}
@@ -295,6 +324,7 @@ const Personal = () => {
                   orders.map((order) =>
                     order.products.map((product) => (
                       <PersonItem
+                        image={product.image}
                         key={product.id}
                         id={product.id}
                         name={product.name}

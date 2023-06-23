@@ -30,6 +30,7 @@ function Orders() {
           orders.map((order) =>
             order.products.map((product) => (
               <OrdersItem
+                image={product.image}
                 key={product.id}
                 id={product.id}
                 name={product.name}

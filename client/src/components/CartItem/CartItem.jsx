@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { addItem, minusItem, removeItem } from '../../redux/slices/cartSlice'
 import styles from './CartItem.module.sass'
 
-const CartItem = ({ id, price, color, count, name }) => {
+const CartItem = ({ id, price, image, color, count, name }) => {
   const dispatch = useDispatch()
 
   const onClickPlus = () => {
@@ -33,7 +33,7 @@ const CartItem = ({ id, price, color, count, name }) => {
           >
             <img
               onClick={() => console.log(id)}
-              src={`../assets/products_img/${id}.png`}
+              src={image[0]}
               alt="item"
               className={classNames(
                 styles.person__delivery_items_item_img,

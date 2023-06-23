@@ -14,19 +14,24 @@ import { Navigate } from 'react-router-dom'
 import { Menu as DropDown } from '@headlessui/react'
 
 const Catalog = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const [showFilters, setShowFilters] = useState(false)
-  const [rangeValue, setRangeValue] = useState([2000, 12000])
   const dispatch = useDispatch()
+  const set = new Set()
+
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
   const { choosenCategorie, searchValue, choosenPrice } =
     useSelector(selectFilter)
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [showFilters, setShowFilters] = useState(false)
   const [choosenView, setChoosenView] = useState('grid')
+
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort))
   }, [])
-  const set = new Set()
+
+  const confirmFilters = () => {}
+
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)

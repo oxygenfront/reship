@@ -187,9 +187,9 @@ function CatalogMain() {
               ))}
         </div>
 
-        <div className="main-catalog__main-category">
+        <Link to="/catalog" className="main-catalog__main-category">
           <button>Все новинки</button>
-        </div>
+        </Link>
 
         <hr className="hr" />
 

@@ -9,6 +9,7 @@ import favorites from './slices/favoriteSlice'
 import change from './slices/changeSlice'
 import order from './slices/orderSlice'
 import theme from './slices/themeSlice'
+import comment from './slices/commentSlice'
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     change,
     order,
     theme,
+    comment,
   },
 })

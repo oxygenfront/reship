@@ -1,13 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Timeline } from 'rsuite'
+
 import styles from './OrdersItem.module.sass'
 import { Dialog } from '@headlessui/react'
-import StarList from '../StarRating/StarList'
 import StarsList from '../StarRating/StarList'
+import { fetchCreateReview } from '../../redux/slices/commentSlice'
+import { useDispatch } from 'react-redux'
 
-const OrdersItem = ({ id, name, color, count, price }) => {
+const OrdersItem = ({ id, image, name, color, count, price }) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false)
   const token = localStorage.getItem('token')
   const [modalOpen, setModalOpen] = useState(false)
@@ -15,16 +17,40 @@ const OrdersItem = ({ id, name, color, count, price }) => {
     token,
     rating: 5,
     text: '',
-    date_timestamp: new Date.now(),
-    product_id: id,
+    order_product: JSON.stringify({
+      name,
+      color: 'white',
+      price,
+      parameters: JSON.stringify([]),
+      product_id: id.toString(),
+      parameters_dop: JSON.stringify({}),
+    }),
   })
-  console.log(modalOpen)
+
+  function updateReview(e) {
+    setReview({
+      ...review,
+      [e.target.name]: e.target.value,
+    })
+  }
+  async function sendForm(e) {
+    e.preventDefault()
+
+    console.log(review)
+    const data = await dispatch(fetchCreateReview(review))
+    if (!data.payload) {
+      alert('Не удалось оставить отзыв')
+    } else {
+      alert('Отзыв о товаре оставлен')
+    }
+  }
+
   return (
     <div className="orders__item">
       <div className="orders__item_card">
         <div className="orders__item_left-block_wrapper">
           <div className="orders__item_img-block">
-            <img src={`../assets/products_img/${id}.png`} alt="" />
+            <img src={image[0]} alt="" />
           </div>
           <div className="orders__item_left-block">
             <p className="orders__item_left-block_name">{name}</p>
@@ -59,10 +85,7 @@ const OrdersItem = ({ id, name, color, count, price }) => {
                       <div className={styles.item}>
                         <div className={styles.item_left}>
                           <div className={styles.item_img}>
-                            <img
-                              src={`../assets/products_img/${id}.png`}
-                              alt="product"
-                            />
+                            <img src={image[0]} alt="product" />
                           </div>
                           <div className={styles.item_title}>
                             <p>{name}</p>
@@ -78,8 +101,10 @@ const OrdersItem = ({ id, name, color, count, price }) => {
                       </div>
                       <StarsList />
                       <textarea
+                        onChange={updateReview}
+                        value={review.text}
                         type="text"
-                        name="comment"
+                        name="text"
                         id=""
                         className={styles.item_inp}
                         placeholder="Комментарий к отзыву..."
@@ -95,7 +120,10 @@ const OrdersItem = ({ id, name, color, count, price }) => {
                         >
                           Отменить
                         </button>
-                        <button className={styles.btns_submit}>
+                        <button
+                          onClick={sendForm}
+                          className={styles.btns_submit}
+                        >
                           Подтвердить
                         </button>
                       </div>

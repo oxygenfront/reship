@@ -2321,7 +2321,7 @@ class ApiPostController {
 
   async createReview(request, response) {
     try {
-      const requiredKeys = ["token", "rating", "text", "order_product"];
+      const requiredKeys = ["token", "rating", "text", "order_product", "anon"];
 
       const requestData = request.body;
 
@@ -2334,13 +2334,14 @@ class ApiPostController {
           .json({ error: "Некорректные данные.", bcode: 33 });
       }
 
-      const { token, rating, text, order_product } = requestData;
+      const { token, rating, text, order_product, anon } = requestData;
 
       const sanitizedValues = {
         token: tools.delInjection(token),
         rating: tools.delInjection(rating),
         text: tools.delInjection(text),
         order_product: JSON.parse(order_product),
+        anon: tools.delInjection(anon),
       };
 
       database.query(
@@ -2379,7 +2380,7 @@ class ApiPostController {
 
                       if (rows_product.length == 1) {
                         database.query(
-                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`color\`) VALUES ('${
+                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`color\`, \`anon\`) VALUES ('${
                             rows_user[0]["id"]
                           }', '${sanitizedValues.rating}', '${
                             sanitizedValues.text
@@ -2387,7 +2388,7 @@ class ApiPostController {
                             sanitizedValues.order_product.product_id
                           }', '${Date.now()}', '${
                             sanitizedValues.order_product.color
-                          }');`,
+                          }', '${sanitizedValues.anon}');`,
                           (error, rows_review) => {
                             if (error) {
                               return response
@@ -2406,6 +2407,7 @@ class ApiPostController {
                           set_rating: sanitizedValues.rating,
                           color: sanitizedValues.order_product.color,
                           product_title: rows_product[0].title,
+                          anon: sanitizedValues.anon,
                           text: sanitizedValues.text,
                         });
                       } else {
@@ -2486,6 +2488,9 @@ class ApiPostController {
               let all_ratings = 0;
 
               for (let i = 0; rows.length > i; i++) {
+                if (rows[i].anon === 1) {
+                  rows[i].author_id = -1
+                }
                 all_ratings += rows[i].rating;
               }
 

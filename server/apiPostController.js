@@ -1073,6 +1073,7 @@ class ApiPostController {
         "promocode",
         "basket",
         "token",
+        "tariff_code",
       ];
 
       const requestData = request.body;
@@ -1095,6 +1096,7 @@ class ApiPostController {
         promocode,
         basket,
         token,
+        tariff_code,
       } = requestData;
 
       const sanitizedValues = {
@@ -1106,7 +1108,10 @@ class ApiPostController {
         promocode: tools.delInjection(promocode),
         basket: JSON.parse(basket),
         token: tools.delInjection(token),
+        tariff_code: tools.delInjection(tariff_code),
       };
+
+      const date_create = Date.now()
 
       let customer_id = -1;
       let basket_json = sanitizedValues.basket;
@@ -1133,10 +1138,15 @@ class ApiPostController {
           let full_price = 0;
           for (let i = 0; i < basket_json.length; i++) {
             full_price += basket_json[i].price;
+
+            basket_json[i].date_create = date_create
+            basket_json[i].init = sanitizedValues.first_name + ' ' + sanitizedValues.last_name
+            basket_json[i].adress = sanitizedValues.adress
+            basket_json[i].status = -1
           }
 
           database.query(
-            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?)",
+            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`, `tariff_code`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?, ?)",
             [
               sanitizedValues.first_name,
               sanitizedValues.last_name,
@@ -1144,9 +1154,10 @@ class ApiPostController {
               sanitizedValues.email,
               JSON.stringify(sanitizedValues.adress),
               customer_id,
-              Date.now(),
+              date_create,
               JSON.stringify(basket_json),
-              full_price
+              full_price,
+              sanitizedValues.tariff_code
             ],
             (error, rows_order) => {
               if (error) {
@@ -1289,17 +1300,26 @@ class ApiPostController {
           ) {
 
             if (request.query.date_start !== undefined && request.query.date_end !== undefined) {
-              const if_date = parseInt(request.query.date_start) < parseInt(rows[i].date_start) < parseInt(request.query.date_end)
+              if (request.query.date_start === '') request.query.date_start = 0
+              if (request.query.date_end === '') request.query.date_end = 99999999999999
+
+              const if_date = parseInt(rows[i].date_start) >= parseInt(request.query.date_start) && parseInt(rows[i].date_start) <= parseInt(request.query.date_end)
               if (!if_date) {
                 continue
               }
             }
+
             if (request.query.price_start !== undefined && request.query.price_end !== undefined) {
-              const if_price = parseInt(request.query.price_start) < parseInt(rows[i].summ_price) < parseInt(request.query.price_end)
+              if (request.query.price_start === '') request.query.price_start = 0
+              if (request.query.price_end === '') request.query.price_end = 99999999999999
+
+              const if_price = parseInt(rows[i].summ_price) >= parseInt(request.query.price_start) && parseInt(rows[i].summ_price) <= parseInt(request.query.price_end);
+
               if (!if_price) {
                 continue
               }
             }
+
             rows[i].products = JSON.parse(rows[i].products);
             ready_json.push(rows[i]);
           }
@@ -2321,7 +2341,7 @@ class ApiPostController {
 
   async createReview(request, response) {
     try {
-      const requiredKeys = ["token", "rating", "text", "order_product"];
+      const requiredKeys = ["token", "rating", "text", "order_product", "anon"];
 
       const requestData = request.body;
 
@@ -2334,13 +2354,14 @@ class ApiPostController {
           .json({ error: "Некорректные данные.", bcode: 33 });
       }
 
-      const { token, rating, text, order_product } = requestData;
+      const { token, rating, text, order_product, anon } = requestData;
 
       const sanitizedValues = {
         token: tools.delInjection(token),
         rating: tools.delInjection(rating),
         text: tools.delInjection(text),
         order_product: JSON.parse(order_product),
+        anon: tools.delInjection(anon),
       };
 
       database.query(
@@ -2379,7 +2400,7 @@ class ApiPostController {
 
                       if (rows_product.length == 1) {
                         database.query(
-                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`color\`) VALUES ('${
+                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`color\`, \`anon\`) VALUES ('${
                             rows_user[0]["id"]
                           }', '${sanitizedValues.rating}', '${
                             sanitizedValues.text
@@ -2387,7 +2408,7 @@ class ApiPostController {
                             sanitizedValues.order_product.product_id
                           }', '${Date.now()}', '${
                             sanitizedValues.order_product.color
-                          }');`,
+                          }', '${sanitizedValues.anon}');`,
                           (error, rows_review) => {
                             if (error) {
                               return response
@@ -2406,6 +2427,7 @@ class ApiPostController {
                           set_rating: sanitizedValues.rating,
                           color: sanitizedValues.order_product.color,
                           product_title: rows_product[0].title,
+                          anon: sanitizedValues.anon,
                           text: sanitizedValues.text,
                         });
                       } else {
@@ -2486,6 +2508,9 @@ class ApiPostController {
               let all_ratings = 0;
 
               for (let i = 0; rows.length > i; i++) {
+                if (rows[i].anon === 1) {
+                  rows[i].author_id = -1
+                }
                 all_ratings += rows[i].rating;
               }
 

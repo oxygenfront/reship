@@ -9,11 +9,12 @@
         font-size: 64px
         font-weight: 600
         margin-bottom: 136px
+        margin-top: 184px
     &__buttons-block
         background: var(--tolightgray)
         border-radius: 30px
         width: 352px
-        height: 247px
+        height: 100%
         padding: 22px 0 35px 22px
         &_item
             border-radius: 30px
@@ -21,16 +22,23 @@
             display: flex
             align-items: center
             transition: all .2s ease-in-out
+            &:hover
+                background: #416EF2
+                & span
+                    color: white
+            &:not(:last-child)
+                margin-bottom: 7px
             &:nth-child(1)
                 width: 138px
             &:nth-child(2)
-                width: 293px
+                width: 297px
             &:nth-child(3)
-                width: 170px
+                width: 171px
             &:nth-child(4)
                 width: 250px
             & span
                 font-size: 20px
+                font-weight: 500
                 color: var(--color)
                 margin-left: 26px
                 margin-right: 26px
@@ -157,6 +165,10 @@
                     padding: 0 18px
                     font-size: 16px
                     font-weight: 500
+                    border: 2px solid transparent
+                    transition: border .2s linear
+                    &:focus
+                        border: 2px solid #416EF2
                     & span
                         font-size: 16px
                         font-weight: 500
@@ -177,6 +189,10 @@
                     color: #416EF2
                     background: none
                     margin-right: 15px
+                    transition: all .2s linear
+                    &:hover
+                        background: #416EF2
+                        color: white
                 &_save
                     font-size: 14px
                     font-weight: 500
@@ -185,3 +201,8 @@
                     color: white
                     background: #416EF2
                     border-radius: 30px
+                    border: 1px solid #416EF2
+                    transition: all .2s linear
+                    &:hover
+                        background: transparent
+                        color: #416EF2

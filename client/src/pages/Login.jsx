@@ -1,82 +1,101 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate } from 'react-router-dom'
-import { fetchAuth, fetchAuthMe, selectIsAuth } from '../redux/slices/authSlice'
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
+import {
+  fetchAuth,
+  fetchAuthMe,
+  selectIsAuth,
+} from '../redux/slices/authSlice';
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
   const [authForm, setAuthForm] = useState({
     email: '',
     password: '',
-  })
+  });
+
+  const inputsRef = useRef([]);
+  const handleKeyDown = (event, index) => {
+    if (event.key === 'Enter') {
+      if (index < inputsRef.current.length - 1) {
+        inputsRef.current[index + 1].focus();
+      } else {
+        sendForm(event);
+      }
+    }
+  };
 
   const updateAuthForm = (e) => {
     setAuthForm({
       ...authForm,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   async function sendForm(e) {
-    e.preventDefault()
-    const data = await dispatch(fetchAuth(authForm))
+    e.preventDefault();
+    const data = await dispatch(fetchAuth(authForm));
 
     if (!data.payload) {
-      return alert('Не удалось авторизоваться')
+      return alert('Не удалось авторизоваться');
     }
 
     if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload.token)
-      dispatch(fetchAuthMe(data.payload.token))
+      window.localStorage.setItem('token', data.payload.token);
+      dispatch(fetchAuthMe(data.payload.token));
     }
 
     setAuthForm({
       email: '',
       password: '',
-    })
+    });
   }
 
   if (isAuth) {
-    return <Navigate to="/" />
+    return <Navigate to='/' />;
   }
 
   return (
     <div>
-      <section className="auth">
-        <div className="container auth__container">
-          <div className="auth_wrapper">
-            <h1 className="auth__title">Войти</h1>
-            <hr className="hr"></hr>
-            <form className="auth__form" action="">
+      <section className='auth'>
+        <div className='container auth__container'>
+          <div className='auth_wrapper'>
+            <h1 className='auth__title'>Войти</h1>
+            <hr className='hr'></hr>
+            <form className='auth__form' action=''>
               <input
-                className="auth__form-input"
-                name="email"
+                className='auth__form-input'
+                name='email'
                 value={authForm.email}
                 onChange={updateAuthForm}
-                type="text"
-                placeholder="Адрес электронной почты"
+                type='text'
+                placeholder='Адрес электронной почты'
+                ref={(ref) => (inputsRef.current[0] = ref)}
+                onKeyDown={(event) => handleKeyDown(event, 0)}
               />
               <input
-                className="auth__form-input"
-                name="password"
+                className='auth__form-input'
+                name='password'
                 value={authForm.password}
                 onChange={updateAuthForm}
-                type="password"
-                placeholder="Пароль"
+                type='password'
+                placeholder='Пароль'
+                ref={(ref) => (inputsRef.current[1] = ref)}
+                onKeyDown={(event) => handleKeyDown(event, 1)}
               />
             </form>
-            <div className="auth__links">
+            <div className='auth__links'>
               Новый пользователь?
-              <Link to="/register" className="auth__reg">
+              <Link to='/register' className='auth__reg'>
                 Зарегистрируйтесь
               </Link>
             </div>
-            <div className="auth__bottom">
-              <Link to="/forgot" className="auth__reg">
+            <div className='auth__bottom'>
+              <Link to='/forgot' className='auth__reg'>
                 Забыл пароль
               </Link>
-              <button className="auth__button" type="submit" onClick={sendForm}>
+              <button className='auth__button' onClick={sendForm}>
                 Выполнить вход
               </button>
             </div>
@@ -84,7 +103,7 @@ const Login = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

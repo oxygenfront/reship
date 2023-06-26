@@ -173,7 +173,8 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    if (!request.body.hasOwnProperty('token')) {
+    console.log(request.headers)
+    if (!request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 2 });
@@ -200,7 +201,7 @@ class ApiPostController {
     }
 
     database.query(
-      'SELECT * FROM `users` WHERE token="' + tools.delInjection(request.body.token) + '"',
+      'SELECT * FROM `users` WHERE token="' + tools.delInjection(request.headers.authorization) + '"',
       (error, rows, fields) => {
         if (error) {
           return response

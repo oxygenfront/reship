@@ -97,7 +97,7 @@ const OrdersItem = ({
         <div className="orders__item_card">
           <div className="orders__item_left-block_wrapper">
             <div className="orders__item_img-block">
-              <img src={image[0]} alt="" />
+              <img src={JSON.parse(image)[0]} alt="" />
             </div>
             <div className="orders__item_left-block">
               <p className="orders__item_left-block_name">{name}</p>

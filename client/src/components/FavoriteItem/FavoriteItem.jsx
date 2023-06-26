@@ -49,7 +49,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
   return (
     <div className={styles.favorite__item}>
       <Link to={`/item/${id}`} className={styles.favorite__item_imgBlock}>
-        <img src={image[0]} alt="product" />
+        <img src={JSON.parse(image)[0]} alt="product" />
       </Link>
       <div className={styles.favorite__item_columnBlock}>
         <div className={styles.favorite__item_columnBlock_upBlock}>

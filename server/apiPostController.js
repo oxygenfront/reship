@@ -241,13 +241,13 @@ class ApiPostController {
   }
 
   async getUser(request, response) {
-    if (!tools.checkJsonKey(request.query, "token")) {
+    if (!request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 4 });
     }
 
-    const token = tools.delInjection(request.query.token);
+    const token = tools.delInjection(request.headers.authorization);
 
     if (token === "null") {
       return response.json({

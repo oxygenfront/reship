@@ -7,6 +7,11 @@
         width: 146px
         height: 47px
         color: #fff
+        border: 2px solid #0540F2
+        transition: all .2s linear
+        &:hover
+            background: transparent
+            color: #0540F2
     &__bottom
         display: flex
         justify-content: space-between
@@ -20,8 +25,14 @@
             border-radius: 30px
             font-size: 16px
             margin-bottom: 18px
-            &:nth-child(1)
-                margin-top: 25px
+            border: 2px solid transparent
+            transition: border .2s linear
+            &:focus
+                border: 2px solid #416EF2
+        &:nth-child(1)
+            margin-top: 25px
+            &:nth-child(2)
+                margin-bottom: 40px
 
     &_wrapper
         width: 541px
@@ -50,7 +61,7 @@
         display: flex
         gap: 10px
         font-size: 17px
-        margin-bottom: 180px
+        margin-bottom: 176px
         &-auth
             width: 50%
     &__reg

@@ -18,7 +18,7 @@ const Favorites = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-  
+
   return (
     <>
       <section className="favorites">
@@ -31,6 +31,7 @@ const Favorites = () => {
               {favorites.length > 0 ? (
                 favorites.map((item) => (
                   <FavoriteItem
+                    image={item.image}
                     name={item.name}
                     id={item.id}
                     key={item.id}

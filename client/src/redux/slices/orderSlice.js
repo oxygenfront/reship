@@ -12,10 +12,10 @@ export const fetchCreateOrder = createAsyncThunk(
 )
 export const fetchGetOrdersById = createAsyncThunk(
   'order/fetchGetOrderById',
-  async (id) => {
+  async (params) => {
+    console.log(params)
     const { data } = await axios.get(
-      `/getOrdersByCustomerId?&type=${id.type}&customer_id=${id.customer_id}&price_filter=${id.price}`,
-      id
+      `/getOrdersByCustomerId?&type=${params.type}&customer_id=${params.customer_id}&price_filter=${params.price}`
     )
 
     return data

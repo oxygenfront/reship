@@ -12,7 +12,11 @@
             display: flex
             align-items: flex-end
             padding: 0 0 50px 44px
-
+            overflow: hidden
+            transition: all .2s linear
+            &:hover
+                background-position: center
+                background-size: 130%
             & span
                 color: white
                 font-size: 40px
@@ -30,7 +34,8 @@
             color: white
             background: #416EF2
             border: 2px solid #416EF2
-            &.active
+            transition: all .2s linear
+            &.active, &:hover
                 border: 2px solid var(--towhite)
                 color: var(--towhite)
                 background: transparent
@@ -113,6 +118,12 @@
             padding: 13px 19px
             background: #416EF2
             border-radius: 30px
+            border: 2px solid #416EF2
+            transition: all .2s linear
+            &:hover
+                background: transparent
+                color: #416EF2
+
         & + hr
             margin-bottom: 116px
 

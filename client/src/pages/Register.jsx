@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import InputMask from 'react-input-mask';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
@@ -25,6 +25,24 @@ const Register = () => {
     birthdate: '',
     adress_delivery: adress,
   });
+  const inputsRef = useRef([]);
+
+  const handleKeyDown = (event, index) => {
+    if (event.key === 'Enter') {
+      const nextIndex = index + 1;
+      if (nextIndex < inputsRef.current.length) {
+        if (
+          inputsRef.current[nextIndex] &&
+          inputsRef.current[nextIndex].focus
+        ) {
+          inputsRef.current[nextIndex].focus();
+        }
+      }
+    }
+  };
+  const handleNextPage = () => {
+    setNextPage(!nextPage);
+  };
   const timeStamp = new Date(
     regForm.birthdate.toLocaleString().split('-').reverse().join('.')
   ).getTime();
@@ -50,7 +68,7 @@ const Register = () => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-    
+
     if (regForm.newPassword === regForm.confirmPassword) {
       setCheckPass(true);
       console.log(form);
@@ -108,6 +126,8 @@ const Register = () => {
                 placeholder='Адрес электронной почты'
                 value={regForm.email}
                 onChange={updateForm}
+                onKeyDown={(e) => handleKeyDown(e, 0)}
+                ref={(el) => (inputsRef.current[0] = el)}
               />
               <input
                 className='register__wrapper-input'
@@ -116,6 +136,8 @@ const Register = () => {
                 placeholder='Пароль'
                 value={regForm.newPassword}
                 onChange={updateForm}
+                onKeyDown={(e) => handleKeyDown(e, 1)}
+                ref={(el) => (inputsRef.current[1] = el)}
               />
               <input
                 className='register__wrapper-input'
@@ -124,6 +146,8 @@ const Register = () => {
                 placeholder='Повторите пароль'
                 value={regForm.confirmPassword}
                 onChange={updateForm}
+                onKeyDown={(e) => handleNextPage(e, 2)}
+                ref={(el) => (inputsRef.current[2] = el)}
               />
             </form>
             <div className='register__wrapper-link'>
@@ -154,6 +178,8 @@ const Register = () => {
                 placeholder='Имя'
                 value={regForm.firstName}
                 onChange={updateForm}
+                onKeyDown={(e) => handleKeyDown(e, 3)}
+                // ref={(el) => (inputsRef.current[3] = el)}
               />
               <input
                 className='register__wrapper-input second-page sm'
@@ -162,6 +188,8 @@ const Register = () => {
                 placeholder='Фамилия'
                 value={regForm.lastName}
                 onChange={updateForm}
+                onKeyDown={(e) => handleKeyDown(e, 4)}
+                ref={(el) => (inputsRef.current[4] = el)}
               />
               <InputMask
                 mask='99-99-9999'
@@ -183,6 +211,7 @@ const Register = () => {
                 inputProps={{
                   placeholder: 'Страна, город',
                   value: adress,
+                  onKeyDown: () => sendForm,
                   onChange: (event) => {
                     setAdress(event.target.value);
                   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import InputMask from 'react-input-mask'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUserData } from '../redux/slices/authSlice'
@@ -23,6 +23,17 @@ function Settings() {
     new_password: '',
     conf_password: '',
   })
+  const inputRefs = useRef([]);
+
+  const handleKeyDown = (event, index) => {
+    if (event.key === 'Enter') {
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus();
+      } else {
+        event.target.form.submit();
+      }
+    }
+  };
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
 
@@ -285,6 +296,8 @@ function Settings() {
                           value={changeProfile.first_name}
                           type='text'
                           className='settings__change_block_inputs-item'
+                          ref={(ref) => (inputRefs.current[0] = ref)}
+                          onKeyDown={(event) => handleKeyDown(event, 0)}
                         />
                       </div>
                       <div className='settings__change_block_inputs-wrapper'>
@@ -296,6 +309,8 @@ function Settings() {
                           value={changeProfile.last_name}
                           type='text'
                           className='settings__change_block_inputs-item'
+                          ref={(ref) => (inputRefs.current[1] = ref)}
+                          onKeyDown={(event) => handleKeyDown(event, 1)}
                         />
                       </div>
                     </div>
@@ -333,6 +348,8 @@ function Settings() {
                             name='new_email'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[0] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -376,6 +393,8 @@ function Settings() {
                             value={changeContacts.new_country}
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[1] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
@@ -474,6 +493,7 @@ function Settings() {
                             name='country'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[0] = ref)} onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -486,6 +506,7 @@ function Settings() {
                             name='city'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[1] = ref)} onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
@@ -500,6 +521,7 @@ function Settings() {
                             name='street'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[2] = ref)} onKeyDown={(event) => handleKeyDown(event, 2)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -512,6 +534,7 @@ function Settings() {
                             name='postal_code'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[3] = ref)} onKeyDown={(event) => handleKeyDown(event, 3)}
                           />
                         </div>
                       </div>
@@ -526,6 +549,7 @@ function Settings() {
                             name='flat_number'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[4] = ref)} onKeyDown={(event) => handleKeyDown(event, 4)}
                           />
                         </div>
                       </div>
@@ -621,6 +645,7 @@ function Settings() {
                             name='curr_password'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[0] = ref)} onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -633,6 +658,7 @@ function Settings() {
                             name='new_password'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[1] = ref)} onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
@@ -648,6 +674,7 @@ function Settings() {
                             name='conf_password'
                             type='text'
                             className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[2] = ref)} onKeyDown={(event) => handleKeyDown(event, 2)}
                           />
                         </div>
                       </div>

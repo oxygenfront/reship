@@ -28,7 +28,7 @@
             display: flex
             flex-direction: column
             justify-content: space-between
-            height: 100%
+            height: 374px
             width: 100%
             &_category
                 position: absolute
@@ -56,7 +56,8 @@
             &:hover .main_catalog__products_wrapper_item_favorite
                 opacity: 1
             &_title
-                font-size: 24px
+                font-size: 28px
+                width: 240px
                 color: var(--towhite)
                 font-weight: 700
                 transition: color 0.2s ease-in
@@ -72,70 +73,90 @@
                 align-items: center
                 justify-content: center
                 gap: 10px
+<<<<<<< HEAD
                 width: 140px
                 height: 55px
                 font-size: 20px
                 border: 2px solid #416EF2
                 color: #416EF2
-                font-weight: 500
-                border-radius: 30px
-                background-color: var(--background-color)
-                transition: background-color 0.3s ease-in-out
+=======
+    width: 133px
+    height: 49px
+    font-size: 16px
+    border: 2px solid #0540F2
+    color: #0540F2
+>>>>>>> b909c9214f0e2ef1ed38016293fbcb3a10098cb9
+    font-weight: 500
+    border-radius: 30px
+    background-color: var(--background-color)
+    transition: background-color 0.3s ease-in-out
 
-                & span
-                    display: flex
-                    justify-content: center
-                    width: 20px
-                &_minus
-                    display: flex
-                    justify-content: center
-                    align-items: center
-                    width: 100%
-                    height: 3px
-                    background: #416EF2
-                    &_wrapper
-                        display: flex
-                        align-items: center
-                        justify-content: center
-                        background: none
-                        width: 23px
-                        height: 23px
-                        border-radius: 50%
+    & span
+        display: flex
+        justify-content: center
+        width: 20px
+        font-size: 20px
+        font-weight: 700
+        color: #0540F2
+        &_minus
+            display: flex
+            justify-content: center
+            align-items: center
+            width: 100%
+            height: 3px
+            background: #416EF2
+            &_wrapper
+                display: flex
+                align-items: center
+                justify-content: center
+                background: none
+                width: 18px
+                height: 18px
+                border-radius: 50%
                 &_pluses
                     display: flex
                     align-items: center
                     justify-content: center
                     background: none
-                    width: 23px
-                    height: 23px
+                    width: 18px
+                    height: 18px
                     border-radius: 50%
                     &_block
                     &_itemv
-                        height: 23px
+                        height: 18px
                         width: 3px
                         background-color: #416EF2
-                        transform: translateX(10px)
+                        transform: translate(7.7px, 2px)
                     &_itemh
-                        width: 23px
+                        width: 18px
                         height: 3px
                         background-color: #416EF2
+<<<<<<< HEAD
                         transform: translateY(-13px)
 
-            &_price
-                font-weight: 600
-                font-size: 16px
-                color: var(--color)
-            &_slider
-                width: 100%
-                height: 242px
-                background-color: var(--background-color)
-                border-radius: 30px
-                margin-bottom: 13px
-                & .swiper-pagination .swiper-pagination-bullet
-                    background: black
-                    width: 15px
-                    height: 2px
-                    border-radius: 1px
+=======
+    transform: translateY(-9px)
+    &_plus
+        width: 9px
+        height: 2px
+        background-color: #007DFD
+        transform: translateY(-5.5px)
+>>>>>>> b909c9214f0e2ef1ed38016293fbcb3a10098cb9
+    &_price
+        font-weight: 500
+        font-size: 20px
+        color: var(--color)
+        &_slider
+            width: 100%
+            height: 242px
+            background-color: var(--background-color)
+            border-radius: 30px
+            margin-bottom: 13px
+            & .swiper-pagination .swiper-pagination-bullet
+                background: black
+                width: 15px
+                height: 2px
+                border-radius: 1px
                 &_slide
                     background-repeat: no-repeat
                     background-position: center

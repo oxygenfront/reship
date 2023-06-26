@@ -1,28 +1,28 @@
-import { useEffect, useRef, useState } from 'react'
-import InputMask from 'react-input-mask'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectUserData } from '../redux/slices/authSlice'
+import { useEffect, useRef, useState } from 'react';
+import InputMask from 'react-input-mask';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserData } from '../redux/slices/authSlice';
 import {
   fetchChangeBasic,
   fetchChangeDelivery,
   fetchChangePassword,
-} from '../redux/slices/changeSlice'
+} from '../redux/slices/changeSlice';
 
 function Settings() {
-  const dispatch = useDispatch()
-  const token = localStorage.getItem('token')
-  const { data, status } = useSelector(selectUserData)
+  const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+  const { data, status } = useSelector(selectUserData);
   const [active, setActive] = useState({
     profile: true,
     contacts: false,
     adress: false,
     password: false,
-  })
+  });
   const [changePassword, setChangePassword] = useState({
     curr_password: '',
     new_password: '',
     conf_password: '',
-  })
+  });
   const inputRefs = useRef([]);
 
   const handleKeyDown = (event, index) => {
@@ -35,18 +35,18 @@ function Settings() {
     }
   };
   function timeConverter(UNIX_timestamp) {
-    const date = new Date(UNIX_timestamp)
+    const date = new Date(UNIX_timestamp);
 
     return date.toLocaleString('ru-US', {
       day: 'numeric',
       year: 'numeric',
       month: 'numeric',
-    })
+    });
   }
   const [changeProfile, setChangeProfile] = useState({
     first_name: '',
     last_name: '',
-  })
+  });
 
   const [changeContacts, setChangeContacts] = useState({
     new_email: '',
@@ -54,45 +54,45 @@ function Settings() {
     new_date_of_birth: '',
     new_date: '',
     new_country: '',
-  })
+  });
   const [changeAdress, setChangeAdress] = useState({
     country: '',
     city: '',
     street: '',
     flat_number: '',
     postal_code: '',
-  })
+  });
   const [change, setChange] = useState({
     profile: false,
     contacts: false,
     adress: false,
     password: false,
-  })
+  });
 
   const updateProfile = (e) => {
     setChangeProfile({
       ...changeProfile,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const updateContacts = (e) => {
     setChangeContacts({
       ...changeContacts,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const updateAdress = (e) => {
     setChangeAdress({
       ...changeAdress,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const updatePassword = (e) => {
     setChangePassword({
       ...changePassword,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const timeStamp = new Date(
     changeContacts.new_date
       .toLocaleString()
@@ -100,22 +100,45 @@ function Settings() {
       .split('.')
       .reverse()
       .join('.')
-  ).getTime()
+  ).getTime();
+
+  const onClickEnter = (event) => {
+    if (event.key === 'Enter') {
+      if (event.target.name === 'new_country') {
+        document
+          .querySelector('.settings__change_block_buttons_save')
+          .addEventListener('click', () => {
+            console.log('log');
+            changeContacts.new_date_of_birth = timeStamp;
+          });
+      }
+      if (event.target.name === 'flat_number') {
+        onClickSaveDelivery();
+      }
+      if (event.target.name === 'conf_password') {
+        onClickSavePassword();
+      }
+    }
+  };
 
   const onClickSaveContacts = async () => {
-    console.log(timeStamp)
-    console.log(changeContacts)
-    setChange(!change.contacts)
-    const data = await dispatch(fetchChangeBasic({ ...changeContacts, token }))
+    setChange({ contacts: !change.contacts });
+
+    console.log(timeStamp);
+    console.log(changeContacts);
+    setChange(!change.contacts);
+    const data = await dispatch(fetchChangeBasic({ ...changeContacts, token }));
     if (!data.payload) {
-      return alert('Не удалось изменить контактную информацию')
+      return alert('Не удалось изменить контактную информацию');
     }
     if (data.payload) {
-      return alert('Контактная информация успешно изменена')
+      return alert('Контактная информация успешно изменена');
     }
-  }
+  };
 
   const onClickSaveDelivery = async () => {
+    setChange({ adress: !change.adress });
+
     const data = await dispatch(
       fetchChangeDelivery({
         new_delivery: JSON.stringify({
@@ -123,47 +146,49 @@ function Settings() {
         }),
         token,
       })
-    )
-    console.log(data)
+    );
+    console.log(data);
     if (!data.payload) {
-      return alert('Не удалось изменить адрес')
+      return alert('Не удалось изменить адрес');
     }
     if (data.payload) {
-      return alert('Адрес успешно изменен')
+      return alert('Адрес успешно изменен');
     }
-  }
+  };
   const onClickSavePassword = async () => {
+    setChange({ password: !change.password });
+
     const data = await dispatch(
       fetchChangePassword({
         password: changePassword.curr_password,
         new_password: changePassword.new_password,
         token,
       })
-    )
+    );
     if (!data.payload) {
-      return alert('Не удалось изменить пароль')
+      return alert('Не удалось изменить пароль');
     }
     if (data.payload) {
-      return alert('Пароль успешно изменен')
+      return alert('Пароль успешно изменен');
     }
 
-    setChangePassword({ curr_password: '', new_password: '' })
-  }
+    setChangePassword({ curr_password: '', new_password: '' });
+  };
 
   useEffect(() => {
     if (status === 'success') {
-      const adress = JSON.parse(data.adress_delivery)?.adress.split(',')
+      const adress = JSON.parse(data.adress_delivery)?.adress.split(',');
       setChangeProfile({
         first_name: data.first_name,
         last_name: data.last_name,
-      })
+      });
       setChangeContacts({
         new_email: data.email,
         new_country: JSON.parse(data.adress_delivery).adress,
 
         new_date: timeConverter(data.date_of_birth),
         new_number_tel: '',
-      })
+      });
 
       setChangeAdress({
         country: 'Россия',
@@ -171,11 +196,11 @@ function Settings() {
         street: adress[0] === 'Россия' ? adress[2] : adress[1] || '',
         flat_number: adress[0] === 'Россия' ? adress[3] : adress[2] || '',
         postal_code: adress[0] === 'Россия' ? adress[4] : adress[3] || '',
-      })
+      });
     }
-  }, [status])
+  }, [status]);
 
-  const formatPhoneNumber = (phoneNumberString) =>  {
+  const formatPhoneNumber = (phoneNumberString) => {
     var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
     var match = cleaned.match(/^(?:7|8)?(\d{3})(\d{3})(\d{2})(\d{2})$/);
     if (match) {
@@ -184,7 +209,7 @@ function Settings() {
       );
     }
     return null;
-  }
+  };
   return (
     <>
       <div className='settings'>
@@ -292,6 +317,7 @@ function Settings() {
                       <div className='settings__change_block_inputs-wrapper'>
                         <div className='settings__change_block_title'>Имя</div>
                         <input
+                          autoFocus
                           onChange={updateProfile}
                           value={changeProfile.first_name}
                           type='text'
@@ -343,6 +369,7 @@ function Settings() {
                             Электронная почта
                           </div>
                           <input
+                            autoFocus
                             onChange={updateContacts}
                             value={changeContacts.new_email}
                             name='new_email'
@@ -394,7 +421,7 @@ function Settings() {
                             type='text'
                             className='settings__change_block_inputs-item'
                             ref={(ref) => (inputRefs.current[1] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 1)}
+                            onKeyDown={(event) => onClickEnter(event)}
                           />
                         </div>
                       </div>
@@ -488,12 +515,14 @@ function Settings() {
                             Страна
                           </div>
                           <input
+                            autoFocus
                             value={changeAdress.country}
                             onChange={updateAdress}
                             name='country'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[0] = ref)} onKeyDown={(event) => handleKeyDown(event, 0)}
+                            ref={(ref) => (inputRefs.current[0] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -506,7 +535,8 @@ function Settings() {
                             name='city'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[1] = ref)} onKeyDown={(event) => handleKeyDown(event, 1)}
+                            ref={(ref) => (inputRefs.current[1] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
@@ -521,7 +551,8 @@ function Settings() {
                             name='street'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[2] = ref)} onKeyDown={(event) => handleKeyDown(event, 2)}
+                            ref={(ref) => (inputRefs.current[2] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 2)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -534,7 +565,8 @@ function Settings() {
                             name='postal_code'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[3] = ref)} onKeyDown={(event) => handleKeyDown(event, 3)}
+                            ref={(ref) => (inputRefs.current[3] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 3)}
                           />
                         </div>
                       </div>
@@ -549,7 +581,8 @@ function Settings() {
                             name='flat_number'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[4] = ref)} onKeyDown={(event) => handleKeyDown(event, 4)}
+                            ref={(ref) => (inputRefs.current[4] = ref)}
+                            onKeyDown={(event) => onClickEnter(event)}
                           />
                         </div>
                       </div>
@@ -640,12 +673,14 @@ function Settings() {
                             Текущий пароль
                           </div>
                           <input
+                            autoFocus
                             onChange={updatePassword}
                             value={changePassword.curr_password}
                             name='curr_password'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[0] = ref)} onKeyDown={(event) => handleKeyDown(event, 0)}
+                            ref={(ref) => (inputRefs.current[0] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
                         <div className='settings__change_block_inputs-wrapper'>
@@ -658,7 +693,8 @@ function Settings() {
                             name='new_password'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[1] = ref)} onKeyDown={(event) => handleKeyDown(event, 1)}
+                            ref={(ref) => (inputRefs.current[1] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
@@ -674,7 +710,8 @@ function Settings() {
                             name='conf_password'
                             type='text'
                             className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[2] = ref)} onKeyDown={(event) => handleKeyDown(event, 2)}
+                            ref={(ref) => (inputRefs.current[2] = ref)}
+                            onKeyDown={(event) => onClickEnter(event)}
                           />
                         </div>
                       </div>
@@ -738,4 +775,4 @@ function Settings() {
   );
 }
 
-export default Settings
+export default Settings;

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import InputMask from 'react-input-mask';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import {
   fetchAuthMe,
   fetchRegister,
@@ -16,6 +17,10 @@ const Register = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [nextPage, setNextPage] = useState(false);
   const [adress, setAdress] = useState('');
+  const [showPassword, setShowPassword] = useState({
+    newPassword: false,
+    confirmPassword: false,
+  });
   const [regForm, setRegForm] = useState({
     firstName: '',
     lastName: '',
@@ -40,8 +45,10 @@ const Register = () => {
       }
     }
   };
-  const handleNextPage = () => {
-    setNextPage(!nextPage);
+  const handleNextPage = (event) => {
+    if (event.key === 'Enter') {
+      setNextPage(!nextPage);
+    }
   };
   const timeStamp = new Date(
     regForm.birthdate.toLocaleString().split('-').reverse().join('.')
@@ -120,6 +127,7 @@ const Register = () => {
             <hr className='hr' />
             <form action=''>
               <input
+                autoFocus
                 className='register__wrapper-input'
                 type='text'
                 name='email'
@@ -129,26 +137,64 @@ const Register = () => {
                 onKeyDown={(e) => handleKeyDown(e, 0)}
                 ref={(el) => (inputsRef.current[0] = el)}
               />
-              <input
-                className='register__wrapper-input'
-                type='password'
-                name='newPassword'
-                placeholder='Пароль'
-                value={regForm.newPassword}
-                onChange={updateForm}
-                onKeyDown={(e) => handleKeyDown(e, 1)}
-                ref={(el) => (inputsRef.current[1] = el)}
-              />
-              <input
-                className='register__wrapper-input'
-                type='password'
-                name='confirmPassword'
-                placeholder='Повторите пароль'
-                value={regForm.confirmPassword}
-                onChange={updateForm}
-                onKeyDown={(e) => handleNextPage(e, 2)}
-                ref={(el) => (inputsRef.current[2] = el)}
-              />
+              <div className='register__wrapper-input pass'>
+                <input
+                  type={showPassword.newPassword ? 'text' : 'password'}
+                  name='newPassword'
+                  placeholder='Пароль'
+                  value={regForm.newPassword}
+                  onChange={updateForm}
+                  onKeyDown={(e) => handleKeyDown(e, 1)}
+                  ref={(el) => (inputsRef.current[1] = el)}
+                />
+                {showPassword.newPassword ? (
+                  <HiOutlineEye
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() =>
+                      setShowPassword({ ...showPassword, newPassword: false })
+                    }
+                  />
+                ) : (
+                  <HiOutlineEyeOff
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() =>
+                      setShowPassword({ ...showPassword, newPassword: true })
+                    }
+                  />
+                )}
+              </div>
+              <div className='register__wrapper-input pass'>
+                <input
+                  type={showPassword.confirmPassword ? 'text' : 'password'}
+                  name='confirmPassword'
+                  placeholder='Повторите пароль'
+                  value={regForm.confirmPassword}
+                  onChange={updateForm}
+                  onKeyDown={(e) => handleNextPage(e, 2)}
+                  ref={(el) => (inputsRef.current[2] = el)}
+                />
+                {showPassword.confirmPassword ? (
+                  <HiOutlineEye
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() =>
+                      setShowPassword({
+                        ...showPassword,
+                        confirmPassword: false,
+                      })
+                    }
+                  />
+                ) : (
+                  <HiOutlineEyeOff
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() =>
+                      setShowPassword({
+                        ...showPassword,
+                        confirmPassword: true,
+                      })
+                    }
+                  />
+                )}
+              </div>
             </form>
             <div className='register__wrapper-link'>
               Уже есть аккаунт? <Link to='/login'>Войти</Link>
@@ -172,6 +218,7 @@ const Register = () => {
             <hr className='hr' />
             <form action=''>
               <input
+                autoFocus
                 className='register__wrapper-input second-page sm'
                 type='text'
                 name='firstName'

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import {
   fetchAuth,
   fetchAuthMe,
@@ -51,6 +52,7 @@ const Login = () => {
       password: '',
     });
   }
+  const [showPassword, setShowPassword] = useState(false);
 
   if (isAuth) {
     return <Navigate to='/' />;
@@ -65,6 +67,7 @@ const Login = () => {
             <hr className='hr'></hr>
             <form className='auth__form' action=''>
               <input
+                autoFocus
                 className='auth__form-input'
                 name='email'
                 value={authForm.email}
@@ -74,16 +77,28 @@ const Login = () => {
                 ref={(ref) => (inputsRef.current[0] = ref)}
                 onKeyDown={(event) => handleKeyDown(event, 0)}
               />
-              <input
-                className='auth__form-input'
-                name='password'
-                value={authForm.password}
-                onChange={updateAuthForm}
-                type='password'
-                placeholder='Пароль'
-                ref={(ref) => (inputsRef.current[1] = ref)}
-                onKeyDown={(event) => handleKeyDown(event, 1)}
-              />
+              <div className='auth__form-input'>
+                <input
+                  name='password'
+                  value={authForm.password}
+                  onChange={updateAuthForm}
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='Пароль'
+                  ref={(ref) => (inputsRef.current[1] = ref)}
+                  onKeyDown={(event) => handleKeyDown(event, 1)}
+                ></input>
+                {showPassword ? (
+                  <HiOutlineEye
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <HiOutlineEyeOff
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
+              </div>
             </form>
             <div className='auth__links'>
               Новый пользователь?

@@ -33,7 +33,7 @@ const CartItem = ({ id, price, image, color, count, name }) => {
           >
             <img
               onClick={() => console.log(id)}
-              src={image[0]}
+              src={JSON.parse(image)[0]}
               alt="item"
               className={classNames(
                 styles.person__delivery_items_item_img,

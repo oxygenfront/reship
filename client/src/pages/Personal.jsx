@@ -10,10 +10,16 @@ import { Navigation } from 'swiper'
 import { Menu as DropDown } from '@headlessui/react'
 import { DateRangePicker } from 'rsuite'
 import { fetchGetOrdersById, selectOrderData } from '../redux/slices/orderSlice'
+import {
+  fetchGetReviewsFromAuthor,
+  selectCommentsData,
+} from '../redux/slices/commentSlice'
 
 const Personal = () => {
   const dispatch = useDispatch()
   const { orders, ordersStatus } = useSelector(selectOrderData)
+
+  const { comments, commentsStatus } = useSelector(selectCommentsData)
   const theme = useSelector((state) => state.theme)
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
@@ -33,7 +39,7 @@ const Personal = () => {
     firstName: 'Имя',
     lastName: 'Фамилия',
   })
-  console.log(sortPrice)
+  console.log(calendarValue)
 
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
@@ -51,9 +57,34 @@ const Personal = () => {
           customer_id: data.id,
           type: sortStatus,
           price: sortPrice,
+          date_start:
+            calendarValue !== null && calendarValue.length > 0
+              ? new Date(
+                  calendarValue[0]
+                    .toLocaleString()
+                    .slice(0, 10)
+                    .split('.')
+                    .reverse()
+                    .join('.')
+                ).getTime()
+              : '',
+          date_end:
+            calendarValue !== null && calendarValue.length > 0
+              ? new Date(
+                  calendarValue[1]
+                    .toLocaleString()
+                    .slice(0, 10)
+                    .split('.')
+                    .reverse()
+                    .join('.')
+                ).getTime()
+              : '',
         })
       )
-  }, [status, sortPrice, sortStatus])
+  }, [status, sortPrice, sortStatus, calendarValue])
+  useEffect(() => {
+    dispatch(fetchGetReviewsFromAuthor(token))
+  }, [])
 
   useEffect(() => {
     function handleResize() {
@@ -80,19 +111,6 @@ const Personal = () => {
   // if (status === 'success') {
   //   data.favorites.map((order) => console.log(order))
   // }
-  // if (calendarValue.length > 0) {
-  //   console.log(calendarValue[0].toLocaleString().slice(0, 10))
-  //   const timeStamp = new Date(
-  //     calendarValue[0]
-  //       .toLocaleString()
-  //       .slice(0, 10)
-  //       .split('.')
-  //       .reverse()
-  //       .join('.')
-  //   ).getTime()
-  //   console.log(timeStamp)
-  // }
-  console.log(orders)
 
   return (
     <>
@@ -366,129 +384,75 @@ const Personal = () => {
 
           <div className="personal__reviews-block">
             <div className="personal__reviews-block_title">Мои отзывы</div>
-            <Swiper
-              modules={[Navigation]}
-              navigation
-              speed={1300}
-              slidesPerView={windowWidth < 767 ? 1 : 2}
-              spaceBetween={windowWidth < 575 ? 10 : 45}
-              className="personal__reviews-block_slider"
-            >
-              <SwiperSlide className="personal__reviews-block_slider-item">
-                <div className="personal__reviews-block_slider-item_header">
-                  <div className="personal__reviews-block_slider-item_header_left-block">
-                    <div className="personal__reviews-block_slider-item_header_img-block">
-                      <img src="../assets/img/logitech-lk.png" alt="" />
-                    </div>
-                    <div className="personal__reviews-block_slider-item_header_info">
-                      <div className="personal__reviews-block_slider-item_header_info_name">
-                        Logitech G Pro
+
+            {commentsStatus === 'success' && comments.length > 0 ? (
+              comments.rows.map((comment) => (
+                <Swiper
+                  modules={[Navigation]}
+                  navigation
+                  speed={1300}
+                  slidesPerView={windowWidth < 767 ? 1 : 2}
+                  spaceBetween={windowWidth < 575 ? 10 : 45}
+                  className="personal__reviews-block_slider"
+                >
+                  <SwiperSlide className="personal__reviews-block_slider-item">
+                    <div className="personal__reviews-block_slider-item_header">
+                      <div className="personal__reviews-block_slider-item_header_left-block">
+                        <div className="personal__reviews-block_slider-item_header_img-block">
+                          <img src="../assets/img/logitech-lk.png" alt="" />
+                        </div>
+                        <div className="personal__reviews-block_slider-item_header_info">
+                          <div className="personal__reviews-block_slider-item_header_info_name">
+                            Logitech G Pro
+                          </div>
+                          <div className="personal__reviews-block_slider-item_header_info_color">
+                            Черный
+                          </div>
+                        </div>
                       </div>
-                      <div className="personal__reviews-block_slider-item_header_info_color">
-                        Черный
-                      </div>
-                    </div>
-                  </div>
-                  <div className="personal__reviews-block_slider-item_header_right-block">
-                    <div className="personal__reviews-block_slider-item_header_stars">
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                    </div>
-                    <div className="personal__reviews-block_slider-item_header_date">
-                      Сен 26, 2023
-                    </div>
-                  </div>
-                </div>
-                <hr className="hr" />
-                <div className="personal__reviews-block_slider-item_review">
-                  <span>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore itaque labore minima culpa porro eligendi sed error
-                    modi accusantium, dolores doloribus at. Corporis sed alias
-                    non quis debitis veritatis quisquam.
-                  </span>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="personal__reviews-block_slider-item">
-                <div className="personal__reviews-block_slider-item_header">
-                  <div className="personal__reviews-block_slider-item_header_left-block">
-                    <div className="personal__reviews-block_slider-item_header_img-block">
-                      <img src="../assets/img/logitech-lk.png" alt="" />
-                    </div>
-                    <div className="personal__reviews-block_slider-item_header_info">
-                      <div className="personal__reviews-block_slider-item_header_info_name">
-                        Logitech G Pro
-                      </div>
-                      <div className="personal__reviews-block_slider-item_header_info_color">
-                        Черный
+                      <div className="personal__reviews-block_slider-item_header_right-block">
+                        <div className="personal__reviews-block_slider-item_header_stars">
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                        </div>
+                        <div className="personal__reviews-block_slider-item_header_date">
+                          Сен 26, 2023
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="personal__reviews-block_slider-item_header_right-block">
-                    <div className="personal__reviews-block_slider-item_header_stars">
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
+                    <hr className="hr" />
+                    <div className="personal__reviews-block_slider-item_review">
+                      <span>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Dolore itaque labore minima culpa porro eligendi sed
+                        error modi accusantium, dolores doloribus at. Corporis
+                        sed alias non quis debitis veritatis quisquam.
+                      </span>
                     </div>
-                    <div className="personal__reviews-block_slider-item_header_date">
-                      Сен 26, 2023
-                    </div>
-                  </div>
-                </div>
-                <hr className="hr" />
-                <div className="personal__reviews-block_slider-item_review">
-                  <span>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore itaque labore minima culpa porro eligendi sed error
-                    modi accusantium, dolores doloribus at. Corporis sed alias
-                    non quis debitis veritatis quisquam.
-                  </span>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="personal__reviews-block_slider-item">
-                <div className="personal__reviews-block_slider-item_header">
-                  <div className="personal__reviews-block_slider-item_header_left-block">
-                    <div className="personal__reviews-block_slider-item_header_img-block">
-                      <img src="../assets/img/logitech-lk.png" alt="" />
-                    </div>
-                    <div className="personal__reviews-block_slider-item_header_info">
-                      <div className="personal__reviews-block_slider-item_header_info_name">
-                        Logitech G Pro
-                      </div>
-                      <div className="personal__reviews-block_slider-item_header_info_color">
-                        Черный
-                      </div>
-                    </div>
-                  </div>
-                  <div className="personal__reviews-block_slider-item_header_right-block">
-                    <div className="personal__reviews-block_slider-item_header_stars">
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                      <img src="../assets/img/star-review.png" alt="" />
-                    </div>
-                    <div className="personal__reviews-block_slider-item_header_date">
-                      Сен 26, 2023
-                    </div>
+                  </SwiperSlide>
+                </Swiper>
+              ))
+            ) : (
+              <div className="personal__empty_wrapper">
+                <div className="container personal__empty_container">
+                  <div
+                    style={{
+                      backgroundImage:
+                        theme === 'dark'
+                          ? `url('../assets/img/no-item black theme.png')`
+                          : `url('../assets/img/no-item.png')`,
+                      backgroundSize: 'cover',
+                    }}
+                    className="personal__empty"
+                  >
+                    Вы пока ещё не оставили отзыв
                   </div>
                 </div>
-                <hr className="hr" />
-                <div className="personal__reviews-block_slider-item_review">
-                  <span>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore itaque labore minima culpa porro eligendi sed error
-                    modi accusantium, dolores doloribus at. Corporis sed alias
-                    non quis debitis veritatis quisquam.
-                  </span>
-                </div>
-              </SwiperSlide>
-            </Swiper>
+              </div>
+            )}
           </div>
           {windowWidth < 1199 ? (
             <div>
@@ -530,6 +494,7 @@ const Personal = () => {
                 {items.slice(0, 3).map((item) => (
                   <Card
                     view="grid"
+                    image={item.image_link}
                     key={item.id}
                     id={item.id}
                     name={item.name}

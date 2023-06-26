@@ -54,24 +54,24 @@ class ApiPostController {
   async registration(request, response) {
     try {
       if (
-        !tools.checkJsonKey(request.body, "first_name") ||
-        !tools.checkJsonKey(request.body, "last_name") ||
-        !tools.checkJsonKey(request.body, "password") ||
-        !tools.checkJsonKey(request.body, "email") ||
-        !tools.checkJsonKey(request.body, "adress_delivery") ||
-        !tools.checkJsonKey(request.body, "date_of_birth_unix")
+        !request.body.hasOwnProperty("first_name") ||
+        !request.body.hasOwnProperty("last_name") ||
+        !request.body.hasOwnProperty("password") ||
+        !request.body.hasOwnProperty("email") ||
+        !request.body.hasOwnProperty("adress_delivery") ||
+        !request.body.hasOwnProperty("date_of_birth_unix")
       ) {
         return response
           .status(400)
           .json({ error: "Некорректные данные.", bcode: 1 });
       }
 
-      let first_name = tools.delInjection(request.body.first_name);
-      let last_name = tools.delInjection(request.body.last_name);
-      let password = tools.delInjection(request.body.password);
-      let email = tools.delInjection(request.body.email);
-      let adress_delivery = JSON.parse(request.body.adress_delivery);
-      let date_of_birth_unix = tools.delInjection(
+      const first_name = tools.delInjection(request.body.first_name);
+      const last_name = tools.delInjection(request.body.last_name);
+      const password = tools.delInjection(request.body.password);
+      const email = tools.delInjection(request.body.email);
+      const adress_delivery = JSON.parse(request.body.adress_delivery);
+      const date_of_birth_unix = tools.delInjection(
         request.body.date_of_birth_unix
       );
 
@@ -85,7 +85,7 @@ class ApiPostController {
           }
 
           if (rows.length == 0) {
-            let new_token = "reship.api." + tools.createToken(50);
+            const new_token = "reship.api." + tools.createToken(50);
 
             database.query(
               "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`, `number_tel`, `country`) VALUES " +
@@ -103,7 +103,7 @@ class ApiPostController {
                 if (error) {
                   return response
                     .status(500)
-                    .json({ error: "Ошибка на сервере", bcode: 1.2, e: error });
+                    .json({ error: "Ошибка на сервере", bcode: 1.2 });
                 }
 
                 let activation_code = tools.createToken(50);
@@ -173,96 +173,41 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    let category = null;
-    let query = null;
+    const { title, category, price_start, price_end } = request.query;
 
-    if (tools.checkJsonKey(request.query, "category")) {
-      category = tools.delInjection(request.query.category);
+    let sql = 'SELECT * FROM products WHERE 1=1';
+
+    if (title) {
+      sql += ` AND name LIKE '%${tools.delInjection(title)}%'`;
     }
 
-    if (tools.checkJsonKey(request.query, "query")) {
-      query = tools.delInjection(request.query.query);
+    if (category) {
+      sql += ` AND category='${tools.delInjection(category)}'`;
     }
 
-    if (category === query) {
-      database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 10 });
-        }
-
-        let response_json_new = [];
-
-        for (let i = 0; i < rows.length; i++) {
-          let response_json = rows[i];
-
-          response_json.colors = JSON.parse(response_json.colors);
-          response_json.colors_avail = JSON.parse(response_json.colors_avail);
-          response_json.parameters = JSON.parse(response_json.parameters);
-          response_json.image_link = JSON.parse(response_json.image_link);
-          response_json.parameters_avail = JSON.parse(
-            response_json.parameters_avail
-          );
-
-          response_json_new.push(response_json);
-        }
-
-        response.json(response_json_new);
-      });
-
-      return;
+    if (price_start && price_end) {
+      sql += ` AND price BETWEEN ${tools.delInjection(price_start)} AND ${tools.delInjection(price_end)}`;
+    } else if (price_start) {
+      sql += ` AND price > ${tools.delInjection(price_start)}`;
+    } else if (price_end) {
+      sql += ` AND price < ${tools.delInjection(price_end)}`;
     }
 
-    database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
+    database.query(sql, (error, rows, fields) => {
       if (error) {
         return response
           .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.1 });
+          .json({ error: "Ошибка на сервере", bcode: 2.2 });
       }
-
-      let response_json_new = [];
-      let category_true = [];
-
-      for (let i = 0; i < rows.length; i++) {
-        if (category !== null) {
-          if (rows[i].category === category) {
-            category_true.push(rows[i]);
-          }
-        } else {
-          category_true.push(rows[i]);
-        }
-      }
-
-      for (let i = 0; i < category_true.length; i++) {
-        let response_json = category_true[i];
-
-        response_json.colors = JSON.parse(response_json.colors);
-        response_json.colors_avail = JSON.parse(response_json.colors_avail);
-        response_json.parameters = JSON.parse(response_json.parameters);
-        response_json.image_link = JSON.parse(response_json.image_link);
-        response_json.parameters_avail = JSON.parse(
-          response_json.parameters_avail
-        );
-
-        if (query === null) {
-          response_json_new.push(response_json);
-          continue;
-        }
-        
-        if (response_json.name.toLowerCase().includes(query.toLowerCase())) {
-          response_json_new.push(response_json);
-        }
-      }
-
-      response.json(response_json_new);
+      response.json(rows);
     });
+
   }
 
   async auth(request, response) {
     if (
-      !tools.checkJsonKey(request.body, "email") ||
-      !tools.checkJsonKey(request.body, "password")
+      !request.body.hasOwnProperty("email") ||
+      !request.body.hasOwnProperty("password")
     ) {
       return response
         .status(400)
@@ -281,7 +226,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 3.1 });
+            .json({ error: "Ошибка на сервере", bcode: 3.1, e:error });
         }
 
         if (rows.length == 1) {
@@ -296,13 +241,13 @@ class ApiPostController {
   }
 
   async getUser(request, response) {
-    if (!tools.checkJsonKey(request.query, "token")) {
+    if (!request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 4 });
     }
 
-    const token = tools.delInjection(request.query.token);
+    const token = tools.delInjection(request.headers.authorization);
 
     if (token === "null") {
       return response.json({
@@ -363,7 +308,7 @@ class ApiPostController {
     if (
       !tools.checkJsonKey(request.body, "password") ||
       !tools.checkJsonKey(request.body, "new_password") ||
-      !tools.checkJsonKey(request.body, "token")
+      !request.headers.hasOwnProperty('authorization')
     ) {
       return response
         .status(400)
@@ -372,7 +317,7 @@ class ApiPostController {
 
     const password = tools.delInjection(request.body.password);
     const new_password = tools.delInjection(request.body.new_password);
-    const token = tools.delInjection(request.body.token);
+    const token = tools.delInjection(request.headers.authorization);
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${token}' AND password_md5='${crypto

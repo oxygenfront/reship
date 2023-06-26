@@ -40,19 +40,20 @@ const App = () => {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    dispatch(fetchAuthMe(token))
+    dispatch(fetchAuthMe())
   }, [])
   const { choosenCategorie, searchValue, choosenPrice, choosenSort } =
     useSelector(selectFilter)
 
   useEffect(() => {
     dispatch(
-      debounce(
-        fetchItems(
-          { choosenCategorie, searchValue, choosenPrice, choosenSort },
-          2000
-        )
-      )
+      fetchItems({
+        choosenCategorie,
+        searchValue,
+        choosenPrice,
+        choosenSort,
+        token,
+      })
     )
   }, [choosenCategorie, searchValue, choosenPrice, choosenSort])
 

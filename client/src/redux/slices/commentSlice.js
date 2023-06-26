@@ -13,7 +13,8 @@ export const fetchCreateReview = createAsyncThunk(
 )
 export const fetchGetReviewsForProductId = createAsyncThunk(
   'comment/fetchGetReviewForProductId',
-  async ({ token, id }) => {
+  async (token, id) => {
+    console.log(token, id)
     const { data } = await axios.get(
       `/getReviewsForProductId?&token=${token}&product_id${id}`
     )
@@ -24,7 +25,7 @@ export const fetchGetReviewsForProductId = createAsyncThunk(
 )
 export const fetchGetReviewsFromAuthor = createAsyncThunk(
   'comment/fetchGetReviewsFromAuthor',
-  async ({ token }) => {
+  async (token) => {
     const { data } = await axios.get(`/getReviewsFromAuthor?&token=${token}`)
     console.log(data)
 
@@ -34,7 +35,8 @@ export const fetchGetReviewsFromAuthor = createAsyncThunk(
 
 const initialState = {
   data: null,
-  status: 'loading', // 'loading', 'success', 'error'
+  commentsStatus: 'loading', // 'loading', 'success', 'error'
+  comments: [],
 }
 const commentSlice = createSlice({
   name: 'comment',
@@ -42,43 +44,43 @@ const commentSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchCreateReview.pending, (state, action) => {
-      state.status = 'loading'
+      state.commentsStatus = 'loading'
       state.data = []
     })
     builder.addCase(fetchCreateReview.fulfilled, (state, action) => {
       state.data = action.payload
-      state.status = 'success'
+      state.commentsStatus = 'success'
     })
     builder.addCase(fetchCreateReview.rejected, (state, action) => {
       console.log(action)
-      state.status = 'error'
+      state.commentsStatus = 'error'
       state.data = []
     })
     builder.addCase(fetchGetReviewsForProductId.pending, (state, action) => {
-      state.status = 'loading'
-      state.data = []
+      state.commentsStatus = 'loading'
+      state.comments = []
     })
     builder.addCase(fetchGetReviewsForProductId.fulfilled, (state, action) => {
-      state.data = action.payload
-      state.status = 'success'
+      state.comments = action.payload
+      state.commentsStatus = 'success'
     })
     builder.addCase(fetchGetReviewsForProductId.rejected, (state, action) => {
       console.log(action)
-      state.status = 'error'
-      state.data = []
+      state.commentsStatus = 'error'
+      state.comments = []
     })
     builder.addCase(fetchGetReviewsFromAuthor.pending, (state, action) => {
-      state.status = 'loading'
-      state.data = []
+      state.commentsStatus = 'loading'
+      state.comments = []
     })
     builder.addCase(fetchGetReviewsFromAuthor.fulfilled, (state, action) => {
-      state.data = action.payload
-      state.status = 'success'
+      state.comments = action.payload
+      state.commentsStatus = 'success'
     })
     builder.addCase(fetchGetReviewsFromAuthor.rejected, (state, action) => {
       console.log(action)
-      state.status = 'error'
-      state.data = []
+      state.commentsStatus = 'error'
+      state.comments = []
     })
   },
 })

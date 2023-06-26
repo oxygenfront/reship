@@ -14,7 +14,9 @@ function Orders() {
   const theme = useSelector((state) => state.theme)
   useEffect(() => {
     status === 'success' &&
-      dispatch(fetchGetOrdersById({ customer_id: data.id, type: 'all' }))
+      dispatch(
+        fetchGetOrdersById({ customer_id: data.id, type: 'all', price: '' })
+      )
   }, [status])
   if (!isAuth) {
     return <Navigate to="/"></Navigate>

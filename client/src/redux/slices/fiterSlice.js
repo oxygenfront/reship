@@ -6,6 +6,7 @@ const initialState = {
   searchValue: '',
   choosenPrice: [2000, 12000],
   choosenBrand: '',
+  choosenType: 'новинки',
 }
 
 export const filterSlice = createSlice({
@@ -27,6 +28,9 @@ export const filterSlice = createSlice({
     setChoosenBrand(state, action) {
       state.choosenBrand = action.payload
     },
+    setChoosenType(state, action) {
+      state.choosenType = action.payload
+    },
   },
 })
 
@@ -39,5 +43,6 @@ export const {
   setSearchValue,
   setChoosenPrice,
   setChoosenBrand,
+  setChoosenType,
 } = filterSlice.actions
 export default filterSlice.reducer

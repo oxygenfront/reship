@@ -58,6 +58,12 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
+  const onClickSubAdress = () => {
+    setOrder({
+      ...order,
+      adress: JSON.stringify({ adress: Object.values(adress).join(', ') }),
+    })
+  }
 
   async function sendForm(e) {
     e.preventDefault()
@@ -66,10 +72,7 @@ const Order = () => {
       setIsValidEmail(isEmail(order.email))
       return
     }
-    setOrder({
-      ...order,
-      adress: JSON.stringify({ adress: Object.values(adress).join(', ') }),
-    })
+
     console.log(order)
     const data = await dispatch(fetchCreateOrder(order))
     if (!data.payload) {
@@ -98,8 +101,22 @@ const Order = () => {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-  console.log(order)
-  console.log(Object.values(adress).join(', '))
+
+  useEffect(() => {
+    if (status === 'success') {
+      const data_adress = JSON.parse(data.adress_delivery)?.adress.split(',')
+      console.log(data_adress)
+      data_adress.length > 1 &&
+        setAdress({
+          city: data_adress[1],
+          street: data_adress[2] + data_adress[3],
+        })
+    }
+  }, [status])
+  if (cartItems.length === 0) {
+    return <Navigate to="/"></Navigate>
+  }
+
   return (
     <section className="auth">
       <div className="container main-form_container">
@@ -280,7 +297,10 @@ const Order = () => {
                 <button className="main-form_buyer_item_buttons_1">
                   Отменить
                 </button>
-                <button className="main-form_buyer_item_buttons_2">
+                <button
+                  onClick={onClickSubAdress}
+                  className="main-form_buyer_item_buttons_2"
+                >
                   Сохранить изменения
                 </button>
               </div>

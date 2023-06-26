@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   logout,
   selectIsAuth,
@@ -23,7 +23,7 @@ import { addFavorite, selectFavorites } from '../../redux/slices/favoriteSlice'
 
 const Menu = () => {
   const dispatch = useDispatch()
-
+  const navigate = useNavigate()
   const isMounted = useRef(false)
   const isAuth = useSelector(selectIsAuth)
   const { data, status } = useSelector(selectUserData)
@@ -51,7 +51,7 @@ const Menu = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
       window.localStorage.removeItem('token')
-      return <Navigate to="/"></Navigate>
+      return navigate('/')
     }
   }
   const onClickClear = () => {

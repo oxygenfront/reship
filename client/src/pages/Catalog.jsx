@@ -359,7 +359,10 @@ const Catalog = () => {
                 ) : (
                   <div
                     style={{
-                      backgroundImage: `url('../assets/img/no-item.png')`,
+                      backgroundImage:
+                        theme === 'light'
+                          ? `url('../assets/img/no-item.png')`
+                          : `url('../assets/img/no-item black theme.png')`,
                       backgroundSize: 'cover',
                     }}
                     className="catalog__empty"

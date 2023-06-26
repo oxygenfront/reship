@@ -173,13 +173,6 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    console.log(request.headers)
-    if (!request.headers.hasOwnProperty('authorization')) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 2 });
-    }
-
     const { title, category, price_start, price_end } = request.query;
 
     let sql = 'SELECT * FROM products WHERE 1=1';
@@ -200,31 +193,15 @@ class ApiPostController {
       sql += ` AND price < ${tools.delInjection(price_end)}`;
     }
 
-    database.query(
-      'SELECT * FROM `users` WHERE token="' + tools.delInjection(request.headers.authorization) + '"',
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 2.1});
-        }
+    database.query(sql, (error, rows, fields) => {
+      if (error) {
+        return response
+          .status(500)
+          .json({ error: "Ошибка на сервере", bcode: 2.2 });
+      }
+      response.json(rows);
+    });
 
-        if (rows.length === 1) {
-          database.query(sql, (error, rows, fields) => {
-            if (error) {
-              return response
-                .status(500)
-                .json({ error: "Ошибка на сервере", bcode: 2.2 });
-            }
-            response.json(rows);
-          });
-        } else {
-          return response
-            .status(500)
-            .json({ error: "Ошибка доступа", bcode: 2.3});
-        }
-      })
-    
   }
 
   async auth(request, response) {

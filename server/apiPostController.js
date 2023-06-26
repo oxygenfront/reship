@@ -173,90 +173,57 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    let category = null;
-    let query = null;
-
-    if (tools.checkJsonKey(request.query, "category")) {
-      category = tools.delInjection(request.query.category);
+    if (!request.body.hasOwnProperty('token')) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 2 });
     }
 
-    if (tools.checkJsonKey(request.query, "query")) {
-      query = tools.delInjection(request.query.query);
+    const { title, category, price_start, price_end } = request.query;
+
+    let sql = 'SELECT * FROM products WHERE 1=1';
+
+    if (title) {
+      sql += ` AND name LIKE '%${tools.delInjection(title)}%'`;
     }
 
-    if (category === query) {
-      database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
+    if (category) {
+      sql += ` AND category='${tools.delInjection(category)}'`;
+    }
+
+    if (price_start && price_end) {
+      sql += ` AND price BETWEEN ${tools.delInjection(price_start)} AND ${tools.delInjection(price_end)}`;
+    } else if (price_start) {
+      sql += ` AND price > ${tools.delInjection(price_start)}`;
+    } else if (price_end) {
+      sql += ` AND price < ${tools.delInjection(price_end)}`;
+    }
+
+    database.query(
+      'SELECT * FROM `users` WHERE token="' + tools.delInjection(request.body.token) + '"',
+      (error, rows, fields) => {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 10 });
+            .json({ error: "Ошибка на сервере", bcode: 2.1});
         }
 
-        let response_json_new = [];
-
-        for (let i = 0; i < rows.length; i++) {
-          let response_json = rows[i];
-
-          response_json.colors = JSON.parse(response_json.colors);
-          response_json.colors_avail = JSON.parse(response_json.colors_avail);
-          response_json.parameters = JSON.parse(response_json.parameters);
-          response_json.image_link = JSON.parse(response_json.image_link);
-          response_json.parameters_avail = JSON.parse(
-            response_json.parameters_avail
-          );
-
-          response_json_new.push(response_json);
-        }
-
-        response.json(response_json_new);
-      });
-
-      return;
-    }
-
-    database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
-      if (error) {
-        return response
-          .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.1 });
-      }
-
-      let response_json_new = [];
-      let category_true = [];
-
-      for (let i = 0; i < rows.length; i++) {
-        if (category !== null) {
-          if (rows[i].category === category) {
-            category_true.push(rows[i]);
-          }
+        if (rows.length === 1) {
+          database.query(sql, (error, rows, fields) => {
+            if (error) {
+              return response
+                .status(500)
+                .json({ error: "Ошибка на сервере", bcode: 2.2 });
+            }
+            response.json(rows);
+          });
         } else {
-          category_true.push(rows[i]);
+          return response
+            .status(500)
+            .json({ error: "Ошибка доступа", bcode: 2.3});
         }
-      }
-
-      for (let i = 0; i < category_true.length; i++) {
-        let response_json = category_true[i];
-
-        response_json.colors = JSON.parse(response_json.colors);
-        response_json.colors_avail = JSON.parse(response_json.colors_avail);
-        response_json.parameters = JSON.parse(response_json.parameters);
-        response_json.image_link = JSON.parse(response_json.image_link);
-        response_json.parameters_avail = JSON.parse(
-          response_json.parameters_avail
-        );
-
-        if (query === null) {
-          response_json_new.push(response_json);
-          continue;
-        }
-        
-        if (response_json.name.toLowerCase().includes(query.toLowerCase())) {
-          response_json_new.push(response_json);
-        }
-      }
-
-      response.json(response_json_new);
-    });
+      })
+    
   }
 
   async auth(request, response) {
@@ -281,7 +248,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 3.1 });
+            .json({ error: "Ошибка на сервере", bcode: 3.1, e:error });
         }
 
         if (rows.length == 1) {

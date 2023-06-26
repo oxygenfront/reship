@@ -71,7 +71,7 @@ const router = Router();
 // user
 router.post("/registration", apiPostController.registration);
 router.post("/auth", apiPostController.auth);
-router.post("/getProducts", apiPostController.getProducts);
+router.get("/getProducts", apiPostController.getProducts);
 router.get("/getProductsAll", apiPostController.getProductsAll);
 router.get("/getProductById/:id", apiPostController.getProductById);
 router.get("/getUser", apiPostController.getUser);

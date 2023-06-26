@@ -15,7 +15,16 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
 
+  const handleChildFocus = () => {
+    setHasFocus(true);
+  };
+
+  const handleChildBlur = () => {
+    setHasFocus(false);
+  };
   const inputsRef = useRef([]);
   const handleKeyDown = (event, index) => {
     if (event.key === 'Enter') {
@@ -52,7 +61,6 @@ const Login = () => {
       password: '',
     });
   }
-  const [showPassword, setShowPassword] = useState(false);
 
   if (isAuth) {
     return <Navigate to='/' />;
@@ -77,7 +85,10 @@ const Login = () => {
                 ref={(ref) => (inputsRef.current[0] = ref)}
                 onKeyDown={(event) => handleKeyDown(event, 0)}
               />
-              <div className='auth__form-input'>
+              <div
+                className='auth__form-input'
+                style={{ border: hasFocus ? '2px solid #416EF2' : null }}
+              >
                 <input
                   name='password'
                   value={authForm.password}
@@ -86,6 +97,8 @@ const Login = () => {
                   placeholder='Пароль'
                   ref={(ref) => (inputsRef.current[1] = ref)}
                   onKeyDown={(event) => handleKeyDown(event, 1)}
+                  onFocus={handleChildFocus}
+                  onBlur={handleChildBlur}
                 ></input>
                 {showPassword ? (
                   <HiOutlineEye

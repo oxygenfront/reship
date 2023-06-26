@@ -21,6 +21,11 @@ const Register = () => {
     newPassword: false,
     confirmPassword: false,
   });
+  const [hasFocus, setHasFocus] = useState({
+    newPassword: false,
+    confirmPassword: false,
+  });
+
   const [regForm, setRegForm] = useState({
     firstName: '',
     lastName: '',
@@ -73,6 +78,17 @@ const Register = () => {
     setCheckPass(true)
   }
 
+  const handleChildFocus = (e) => {
+    
+    setHasFocus({[e.target.name]: !hasFocus[e.target.name]});
+    // console.log(!hasFocus[e.target.name]);
+    
+  };
+
+  const handleChildBlur = (e) => {
+    setHasFocus({ [e.target.name]: !hasFocus[e.target.name] });
+  };
+
   const sendForm = async (e) => {
     e.preventDefault()
 
@@ -119,25 +135,30 @@ const Register = () => {
   }
   // console.log(adress);
   return (
-    <section className="register">
-      <div className="container register__container">
+    <section className='register'>
+      <div className='container register__container'>
         {!nextPage ? (
-          <div className="register__wrapper">
-            <div className="register__wrapper-title">Регистрация</div>
-            <hr className="hr" />
-            <form action="">
+          <div className='register__wrapper'>
+            <div className='register__wrapper-title'>Регистрация</div>
+            <hr className='hr' />
+            <form action=''>
               <input
                 autoFocus
-                className="register__wrapper-input"
-                type="text"
-                name="email"
-                placeholder="Адрес электронной почты"
+                className='register__wrapper-input'
+                type='text'
+                name='email'
+                placeholder='Адрес электронной почты'
                 value={regForm.email}
                 onChange={updateForm}
                 onKeyDown={(e) => handleKeyDown(e, 0)}
                 ref={(el) => (inputsRef.current[0] = el)}
               />
-              <div className='register__wrapper-input pass'>
+              <div
+                className='register__wrapper-input pass'
+                style={{
+                  border: hasFocus.newPassword ? '2px solid #416EF2' : null,
+                }}
+              >
                 <input
                   type={showPassword.newPassword ? 'text' : 'password'}
                   name='newPassword'
@@ -146,6 +167,8 @@ const Register = () => {
                   onChange={updateForm}
                   onKeyDown={(e) => handleKeyDown(e, 1)}
                   ref={(el) => (inputsRef.current[1] = el)}
+                  onFocus={(e) => handleChildFocus(e)}
+                  onBlur={(e) => handleChildBlur(e)}
                 />
                 {showPassword.newPassword ? (
                   <HiOutlineEye
@@ -163,7 +186,12 @@ const Register = () => {
                   />
                 )}
               </div>
-              <div className='register__wrapper-input pass'>
+              <div
+                className='register__wrapper-input pass'
+                style={{
+                  border: hasFocus.confirmPassword ? '2px solid #416EF2' : null,
+                }}
+              >
                 <input
                   type={showPassword.confirmPassword ? 'text' : 'password'}
                   name='confirmPassword'
@@ -172,6 +200,8 @@ const Register = () => {
                   onChange={updateForm}
                   onKeyDown={(e) => handleNextPage(e, 2)}
                   ref={(el) => (inputsRef.current[2] = el)}
+                  onFocus={(e) => handleChildFocus(e)}
+                  onBlur={(e) => handleChildBlur(e)}
                 />
                 {showPassword.confirmPassword ? (
                   <HiOutlineEye
@@ -196,16 +226,16 @@ const Register = () => {
                 )}
               </div>
             </form>
-            <div className="register__wrapper-link">
-              Уже есть аккаунт? <Link to="/login">Войти</Link>
+            <div className='register__wrapper-link'>
+              Уже есть аккаунт? <Link to='/login'>Войти</Link>
             </div>
 
-            <div className="register__wrapper-buttons">
-              <Link to="/forgot" className="register__wrapper-buttons_forgot">
+            <div className='register__wrapper-buttons'>
+              <Link to='/forgot' className='register__wrapper-buttons_forgot'>
                 Забыл пароль
               </Link>
               <button
-                className="register__wrapper-buttons_next"
+                className='register__wrapper-buttons_next'
                 onClick={() => setNextPage(!nextPage)}
               >
                 Продолжить
@@ -213,71 +243,71 @@ const Register = () => {
             </div>
           </div>
         ) : (
-          <div className="register__wrapper second-page">
-            <div className="register__wrapper-title">Регистрация</div>
-            <hr className="hr" />
-            <form action="">
+          <div className='register__wrapper second-page'>
+            <div className='register__wrapper-title'>Регистрация</div>
+            <hr className='hr' />
+            <form action=''>
               <input
                 autoFocus
-                className="register__wrapper-input second-page sm"
-                type="text"
-                name="firstName"
-                placeholder="Имя"
+                className='register__wrapper-input second-page sm'
+                type='text'
+                name='firstName'
+                placeholder='Имя'
                 value={regForm.firstName}
                 onChange={updateForm}
                 onKeyDown={(e) => handleKeyDown(e, 3)}
                 // ref={(el) => (inputsRef.current[3] = el)}
               />
               <input
-                className="register__wrapper-input second-page sm"
-                type="text"
-                name="lastName"
-                placeholder="Фамилия"
+                className='register__wrapper-input second-page sm'
+                type='text'
+                name='lastName'
+                placeholder='Фамилия'
                 value={regForm.lastName}
                 onChange={updateForm}
                 onKeyDown={(e) => handleKeyDown(e, 4)}
                 ref={(el) => (inputsRef.current[4] = el)}
               />
               <InputMask
-                mask="99-99-9999"
-                className="register__wrapper-input second-page sm db"
-                type="text"
-                name="birthdate"
-                placeholder="XX-XX-XXXX"
+                mask='99-99-9999'
+                className='register__wrapper-input second-page sm db'
+                type='text'
+                name='birthdate'
+                placeholder='XX-XX-XXXX'
                 value={regForm.birthdate}
                 onChange={updateForm}
               />
               <AddressSuggestions
-                className="register__wrapper-input second-page"
+                className='register__wrapper-input second-page'
                 setInputValue={regForm.adress_delivery}
-                token="82173f834fc389954239d4414514d3ce2634ae1e"
+                token='82173f834fc389954239d4414514d3ce2634ae1e'
                 value={regForm.adress_delivery}
                 onChange={(event) => {
-                  setAdress(event.value)
+                  setAdress(event.value);
                 }}
                 inputProps={{
                   placeholder: 'Страна, город',
                   value: adress,
                   onKeyDown: () => sendForm,
                   onChange: (event) => {
-                    setAdress(event.target.value)
+                    setAdress(event.target.value);
                   },
                 }}
               />
             </form>
-            <div className="register__wrapper-link">
-              Уже есть аккаунт? <Link to="/login">Войти</Link>
+            <div className='register__wrapper-link'>
+              Уже есть аккаунт? <Link to='/login'>Войти</Link>
             </div>
 
-            <div className="register__wrapper-buttons second-page">
+            <div className='register__wrapper-buttons second-page'>
               <button
-                className="register__wrapper-buttons_prev"
+                className='register__wrapper-buttons_prev'
                 onClick={() => setNextPage(!nextPage)}
               >
                 Назад
               </button>
               <button
-                className="register__wrapper-buttons_next second-page"
+                className='register__wrapper-buttons_next second-page'
                 onClick={sendForm}
               >
                 Готово
@@ -287,7 +317,7 @@ const Register = () => {
         )}
       </div>
     </section>
-  )
+  );
 }
 
 export default Register

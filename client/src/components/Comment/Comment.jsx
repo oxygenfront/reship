@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './Comment.module.sass'
-const Comment = () => {
-  
+const Comment = ({ rating, first_name, last_name, text }) => {
   return (
     <div className={styles.reviews__slider_slide_item}>
       <div className={styles.reviews__slider_slide_item_header}>
@@ -23,7 +22,6 @@ const Comment = () => {
             >
               Максим Грязев
             </div>
-            <a href="">Отзыв из Вконтакте</a>
           </div>
         </div>
         <div className={styles.reviews__slider_slide_item_header_stars}>

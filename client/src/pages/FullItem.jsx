@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   addItem,
   minusItem,
@@ -11,32 +11,31 @@ import {
   fetchFullItem,
   selectFullItemData,
 } from '../redux/slices/fullItemSlice'
-import {
-  fetchAuthMe,
-  selectIsAuth,
-  selectUserData,
-} from '../redux/slices/authSlice'
+
 import {
   addFavorite,
-  fetchAddFavorite,
-  fetchDeleteFavorite,
   removeFavorite,
   selectFavorites,
 } from '../redux/slices/favoriteSlice'
 
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Thumbs, Navigation } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/bundle'
 import { Comment, FullItemSlider } from '../components'
+import {
+  fetchGetReviewsForProductId,
+  selectCommentsData,
+} from '../redux/slices/commentSlice'
+import { getTheme } from '../utils/getTheme'
 
 const FullItem = () => {
+  const token = localStorage.getItem('token')
+  const theme = useSelector((state) => state.theme)
   const { id } = useParams()
+  const { comments, commentsStatus } = useSelector(selectCommentsData)
   const { item, status } = useSelector(selectFullItemData)
   const dispatch = useDispatch()
   const { favorites } = useSelector(selectFavorites)
   const [navigate, setNavigate] = useState(false)
-
   const [isFavorite, setIsFavorite] = useState(false)
   const [parametr, setParametr] = useState('')
   const [color, setColor] = useState('')
@@ -88,11 +87,11 @@ const FullItem = () => {
   }
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
+    dispatch(fetchGetReviewsForProductId(token, id))
   }, [])
   if (navigate) {
     return <Navigate to="/login"></Navigate>
   }
-  console.log(color)
 
   const renderStatus = Boolean(status === 'success')
   return (
@@ -282,8 +281,26 @@ const FullItem = () => {
       <div className="fullitem__comments container">
         <p className="fullitem__comments_title">Отзывы</p>
         <div className="fullitem__comments_items">
-          <Comment></Comment>
-          <Comment></Comment>
+          {commentsStatus === 'success' && comments.items.length > 0 ? (
+            comments.items.map((comment) => <Comment></Comment>)
+          ) : (
+            <div className="personal__empty_wrapper">
+              <div className="container personal__empty_container">
+                <div
+                  style={{
+                    backgroundImage:
+                      theme === 'dark'
+                        ? `url('../assets/img/no-item black theme.png')`
+                        : `url('../assets/img/no-item.png')`,
+                    backgroundSize: 'cover',
+                  }}
+                  className="personal__empty"
+                >
+                  Пусто
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

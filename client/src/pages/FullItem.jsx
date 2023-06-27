@@ -1,46 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import {
   addItem,
   minusItem,
   removeItem,
   selectCartItemById,
-} from '../redux/slices/cartSlice'
+} from '../redux/slices/cartSlice';
 import {
   fetchFullItem,
   selectFullItemData,
-} from '../redux/slices/fullItemSlice'
+} from '../redux/slices/fullItemSlice';
 
 import {
   addFavorite,
   removeFavorite,
   selectFavorites,
-} from '../redux/slices/favoriteSlice'
+} from '../redux/slices/favoriteSlice';
 
-import 'swiper/css'
-import 'swiper/css/bundle'
-import { Comment, FullItemSlider } from '../components'
+import 'swiper/css';
+import 'swiper/css/bundle';
+import { Comment, FullItemSlider } from '../components';
 import {
   fetchGetReviewsForProductId,
   selectCommentsData,
-} from '../redux/slices/commentSlice'
-import { getTheme } from '../utils/getTheme'
+} from '../redux/slices/commentSlice';
+import { getTheme } from '../utils/getTheme';
 
 const FullItem = () => {
-  const token = localStorage.getItem('token')
-  const theme = useSelector((state) => state.theme)
-  const { id } = useParams()
-  const { comments, commentsStatus } = useSelector(selectCommentsData)
-  const { item, status } = useSelector(selectFullItemData)
-  const dispatch = useDispatch()
-  const { favorites } = useSelector(selectFavorites)
-  const [navigate, setNavigate] = useState(false)
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [parametr, setParametr] = useState('')
-  const [color, setColor] = useState('')
-  const cartItem = useSelector(selectCartItemById(item.id))
-  const addedCount = cartItem ? cartItem.count : 0
+  const token = localStorage.getItem('token');
+  const theme = useSelector((state) => state.theme);
+  const { id } = useParams();
+  const { comments, commentsStatus } = useSelector(selectCommentsData);
+  const { item, status } = useSelector(selectFullItemData);
+  const dispatch = useDispatch();
+  const { favorites } = useSelector(selectFavorites);
+  const [navigate, setNavigate] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [parametr, setParametr] = useState('');
+  const [color, setColor] = useState('');
+  const cartItem = useSelector(selectCartItemById(item.id));
+  const addedCount = cartItem ? cartItem.count : 0;
   const onClickAdd = () => {
     const tovar = {
       id: item.id,
@@ -50,21 +50,21 @@ const FullItem = () => {
       parametr,
       color,
       count: 0,
-    }
-    dispatch(addItem(tovar))
-  }
+    };
+    dispatch(addItem(tovar));
+  };
   const onClickMinus = () => {
-    dispatch(minusItem(item.id))
-  }
+    dispatch(minusItem(item.id));
+  };
   const onClickRemove = () => {
-    dispatch(removeItem(item.id))
-  }
+    dispatch(removeItem(item.id));
+  };
 
   useEffect(() => {
-    const ids = favorites.map((item) => item.id)
+    const ids = favorites.map((item) => item.id);
 
-    setIsFavorite(ids.includes(Number(id)))
-  }, [])
+    setIsFavorite(ids.includes(Number(id)));
+  }, []);
   const onChangeFavorite = () => {
     if (!isFavorite) {
       dispatch(
@@ -75,70 +75,70 @@ const FullItem = () => {
           price: item.price,
           color: item.color,
         })
-      )
+      );
 
-      return setIsFavorite(true)
+      return setIsFavorite(true);
     }
     if (isFavorite) {
-      dispatch(removeFavorite(id))
+      dispatch(removeFavorite(id));
 
-      return setIsFavorite(false)
+      return setIsFavorite(false);
     }
-  }
+  };
   useEffect(() => {
-    dispatch(fetchFullItem({ id }))
-    dispatch(fetchGetReviewsForProductId(token, id))
-  }, [])
+    dispatch(fetchFullItem({ id }));
+    dispatch(fetchGetReviewsForProductId(token, id));
+  }, []);
   if (navigate) {
-    return <Navigate to="/login"></Navigate>
+    return <Navigate to='/login'></Navigate>;
   }
 
-  const renderStatus = Boolean(status === 'success')
+  const renderStatus = Boolean(status === 'success');
   return (
-    <div className="fullitem">
-      <div className="fullitem__card-wrapper">
-        <div className="fullitem__card-breadcrumb container"></div>
-        <div className="fullitem__card container">
-          <div className="fullitem__card-sliders">
+    <div className='fullitem'>
+      <div className='fullitem__card-wrapper'>
+        <div className='fullitem__card-breadcrumb container'></div>
+        <div className='fullitem__card container'>
+          <div className='fullitem__card-sliders'>
             <FullItemSlider id={id}></FullItemSlider>
           </div>
-          <div className="fullitem__card_info-wrapper">
-            <div className="fullitem__card_info-name">{item.name}</div>
-            <div className="fullitem__card_info-params">
+          <div className='fullitem__card_info-wrapper'>
+            <div className='fullitem__card_info-name'>{item.name}</div>
+            <div className='fullitem__card_info-params'>
               {item.category === 'клавиатуры' ? (
                 <>
-                  <div className="fullitem__card_info-params_block">
+                  <div className='fullitem__card_info-params_block'>
                     <p>Переключатели</p>
-                    <div className="fullitem__card_info-params_block-wrapper">
-                      <button className="fullitem__card_info-params_block_button">
+                    <div className='fullitem__card_info-params_block-wrapper'>
+                      <button className='fullitem__card_info-params_block_button'>
                         <span>br</span>
                       </button>
-                      <button className="fullitem__card_info-params_block_button noItem">
+                      <button className='fullitem__card_info-params_block_button noItem'>
                         <span>r</span>
                       </button>
                     </div>
                   </div>
-                  <div className="fullitem__card_info-params_block">
+                  <div className='fullitem__card_info-params_block'>
                     <p>Раскладка</p>
-                    <div className="fullitem__card_info-params_block-wrapper">
-                      <button className="fullitem__card_info-params_block_text">
+                    <div className='fullitem__card_info-params_block-wrapper'>
+                      <button className='fullitem__card_info-params_block_text'>
                         Русская
                       </button>
-                      <button className="fullitem__card_info-params_block_text">
+                      <button className='fullitem__card_info-params_block_text'>
                         Английская
                       </button>
                     </div>
                   </div>
                 </>
               ) : (
-                <div className="fullitem__card_info-params_block">
+                <div className='fullitem__card_info-params_block'>
                   <p>Цвет</p>
-                  <div className="fullitem__card_info-params_block-wrapper">
+                  <div className='fullitem__card_info-params_block-wrapper'>
                     {renderStatus &&
                       JSON.parse(item.colors).map((color) => (
                         <button
                           onClick={(e) => setColor(e.target.value)}
-                          className="fullitem__card_info-params_block_text"
+                          className='fullitem__card_info-params_block_text'
                           key={color}
                           value={color}
                         >
@@ -149,13 +149,13 @@ const FullItem = () => {
                 </div>
               )}
             </div>
-            <div className="fullitem__card_info-bottom">
+            <div className='fullitem__card_info-bottom'>
               <span>{item.price} руб</span>
               {addedCount > 0 ? (
-                <div className="fullitem__card_info-bottom_buttons">
+                <div className='fullitem__card_info-bottom_buttons'>
                   <Link
-                    className="fullitem__card_info-bottom_buttons_cart"
-                    to="/cart"
+                    className='fullitem__card_info-bottom_buttons_cart'
+                    to='/cart'
                   >
                     Перейти<br></br> в корзину
                   </Link>
@@ -201,8 +201,8 @@ const FullItem = () => {
                 </div>
               ) : (
                 <button
-                  className="fullitem__card_info-bottom_btn"
-                  to="/cart"
+                  className='fullitem__card_info-bottom_btn'
+                  to='/cart'
                   onClick={onClickAdd}
                 >
                   В корзину
@@ -212,80 +212,101 @@ const FullItem = () => {
           </div>
         </div>
       </div>
-      <div className="fullitem__description container">
-        <div className="fullitem__description_left">
-          <div className="">
+      <div className='fullitem__description container'>
+        <div className='fullitem__description_left'>
+          <div className=''>
             <p>Описание</p>
-            <div className="fullitem__description_left_description">
+            <div className='fullitem__description_left_description'>
               {item.description_full}
             </div>
           </div>
-          <div className="">
+          <div className=''>
             <p>Особенности</p>
-            <div className="fullitem__description_left_spec">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur
-              similique temporibus quaerat nihil distinctio earum nulla delectus
-              blanditiis ut quia. Facere sequi quos odio ullam harum qui
-              suscipit molestiae dolore id accusantium quasi sint, soluta aut
-              quae illo iure! Ut possimus, recusandae nisi nostrum doloribus hic
-              similique officiis et consectetur.
+            <div className='fullitem__description_left_spec'>
+              <div className='fullitem__description_left_spec_title'>
+                Раздельный форм фактор
+              </div>
+              <div className='fullitem__description_left_spec_text'>
+                Позволит вам повелевать расположением ваших рук как угодно. Всё
+                ради наилучшей эргономичности.
+              </div>
+            </div>
+            <div className='fullitem__description_left_spec'>
+              <div className='fullitem__description_left_spec_title'>
+                Программируемая
+              </div>
+              <div className='fullitem__description_left_spec_text'>
+                Вся клавиатура программируется, включая разделённую клавишу
+                пробела, каждую из частей которого можно настроить отдельно.
+                Поддерживаются 3 слоя макросов.
+              </div>
+            </div>
+            <div className='fullitem__description_left_spec'>
+              <div className='fullitem__description_left_spec_title'>
+                Программируемая
+              </div>
+              <div className='fullitem__description_left_spec_text'>
+                Вся клавиатура программируется, включая разделённую клавишу
+                пробела, каждую из частей которого можно настроить отдельно.
+                Поддерживаются 3 слоя макросов.
+              </div>
             </div>
           </div>
         </div>
-        <div className="fullitem__description_right">
+        <div className='fullitem__description_right'>
           <p>Характеристика</p>
-          <div className="fullitem__description_right_har">
-            <div className="fullitem__description_right_har_item">
-              <div className="fullitem__description_right_har_item_left">
+          <div className='fullitem__description_right_har'>
+            <div className='fullitem__description_right_har_item'>
+              <div className='fullitem__description_right_har_item_left'>
                 Материал клавиш
               </div>
-              <div className="fullitem__description_right_har_item_right">
+              <div className='fullitem__description_right_har_item_right'>
                 Doubleshot
               </div>
             </div>
-            <div className="fullitem__description_right_har_item">
-              <div className="fullitem__description_right_har_item_left">
+            <div className='fullitem__description_right_har_item'>
+              <div className='fullitem__description_right_har_item_left'>
                 Материал клавиш
               </div>
-              <div className="fullitem__description_right_har_item_right">
+              <div className='fullitem__description_right_har_item_right'>
                 Doubleshot
               </div>
             </div>
-            <div className="fullitem__description_right_har_item">
-              <div className="fullitem__description_right_har_item_left">
+            <div className='fullitem__description_right_har_item'>
+              <div className='fullitem__description_right_har_item_left'>
                 Материал клавиш
               </div>
-              <div className="fullitem__description_right_har_item_right">
+              <div className='fullitem__description_right_har_item_right'>
                 Doubleshot
               </div>
             </div>
-            <div className="fullitem__description_right_har_item">
-              <div className="fullitem__description_right_har_item_left">
+            <div className='fullitem__description_right_har_item'>
+              <div className='fullitem__description_right_har_item_left'>
                 Материал клавиш
               </div>
-              <div className="fullitem__description_right_har_item_right">
+              <div className='fullitem__description_right_har_item_right'>
                 Doubleshot
               </div>
             </div>
-            <div className="fullitem__description_right_har_item">
-              <div className="fullitem__description_right_har_item_left">
+            <div className='fullitem__description_right_har_item'>
+              <div className='fullitem__description_right_har_item_left'>
                 Материал клавиш
               </div>
-              <div className="fullitem__description_right_har_item_right">
+              <div className='fullitem__description_right_har_item_right'>
                 Doubleshot
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="fullitem__comments container">
-        <p className="fullitem__comments_title">Отзывы</p>
-        <div className="fullitem__comments_items">
+      <div className='fullitem__comments container'>
+        <p className='fullitem__comments_title'>Отзывы</p>
+        <div className='fullitem__comments_items'>
           {commentsStatus === 'success' && comments.items.length > 0 ? (
             comments.items.map((comment) => <Comment></Comment>)
           ) : (
-            <div className="personal__empty_wrapper">
-              <div className="container personal__empty_container">
+            <div className='personal__empty_wrapper'>
+              <div className='container personal__empty_container'>
                 <div
                   style={{
                     backgroundImage:
@@ -294,7 +315,7 @@ const FullItem = () => {
                         : `url('../assets/img/no-item.png')`,
                     backgroundSize: 'cover',
                   }}
-                  className="personal__empty"
+                  className='personal__empty'
                 >
                   Пусто
                 </div>
@@ -304,7 +325,7 @@ const FullItem = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FullItem
+export default FullItem;

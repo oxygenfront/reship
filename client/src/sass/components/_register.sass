@@ -112,6 +112,8 @@
                 align-items: center
                 justify-content: space-between
                 padding-right: 20px
+                & input
+                    width: 91%
                 &:focus
                     border: 2px solid #416EF2
             &:focus
@@ -148,3 +150,22 @@
                 font-size: 16px
                 background: none
                 color: var(--color)
+
+@media (max-width: 767px)
+    .register
+        &__wrapper
+            width: 100%
+@media (max-width: 575px)
+    .react-dadata__input
+        width: 100%
+    .react-dadata__suggestions
+        top: 60px
+    .register
+        &__wrapper
+            padding: 40px 20px 20px 
+            &-input
+                width: 100%
+            &-link
+                margin-bottom: 48px
+            &-title
+                font-size: 9vw

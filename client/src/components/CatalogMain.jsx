@@ -215,7 +215,7 @@ function CatalogMain() {
         </div>
 
         <Link to="/catalog" className="main-catalog__main-category">
-          <button>Все новинки</button>
+          <button>Все {choosenType}</button>
         </Link>
 
         <hr className="hr" />

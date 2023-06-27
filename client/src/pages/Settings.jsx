@@ -23,17 +23,17 @@ function Settings() {
     new_password: '',
     conf_password: '',
   })
-  const inputRefs = useRef([]);
+  const inputRefs = useRef([])
 
   const handleKeyDown = (event, index) => {
     if (event.key === 'Enter') {
       if (index < inputRefs.current.length - 1) {
-        inputRefs.current[index + 1].focus();
+        inputRefs.current[index + 1].focus()
       } else {
-        event.target.form.submit();
+        event.target.form.submit()
       }
     }
-  };
+  }
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
 
@@ -162,7 +162,7 @@ function Settings() {
         new_country: JSON.parse(data.adress_delivery).adress,
 
         new_date: timeConverter(data.date_of_birth),
-        new_number_tel: '',
+        new_number_tel: data.number_tel !== '' ? data.number_tel : '',
       })
 
       setChangeAdress({
@@ -175,23 +175,23 @@ function Settings() {
     }
   }, [status])
 
-  const formatPhoneNumber = (phoneNumberString) =>  {
-    var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
-    var match = cleaned.match(/^(?:7|8)?(\d{3})(\d{3})(\d{2})(\d{2})$/);
+  const formatPhoneNumber = (phoneNumberString) => {
+    var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+    var match = cleaned.match(/^(?:7|8)?(\d{3})(\d{3})(\d{2})(\d{2})$/)
     if (match) {
       return (
         '+7 (' + match[1] + ') ' + match[2] + '-' + match[3] + '-' + match[4]
-      );
+      )
     }
-    return null;
+    return null
   }
   return (
     <>
-      <div className='settings'>
-        <div className='settings__container container'>
-          <div className='settings__title'>Настройки</div>
-          <div className='settings__wrapper'>
-            <div className='settings__buttons-block'>
+      <div className="settings">
+        <div className="settings__container container">
+          <div className="settings__title">Настройки</div>
+          <div className="settings__wrapper">
+            <div className="settings__buttons-block">
               <div
                 onClick={() => (
                   setActive({ profile: true }), setChange({ profile: false })
@@ -242,19 +242,19 @@ function Settings() {
               </div>
             </div>
 
-            <div className='settings__change-wrapper'>
-              <div className='settings__profile'>
-                <div className='settings__profile-preview'>
-                  <div className='settings__profile-preview_img-block'>
-                    <img src='../assets/user_img/default.jpg' alt='' />
+            <div className="settings__change-wrapper">
+              <div className="settings__profile">
+                <div className="settings__profile-preview">
+                  <div className="settings__profile-preview_img-block">
+                    <img src="../assets/user_img/default.jpg" alt="" />
                   </div>
-                  <div className='settings__profile-preview_info-block'>
+                  <div className="settings__profile-preview_info-block">
                     {status === 'success' && (
                       <>
-                        <div className='settings__profile-preview_info-block_name'>
+                        <div className="settings__profile-preview_info-block_name">
                           {data.first_name} {data.last_name}
                         </div>
-                        <div className='settings__profile-preview_info-block_about'>
+                        <div className="settings__profile-preview_info-block_about">
                           {changeAdress.country}, {changeAdress.city} <br />
                           {new Date(Date.now()).getFullYear() -
                             new Date(data.date_of_birth).getFullYear()}{' '}
@@ -272,56 +272,56 @@ function Settings() {
                       }),
                       setActive({ profile: true, adress: false })
                     )}
-                    className='settings__change-btn'
+                    className="settings__change-btn"
                   >
-                    <img src='../assets/img/pen-edit.png' alt='' />
+                    <img src="../assets/img/pen-edit.png" alt="" />
                   </button>
                 </div>
               </div>
 
               {change.profile ? (
-                <div className='settings__change'>
-                  <div className='settings__change_title'>Профиль</div>
+                <div className="settings__change">
+                  <div className="settings__change_title">Профиль</div>
 
-                  <div className='settings__change_block'>
-                    <div className='settings__change_block_title'>Фото</div>
-                    <div className='settings__change_block_img-block'>
-                      <img src='../assets/user_img/default.jpg' alt='' />
+                  <div className="settings__change_block">
+                    <div className="settings__change_block_title">Фото</div>
+                    <div className="settings__change_block_img-block">
+                      <img src="../assets/user_img/default.jpg" alt="" />
                     </div>
-                    <div className='settings__change_block_inputs'>
-                      <div className='settings__change_block_inputs-wrapper'>
-                        <div className='settings__change_block_title'>Имя</div>
+                    <div className="settings__change_block_inputs">
+                      <div className="settings__change_block_inputs-wrapper">
+                        <div className="settings__change_block_title">Имя</div>
                         <input
                           onChange={updateProfile}
                           value={changeProfile.first_name}
-                          type='text'
-                          className='settings__change_block_inputs-item'
+                          type="text"
+                          className="settings__change_block_inputs-item"
                           ref={(ref) => (inputRefs.current[0] = ref)}
                           onKeyDown={(event) => handleKeyDown(event, 0)}
                         />
                       </div>
-                      <div className='settings__change_block_inputs-wrapper'>
-                        <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs-wrapper">
+                        <div className="settings__change_block_title">
                           Фамилия
                         </div>
                         <input
                           onChange={updateProfile}
                           value={changeProfile.last_name}
-                          type='text'
-                          className='settings__change_block_inputs-item'
+                          type="text"
+                          className="settings__change_block_inputs-item"
                           ref={(ref) => (inputRefs.current[1] = ref)}
                           onKeyDown={(event) => handleKeyDown(event, 1)}
                         />
                       </div>
                     </div>
-                    <div className='settings__change_block_buttons'>
+                    <div className="settings__change_block_buttons">
                       <button
-                        className='settings__change_block_buttons_cancel'
+                        className="settings__change_block_buttons_cancel"
                         onClick={() => setChange({ profile: false })}
                       >
                         Отменить
                       </button>
-                      <button className='settings__change_block_buttons_save'>
+                      <button className="settings__change_block_buttons_save">
                         Сохранить изменения
                       </button>
                     </div>
@@ -330,77 +330,77 @@ function Settings() {
               ) : null}
 
               {active.contacts ? (
-                <div className='settings__change'>
-                  <div className='settings__change_title'>
+                <div className="settings__change">
+                  <div className="settings__change_title">
                     Контактная <br /> Информация
                   </div>
 
                   {change.contacts ? (
-                    <div className='settings__change_block'>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                    <div className="settings__change_block">
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Электронная почта
                           </div>
                           <input
                             onChange={updateContacts}
                             value={changeContacts.new_email}
-                            name='new_email'
-                            type='text'
-                            className='settings__change_block_inputs-item'
+                            name="new_email"
+                            type="text"
+                            className="settings__change_block_inputs-item"
                             ref={(ref) => (inputRefs.current[0] = ref)}
                             onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Номер телефона
                           </div>
                           <InputMask
-                            name='new_number_tel'
-                            type='text'
-                            mask='+7 (999) 999-99-99'
+                            name="new_number_tel"
+                            type="text"
+                            mask="+7 (999) 999-99-99"
                             onChange={updateContacts}
                             value={changeContacts.new_number_tel}
-                            placeholder='+7 (___) ___-__-__'
-                            className='settings__change_block_inputs-item'
+                            placeholder="+7 (___) ___-__-__"
+                            className="settings__change_block_inputs-item"
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Дата рождения
                           </div>
 
                           <InputMask
-                            name='new_date'
+                            name="new_date"
                             onChange={updateContacts}
                             value={changeContacts.new_date}
-                            mask='99.99.9999'
-                            placeholder='XX-XX-XXXX'
-                            type='text'
-                            className='settings__change_block_inputs-item'
+                            mask="99.99.9999"
+                            placeholder="XX-XX-XXXX"
+                            type="text"
+                            className="settings__change_block_inputs-item"
                           />
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Страна, город
                           </div>
                           <input
-                            name='new_country'
+                            name="new_country"
                             onChange={updateContacts}
                             value={changeContacts.new_country}
-                            type='text'
-                            className='settings__change_block_inputs-item'
+                            type="text"
+                            className="settings__change_block_inputs-item"
                             ref={(ref) => (inputRefs.current[1] = ref)}
                             onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_buttons'>
+                      <div className="settings__change_block_buttons">
                         <button
-                          className='settings__change_block_buttons_cancel'
+                          className="settings__change_block_buttons_cancel"
                           onClick={() => setChange({ contacts: false })}
                         >
                           Отменить
@@ -413,57 +413,57 @@ function Settings() {
                               new_date_of_birth: timeStamp,
                             })
                           }
-                          className='settings__change_block_buttons_save'
+                          className="settings__change_block_buttons_save"
                         >
                           Сохранить изменения
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <div className='settings__change_block'>
+                    <div className="settings__change_block">
                       <button
-                        className='settings__change-btn contacts'
+                        className="settings__change-btn contacts"
                         onClick={() =>
                           setChange({ contacts: !change.contacts })
                         }
                       >
-                        <img src='../assets/img/pen-edit.png' alt='' />
+                        <img src="../assets/img/pen-edit.png" alt="" />
                       </button>
 
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Электронная почта
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             <span>{changeContacts.new_email}</span>
                           </div>
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Номер телефона
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             <span>
                               {formatPhoneNumber(changeContacts.new_number_tel)}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Дата рождения
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             <span>{changeContacts.new_date}</span>
                           </div>
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Страна, город
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             <span>{changeContacts.new_country}</span>
                           </div>
                         </div>
@@ -474,94 +474,99 @@ function Settings() {
               ) : null}
 
               {active.adress ? (
-                <div className='settings__change'>
-                  <div className='settings__change_title'>
+                <div className="settings__change">
+                  <div className="settings__change_title">
                     Мои адреса{' '}
-                    <button className='settings__change_add-adress'></button>
+                    <button className="settings__change_add-adress"></button>
                   </div>
 
                   {change.adress ? (
-                    <div className='settings__change_block'>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                    <div className="settings__change_block">
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Страна
                           </div>
                           <input
                             value={changeAdress.country}
                             onChange={updateAdress}
-                            name='country'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[0] = ref)} onKeyDown={(event) => handleKeyDown(event, 0)}
+                            name="country"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[0] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Город
                           </div>
                           <input
                             value={changeAdress.city}
                             onChange={updateAdress}
-                            name='city'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[1] = ref)} onKeyDown={(event) => handleKeyDown(event, 1)}
+                            name="city"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[1] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Улица
                           </div>
                           <input
                             value={changeAdress.street}
                             onChange={updateAdress}
-                            name='street'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[2] = ref)} onKeyDown={(event) => handleKeyDown(event, 2)}
+                            name="street"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[2] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 2)}
                           />
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Почтовый индекс
                           </div>
                           <input
                             value={changeAdress.postal_code}
                             onChange={updateAdress}
-                            name='postal_code'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[3] = ref)} onKeyDown={(event) => handleKeyDown(event, 3)}
+                            name="postal_code"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[3] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 3)}
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Дом
                           </div>
                           <input
                             value={changeAdress.flat_number}
                             onChange={updateAdress}
-                            name='flat_number'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[4] = ref)} onKeyDown={(event) => handleKeyDown(event, 4)}
+                            name="flat_number"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[4] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 4)}
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_buttons'>
+                      <div className="settings__change_block_buttons">
                         <button
-                          className='settings__change_block_buttons_cancel'
+                          className="settings__change_block_buttons_cancel"
                           onClick={() => setChange({ adress: false })}
                         >
                           Отменить
                         </button>
                         <button
-                          className='settings__change_block_buttons_save'
+                          className="settings__change_block_buttons_save"
                           onClick={onClickSaveDelivery}
                         >
                           Сохранить изменения
@@ -569,57 +574,57 @@ function Settings() {
                       </div>
                     </div>
                   ) : (
-                    <div className='settings__change_block'>
+                    <div className="settings__change_block">
                       <button
-                        className='settings__change-btn contacts'
+                        className="settings__change-btn contacts"
                         onClick={() => setChange({ adress: !change.adress })}
                       >
-                        <img src='../assets/img/pen-edit.png' alt='' />
+                        <img src="../assets/img/pen-edit.png" alt="" />
                       </button>
 
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Страна
                           </div>
 
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             {changeAdress.country}
                           </div>
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Город
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             {changeAdress.city}
                           </div>
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Улица
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             {changeAdress.street}
                           </div>
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Почтовый индекс
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             {changeAdress.postal_code}
                           </div>
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Дом
                           </div>
-                          <div className='settings__change_block_inputs-item'>
+                          <div className="settings__change_block_inputs-item">
                             {changeAdress.flat_number}
                           </div>
                         </div>
@@ -629,101 +634,104 @@ function Settings() {
                 </div>
               ) : null}
               {active.password ? (
-                <div className='settings__change'>
-                  <div className='settings__change_title'>Изменение пароля</div>
+                <div className="settings__change">
+                  <div className="settings__change_title">Изменение пароля</div>
 
                   {change.password ? (
-                    <div className='settings__change_block'>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                    <div className="settings__change_block">
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Текущий пароль
                           </div>
                           <input
                             onChange={updatePassword}
                             value={changePassword.curr_password}
-                            name='curr_password'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[0] = ref)} onKeyDown={(event) => handleKeyDown(event, 0)}
+                            name="curr_password"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[0] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Новый пароль
                           </div>
                           <input
                             onChange={updatePassword}
                             value={changePassword.new_password}
-                            name='new_password'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[1] = ref)} onKeyDown={(event) => handleKeyDown(event, 1)}
+                            name="new_password"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[1] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Повторите пароль
                           </div>
 
                           <input
                             onChange={updatePassword}
                             value={changePassword.conf_password}
-                            name='conf_password'
-                            type='text'
-                            className='settings__change_block_inputs-item'
-                            ref={(ref) => (inputRefs.current[2] = ref)} onKeyDown={(event) => handleKeyDown(event, 2)}
+                            name="conf_password"
+                            type="text"
+                            className="settings__change_block_inputs-item"
+                            ref={(ref) => (inputRefs.current[2] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 2)}
                           />
                         </div>
                       </div>
-                      <div className='settings__change_block_buttons'>
+                      <div className="settings__change_block_buttons">
                         <button
-                          className='settings__change_block_buttons_cancel'
+                          className="settings__change_block_buttons_cancel"
                           onClick={() => setChange({ password: false })}
                         >
                           Отменить
                         </button>
                         <button
                           onClick={onClickSavePassword}
-                          className='settings__change_block_buttons_save'
+                          className="settings__change_block_buttons_save"
                         >
                           Сохранить изменения
                         </button>
                       </div>
                     </div>
                   ) : (
-                    <div className='settings__change_block'>
+                    <div className="settings__change_block">
                       <button
-                        className='settings__change-btn contacts'
+                        className="settings__change-btn contacts"
                         onClick={() =>
                           setChange({ password: !change.password })
                         }
                       >
-                        <img src='../assets/img/pen-edit.png' alt='' />
+                        <img src="../assets/img/pen-edit.png" alt="" />
                       </button>
 
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Текущий пароль
                           </div>
-                          <div className='settings__change_block_inputs-item'></div>
+                          <div className="settings__change_block_inputs-item"></div>
                         </div>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Новый пароль
                           </div>
-                          <div className='settings__change_block_inputs-item'></div>
+                          <div className="settings__change_block_inputs-item"></div>
                         </div>
                       </div>
-                      <div className='settings__change_block_inputs'>
-                        <div className='settings__change_block_inputs-wrapper'>
-                          <div className='settings__change_block_title'>
+                      <div className="settings__change_block_inputs">
+                        <div className="settings__change_block_inputs-wrapper">
+                          <div className="settings__change_block_title">
                             Повторите пароль
                           </div>
-                          <div className='settings__change_block_inputs-item'></div>
+                          <div className="settings__change_block_inputs-item"></div>
                         </div>
                       </div>
                     </div>
@@ -735,7 +743,7 @@ function Settings() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
 export default Settings

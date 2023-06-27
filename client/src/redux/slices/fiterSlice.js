@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   choosenCategorie: '',
   choosenSort: '',
+  catalogSort: '',
   searchValue: '',
   choosenPrice: [2000, 12000],
   choosenBrand: '',
@@ -18,6 +19,9 @@ export const filterSlice = createSlice({
     },
     setChoosenSort(state, action) {
       state.choosenSort = action.payload
+    },
+    setCatalogSort(state, action) {
+      state.catalogSort = action.payload
     },
     setSearchValue(state, action) {
       state.searchValue = action.payload
@@ -44,5 +48,6 @@ export const {
   setChoosenPrice,
   setChoosenBrand,
   setChoosenType,
+  setCatalogSort,
 } = filterSlice.actions
 export default filterSlice.reducer

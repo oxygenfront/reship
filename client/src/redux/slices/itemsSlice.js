@@ -3,9 +3,13 @@ import axios from '../../axios'
 
 export const fetchItems = createAsyncThunk(
   'items/fetchItems',
-  async ({ choosenCategorie, searchValue }) => {
+  async ({ choosenCategorie, searchValue, choosenPrice }) => {
     console.log(choosenCategorie, searchValue)
-    const { data } = await axios.get(`/getProducts?&title=${searchValue}`)
+    const { data } = await axios.get(
+      `/getProducts?&title=${searchValue}&price_start=${
+        choosenPrice !== '' ? choosenPrice[0] : ''
+      }&price_end=${choosenPrice !== '' ? choosenPrice[1] : ''}`
+    )
     console.log(data)
 
     return data

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
 import {
@@ -16,7 +16,7 @@ import { Menu as DropDown } from '@headlessui/react'
 const Catalog = () => {
   const dispatch = useDispatch()
   const set = new Set()
-
+  const price = useRef(null)
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
   const { choosenCategorie, searchValue, choosenPrice } =
@@ -30,7 +30,9 @@ const Catalog = () => {
     dispatch(setChoosenCategorie(sort))
   }, [])
 
-  const confirmFilters = () => {}
+  const confirmFilters = () => {
+    console.log(price.current)
+  }
 
   useEffect(() => {
     function handleResize() {
@@ -56,7 +58,6 @@ const Catalog = () => {
   if (searchValue === '' && choosenCategorie === '') {
     return <Navigate to="/"></Navigate>
   }
-  console.log(choosenPrice)
 
   // const fnShowFilters = () => {
   //   if (windowWidth > 767) {
@@ -166,6 +167,7 @@ const Catalog = () => {
                 <div className="catalog__sort_title">Цена</div>
                 <RangeSlider
                   progress
+                  ref={price}
                   value={choosenPrice}
                   min={1000}
                   max={30000}
@@ -217,7 +219,10 @@ const Catalog = () => {
                 </label>
               </div>
               <div className="catalog__sort-block_buttons">
-                <button className="catalog__sort-block_buttons-item blue">
+                <button
+                  onClick={confirmFilters}
+                  className="catalog__sort-block_buttons-item blue"
+                >
                   Применить
                 </button>
                 <button className="catalog__sort-block_buttons-item white">

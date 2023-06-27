@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import {
   fetchAuth,
   fetchAuthMe,
@@ -14,7 +15,16 @@ const Login = () => {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [hasFocus, setHasFocus] = useState(false);
 
+  const handleChildFocus = () => {
+    setHasFocus(true);
+  };
+
+  const handleChildBlur = () => {
+    setHasFocus(false);
+  };
   const inputsRef = useRef([]);
   const handleKeyDown = (event, index) => {
     if (event.key === 'Enter') {
@@ -65,6 +75,7 @@ const Login = () => {
             <hr className='hr'></hr>
             <form className='auth__form' action=''>
               <input
+                autoFocus
                 className='auth__form-input'
                 name='email'
                 value={authForm.email}
@@ -74,16 +85,33 @@ const Login = () => {
                 ref={(ref) => (inputsRef.current[0] = ref)}
                 onKeyDown={(event) => handleKeyDown(event, 0)}
               />
-              <input
+              <div
                 className='auth__form-input'
-                name='password'
-                value={authForm.password}
-                onChange={updateAuthForm}
-                type='password'
-                placeholder='Пароль'
-                ref={(ref) => (inputsRef.current[1] = ref)}
-                onKeyDown={(event) => handleKeyDown(event, 1)}
-              />
+                style={{ border: hasFocus ? '2px solid #416EF2' : null }}
+              >
+                <input
+                  name='password'
+                  value={authForm.password}
+                  onChange={updateAuthForm}
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder='Пароль'
+                  ref={(ref) => (inputsRef.current[1] = ref)}
+                  onKeyDown={(event) => handleKeyDown(event, 1)}
+                  onFocus={handleChildFocus}
+                  onBlur={handleChildBlur}
+                ></input>
+                {showPassword ? (
+                  <HiOutlineEye
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() => setShowPassword(false)}
+                  />
+                ) : (
+                  <HiOutlineEyeOff
+                    style={{ cursor: 'pointer', fontSize: '25px' }}
+                    onClick={() => setShowPassword(true)}
+                  />
+                )}
+              </div>
             </form>
             <div className='auth__links'>
               Новый пользователь?

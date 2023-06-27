@@ -1,3 +1,5 @@
+
+
 .auth
     margin-top: calc( 120px + 10px )
     margin-bottom: 107px
@@ -29,10 +31,18 @@
             transition: border .2s linear
             &:focus
                 border: 2px solid #416EF2
-        &:nth-child(1)
-            margin-top: 25px
+            &:nth-child(1)
+                margin-top: 25px
             &:nth-child(2)
+                display: flex
+                align-items: center
+                justify-content: space-between
+                padding-right: 25px
                 margin-bottom: 40px
+                & input
+                    width: 91%
+                &:focus
+                    border: 2px solid #416EF2
 
     &_wrapper
         width: 541px

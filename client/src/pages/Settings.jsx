@@ -102,7 +102,28 @@ function Settings() {
       .join('.')
   ).getTime()
 
+  const onClickEnter = (event) => {
+    if (event.key === 'Enter') {
+      if (event.target.name === 'new_country') {
+        document
+          .querySelector('.settings__change_block_buttons_save')
+          .addEventListener('click', () => {
+            console.log('log')
+            changeContacts.new_date_of_birth = timeStamp
+          })
+      }
+      if (event.target.name === 'flat_number') {
+        onClickSaveDelivery()
+      }
+      if (event.target.name === 'conf_password') {
+        onClickSavePassword()
+      }
+    }
+  }
+
   const onClickSaveContacts = async () => {
+    setChange({ contacts: !change.contacts })
+
     console.log(timeStamp)
     console.log(changeContacts)
     setChange(!change.contacts)
@@ -116,6 +137,8 @@ function Settings() {
   }
 
   const onClickSaveDelivery = async () => {
+    setChange({ adress: !change.adress })
+
     const data = await dispatch(
       fetchChangeDelivery({
         new_delivery: JSON.stringify({
@@ -133,6 +156,8 @@ function Settings() {
     }
   }
   const onClickSavePassword = async () => {
+    setChange({ password: !change.password })
+
     const data = await dispatch(
       fetchChangePassword({
         password: changePassword.curr_password,
@@ -292,6 +317,7 @@ function Settings() {
                       <div className="settings__change_block_inputs-wrapper">
                         <div className="settings__change_block_title">Имя</div>
                         <input
+                          autoFocus
                           onChange={updateProfile}
                           value={changeProfile.first_name}
                           type="text"
@@ -343,6 +369,7 @@ function Settings() {
                             Электронная почта
                           </div>
                           <input
+                            autoFocus
                             onChange={updateContacts}
                             value={changeContacts.new_email}
                             name="new_email"
@@ -394,7 +421,7 @@ function Settings() {
                             type="text"
                             className="settings__change_block_inputs-item"
                             ref={(ref) => (inputRefs.current[1] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 1)}
+                            onKeyDown={(event) => onClickEnter(event)}
                           />
                         </div>
                       </div>
@@ -488,6 +515,7 @@ function Settings() {
                             Страна
                           </div>
                           <input
+                            autoFocus
                             value={changeAdress.country}
                             onChange={updateAdress}
                             name="country"
@@ -554,7 +582,7 @@ function Settings() {
                             type="text"
                             className="settings__change_block_inputs-item"
                             ref={(ref) => (inputRefs.current[4] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 4)}
+                            onKeyDown={(event) => onClickEnter(event)}
                           />
                         </div>
                       </div>
@@ -645,6 +673,7 @@ function Settings() {
                             Текущий пароль
                           </div>
                           <input
+                            autoFocus
                             onChange={updatePassword}
                             value={changePassword.curr_password}
                             name="curr_password"
@@ -682,7 +711,7 @@ function Settings() {
                             type="text"
                             className="settings__change_block_inputs-item"
                             ref={(ref) => (inputRefs.current[2] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 2)}
+                            onKeyDown={(event) => onClickEnter(event)}
                           />
                         </div>
                       </div>

@@ -1,22 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
-import InputMask from 'react-input-mask'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react';
+import InputMask from 'react-input-mask';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import {
   fetchAuthMe,
   fetchRegister,
   selectIsAuth,
-} from '../redux/slices/authSlice'
+} from '../redux/slices/authSlice';
 
-import { AddressSuggestions } from 'react-dadata'
+import { AddressSuggestions } from 'react-dadata';
 const Register = () => {
-  const dispatch = useDispatch()
-  const isAuth = useSelector(selectIsAuth)
-  const [checkPass, setCheckPass] = useState(true)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const [nextPage, setNextPage] = useState(false)
-  const [adress, setAdress] = useState('')
+  const dispatch = useDispatch();
+  const isAuth = useSelector(selectIsAuth);
+  const [checkPass, setCheckPass] = useState(true);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [nextPage, setNextPage] = useState(false);
+  const [adress, setAdress] = useState('');
   const [showPassword, setShowPassword] = useState({
     newPassword: false,
     confirmPassword: false,
@@ -34,30 +34,30 @@ const Register = () => {
     confirmPassword: '',
     birthdate: '',
     adress_delivery: adress,
-  })
-  const inputsRef = useRef([])
+  });
+  const inputsRef = useRef([]);
 
   const handleKeyDown = (event, index) => {
     if (event.key === 'Enter') {
-      const nextIndex = index + 1
+      const nextIndex = index + 1;
       if (nextIndex < inputsRef.current.length) {
         if (
           inputsRef.current[nextIndex] &&
           inputsRef.current[nextIndex].focus
         ) {
-          inputsRef.current[nextIndex].focus()
+          inputsRef.current[nextIndex].focus();
         }
       }
     }
-  }
+  };
   const handleNextPage = (event) => {
     if (event.key === 'Enter') {
-      setNextPage(!nextPage)
+      setNextPage(!nextPage);
     }
-  }
+  };
   const timeStamp = new Date(
     regForm.birthdate.toLocaleString().split('-').reverse().join('.')
-  ).getTime()
+  ).getTime();
   const form = {
     first_name: regForm.firstName,
     last_name: regForm.lastName,
@@ -65,24 +65,22 @@ const Register = () => {
     email: regForm.email,
     date_of_birth_unix: timeStamp,
     adress_delivery: adress,
-  }
+  };
   const updateForm = (e) => {
     setRegForm({
       ...regForm,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const closeError = (e) => {
-    e.preventDefault()
-    setCheckPass(true)
-  }
+    e.preventDefault();
+    setCheckPass(true);
+  };
 
   const handleChildFocus = (e) => {
-    
-    setHasFocus({[e.target.name]: !hasFocus[e.target.name]});
+    setHasFocus({ [e.target.name]: !hasFocus[e.target.name] });
     // console.log(!hasFocus[e.target.name]);
-    
   };
 
   const handleChildBlur = (e) => {
@@ -90,22 +88,22 @@ const Register = () => {
   };
 
   const sendForm = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (regForm.newPassword === regForm.confirmPassword) {
-      setCheckPass(true)
-      console.log(form)
+      setCheckPass(true);
+      console.log(form);
       const data = await dispatch(
         fetchRegister({ ...form, adress_delivery: JSON.stringify({ adress }) })
-      )
+      );
       if (!data.payload) {
-        return alert('Не удалось зарегистрироваться')
+        return alert('Не удалось зарегистрироваться');
       }
 
       if ('token' in data.payload) {
-        window.localStorage.setItem('token', data.payload.token)
+        window.localStorage.setItem('token', data.payload.token);
 
-        await dispatch(fetchAuthMe(data.payload.token))
+        await dispatch(fetchAuthMe(data.payload.token));
       }
       setRegForm({
         firstName: '',
@@ -114,24 +112,24 @@ const Register = () => {
         password: { newPassword: '', confirmPassword: '' },
         birthdate: '',
         adress_delivery: '',
-      })
+      });
     } else {
-      setCheckPass(false)
+      setCheckPass(false);
     }
-  }
+  };
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   if (isAuth) {
-    return <Navigate to="/" />
+    return <Navigate to='/' />;
   }
   // console.log(adress);
   return (
@@ -246,7 +244,10 @@ const Register = () => {
           <div className='register__wrapper second-page'>
             <div className='register__wrapper-title'>Регистрация</div>
             <hr className='hr' />
-            <form action=''>
+            <form
+              action=''
+                style={{ display: windowWidth <= 575 ? 'flex' : 'block', flexDirection: windowWidth <= 575 ? 'column' : 'row', }}
+            >
               <input
                 autoFocus
                 className='register__wrapper-input second-page sm'
@@ -318,6 +319,6 @@ const Register = () => {
       </div>
     </section>
   );
-}
+};
 
-export default Register
+export default Register;

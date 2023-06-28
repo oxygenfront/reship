@@ -107,7 +107,7 @@ class ApiPostController {
       ) {
         return response
           .status(400)
-          .json({ error: "Некорректные данные.", bcode: 1 });
+          .json({ error: "Некорректные данные", bcode: 1 });
       }
 
       const first_name = tools.delInjection(request.body.first_name);
@@ -129,7 +129,7 @@ class ApiPostController {
           }
 
           if (rows.length == 0) {
-            const new_token = "reship.api." + tools.createToken(50);
+            const new_token = "reship.api" + tools.createToken(50);
 
             database.query(
               "INSERT INTO `users` (`first_name`, `last_name`, `email`, `avatar`, `adress_delivery`, `token`, `date_register_timestamp`, `password_md5`, `email_active`, `favorites`, `admin`, `basket`, `date_of_birth`, `number_tel`, `country`) VALUES " +
@@ -164,7 +164,7 @@ class ApiPostController {
                 // transporter.sendMail(mailData, function (err, info) {
                 //   if (err) {
                 //     return response.status(400).json({
-                //       error: 'Указана несуществующая почта.',
+                //       error: 'Указана несуществующая почта',
                 //       bcode: 1.3,
                 //     });
                 //   } else {
@@ -178,7 +178,7 @@ class ApiPostController {
                 //         if (error) {
                 //           return response
                 //             .status(500)
-                //             .json({ error: 'Ошибка на сервере', bcode: error });
+                //             .json({ error: 'Ошибка на сервере', bcod });
                 //         }
 
                 //         return response.status(400).json({ token: new_token });
@@ -205,14 +205,14 @@ class ApiPostController {
           } else {
             return response
               .status(400)
-              .json({ error: "Данная электронная почта занята.", bcode: 1.5 });
+              .json({ error: "Данная электронная почта занята", bcode: 1.5 });
           }
         }
       );
     } catch (error) {
       return response
         .status(500)
-        .json({ error: "Произошла неизвестная ошибка.", bcode: 1.11111 });
+        .json({ error: "Произошла неизвестная ошибка", bcode: 1.11111 });
     }
   }
 
@@ -256,7 +256,7 @@ class ApiPostController {
     ) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 3 });
+        .json({ error: "Некорректные данные", bcode: 3 });
     }
 
     const password = tools.delInjection(request.body.password);
@@ -271,7 +271,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 3.1, e: error });
+            .json({ error: "Ошибка на сервере", bcode: 3.1,  });
         }
 
         if (rows.length == 1) {
@@ -279,7 +279,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Неверный логин или пароль.", bcode: 3.2 });
+            .json({ error: "Неверный логин или пароль", bcode: 3.2 });
         }
       }
     );
@@ -289,7 +289,7 @@ class ApiPostController {
     if (!request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 4 });
+        .json({ error: "Некорректные данные", bcode: 4 });
     }
 
     const token = tools.delInjection(request.headers.authorization);
@@ -357,7 +357,7 @@ class ApiPostController {
     ) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 5 });
+        .json({ error: "Некорректные данные", bcode: 5 });
     }
 
     const password = tools.delInjection(request.body.password);
@@ -377,7 +377,7 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const new_token = "reship.api." + tools.createToken(50);
+          const new_token = "reship.api" + tools.createToken(50);
 
           database.query(
             `UPDATE \`users\` SET \`password_md5\` = '${crypto
@@ -393,7 +393,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Неверный пароль.", bcode: 5.2 });
+            .json({ error: "Неверный пароль", bcode: 5.2 });
         }
       }
     );
@@ -407,7 +407,7 @@ class ApiPostController {
     ) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 6 });
+        .json({ error: "Некорректные данные", bcode: 6 });
     }
 
     const password = tools.delInjection(request.body.password);
@@ -427,7 +427,7 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const new_token = "reship.api." + tools.createToken(50);
+          const new_token = "reship.api" + tools.createToken(50);
 
           database.query(
             `UPDATE \`users\` SET \`email\` = '${new_email}' WHERE token='${token}';`
@@ -440,7 +440,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Неверный пароль.", bcode: 6.2 });
+            .json({ error: "Неверный пароль", bcode: 6.2 });
         }
       }
     );
@@ -450,7 +450,7 @@ class ApiPostController {
     if (!tools.checkJsonKey(request.query, "code")) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 7 });
+        .json({ error: "Некорректные данные", bcode: 7 });
     }
 
     let code = tools.delInjection(request.query.code);
@@ -504,7 +504,7 @@ class ApiPostController {
     if (!tools.checkJsonKey(request.body, "email")) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 8 });
+        .json({ error: "Некорректные данные", bcode: 8 });
     }
 
     const email = tools.delInjection(request.body.email);
@@ -519,7 +519,7 @@ class ApiPostController {
         }
 
         if (rows.length == 1) {
-          const new_token = "reship.api." + tools.createToken(50);
+          const new_token = "reship.api" + tools.createToken(50);
 
           database.query(
             `UPDATE \`users\` SET \`email\` = '${new_email}' WHERE token='${token}';`
@@ -531,7 +531,7 @@ class ApiPostController {
           return response.json({ token: new_token, email: new_email });
         } else {
           return response.status(400).json({
-            error: "Пользователя с данной эл. почтой не найден.",
+            error: "Пользователя с данной эл. почтой не найден",
             bcode: 8.2,
           });
         }
@@ -608,7 +608,7 @@ class ApiPostController {
       ) {
         return response
           .status(400)
-          .json({ error: "Некорректные данные.", bcode: 11 });
+          .json({ error: "Некорректные данные", bcode: 11 });
       }
 
       const name = tools.delInjection(request.body.name);
@@ -651,7 +651,7 @@ class ApiPostController {
           if (rows.length == 1) {
             if (rows[0].admin == 0) {
               return response.json({
-                error: "У вас недостаточно прав.",
+                error: "У вас недостаточно прав",
                 bcode: 11.3,
               });
             } else {
@@ -670,7 +670,7 @@ class ApiPostController {
                     return response.status(500).json({
                       error: "Ошибка на сервере",
                       bcode: 11.4,
-                      e: error,
+                      
                     });
                   }
 
@@ -681,14 +681,14 @@ class ApiPostController {
           } else {
             return response
               .status(400)
-              .json({ error: "Ошибка доступа.", bcode: 11.2 });
+              .json({ error: "Ошибка доступа", bcode: 11.2 });
           }
         }
       );
     } catch {
       return response
         .status(400)
-        .json({ error: "Неизвестная ошибка.", bcode: 11.11111 });
+        .json({ error: "Неизвестная ошибка", bcode: 11.11111 });
     }
   }
 
@@ -718,7 +718,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 12 });
+        .json({ error: "Некорректные данные", bcode: 12 });
     }
 
     const {
@@ -769,7 +769,7 @@ class ApiPostController {
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
             return response.json({
-              error: "У вас недостаточно прав.",
+              error: "У вас недостаточно прав",
               bcode: 12.3,
             });
           } else {
@@ -856,7 +856,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 12.2 });
+            .json({ error: "Ошибка доступа", bcode: 12.2 });
         }
       }
     );
@@ -873,7 +873,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 13 });
+        .json({ error: "Некорректные данные", bcode: 13 });
     }
 
     const { id } = requestData;
@@ -887,9 +887,9 @@ class ApiPostController {
       (error) => {
         if (error) {
           return response.status(400).json({
-            error: "Ошибка при удалении товара из БД.",
+            error: "Ошибка при удалении товара из БД",
             bcode: 13.1,
-            e: error,
+            
           });
         }
 
@@ -909,7 +909,7 @@ class ApiPostController {
     if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 14 });
+        .json({ error: "Некорректные данные", bcode: 14 });
     }
 
     const { product_id } = requestData;
@@ -938,7 +938,7 @@ class ApiPostController {
                 for (let i = 0; i < favorites.length; i++) {
                   if (favorites[i].product_id === sanitizedValues.product_id) {
                     return response.status(400).json({
-                      error: "Товар уже находится в избранных.",
+                      error: "Товар уже находится в избранных",
                       bcode: 14.4,
                     });
                   }
@@ -963,7 +963,7 @@ class ApiPostController {
                     }
 
                     response.json({
-                      message: "Товар успешно добавлен в избранные.",
+                      message: "Товар успешно добавлен в избранные",
                       favorites: new_favorites,
                     });
                   }
@@ -971,14 +971,14 @@ class ApiPostController {
               } else {
                 return response
                   .status(500)
-                  .json({ error: "Товара не существует.", bcode: 14.4 });
+                  .json({ error: "Товара не существует", bcode: 14.4 });
               }
             }
           );
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 14.2 });
+            .json({ error: "Ошибка доступа", bcode: 14.2 });
         }
       }
     );
@@ -995,7 +995,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 16 });
+        .json({ error: "Некорректные данные", bcode: 16 });
     }
 
     const { product_id, token } = requestData;
@@ -1046,7 +1046,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 16.2 });
+            .json({ error: "Ошибка доступа", bcode: 16.2 });
         }
       }
     );
@@ -1073,7 +1073,7 @@ class ApiPostController {
       if (missingKey || !request.headers.hasOwnProperty('authorization')) {
         return response
           .status(400)
-          .json({ error: "Некорректные данные.", bcode: 17 });
+          .json({ error: "Некорректные данные", bcode: 17 });
       }
 
       const {
@@ -1153,7 +1153,7 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 17.3, e: error });
+                  .json({ error: "Ошибка на сервере", bcode: 17.3,  });
               }
 
               database.query(
@@ -1162,7 +1162,7 @@ class ApiPostController {
                   if (error) {
                     return response
                       .status(400)
-                      .json({ error: "Ошибка на сервере.", bcode: 17.5 });
+                      .json({ error: "Ошибка на сервере", bcode: 17.5 });
                   }
 
                   let old_price = 0;
@@ -1175,11 +1175,11 @@ class ApiPostController {
                       if (error) {
                         return response
                           .status(400)
-                          .json({ error: "Ошибка на сервере.", bcode: 17.7 });
+                          .json({ error: "Ошибка на сервере", bcode: 17.7 });
                       }
 
                       let info = {
-                        message: "Промокод не использован.",
+                        message: "Промокод не использован",
                         persent: 0,
                         promocode: "",
                       };
@@ -1210,9 +1210,9 @@ class ApiPostController {
                         (error, rows) => {
                           if (error) {
                             return response.status(400).json({
-                              error: "Ошибка на сервере.",
+                              error: "Ошибка на сервере",
                               bcode: 17.6,
-                              e: error,
+                              
                             });
                           }
 
@@ -1249,7 +1249,7 @@ class ApiPostController {
     ) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 18 });
+        .json({ error: "Некорректные данные", bcode: 18 });
     }
 
     const type = tools.delInjection(request.query.type);
@@ -1362,7 +1362,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 19 });
+        .json({ error: "Некорректные данные", bcode: 19 });
     }
 
     const { id } = requestData;
@@ -1389,7 +1389,7 @@ class ApiPostController {
     if (!request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 20 });
+        .json({ error: "Некорректные данные", bcode: 20 });
     }
 
     const sanitizedValues = {
@@ -1408,7 +1408,7 @@ class ApiPostController {
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
             return response.json({
-              error: "У вас недостаточно прав.",
+              error: "У вас недостаточно прав",
               bcode: 20.3,
             });
           } else {
@@ -1428,7 +1428,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 20.2 });
+            .json({ error: "Ошибка доступа", bcode: 20.2 });
         }
       }
     );
@@ -1442,7 +1442,7 @@ class ApiPostController {
     if (!request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 24 });
+        .json({ error: "Некорректные данные", bcode: 24 });
     }
 
     const sanitizedValues = {
@@ -1461,7 +1461,7 @@ class ApiPostController {
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
             return response.json({
-              error: "У вас недостаточно прав.",
+              error: "У вас недостаточно прав",
               bcode: 24.3,
             });
           } else {
@@ -1478,7 +1478,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 24.2 });
+            .json({ error: "Ошибка доступа", bcode: 24.2 });
         }
       }
     );
@@ -1496,7 +1496,7 @@ class ApiPostController {
     if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 25 });
+        .json({ error: "Некорректные данные", bcode: 25 });
     }
 
     const { payment_id, uuid } = requestData;
@@ -1519,7 +1519,7 @@ class ApiPostController {
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
             return response.json({
-              error: "У вас недостаточно прав.",
+              error: "У вас недостаточно прав",
               bcode: 25.3,
             });
           } else {
@@ -1557,7 +1557,7 @@ class ApiPostController {
                             });
                           }
 
-                          response.json({ message: "Оплата принята." });
+                          response.json({ message: "Оплата принята" });
                         }
                       );
                     }
@@ -1569,7 +1569,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 25.2 });
+            .json({ error: "Ошибка доступа", bcode: 25.2 });
         }
       }
     );
@@ -1586,7 +1586,7 @@ class ApiPostController {
     if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 26 });
+        .json({ error: "Некорректные данные", bcode: 26 });
     }
 
     const { promocode, persent, date_end } = requestData;
@@ -1610,7 +1610,7 @@ class ApiPostController {
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
             return response.json({
-              error: "У вас недостаточно прав.",
+              error: "У вас недостаточно прав",
               bcode: 26.3,
             });
           } else {
@@ -1634,7 +1634,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 26.2 });
+            .json({ error: "Ошибка доступа", bcode: 26.2 });
         }
       }
     );
@@ -1651,7 +1651,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 27 });
+        .json({ error: "Некорректные данные", bcode: 27 });
     }
 
     const { token } = requestData;
@@ -1672,7 +1672,7 @@ class ApiPostController {
         if (rows.length == 1) {
           if (rows[0].admin == 0) {
             return response.json({
-              error: "У вас недостаточно прав.",
+              error: "У вас недостаточно прав",
               bcode: 26.3,
             });
           } else {
@@ -1689,7 +1689,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 27.2 });
+            .json({ error: "Ошибка доступа", bcode: 27.2 });
         }
       }
     );
@@ -1706,7 +1706,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 28 });
+        .json({ error: "Некорректные данные", bcode: 28 });
     }
 
     const { token, promocode } = requestData;
@@ -1773,7 +1773,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 28.2 });
+            .json({ error: "Ошибка доступа", bcode: 28.2 });
         }
       }
     );
@@ -1795,7 +1795,7 @@ class ApiPostController {
     if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 31 });
+        .json({ error: "Некорректные данные", bcode: 31 });
     }
 
     const { new_email, new_country, new_date_of_birth, new_number_tel } =
@@ -1866,7 +1866,7 @@ class ApiPostController {
         } else {
           return response
             .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 31.4 });
+            .json({ error: "Ошибка доступа", bcode: 31.4 });
         }
       }
     );
@@ -1884,7 +1884,7 @@ class ApiPostController {
       if (missingKey || !request.headers.hasOwnProperty('authorization')) {
         return response
           .status(400)
-          .json({ error: "Некорректные данные.", bcode: 32 });
+          .json({ error: "Некорректные данные", bcode: 32 });
       }
 
       const { token, new_delivery } = requestData;
@@ -1923,7 +1923,7 @@ class ApiPostController {
           } else {
             return response
               .status(400)
-              .json({ error: "Ошибка доступа.", bcode: 32.2 });
+              .json({ error: "Ошибка доступа", bcode: 32.2 });
           }
         }
       );
@@ -1946,7 +1946,7 @@ class ApiPostController {
       if (missingKey || !request.headers.hasOwnProperty('authorization')) {
         return response
           .status(400)
-          .json({ error: "Некорректные данные.", bcode: 33 });
+          .json({ error: "Некорректные данные", bcode: 33 });
       }
 
       const { rating, text, product_id, anon } = requestData;
@@ -2010,7 +2010,7 @@ class ApiPostController {
                               return response.status(500).json({
                                 error: "Ошибка на сервере",
                                 bcode: 33.3,
-                                e: error,
+                                
                               });
                             }
                             response.json({
@@ -2042,7 +2042,7 @@ class ApiPostController {
           } else {
             return response
               .status(400)
-              .json({ error: "Ошибка доступа.", bcode: 33.2 });
+              .json({ error: "Ошибка доступа", bcode: 33.2 });
           }
         }
       );
@@ -2064,7 +2064,7 @@ class ApiPostController {
     if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 34 });
+        .json({ error: "Некорректные данные", bcode: 34 });
     }
 
     const { product_id } = requestData;
@@ -2130,7 +2130,7 @@ class ApiPostController {
     if (missingKey) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 35 });
+        .json({ error: "Некорректные данные", bcode: 35 });
     }
 
     const { authorization } = requestData;
@@ -2180,7 +2180,7 @@ class ApiPostController {
     ) {
       return response
         .status(400)
-        .json({ error: "Некорректные данные.", bcode: 36 });
+        .json({ error: "Некорректные данные", bcode: 36 });
     }
 
     const token = tools.delInjection(request.headers.authorization)

@@ -2431,17 +2431,17 @@ class ApiPostController {
                                 bcode: 33.3,
                               });
                             }
+                            response.json({
+                              author_first_name: rows_user[0].first_name,
+                              author_last_name: rows_user[0].last_name,
+                              product_id: rows_product[0].id,
+                              set_rating: sanitizedValues.rating,
+                              product_title: rows_product[0].title,
+                              anon: sanitizedValues.anon,
+                              text: sanitizedValues.text,
+                            });
                           }
                         );
-                        response.json({
-                          author_first_name: rows_user[0].first_name,
-                          author_last_name: rows_user[0].last_name,
-                          product_id: rows_product[0].id,
-                          set_rating: sanitizedValues.rating,
-                          product_title: rows_product[0].title,
-                          anon: sanitizedValues.anon,
-                          text: sanitizedValues.text,
-                        });
                       } else {
                         return response
                           .status(500)

@@ -55,7 +55,7 @@ const App = () => {
         token,
       })
     )
-  }, [choosenCategorie, searchValue, choosenSort])
+  }, [choosenCategorie, searchValue, choosenSort, choosenPrice])
 
   return (
     <>

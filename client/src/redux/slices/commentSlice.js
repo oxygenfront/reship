@@ -5,7 +5,7 @@ export const fetchCreateReview = createAsyncThunk(
   'comment/fetchCreateReview',
   async (params) => {
     console.log(params)
-    const { data } = await axios.post(`/createReview`)
+    const { data } = await axios.post(`/createReview`, params)
     console.log(data)
 
     return data
@@ -13,10 +13,10 @@ export const fetchCreateReview = createAsyncThunk(
 )
 export const fetchGetReviewsForProductId = createAsyncThunk(
   'comment/fetchGetReviewForProductId',
-  async (token, id) => {
+  async ({ token, id }) => {
     console.log(token, id)
     const { data } = await axios.get(
-      `/getReviewsForProductId?&token=${token}&product_id${id}`
+      `/getReviewsForProductId?&token=${token}&product_id=${id}`
     )
     console.log(data)
 

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
 import {
   selectFilter,
+  setChoosenBrand,
   setChoosenCategorie,
   setChoosenPrice,
   setSearchValue,
@@ -12,26 +13,40 @@ import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
 import { RangeSlider, InputGroup, InputNumber } from 'rsuite'
 import { Navigate } from 'react-router-dom'
 import { Menu as DropDown } from '@headlessui/react'
+import { debounce } from 'lodash'
 
 const Catalog = () => {
   const dispatch = useDispatch()
   const set = new Set()
-  const price = useRef(null)
+  const brandSet = new Set()
+
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
   const { choosenCategorie, searchValue, choosenPrice } =
     useSelector(selectFilter)
-
+  console.log(choosenPrice)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [showFilters, setShowFilters] = useState(false)
   const [choosenView, setChoosenView] = useState('grid')
+  const [price, setPrice] = useState([2000, 12000])
 
-  const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort))
-  }, [])
+  const [localBrands, setLocalBrands] = useState('')
+  const [localCategories, setLocalCategories] = useState('')
 
+  console.log(localBrands)
+  console.log(localCategories)
   const confirmFilters = () => {
-    console.log(price.current)
+    dispatch(setChoosenBrand(localBrands))
+    dispatch(setChoosenCategorie(localCategories))
+    dispatch(setChoosenPrice(price))
+  }
+  const cancelFilters = () => {
+    setLocalBrands('')
+    setLocalCategories('')
+    setPrice([2000, 12000])
+    dispatch(setLocalBrands(''))
+    dispatch(setLocalCategories(''))
+    dispatch(setPrice([2000, 12000]))
   }
 
   useEffect(() => {
@@ -52,9 +67,10 @@ const Catalog = () => {
 
   if (status === 'success') {
     items.map((item) => set.add(item.category))
+    items.map((item) => brandSet.add(item.brand))
   }
   const categories = [...set]
-
+  const brands = [...brandSet]
   if (searchValue === '' && choosenCategorie === '') {
     return <Navigate to="/"></Navigate>
   }
@@ -79,75 +95,57 @@ const Catalog = () => {
               <div className="catalog__sort-block">
                 {showFilters ? <hr className="hr" /> : null}
                 <div className="catalog__sort_title">Категория</div>
-                <label
-                  htmlFor="category1"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Беспроводные
-                  <input
-                    id="category1"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-                <label
-                  htmlFor="category2"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Проводные
-                  <input
-                    id="category2"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-                <label
-                  htmlFor="category3"
-                  className="catalog__sort_checkbox-name"
-                >
-                  С подсветкой
-                  <input
-                    id="category3"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
+                {categories.map((category) => (
+                  <label
+                    key={category}
+                    htmlFor="category1"
+                    className="catalog__sort_checkbox-name"
+                  >
+                    {category}
+                    <input
+                      onClick={(e) => {
+                        e.target.checked
+                          ? setLocalCategories(
+                              (prev) => (prev += category + ' ')
+                            )
+                          : setLocalCategories((prev) =>
+                              prev.replace(category + ' ', '')
+                            )
+                      }}
+                      checked={localCategories.includes(category)}
+                      readOnly
+                      id="category1"
+                      type="checkbox"
+                      className="catalog__sort_checkbox"
+                    />
+                  </label>
+                ))}
               </div>
               <div className="catalog__sort-block">
                 <div className="catalog__sort_title">Бренды</div>
-                <label
-                  htmlFor="category4"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Razer
-                  <input
-                    id="category4"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-                <label
-                  htmlFor="category5"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Logitech
-                  <input
-                    id="category5"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-                <label
-                  htmlFor="category6"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Varmilo
-                  <input
-                    id="category6"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
+                {brands.map((brand) => (
+                  <label
+                    key={brand}
+                    htmlFor="category4"
+                    className="catalog__sort_checkbox-name"
+                  >
+                    {brand}
+                    <input
+                      onClick={(e) => {
+                        e.target.checked
+                          ? setLocalBrands((prev) => (prev += brand + ' '))
+                          : setLocalBrands((prev) =>
+                              prev.replace(brand + ' ', '')
+                            )
+                      }}
+                      checked={localBrands.includes(brand)}
+                      readOnly
+                      id="category4"
+                      type="checkbox"
+                      className="catalog__sort_checkbox"
+                    />
+                  </label>
+                ))}
               </div>
               <div className="catalog__sort-block">
                 <div className="catalog__sort_title">Тип </div>
@@ -167,29 +165,29 @@ const Catalog = () => {
                 <div className="catalog__sort_title">Цена</div>
                 <RangeSlider
                   progress
-                  ref={price}
-                  value={choosenPrice}
+                  value={price}
                   min={1000}
                   max={30000}
                   onChange={(value) => {
-                    dispatch(setChoosenPrice(value))
+                    setPrice(value)
                   }}
                 />
                 <InputGroup>
                   <InputNumber
                     max={30000}
-                    value={choosenPrice[0]}
+                    value={price[0]}
                     onChange={(nextValue) => {
                       const [start, end] = choosenPrice
-                      dispatch(setChoosenPrice([Number(nextValue), end]))
+                      dispatch(setPrice([Number(nextValue), end]))
                     }}
                   />
                   <InputNumber
                     max={30000}
-                    value={choosenPrice[1]}
+                    value={price[1]}
                     onChange={(nextValue) => {
                       const [start, end] = choosenPrice
-                      dispatch(setChoosenPrice([start, Number(nextValue)]))
+
+                      setPrice([start, Number(nextValue)])
                     }}
                   />
                 </InputGroup>
@@ -225,7 +223,10 @@ const Catalog = () => {
                 >
                   Применить
                 </button>
-                <button className="catalog__sort-block_buttons-item white">
+                <button
+                  onClick={cancelFilters}
+                  className="catalog__sort-block_buttons-item white"
+                >
                   Сбросить
                 </button>
               </div>
@@ -236,11 +237,20 @@ const Catalog = () => {
             <div className="catalog__main_filters">
               {windowWidth > 767 ? (
                 <div className="catalog__main_filters_popular">
-                  <span>С подсветкой</span>
-                  <span>Razer</span>
-                  <span>Проводные</span>
-                  <span>Logitech</span>
-                  <span>Беспроводные</span>
+                  {localBrands.split(' ')[0] !== ''
+                    ? localBrands
+                        .split(' ')
+                        .slice(0, -1)
+                        .map((brand) => <span key={brand}>{brand}</span>)
+                    : null}
+                  {localCategories.split(' ')[0] !== ''
+                    ? localCategories
+                        .split(' ')
+                        .slice(0, -1)
+                        .map((category) => (
+                          <span key={category}>{category}</span>
+                        ))
+                    : null}
                 </div>
               ) : (
                 <div className="catalog__main_filters_popular">
@@ -349,7 +359,11 @@ const Catalog = () => {
                     : 'catalog__main_wrapper_flex'
                 }
               >
-                {status === 'success' && items.length > 0 ? (
+                {status !== 'success' ? (
+                  [...new Array(6)].map((item, index) => (
+                    <Skeleton key={index}></Skeleton>
+                  ))
+                ) : status === 'success' && items.length > 0 ? (
                   items.map((item) => (
                     <Card
                       image={item.image_link}

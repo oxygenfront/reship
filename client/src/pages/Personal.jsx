@@ -491,16 +491,19 @@ const Personal = () => {
                 Возможно вам понравятся
               </h1>
               <div className="personal__interesting">
-                {items.slice(0, 3).map((item) => (
-                  <Card
-                    view="grid"
-                    image={item.image_link}
-                    key={item.id}
-                    id={item.id}
-                    name={item.name}
-                    price={item.price}
-                  ></Card>
-                ))}
+                {itemsStatus === 'success' &&
+                  items
+                    .slice(0, 3)
+                    .map((item) => (
+                      <Card
+                        view="grid"
+                        image={JSON.parse(item.image_link)}
+                        key={item.id}
+                        id={item.id}
+                        name={item.name}
+                        price={item.price}
+                      ></Card>
+                    ))}
               </div>
             </div>
           ) : null}

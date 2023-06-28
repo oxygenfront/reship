@@ -401,9 +401,9 @@ class ApiPostController {
 
   async changeEmail(request, response) {
     if (
-      !tools.checkJsonKey(request.body, "password") ||
-      !tools.checkJsonKey(request.body, "new_email") ||
-      !tools.checkJsonKey(request.body, "token")
+      !request.body.hasOwnProperty("password") ||
+      !request.body.hasOwnProperty("new_email") ||
+      !request.headers.hasOwnProperty("authorization")
     ) {
       return response
         .status(400)
@@ -412,7 +412,7 @@ class ApiPostController {
 
     const password = tools.delInjection(request.body.password);
     const new_email = tools.delInjection(request.body.new_email);
-    const token = tools.delInjection(request.body.token);
+    const token = tools.delInjection(request.headers.authorization);
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${token}' AND password_md5='${crypto
@@ -899,24 +899,24 @@ class ApiPostController {
   }
 
   async addFavorites(request, response) {
-    const requiredKeys = ["product_id", "token"];
+    const requiredKeys = ["product_id"];
 
     const requestData = request.body;
 
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey) {
+    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 14 });
     }
 
-    const { product_id, token } = requestData;
+    const { product_id } = requestData;
 
     const sanitizedValues = {
       product_id: tools.delInjection(product_id),
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
     };
 
     database.query(
@@ -971,7 +971,7 @@ class ApiPostController {
               } else {
                 return response
                   .status(500)
-                  .json({ error: "Товара нет в БД.", bcode: 14.4 });
+                  .json({ error: "Товара не существует.", bcode: 14.4 });
               }
             }
           );
@@ -1062,7 +1062,6 @@ class ApiPostController {
         "adress",
         "promocode",
         "basket",
-        "token",
         "tariff_code",
       ];
 
@@ -1071,7 +1070,7 @@ class ApiPostController {
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey) {
+      if (missingKey || !request.headers.hasOwnProperty('authorization')) {
         return response
           .status(400)
           .json({ error: "Некорректные данные.", bcode: 17 });
@@ -1085,7 +1084,6 @@ class ApiPostController {
         adress,
         promocode,
         basket,
-        token,
         tariff_code,
       } = requestData;
 
@@ -1097,7 +1095,7 @@ class ApiPostController {
         adress: JSON.parse(adress),
         promocode: tools.delInjection(promocode),
         basket: JSON.parse(basket),
-        token: tools.delInjection(token),
+        token: tools.delInjection(request.headers.authorization),
         tariff_code: tools.delInjection(tariff_code),
       };
 
@@ -1388,23 +1386,14 @@ class ApiPostController {
   }
 
   async getOrdersAll(request, response) {
-    const requiredKeys = ["token"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
+    if (!request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 20 });
     }
 
-    const { token } = requestData;
-
     const sanitizedValues = {
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
     };
 
     database.query(
@@ -1445,266 +1434,19 @@ class ApiPostController {
     );
   }
 
-  async addBasket(request, response) {
-    try {
-      const requiredKeys = [
-        "product_id",
-        "token",
-        "parameters",
-        "parameters_dop",
-        "color",
-      ];
-
-      const requestData = request.body;
-
-      const missingKey = requiredKeys.find(
-        (key) => !requestData.hasOwnProperty(key)
-      );
-      if (missingKey) {
-        return response
-          .status(400)
-          .json({ error: "Некорректные данные.", bcode: 21 });
-      }
-
-      const { product_id, token, parameters, parameters_dop, color } =
-        requestData;
-
-      const sanitizedValues = {
-        product_id: tools.delInjection(product_id),
-        token: tools.delInjection(token),
-        color: tools.delInjection(color),
-      };
-
-      database.query(
-        `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-        (error, rows, fields) => {
-          if (error) {
-            return response
-              .status(500)
-              .json({ error: "Ошибка на сервере", bcode: 21.1 });
-          }
-
-          if (rows.length == 1) {
-            database.query(
-              `SELECT * FROM \`products\` WHERE id='${sanitizedValues.product_id}'`,
-              (error, rows_product, fields) => {
-                if (error) {
-                  return response
-                    .status(500)
-                    .json({ error: "Ошибка на сервере", bcode: 21.5 });
-                }
-
-                if (rows_product.length == 1) {
-                  let basket = JSON.parse(rows[0].basket);
-
-                  const params_db = JSON.parse(rows_product[0].parameters);
-                  const params_dop_db = JSON.parse(
-                    rows_product[0].parameters_dop
-                  );
-
-                  const params = JSON.parse(parameters);
-                  const params_dop = JSON.parse(parameters_dop);
-
-                  const colors = JSON.parse(rows_product[0].colors);
-
-                  if (rows_product[0].availability === 0) {
-                    return response
-                      .status(500)
-                      .json({ error: "Товара нет в наличии", bcode: 21.6 });
-                  }
-
-                  const areListsEqual =
-                    Object.keys(params_dop_db).length ===
-                      Object.keys(params_dop).length &&
-                    Object.keys(params_dop_db).every(
-                      (value, index) => value === Object.keys(params_dop)[index]
-                    );
-                  const areListsEqual_ =
-                    Object.keys(params_db).length ===
-                      Object.keys(params).length &&
-                    Object.keys(params_db).every(
-                      (value, index) => value === Object.keys(params)[index]
-                    );
-
-                  if (!areListsEqual && !areListsEqual_) {
-                    return response.status(500).json({
-                      error: "Неверное определение параметров для товара",
-                      bcode: 21.7,
-                    });
-                  }
-
-                  for (let i = 0; i < Object.keys(params_dop).length; i++) {
-                    for (
-                      let i_ = 0;
-                      i_ <
-                      Object.keys(params_dop[Object.keys(params_dop)[i]][0])
-                        .length;
-                      i_++
-                    ) {
-                      if (
-                        !Object.keys(
-                          params_dop_db[Object.keys(params_dop)[i]][0]
-                        ).includes(
-                          Object.keys(
-                            params_dop[Object.keys(params_dop)[i]][0]
-                          )[i_]
-                        )
-                      ) {
-                        return response.status(500).json({
-                          error: "Какого-то параметра нет в наличии [1]",
-                          bcode: 21.8,
-                        });
-                      }
-                    }
-                  }
-
-                  basket.push({
-                    product_id: sanitizedValues.product_id,
-                    parameters: params,
-                    parameters_dop: params_dop,
-                    name: rows_product[0].name,
-                    price: rows_product[0].price,
-                    color: sanitizedValues.color,
-                  });
-
-                  if (!colors.includes(color)) {
-                    return response.status(500).json({
-                      error: "Цвета нет в наличии",
-                      bcode: 21.9,
-                    });
-                  }
-
-                  database.query(
-                    `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(
-                      basket
-                    )}' WHERE \`token\`='${sanitizedValues.token}';`,
-                    (error) => {
-                      if (error) {
-                        return response
-                          .status(500)
-                          .json({ error: "Ошибка на сервере", bcode: 21.2 });
-                      }
-
-                      response.json({
-                        message: "Товар успешно добавлен в корзину.",
-                        basket: basket,
-                      });
-                    }
-                  );
-                } else {
-                  return response
-                    .status(500)
-                    .json({ error: "Товара нет в БД.", bcode: 21.4 });
-                }
-              }
-            );
-          } else {
-            return response
-              .status(400)
-              .json({ error: "Ошибка доступа.", bcode: 21.3 });
-          }
-        }
-      );
-    } catch {
-      return response
-        .status(400)
-        .json({ error: "Неизвестная ошибка", bcode: 21.11111 });
-    }
-  }
-
-  async deleteBasket(request, response) {
-    const requiredKeys = ["product_id", "token"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 23 });
-    }
-
-    const { product_id, token } = requestData;
-
-    const sanitizedValues = {
-      product_id: tools.delInjection(product_id),
-      token: tools.delInjection(token),
-    };
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 23.1 });
-        }
-
-        if (rows.length == 1) {
-          let basket = JSON.parse(rows[0].basket);
-
-          for (let i = 0; i < basket.length; i++) {
-            if (basket[i].product_id === sanitizedValues.product_id) {
-              if (basket[i].count == 1) {
-                basket.splice(i, 1);
-                break;
-              }
-              basket[i].count = basket[i].count - 1;
-            }
-          }
-
-          let new_basket = basket;
-
-          database.query(
-            `UPDATE \`users\` SET \`basket\` = '${JSON.stringify(
-              new_basket
-            )}' WHERE R\`token\`='${sanitizedValues.token}';`,
-            (error) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 23.3 });
-              }
-
-              response.json({
-                message: "Товар успешно удален из корзины",
-                basket: new_basket,
-              });
-            }
-          );
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 23.2 });
-        }
-      }
-    );
-  }
-
   async changeAvatar(request, response) {
     response.json({ success: true, message: "Файл успешно загружен" });
   }
 
   async getPayments(request, response) {
-    const requiredKeys = ["token"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
+    if (!request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 24 });
     }
 
-    const { token } = requestData;
-
     const sanitizedValues = {
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
     };
 
     database.query(
@@ -1743,7 +1485,7 @@ class ApiPostController {
   }
 
   async acceptPayment(request, response) {
-    const requiredKeys = ["token", "payment_id", "uuid"];
+    const requiredKeys = ["payment_id", "uuid"];
 
     const requestData = request.body;
 
@@ -1751,17 +1493,17 @@ class ApiPostController {
       (key) => !requestData.hasOwnProperty(key)
     );
 
-    if (missingKey) {
+    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 25 });
     }
 
-    const { token, payment_id, uuid } = requestData;
+    const { payment_id, uuid } = requestData;
 
     const sanitizedValues = {
       payment_id: tools.delInjection(payment_id),
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
       uuid: tools.delInjection(uuid),
     };
 
@@ -1834,23 +1576,23 @@ class ApiPostController {
   }
 
   async addPromocode(request, response) {
-    const requiredKeys = ["token", "promocode", "persent", "date_end"];
+    const requiredKeys = ["promocode", "persent", "date_end"];
 
     const requestData = request.body;
 
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey) {
+    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 26 });
     }
 
-    const { token, promocode, persent, date_end } = requestData;
+    const { promocode, persent, date_end } = requestData;
 
     const sanitizedValues = {
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
       promocode: tools.delInjection(promocode),
       persent: tools.delInjection(persent),
       date_end: tools.delInjection(date_end),
@@ -2037,171 +1779,8 @@ class ApiPostController {
     );
   }
 
-  async changeDateOfBirth(request, response) {
-    const requiredKeys = ["token", "new_date_of_birth"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 29 });
-    }
-
-    const { token, new_date_of_birth } = requestData;
-
-    const sanitizedValues = {
-      new_date_of_birth: tools.delInjection(new_date_of_birth),
-      token: tools.delInjection(token),
-    };
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 29.1 });
-        }
-
-        if (rows.length == 1) {
-          database.query(
-            `UPDATE \`users\` SET \`date_of_birth\` = '${sanitizedValues.new_date_of_birth}' WHERE \`token\` = '${sanitizedValues.token}';`,
-            (error, rows) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 29.3 });
-              }
-
-              return response
-                .status(400)
-                .json({ new_date_of_birth: sanitizedValues.new_date_of_birth });
-            }
-          );
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 29.2 });
-        }
-      }
-    );
-  }
-
-  async changeNumberTel(request, response) {
-    const requiredKeys = ["token", "new_number_tel"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 30 });
-    }
-
-    const { token, new_number_tel } = requestData;
-
-    const sanitizedValues = {
-      new_number_tel: tools.delInjection(new_number_tel),
-      token: tools.delInjection(token),
-    };
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 30.1 });
-        }
-
-        if (rows.length == 1) {
-          database.query(
-            `UPDATE \`users\` SET \`number_tel\` = '${sanitizedValues.new_number_tel}' WHERE \`token\` = '${sanitizedValues.token}';`,
-            (error, rows) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 30.3 });
-              }
-
-              return response
-                .status(400)
-                .json({ new_number_tel: sanitizedValues.new_number_tel });
-            }
-          );
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 30.2 });
-        }
-      }
-    );
-  }
-
-  async changeCountry(request, response) {
-    const requiredKeys = ["token", "new_country"];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
-      return response
-        .status(400)
-        .json({ error: "Некорректные данные.", bcode: 31 });
-    }
-
-    const { token, new_country } = requestData;
-
-    const sanitizedValues = {
-      new_country: tools.delInjection(new_country),
-      token: tools.delInjection(token),
-    };
-
-    database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows, fields) => {
-        if (error) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 31.1 });
-        }
-
-        if (rows.length == 1) {
-          database.query(
-            `UPDATE \`users\` SET \`country\` = '${sanitizedValues.new_country}' WHERE \`token\` = '${sanitizedValues.token}';`,
-            (error, rows) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 31.3 });
-              }
-
-              return response
-                .status(400)
-                .json({ new_country: sanitizedValues.new_country });
-            }
-          );
-        } else {
-          return response
-            .status(400)
-            .json({ error: "Ошибка доступа.", bcode: 31.2 });
-        }
-      }
-    );
-  }
-
   async changeBasicInfo(request, response) {
     const requiredKeys = [
-      "token",
       "new_email",
       "new_country",
       "new_date_of_birth",
@@ -2213,13 +1792,13 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey) {
+    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 31 });
     }
 
-    const { token, new_email, new_country, new_date_of_birth, new_number_tel } =
+    const { new_email, new_country, new_date_of_birth, new_number_tel } =
       requestData;
 
     const sanitizedValues = {
@@ -2227,7 +1806,7 @@ class ApiPostController {
       new_date_of_birth: tools.delInjection(new_date_of_birth),
       new_number_tel: tools.delInjection(new_number_tel),
       new_email: tools.delInjection(new_email),
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
     };
 
     database.query(
@@ -2295,14 +1874,14 @@ class ApiPostController {
 
   async changeDelivery(request, response) {
     try {
-      const requiredKeys = ["token", "new_delivery"];
+      const requiredKeys = ["new_delivery"];
 
       const requestData = request.body;
 
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey) {
+      if (missingKey || !request.headers.hasOwnProperty('authorization')) {
         return response
           .status(400)
           .json({ error: "Некорректные данные.", bcode: 32 });
@@ -2312,7 +1891,7 @@ class ApiPostController {
 
       const sanitizedValues = {
         new_delivery: JSON.parse(new_delivery),
-        token: tools.delInjection(token),
+        token: tools.delInjection(request.headers.authorization),
       };
 
       database.query(
@@ -2357,23 +1936,23 @@ class ApiPostController {
 
   async createReview(request, response) {
     try {
-      const requiredKeys = ["token", "rating", "text", "product_id", "anon"];
+      const requiredKeys = ["rating", "text", "product_id", "anon"];
 
       const requestData = request.body;
 
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey) {
+      if (missingKey || !request.headers.hasOwnProperty('authorization')) {
         return response
           .status(400)
           .json({ error: "Некорректные данные.", bcode: 33 });
       }
 
-      const { token, rating, text, product_id, anon } = requestData;
+      const { rating, text, product_id, anon } = requestData;
 
       const sanitizedValues = {
-        token: tools.delInjection(token),
+        token: tools.delInjection(request.headers.authorization),
         rating: tools.delInjection(rating),
         text: tools.delInjection(text),
         product_id: tools.delInjection(product_id),
@@ -2475,23 +2054,23 @@ class ApiPostController {
   }
 
   async getReviewsForProductId(request, response) {
-    const requiredKeys = ["token", "product_id"];
+    const requiredKeys = ["product_id"];
 
     const requestData = request.query;
 
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey) {
+    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
       return response
         .status(400)
         .json({ error: "Некорректные данные.", bcode: 34 });
     }
 
-    const { token, product_id } = requestData;
+    const { product_id } = requestData;
 
     const sanitizedValues = {
-      token: tools.delInjection(token),
+      token: tools.delInjection(request.headers.authorization),
       product_id: tools.delInjection(product_id),
     };
 
@@ -2557,11 +2136,11 @@ class ApiPostController {
     const { authorization } = requestData;
 
     const sanitizedValues = {
-      authorization: tools.delInjection(authorization),
+      token: tools.delInjection(authorization),
     };
 
     database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.authorization}'`,
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
       (error, rows_user, fields) => {
         if (error) {
           return response

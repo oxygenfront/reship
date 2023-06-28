@@ -64,7 +64,7 @@ async function getOrderSdek(uuid) {
 
     return resp.data.entity;
   } catch (e) {
-    return -1
+    return -1;
   }
 }
 
@@ -1342,9 +1342,9 @@ class ApiPostController {
         }
 
         for (let i = 0; i < ready_json.length; i++) {
-          if (ready_json[0].uuid !== '') {
-            const sdek_order = await getOrderSdek(ready_json[0].uuid_sdek)
-            ready_json[0].sdek_order = sdek_order
+          if (ready_json[0].uuid !== "") {
+            const sdek_order = await getOrderSdek(ready_json[0].uuid_sdek);
+            ready_json[0].sdek_order = sdek_order;
           }
         }
 
@@ -2419,7 +2419,9 @@ class ApiPostController {
                         database.query(
                           `INSERT INTO \`reviews\` (\`author_id\`, \`first_name\`, \`last_name\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`anon\`) VALUES ('${
                             rows_user[0]["id"]
-                          }', '${rows_user[0]["first_name"]}', '${rows_user[0]["last_name"]}', '${sanitizedValues.rating}', '${
+                          }', '${rows_user[0]["first_name"]}', '${
+                            rows_user[0]["last_name"]
+                          }', '${sanitizedValues.rating}', '${
                             sanitizedValues.text
                           }', '${
                             sanitizedValues.product_id
@@ -2429,7 +2431,7 @@ class ApiPostController {
                               return response.status(500).json({
                                 error: "Ошибка на сервере",
                                 bcode: 33.3,
-                                e:error
+                                e: error,
                               });
                             }
                             response.json({
@@ -2521,8 +2523,8 @@ class ApiPostController {
               for (let i = 0; rows.length > i; i++) {
                 if (rows[i].anon === 1) {
                   rows[i].author_id = -1;
-                  rows[i].first_name = '';
-                  rows[i].last_name = '';
+                  rows[i].first_name = "";
+                  rows[i].last_name = "";
                 }
                 all_ratings += rows[i].rating;
               }
@@ -2589,6 +2591,46 @@ class ApiPostController {
         }
       }
     );
+  }
+
+  async changeUserName(request, response) {
+    if (
+      !request.headers.hasOwnProperty("authorization") ||
+      !request.body.hasOwnProperty("first_name") ||
+      !request.body.hasOwnProperty("last_name")
+    ) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные.", bcode: 36 });
+    }
+
+    const token = tools.delInjection(request.headers.authorization)
+    const first_name = tools.delInjection(request.body.first_name)
+    const last_name = tools.delInjection(request.body.last_name)
+
+    database.query(`SELECT * FROM \`users\` WHERE token='${token}';`, (error, rows) => {
+      if (error) {
+        return response
+          .status(500)
+          .json({ error: "Ошибка на сервере", bcode: 36.1 });
+      }
+
+      if (rows.length !== 1) {
+        return response
+          .status(500)
+          .json({ error: "Ошибка доступа", bcode: 36.2 });
+      } else {
+        database.query(`UPDATE \`users\` SET first_name = '${first_name}', last_name = '${last_name}' WHERE token='${token}';`, (error, rows) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ error: "Ошибка на сервере", bcode: 36.3 });
+          }
+
+          response.json({message: 'Успех', items: {first_name: first_name, last_name: last_name}})
+        })
+      }
+    })
   }
 }
 

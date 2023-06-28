@@ -88,6 +88,7 @@ router.get("/getOrdersByCustomerId", apiPostController.getOrdersByCustomerId);
 router.get("/getOrder", apiPostController.getOrder);
 router.post("/checkPromocode", apiPostController.checkPromocode);
 router.post("/changeBasicInfo", apiPostController.changeBasicInfo);
+router.post("/changeUserName", apiPostController.changeUserName);
 router.post("/changeDelivery", apiPostController.changeDelivery);
 router.post("/createReview", apiPostController.createReview);
 router.get("/getReviewsForProductId", apiPostController.getReviewsForProductId);

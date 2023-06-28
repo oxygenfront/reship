@@ -2417,9 +2417,9 @@ class ApiPostController {
 
                       if (rows_product.length == 1) {
                         database.query(
-                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`anon\`) VALUES ('${
+                          `INSERT INTO \`reviews\` (\`author_id\`, \`first_name\`, \`last_name\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`anon\`) VALUES ('${
                             rows_user[0]["id"]
-                          }', '${sanitizedValues.rating}', '${
+                          }', '${rows_user[0]["first_name"]}', '${rows_user[0]["last_name"]}', '${sanitizedValues.rating}', '${
                             sanitizedValues.text
                           }', '${
                             sanitizedValues.product_id
@@ -2521,6 +2521,8 @@ class ApiPostController {
               for (let i = 0; rows.length > i; i++) {
                 if (rows[i].anon === 1) {
                   rows[i].author_id = -1;
+                  rows[i].first_name = '';
+                  rows[i].last_name = '';
                 }
                 all_ratings += rows[i].rating;
               }

@@ -44,6 +44,7 @@ const Order = () => {
       ? window.localStorage.getItem('promocode')
       : '',
     basket: JSON.stringify(cartItems),
+    tariff_code: '1',
   })
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {

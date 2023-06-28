@@ -62,7 +62,7 @@ async function getOrderSdek(uuid) {
       config
     );
 
-    return resp.data.entity.statuses;
+    return resp.data.entity;
   } catch (e) {
     return -1
   }

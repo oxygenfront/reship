@@ -3,7 +3,6 @@
   background-color: var(--togray)
   transition: background-color .3s ease-in-out
   &_switch
-
     position: relative
 
     &_moon
@@ -49,11 +48,6 @@
       width: 50px
       height: 25px
 
-.header.not-fixed
-  opacity: 0
-
-.header.fixed
-  opacity: 1
 
 .header__container
   width: 100%
@@ -62,154 +56,33 @@
   margin: 0 auto
   padding: 0 15px
   display: flex
-
   align-items: center
 
 .header__cont
-
+  width: 65%
   display: flex
-  justify-content: center
+  justify-content: space-between
   align-items: center
-  gap: 60px
 
   color: black
   font-size: 18px
   white-space: nowrap
   transition: all .2s linear
-  &.noVisible
-    opacity: 0
-  &:nth-child(2)
-    width: 301px
-
-  &:nth-child(3)
-    width: 215px
-
-.header__logo_block
-  display: flex
-  align-items: center
-  width: 60px
-  height: 40px
-
-.header__logo_block_item
-  width: 100%
-
-.header__discount
-  display: flex
-  justify-content: space-evenly
-  align-items: center
-  width: 56.7%
-  height: 45px
-  background-color: #fff
-  border-radius: 6px
-  font-size: 18px
-  color: black
-  transition: all 0.2s ease-in-out
-  img
-    width: 23px
-    height: 33px
-
-  &:hover
-    background: #007dfd
-    color: white
-
-.header__discount.active
-  background: #007dfd
-  color: white
-.header__cart_wrapper
-  position: relative
-  display: flex
-  justify-content: center
-  align-items: center
-  p
-    color: white
-    position: absolute
-    z-index: 100
-.header__like
-  position: relative
-  display: flex
-  justify-content: center
-  align-items: center
-  border-radius: 10px
-  width: 45px
-  height: 45px
-  background-color: #fff
-  transition: all 0.2s ease-in-out
-  p
-    position: absolute
-
-  img
-    width: 35px
-    height: 35px
-
-  &:hover
-    background: #007dfd
-    color: white
-
-.header__like.active
-  background: #007dfd
-
-.header__cart
-  position: relative
-  width: 150px
-  height: 45px
-  display: flex
-  justify-content: space-evenly
-  align-items: center
-  background-color: #fff
-  border-radius: 10px
-  font-size: 18px
-  color: black
-  transition: all 0.2s ease-in-out
-  img
-    text-align: center
-    width: 31px
-    height: 35px
-
-  &:hover
-    background: #007dfd
-    color: white
-
-.header__cart.active
-  background: #007dfd
-
-.header__messenger
-  width: 160px
-  display: flex
-  align-items: center
-  justify-content: space-between
-
-.header__messenger_item
-  display: flex
-  justify-content: center
-  align-items: center
-  font-size: 40px
-  border-radius: 50%
-  transition: all 0.2s ease-in-out
-  &:hover
-    background: #007dfd
-    color: white
-
-.header__delivery.active
-  color: #007dfd
-
-.header__faq.active
-  color: #007dfd
 
 .header__delivery
   color: var(--color)
   transition: all 0.2s ease-in-out
   font-size: 16px
+  margin-right: 40px
   &:hover
     color: #AEC5F2
 .header_center
-  display: flex
-  // width: 770px
-  justify-content: center
-  gap: 60px
+
 .header__faq
   color: var(--color)
   transition: all 0.2s ease-in-out
   font-size: 16px
+  margin-right: 40px
   &:hover
     color: #AEC5F2
 .header__comments
@@ -224,170 +97,32 @@
   font-size: 16px
   &:hover
     color: #AEC5F2
-@keyframes burgerAnimate
-  0%
-    right: -300px
-  100%
-    right: 0
-.header__adaptive_burger
-  position: fixed
-  display: flex
-  justify-content: flex-end
-  width: 100%
-  height: 100%
-  animation: burgerAnimate .6s
-  &_background
-    position: fixed
-    height: 100vh
-    width: 100%
-    background: rgba(0, 0, 0, .8)
-    transition: background 5s linear
-
-  &_items
-    font-size: 20px
-    display: flex
-    flex-direction: column
-    align-items: center
-    justify-content: space-evenly
-    height: 500px
-    color: white
-
-  &_wrapper
-    animation: burgerAnimate .6s
-    padding-top: 100px
-    background: #000
-    width: 300px
-    height: 100%
-    &_messages
-      width: 200px
-      display: flex
-      justify-content: space-between
-      & .header__messenger_item
-        width: 55px
-        height: 55px
-        & img
-          width: 100%
-          height: 100%
-
-  &_button
-    position: relative
-    z-index: 100
-    flex-direction: column
-    display: flex
-    justify-content: center
-    align-items: center
-    background: transparent
-    display: none
-    height: 40px
-    width: 40px
-    &.active
-      .header__adaptive_burger_button
-        &_line
-          margin: 0
-          &:nth-child(2)
-            transition: all .3s linear
-            opacity: 0
-          &:nth-child(1)
-            transform: rotate(45deg) translateX(3px)
-          &:nth-child(3)
-            transform: rotate(-45deg) translateX(3px)
-    &_line
-      content: ''
-      display: block
-      width: 30px
-      height: 2px
-      background: white
-      transition: all .3s linear
-      &:not(:last-child)
-        margin-bottom: 10px
-.header__burger__catalog
-  display: flex
-  justify-content: space-evenly
-  align-items: center
-  color: black
-  background: white
-  height: 45px
-  width: 170px
-  border-radius: 10px
-.header
-  &__wrapper_burger_login_logout
-    width: 170px
-    justify-content: space-between
-    display: flex
-.search_section
-  &__login_block
-    width: 100px
-    height: 45px
-    display: flex
-    justify-content: center
-    align-items: center
-    background-color: #007dfd
-    font-size: 18px
-    color: white
-    border-radius: 9px
-    transition: all 0.2s linear
-  &__logout_block
-    width: 28px
-    display: flex
-    justify-content: center
-    align-items: center
-  &__profile_block
-    padding: 10px 20px
-    max-width: 200px
-    display: flex
-    align-items: center
-    background-color: #007dfd
-    font-size: 18px
-    color: white
-    border-radius: 9px
-    & img
-      margin-right: 15px
-
-// @media (max-width: 1199px)
-//   .header__container
-//     max-width: 960px
-
-// @media (max-width: 991px)
-//   .header__container
-//     max-width: 720px
-//   .header__cart
-//     width: 140px
-//   .header__logo_block
-//     width: 50px
-//     height: 40px
-//   .header__discount
-//     width: 60%
-//     height: 40px
-//     & img
-//       width: 18px
-//       height: 30px
-//     & span
-//       font-size: 17px
-
-// @media (max-width: 767px)
-//   .header
-//     &__container
-//       max-width: 540px
-//     &__cont:nth-child(2), &__cont:nth-child(3)
-//       display: none
-//     .header__adaptive_burger
-//       // display: none
-//       &_button
-//         display: flex
-//   .header__cart
-//     width: 170px
-// @media (max-width: 575px)
-//   .header
-//     &_switch
-//       &_wrapper
-//     &__cont
-//       gap: 50px
-//       margin-right: 0px
-//     &__container
-//       max-width: 390px
-//     &__faq
-//       font-size: 12px
-//     &__delivery
-//       font-size: 12px
-//     &__comments
-//       font-size: 12px
+@media (max-width: 767px)
+  .header
+    &__cont
+      width: 73%
+@media (max-width: 575px)
+  .header
+    &__cont
+      width: 100%
+    &__delivery
+      margin-right: 20px
+      font-size: 14px
+    &__faq
+      margin-right: 20px
+      font-size: 14px
+    &__comments
+      font-size: 14px
+    &_switch
+      &_wrapper
+        width: 31px
+        height: 17px
+      &_circle
+        width: 11px
+        height: 11px
+        top: -16px
+        &_active
+          top: -16px
+          left: 15px
+          width: 11px
+          height: 11px

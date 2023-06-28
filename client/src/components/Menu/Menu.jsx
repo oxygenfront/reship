@@ -1,89 +1,96 @@
-import classNames from 'classnames'
-import { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import classNames from 'classnames';
+import {
+  Fragment,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   logout,
   selectIsAuth,
   selectUserData,
-} from '../../redux/slices/authSlice'
+} from '../../redux/slices/authSlice';
 import {
   selectFilter,
   setChoosenCategorie,
   setSearchValue,
-} from '../../redux/slices/fiterSlice'
-import styles from './Menu.module.sass'
-import { Dialog, Transition } from '@headlessui/react'
-import { selectItemsData } from '../../redux/slices/itemsSlice'
-import Card from '../Card/Card'
-import { selectCart } from '../../redux/slices/cartSlice'
-import { Menu as DropDown } from '@headlessui/react'
-import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
-import { addFavorite, selectFavorites } from '../../redux/slices/favoriteSlice'
+} from '../../redux/slices/fiterSlice';
+import styles from './Menu.module.sass';
+import { Dialog, Transition } from '@headlessui/react';
+import { selectItemsData } from '../../redux/slices/itemsSlice';
+import Card from '../Card/Card';
+import { selectCart } from '../../redux/slices/cartSlice';
+import { Menu as DropDown } from '@headlessui/react';
+import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs';
+import { addFavorite, selectFavorites } from '../../redux/slices/favoriteSlice';
 
 const Menu = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const isMounted = useRef(false)
-  const isAuth = useSelector(selectIsAuth)
-  const { data, status } = useSelector(selectUserData)
-  const { searchValue } = useSelector(selectFilter)
-  const { favorites } = useSelector(selectFavorites)
-  const { items, itemsStatus = status } = useSelector(selectItemsData)
-  const { cartItems } = useSelector(selectCart)
-  const theme = useSelector((state) => state.theme)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isMounted = useRef(false);
+  const isAuth = useSelector(selectIsAuth);
+  const { data, status } = useSelector(selectUserData);
+  const { searchValue } = useSelector(selectFilter);
+  const { favorites } = useSelector(selectFavorites);
+  const { items, itemsStatus = status } = useSelector(selectItemsData);
+  const { cartItems } = useSelector(selectCart);
+  const theme = useSelector((state) => state.theme);
 
-  const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
+  const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0);
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [scrollTop, setScrollTop] = useState(0)
-  const [localCategory, setLocalCategory] = useState('мышки')
-  const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-
-  const favoriteCount = favorites ? favorites.length : null
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [localCategory, setLocalCategory] = useState('мышки');
+  const [localCategoryEn, setLocalCategoryEn] = useState('mouse');
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [showBurger, setShowBurger] = useState(false);
+  const favoriteCount = favorites ? favorites.length : null;
 
   const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort))
-  }, [])
+    dispatch(setChoosenCategorie(sort));
+  }, []);
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout())
-      window.localStorage.removeItem('token')
-      return navigate('/')
+      dispatch(logout());
+      window.localStorage.removeItem('token');
+      return navigate('/');
     }
-  }
+  };
   const onClickClear = () => {
-    dispatch(setSearchValue(''))
-  }
+    dispatch(setSearchValue(''));
+  };
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   useEffect(() => {
     if (isMounted.current) {
-      const json = JSON.stringify(cartItems)
-      const favJson = JSON.stringify(favorites)
+      const json = JSON.stringify(cartItems);
+      const favJson = JSON.stringify(favorites);
 
-      localStorage.setItem('cart', json)
-      localStorage.setItem('favorites', favJson)
+      localStorage.setItem('cart', json);
+      localStorage.setItem('favorites', favJson);
     }
-    isMounted.current = true
-  }, [cartItems, favorites])
+    isMounted.current = true;
+  }, [cartItems, favorites]);
 
   useEffect(() => {
-    const handleScroll = () => setScrollTop(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
+    const handleScroll = () => setScrollTop(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   return (
     <div
       className={styles.search_section}
@@ -95,27 +102,26 @@ const Menu = () => {
           styles.search_section__container
         )}
       >
-        {windowWidth <= 767 ? null : (
-          <>
-            <Link to="/" className={styles.search_section__logo}>
-              <img src="../assets/img/logo.svg" alt="logo" />
-            </Link>
+        <>
+          <Link to='/' className={styles.search_section__logo}>
+            <img src='../assets/img/logo.svg' alt='logo' />
+          </Link>
 
-            <Link
-              onClick={() => setIsOpen(true)}
-              className={styles.search_section__catalog}
-            >
-              <span>Каталог</span>
+          <Link
+            onClick={() => setIsOpen(true)}
+            className={styles.search_section__catalog}
+          >
+            <span>Каталог</span>
 
-              <div className={styles.search_section__catalog_arrow}></div>
-            </Link>
-          </>
-        )}
+            <div className={styles.search_section__catalog_arrow}></div>
+          </Link>
+        </>
+
         <div className={styles.search_section__search_block}>
           <input
             value={searchValue}
-            type="text"
-            placeholder="Поиск по каталогу"
+            type='text'
+            placeholder='Поиск по каталогу'
             className={styles.search_section__search_item}
             onChange={(e) => dispatch(setSearchValue(e.target.value))}
           />
@@ -123,12 +129,12 @@ const Menu = () => {
             <div className={styles.search_section__search_item_close}></div>
           ) : null}
           <Dialog
-            as="div"
+            as='div'
             className={styles.modal}
             open={isOpen}
             onClose={() => setIsOpen(false)}
           >
-            <div className={styles.modal_bg} aria-hidden="true"></div>
+            <div className={styles.modal_bg} aria-hidden='true'></div>
             <div className={styles.modal_scroll}>
               <div className={styles.modal_container}>
                 <Dialog.Panel>
@@ -142,11 +148,11 @@ const Menu = () => {
                               : null
                           }
                           onClick={() => {
-                            setLocalCategoryEn('mouse')
-                            setLocalCategory('мышки')
+                            setLocalCategoryEn('mouse');
+                            setLocalCategory('мышки');
                           }}
                         >
-                          <img src="../assets/img/mouse.svg" alt="mouse" />
+                          <img src='../assets/img/mouse.svg' alt='mouse' />
                           Мышки
                         </li>
                         <li
@@ -156,13 +162,13 @@ const Menu = () => {
                               : null
                           }
                           onClick={() => {
-                            setLocalCategoryEn('boards')
-                            setLocalCategory('клавиатуры')
+                            setLocalCategoryEn('boards');
+                            setLocalCategory('клавиатуры');
                           }}
                         >
                           <img
-                            src="../assets/img/keyboard.svg"
-                            alt="keyboard"
+                            src='../assets/img/keyboard.svg'
+                            alt='keyboard'
                           />
                           Клавиатуры
                         </li>
@@ -173,13 +179,13 @@ const Menu = () => {
                               : null
                           }
                           onClick={() => {
-                            setLocalCategoryEn('headphones')
-                            setLocalCategory('наушники')
+                            setLocalCategoryEn('headphones');
+                            setLocalCategory('наушники');
                           }}
                         >
                           <img
-                            src="../assets/img/headphones.svg"
-                            alt="headphones"
+                            src='../assets/img/headphones.svg'
+                            alt='headphones'
                           />
                           Наушники
                         </li>
@@ -190,13 +196,13 @@ const Menu = () => {
                               : null
                           }
                           onClick={() => {
-                            setLocalCategoryEn('microphone')
-                            setLocalCategory('микрофоны')
+                            setLocalCategoryEn('microphone');
+                            setLocalCategory('микрофоны');
                           }}
                         >
                           <img
-                            src="../assets/img/microfone.svg"
-                            alt="microfone"
+                            src='../assets/img/microfone.svg'
+                            alt='microfone'
                           />
                           Микрофоны
                         </li>
@@ -207,11 +213,11 @@ const Menu = () => {
                               : null
                           }
                           onClick={() => {
-                            setLocalCategoryEn('accessory')
-                            setLocalCategory('аксессуары')
+                            setLocalCategoryEn('accessory');
+                            setLocalCategory('аксессуары');
                           }}
                         >
-                          <img src="../assets/img/accessory.svg" alt="access" />
+                          <img src='../assets/img/accessory.svg' alt='access' />
                           Аксессуары
                         </li>
                         <li
@@ -221,11 +227,11 @@ const Menu = () => {
                               : null
                           }
                           onClick={() => {
-                            setLocalCategoryEn('camera')
-                            setLocalCategory('веб-камеры')
+                            setLocalCategoryEn('camera');
+                            setLocalCategory('веб-камеры');
                           }}
                         >
-                          <img src="../assets/img/camera.svg" alt="camera" />
+                          <img src='../assets/img/camera.svg' alt='camera' />
                           Веб-камеры
                         </li>
                       </ul>
@@ -268,15 +274,15 @@ const Menu = () => {
                     </div>
                     <div className={styles.modal_right}>
                       <Link
-                        to="/catalog"
+                        to='/catalog'
                         onClick={() => {
-                          setIsOpen(false)
-                          onChangeCategory(localCategory)
+                          setIsOpen(false);
+                          onChangeCategory(localCategory);
                         }}
                       >
                         <img
                           src={`../assets/img/${localCategoryEn}-main-catalog.png`}
-                          alt="mouse"
+                          alt='mouse'
                         />
                         <span>Просмотреть все {localCategory}</span>
                         <div className={styles.swiper_button_next_wrapper}>
@@ -310,65 +316,67 @@ const Menu = () => {
             </div>
           </Dialog> */}
           <Link
-            to="/catalog"
+            to='/catalog'
             className={styles.search_section__search_block_glass}
           >
-            <i className="fa-solid fa-magnifying-glass"></i>
+            <i className='fa-solid fa-magnifying-glass'></i>
           </Link>
         </div>
-        <div className={styles.search_section_links}>
-          <Link to="/personal/favorites">
-            {theme === 'light' ? (
-              <img
-                className={styles.search_section_links_heart}
-                src="../assets/img/heart.svg"
-                alt="favorites"
-              />
-            ) : (
-              <img
-                className={styles.search_section_links_heart}
-                src="../assets/img/heart-white.svg"
-                alt="favorites"
-                width={35}
-              />
-            )}
+        {windowWidth > 991 ? (
+          <div className={styles.search_section_links}>
+            <Link to='/personal/favorites'>
+              {theme === 'light' ? (
+                <img
+                  className={styles.search_section_links_heart}
+                  src='../assets/img/heart.svg'
+                  alt='favorites'
+                />
+              ) : (
+                <img
+                  className={styles.search_section_links_heart}
+                  src='../assets/img/heart-white.svg'
+                  alt='favorites'
+                  width={35}
+                />
+              )}
 
-            {favoriteCount > 0 ? (
-              <span className={styles.search_section_links_heart_count}>
-                {favoriteCount}
-              </span>
-            ) : null}
-          </Link>
-          <Link to="/cart">
-            {theme === 'light' ? (
-              <img
-                className={styles.search_section_links_cart}
-                src="../assets/img/cart.svg"
-                alt="cart"
-                width={33}
-              />
-            ) : (
-              <img
-                className={styles.search_section_links_cart}
-                src="../assets/img/cart-white.svg"
-                alt="cart"
-                width={33}
-              />
-            )}
+              {favoriteCount > 0 ? (
+                <span className={styles.search_section_links_heart_count}>
+                  {favoriteCount}
+                </span>
+              ) : null}
+            </Link>
+            <Link to='/cart'>
+              {theme === 'light' ? (
+                <img
+                  className={styles.search_section_links_cart}
+                  src='../assets/img/cart.svg'
+                  alt='cart'
+                  width={33}
+                />
+              ) : (
+                <img
+                  className={styles.search_section_links_cart}
+                  src='../assets/img/cart-white.svg'
+                  alt='cart'
+                  width={33}
+                />
+              )}
 
-            {totalCount > 0 ? (
-              <span className={styles.search_section_links_cart_count}>
-                {totalCount}
-              </span>
-            ) : null}
-          </Link>
-        </div>
+              {totalCount > 0 ? (
+                <span className={styles.search_section_links_cart_count}>
+                  {totalCount}
+                </span>
+              ) : null}
+            </Link>
+          </div>
+        ) : null}
         {isAuth ? (
           status === 'success' && (
             <>
-              {windowWidth > 767 ? (
+              {windowWidth > 991 ? (
                 <div className={styles.search_section__profile_block}>
-                  <Link to="/personal">
+                  <Link to='/personal'>
                     {data.first_name ? (
                       <>
                         <p>
@@ -376,11 +384,15 @@ const Menu = () => {
                             data.first_name.slice(1)}
                         </p>
                       </>
-                    ) : null}
+                    ) : (
+                      <button className={styles.search_section_burger}>
+                        <span />
+                      </button>
+                    )}
                   </Link>
 
                   <div className={styles.menu_wrapper}>
-                    <DropDown as="div" className={styles.menu}>
+                    <DropDown as='div' className={styles.menu}>
                       <div>
                         <DropDown.Button className={styles.menu_button}>
                           <div className={styles.search_section__catalog_block}>
@@ -394,38 +406,38 @@ const Menu = () => {
                       </div>
                       <Transition
                         as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
+                        enter='transition ease-out duration-100'
+                        enterFrom='transform opacity-0 scale-95'
+                        enterTo='transform opacity-100 scale-100'
+                        leave='transition ease-in duration-75'
+                        leaveFrom='transform opacity-100 scale-100'
+                        leaveTo='transform opacity-0 scale-95'
                       >
                         <DropDown.Items className={styles.menu_items}>
                           <div className={styles.menu_items_wrapper}>
                             <DropDown.Item className={styles.menu_items_item}>
-                              <Link to="/personal">Личный кабинет</Link>
+                              <Link to='/personal'>Личный кабинет</Link>
                             </DropDown.Item>
                             <DropDown.Item
-                              to="/personal/favorites"
+                              to='/personal/favorites'
                               className={styles.menu_items_item}
                             >
                               <Link>Избранные</Link>
                             </DropDown.Item>
                             <DropDown.Item
-                              to="/settings"
+                              to='/settings'
                               className={styles.menu_items_item}
                             >
                               <Link>Настройки</Link>
                             </DropDown.Item>
                             <DropDown.Item
-                              to="/orders"
+                              to='/orders'
                               className={styles.menu_items_item}
                             >
                               <Link>Мои Заказы</Link>
                             </DropDown.Item>
                             <DropDown.Item
-                              to="/cart"
+                              to='/cart'
                               className={styles.menu_items_item}
                             >
                               <Link>Корзина</Link>
@@ -446,16 +458,25 @@ const Menu = () => {
           )
         ) : (
           <>
-            {windowWidth > 575 ? (
-              <Link to="/login" className={styles.search_section__login_block}>
+            {windowWidth > 991 ? (
+              <Link to='/login' className={styles.search_section__login_block}>
                 <div className={styles.search_section__login_item}>Войти</div>
               </Link>
-            ) : null}
+            ) : (
+              <button
+                onCLick={!showBurger}
+                // className={showBurger ? styles.search_section_burger }
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            )}
           </>
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Menu
+export default Menu;

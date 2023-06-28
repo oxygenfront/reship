@@ -2357,7 +2357,7 @@ class ApiPostController {
 
   async createReview(request, response) {
     try {
-      const requiredKeys = ["token", "rating", "text", "order_product", "anon"];
+      const requiredKeys = ["token", "rating", "text", "product_id", "anon"];
 
       const requestData = request.body;
 
@@ -2370,13 +2370,13 @@ class ApiPostController {
           .json({ error: "Некорректные данные.", bcode: 33 });
       }
 
-      const { token, rating, text, order_product, anon } = requestData;
+      const { token, rating, text, product_id, anon } = requestData;
 
       const sanitizedValues = {
         token: tools.delInjection(token),
         rating: tools.delInjection(rating),
         text: tools.delInjection(text),
-        order_product: JSON.parse(order_product),
+        product_id: tools.delInjection(product_id),
         anon: tools.delInjection(anon),
       };
 
@@ -2407,7 +2407,7 @@ class ApiPostController {
 
                 if (rows_r.length === 0) {
                   database.query(
-                    `SELECT * FROM \`products\` WHERE id=${sanitizedValues.order_product.product_id};`,
+                    `SELECT * FROM \`products\` WHERE id=${sanitizedValues.product_id};`,
                     (error, rows_product) => {
                       if (error) {
                         return response
@@ -2417,15 +2417,13 @@ class ApiPostController {
 
                       if (rows_product.length == 1) {
                         database.query(
-                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`color\`, \`anon\`) VALUES ('${
+                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`anon\`) VALUES ('${
                             rows_user[0]["id"]
                           }', '${sanitizedValues.rating}', '${
                             sanitizedValues.text
                           }', '${
-                            sanitizedValues.order_product.product_id
-                          }', '${Date.now()}', '${
-                            sanitizedValues.order_product.color
-                          }', '${sanitizedValues.anon}');`,
+                            sanitizedValues.product_id
+                          }', '${Date.now()}', '${sanitizedValues.anon}');`,
                           (error, rows_review) => {
                             if (error) {
                               return response.status(500).json({
@@ -2440,7 +2438,6 @@ class ApiPostController {
                           author_last_name: rows_user[0].last_name,
                           product_id: rows_product[0].id,
                           set_rating: sanitizedValues.rating,
-                          color: sanitizedValues.order_product.color,
                           product_title: rows_product[0].title,
                           anon: sanitizedValues.anon,
                           text: sanitizedValues.text,

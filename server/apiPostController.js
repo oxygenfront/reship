@@ -2541,9 +2541,9 @@ class ApiPostController {
   }
 
   async getReviewsFromAuthor(request, response) {
-    const requiredKeys = ["token"];
+    const requiredKeys = ["authorization"];
 
-    const requestData = request.query;
+    const requestData = request.headers;
 
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
@@ -2554,14 +2554,14 @@ class ApiPostController {
         .json({ error: "Некорректные данные.", bcode: 35 });
     }
 
-    const { token } = requestData;
+    const { authorization } = requestData;
 
     const sanitizedValues = {
-      token: tools.delInjection(token),
+      authorization: tools.delInjection(authorization),
     };
 
     database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.authorization}'`,
       (error, rows_user, fields) => {
         if (error) {
           return response

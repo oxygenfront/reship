@@ -92,7 +92,6 @@ router.post("/changeDelivery", apiPostController.changeDelivery);
 router.post("/createReview", apiPostController.createReview);
 router.get("/getReviewsForProductId", apiPostController.getReviewsForProductId);
 router.get("/getReviewsFromAuthor", apiPostController.getReviewsFromAuthor);
-router.get("/test", apiPostController.test);
 router.post(
   "/changeAvatar",
   apiPostController.changeAvatar

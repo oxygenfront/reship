@@ -10,7 +10,7 @@ const logging = "[LOGGING]";
 
 const sdek_client_id = "TaocB08kPoXDHhizYHHgpJrL8ZCpZj3f";
 const sdek_client_secret = "27EMoRZBSyo2nn1IjbdOrpGWwqO23g1D";
-const sdek_url = "api.edu.cdek.ru";
+const sdek_url = "api.cdek.ru";
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -58,7 +58,7 @@ async function getOrderSdek(uuid) {
     };
 
     const resp = await axios.get(
-      `https://${sdek_url}/v2/orders/${uuid}`,
+      `https://${sdek_url}/v2/orders?cdek_number=${uuid} `,
       config
     );
 

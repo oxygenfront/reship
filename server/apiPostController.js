@@ -2429,6 +2429,7 @@ class ApiPostController {
                               return response.status(500).json({
                                 error: "Ошибка на сервере",
                                 bcode: 33.3,
+                                e:error
                               });
                             }
                             response.json({

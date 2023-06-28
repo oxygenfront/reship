@@ -10,6 +10,7 @@ const logging = "[LOGGING]";
 
 const sdek_client_id = "TaocB08kPoXDHhizYHHgpJrL8ZCpZj3f";
 const sdek_client_secret = "27EMoRZBSyo2nn1IjbdOrpGWwqO23g1D";
+const sdek_url = "api.edu.cdek.ru";
 
 const transporter = nodemailer.createTransport({
   port: 465,
@@ -27,18 +28,44 @@ function log(text) {
 
 async function getTokenSDEK() {
   const payload = {
-    'grant_type': 'client_credentials',
-    'client_id': sdek_client_id,
-    'client_secret': sdek_client_secret 
-  }
+    grant_type: "client_credentials",
+    client_id: sdek_client_id,
+    client_secret: sdek_client_secret,
+  };
 
   const headers = {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    "Content-Type": "application/x-www-form-urlencoded",
+  };
+
+  const token = await axios.post(
+    "https://api.cdek.ru/v2/oauth/token",
+    payload,
+    { headers }
+  );
+
+  return token.data.access_token;
+}
+
+async function getOrderSdek(uuid) {
+  try {
+    const token = await getTokenSDEK();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const resp = await axios.get(
+      `https://${sdek_url}/v2/orders/${uuid}`,
+      config
+    );
+
+    return resp.data.entity;
+  } catch (e) {
+    return -1
   }
-
-  const resp = await axios.post('https://api.cdek.ru/v2/oauth/token', payload, { headers });
-
-  return resp;
 }
 
 function compare_highest(a, b) {
@@ -192,7 +219,7 @@ class ApiPostController {
   async getProducts(request, response) {
     const { title, category, price_start, price_end } = request.query;
 
-    let sql = 'SELECT * FROM products WHERE 1=1';
+    let sql = "SELECT * FROM products WHERE 1=1";
 
     if (title) {
       sql += ` AND name LIKE '%${tools.delInjection(title)}%'`;
@@ -203,7 +230,9 @@ class ApiPostController {
     }
 
     if (price_start && price_end) {
-      sql += ` AND price BETWEEN ${tools.delInjection(price_start)} AND ${tools.delInjection(price_end)}`;
+      sql += ` AND price BETWEEN ${tools.delInjection(
+        price_start
+      )} AND ${tools.delInjection(price_end)}`;
     } else if (price_start) {
       sql += ` AND price > ${tools.delInjection(price_start)}`;
     } else if (price_end) {
@@ -218,7 +247,6 @@ class ApiPostController {
       }
       response.json(rows);
     });
-
   }
 
   async auth(request, response) {
@@ -243,7 +271,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 3.1, e:error });
+            .json({ error: "Ошибка на сервере", bcode: 3.1, e: error });
         }
 
         if (rows.length == 1) {
@@ -325,7 +353,7 @@ class ApiPostController {
     if (
       !tools.checkJsonKey(request.body, "password") ||
       !tools.checkJsonKey(request.body, "new_password") ||
-      !request.headers.hasOwnProperty('authorization')
+      !request.headers.hasOwnProperty("authorization")
     ) {
       return response
         .status(400)
@@ -1073,7 +1101,7 @@ class ApiPostController {
         tariff_code: tools.delInjection(tariff_code),
       };
 
-      const date_create = Date.now()
+      const date_create = Date.now();
 
       let customer_id = -1;
       let basket_json = sanitizedValues.basket;
@@ -1101,14 +1129,15 @@ class ApiPostController {
           for (let i = 0; i < basket_json.length; i++) {
             full_price += basket_json[i].price;
 
-            basket_json[i].date_create = date_create
-            basket_json[i].init = sanitizedValues.first_name + ' ' + sanitizedValues.last_name
-            basket_json[i].adress = sanitizedValues.adress
-            basket_json[i].status = -1
+            basket_json[i].date_create = date_create;
+            basket_json[i].init =
+              sanitizedValues.first_name + " " + sanitizedValues.last_name;
+            basket_json[i].adress = sanitizedValues.adress;
+            basket_json[i].status = -1;
           }
 
           database.query(
-            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`, `tariff_code`, `track_number`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?, ?, ?)",
+            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`, `tariff_code`, `uuid_sdek`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?, ?, ?)",
             [
               sanitizedValues.first_name,
               sanitizedValues.last_name,
@@ -1120,7 +1149,7 @@ class ApiPostController {
               JSON.stringify(basket_json),
               full_price,
               sanitizedValues.tariff_code,
-              ''
+              "",
             ],
             (error, rows_order) => {
               if (error) {
@@ -1217,8 +1246,8 @@ class ApiPostController {
 
   async getOrdersByCustomerId(request, response) {
     if (
-      !request.query.hasOwnProperty('type') || 
-      !request.query.hasOwnProperty('customer_id')
+      !request.query.hasOwnProperty("type") ||
+      !request.query.hasOwnProperty("customer_id")
     ) {
       return response
         .status(400)
@@ -1247,7 +1276,7 @@ class ApiPostController {
 
     database.query(
       `SELECT * FROM \`orders\` WHERE customer_id='${customer_id}'`,
-      (error, rows, fields) => {
+      async (error, rows, fields) => {
         if (error) {
           return response
             .status(500)
@@ -1261,25 +1290,41 @@ class ApiPostController {
             parseInt(rows[i]["status"]) === type_string ||
             type_string === 5
           ) {
+            if (
+              request.query.date_start !== undefined &&
+              request.query.date_end !== undefined
+            ) {
+              if (request.query.date_start === "") request.query.date_start = 0;
+              if (request.query.date_end === "")
+                request.query.date_end = 99999999999999;
 
-            if (request.query.date_start !== undefined && request.query.date_end !== undefined) {
-              if (request.query.date_start === '') request.query.date_start = 0
-              if (request.query.date_end === '') request.query.date_end = 99999999999999
-
-              const if_date = parseInt(rows[i].date_start) >= parseInt(request.query.date_start) && parseInt(rows[i].date_start) <= parseInt(request.query.date_end)
+              const if_date =
+                parseInt(rows[i].date_start) >=
+                  parseInt(request.query.date_start) &&
+                parseInt(rows[i].date_start) <=
+                  parseInt(request.query.date_end);
               if (!if_date) {
-                continue
+                continue;
               }
             }
 
-            if (request.query.price_start !== undefined && request.query.price_end !== undefined) {
-              if (request.query.price_start === '') request.query.price_start = 0
-              if (request.query.price_end === '') request.query.price_end = 99999999999999
+            if (
+              request.query.price_start !== undefined &&
+              request.query.price_end !== undefined
+            ) {
+              if (request.query.price_start === "")
+                request.query.price_start = 0;
+              if (request.query.price_end === "")
+                request.query.price_end = 99999999999999;
 
-              const if_price = parseInt(rows[i].summ_price) >= parseInt(request.query.price_start) && parseInt(rows[i].summ_price) <= parseInt(request.query.price_end);
+              const if_price =
+                parseInt(rows[i].summ_price) >=
+                  parseInt(request.query.price_start) &&
+                parseInt(rows[i].summ_price) <=
+                  parseInt(request.query.price_end);
 
               if (!if_price) {
-                continue
+                continue;
               }
             }
 
@@ -1289,10 +1334,17 @@ class ApiPostController {
         }
 
         if (request.query.price_filter !== undefined) {
-          if (request.query.price_filter === 'highest') {
-            ready_json.sort(compare_highest)
+          if (request.query.price_filter === "highest") {
+            ready_json.sort(compare_highest);
           } else {
-            ready_json.sort(compare_lowest)
+            ready_json.sort(compare_lowest);
+          }
+        }
+
+        for (let i = 0; i < ready_json.length; i++) {
+          if (ready_json[0].uuid !== '') {
+            const sdek_order = await getOrderSdek(ready_json[0].uuid_sdek)
+            ready_json[0].sdek_order = sdek_order
           }
         }
 
@@ -1691,7 +1743,7 @@ class ApiPostController {
   }
 
   async acceptPayment(request, response) {
-    const requiredKeys = ["token", "payment_id"];
+    const requiredKeys = ["token", "payment_id", "uuid"];
 
     const requestData = request.body;
 
@@ -1705,11 +1757,12 @@ class ApiPostController {
         .json({ error: "Некорректные данные.", bcode: 25 });
     }
 
-    const { token, payment_id } = requestData;
+    const { token, payment_id, uuid } = requestData;
 
     const sanitizedValues = {
       payment_id: tools.delInjection(payment_id),
       token: tools.delInjection(token),
+      uuid: tools.delInjection(uuid),
     };
 
     database.query(
@@ -1753,7 +1806,7 @@ class ApiPostController {
                       }
 
                       database.query(
-                        `UPDATE \`orders\` SET \`status\` = '0' WHERE \`id\` = ${rows_payment[0].order_id};`,
+                        `UPDATE \`orders\` SET \`status\` = '0', \`uuid_sdek\` = '${sanitizedValues.uuid}' WHERE \`id\` = ${rows_payment[0].order_id};`,
                         (error, rows) => {
                           if (error) {
                             return response.status(500).json({
@@ -2304,7 +2357,7 @@ class ApiPostController {
 
   async createReview(request, response) {
     try {
-      const requiredKeys = ["token", "rating", "text", "order_product", "anon"];
+      const requiredKeys = ["token", "rating", "text", "product_id", "anon"];
 
       const requestData = request.body;
 
@@ -2317,13 +2370,13 @@ class ApiPostController {
           .json({ error: "Некорректные данные.", bcode: 33 });
       }
 
-      const { token, rating, text, order_product, anon } = requestData;
+      const { token, rating, text, product_id, anon } = requestData;
 
       const sanitizedValues = {
         token: tools.delInjection(token),
         rating: tools.delInjection(rating),
         text: tools.delInjection(text),
-        order_product: JSON.parse(order_product),
+        product_id: tools.delInjection(product_id),
         anon: tools.delInjection(anon),
       };
 
@@ -2342,7 +2395,7 @@ class ApiPostController {
                 .status(500)
                 .json({ error: "Оценка не может быть выше 5", bcode: 33.8 });
             }
-            
+
             database.query(
               `SELECT * FROM \`reviews\` WHERE author_id=${rows_user[0].id};`,
               (error, rows_r) => {
@@ -2354,7 +2407,7 @@ class ApiPostController {
 
                 if (rows_r.length === 0) {
                   database.query(
-                    `SELECT * FROM \`products\` WHERE id=${sanitizedValues.order_product.product_id};`,
+                    `SELECT * FROM \`products\` WHERE id=${sanitizedValues.product_id};`,
                     (error, rows_product) => {
                       if (error) {
                         return response
@@ -2364,36 +2417,32 @@ class ApiPostController {
 
                       if (rows_product.length == 1) {
                         database.query(
-                          `INSERT INTO \`reviews\` (\`author_id\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`color\`, \`anon\`) VALUES ('${
+                          `INSERT INTO \`reviews\` (\`author_id\`, \`first_name\`, \`last_name\`, \`rating\`, \`text\`, \`product_id\`, \`date_timestamp\`, \`anon\`) VALUES ('${
                             rows_user[0]["id"]
-                          }', '${sanitizedValues.rating}', '${
+                          }', '${rows_user[0]["first_name"]}', '${rows_user[0]["last_name"]}', '${sanitizedValues.rating}', '${
                             sanitizedValues.text
                           }', '${
-                            sanitizedValues.order_product.product_id
-                          }', '${Date.now()}', '${
-                            sanitizedValues.order_product.color
-                          }', '${sanitizedValues.anon}');`,
+                            sanitizedValues.product_id
+                          }', '${Date.now()}', '${sanitizedValues.anon}');`,
                           (error, rows_review) => {
                             if (error) {
-                              return response
-                                .status(500)
-                                .json({
-                                  error: "Ошибка на сервере",
-                                  bcode: 33.3,
-                                });
+                              return response.status(500).json({
+                                error: "Ошибка на сервере",
+                                bcode: 33.3,
+                                e:error
+                              });
                             }
+                            response.json({
+                              author_first_name: rows_user[0].first_name,
+                              author_last_name: rows_user[0].last_name,
+                              product_id: rows_product[0].id,
+                              set_rating: sanitizedValues.rating,
+                              product_title: rows_product[0].title,
+                              anon: sanitizedValues.anon,
+                              text: sanitizedValues.text,
+                            });
                           }
                         );
-                        response.json({
-                          author_first_name: rows_user[0].first_name,
-                          author_last_name: rows_user[0].last_name,
-                          product_id: rows_product[0].id,
-                          set_rating: sanitizedValues.rating,
-                          color: sanitizedValues.order_product.color,
-                          product_title: rows_product[0].title,
-                          anon: sanitizedValues.anon,
-                          text: sanitizedValues.text,
-                        });
                       } else {
                         return response
                           .status(500)
@@ -2402,12 +2451,10 @@ class ApiPostController {
                     }
                   );
                 } else {
-                  return response
-                    .status(400)
-                    .json({
-                      error: "Нельзя создать больше 1 отзыва на товар",
-                      bcode: 33.7,
-                    });
+                  return response.status(400).json({
+                    error: "Нельзя создать больше 1 отзыва на товар",
+                    bcode: 33.7,
+                  });
                 }
               }
             );
@@ -2427,7 +2474,7 @@ class ApiPostController {
 
   async getReviewsForProductId(request, response) {
     const requiredKeys = ["token", "product_id"];
-    
+
     const requestData = request.query;
 
     const missingKey = requiredKeys.find(
@@ -2466,14 +2513,16 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 34.1});
+                  .json({ error: "Ошибка на сервере", bcode: 34.1 });
               }
 
               let all_ratings = 0;
 
               for (let i = 0; rows.length > i; i++) {
                 if (rows[i].anon === 1) {
-                  rows[i].author_id = -1
+                  rows[i].author_id = -1;
+                  rows[i].first_name = '';
+                  rows[i].last_name = '';
                 }
                 all_ratings += rows[i].rating;
               }
@@ -2533,31 +2582,13 @@ class ApiPostController {
               }
 
               response.json({
-                rows
+                rows,
               });
             }
           );
         }
       }
     );
-  }
-
-  async test(request, response) {
-    try {
-      const token = await getTokenSDEK()
-
-      const config = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token.data.access_token
-      };
-
-      console.log(config)
-
-      const resp = await axios.get('https://api.edu.cdek.ru/v2/orders/72753034-a140-4e89-9e40-6c0e2b946503', config);
-      response.json(1);
-    } catch (error) {
-      console.log(error.response.data.requests[0].errors);
-    }
   }
 }
 

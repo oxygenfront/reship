@@ -12,6 +12,8 @@ export const BodyReviewContext = createContext()
 
 const OrdersItem = ({
   id,
+  uuid,
+  sdek_order,
   image,
   name,
   color,
@@ -26,25 +28,22 @@ const OrdersItem = ({
   readOnly,
   width,
 }) => {
+  const dispatch = useDispatch()
+  const token = localStorage.getItem('token')
+
   const [rating, setRating] = useState(defaultState)
   const [hover, setHover] = useState(null)
-  const dispatch = useDispatch()
+  const [anon, setAnon] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const token = localStorage.getItem('token')
   const [modalOpen, setModalOpen] = useState(false)
   const [review, setReview] = useState({
     token,
     rating: defaultState,
     text: '',
-    order_product: JSON.stringify({
-      name,
-      color: 'white',
-      price,
-      parameters: JSON.stringify([]),
-      product_id: id.toString(),
-      parameters_dop: JSON.stringify({}),
-    }),
+    product_id: Number(id),
   })
+  console.log(sdek_order)
+
   const setRatingFn = (value) => {
     if (readOnly) return
 
@@ -70,14 +69,21 @@ const OrdersItem = ({
     e.preventDefault()
 
     console.log(review)
-    const data = await dispatch(fetchCreateReview(review))
+    const data = await dispatch(
+      fetchCreateReview({
+        ...review,
+        rating: rating,
+        anon: anon ? 1 : 0,
+      })
+    )
     if (!data.payload) {
       alert('Не удалось оставить отзыв')
     } else {
       alert('Отзыв о товаре оставлен')
+      setModalOpen(false)
     }
   }
-  console.log(review.rating)
+
   return (
     <BodyReviewContext.Provider
       value={{
@@ -97,7 +103,7 @@ const OrdersItem = ({
         <div className="orders__item_card">
           <div className="orders__item_left-block_wrapper">
             <div className="orders__item_img-block">
-              <img src={JSON.parse(image)[0]} alt="" />
+              {/* <img src={JSON.parse(image)[0]} alt="" /> */}
             </div>
             <div className="orders__item_left-block">
               <p className="orders__item_left-block_name">{name}</p>
@@ -132,7 +138,7 @@ const OrdersItem = ({
                         <div className={styles.item}>
                           <div className={styles.item_left}>
                             <div className={styles.item_img}>
-                              <img src={image[0]} alt="product" />
+                              {/* <img src={image[0]} alt="product" /> */}
                             </div>
                             <div className={styles.item_title}>
                               <p>{name}</p>
@@ -158,7 +164,13 @@ const OrdersItem = ({
                         />
                         <label htmlFor="anon" className={styles.item_checkbox}>
                           Анонимный отзыв
-                          <input type="checkbox" name="" id="anon" />
+                          <input
+                            checked={anon}
+                            onChange={() => setAnon(!anon)}
+                            type="checkbox"
+                            name=""
+                            id="anon"
+                          />
                         </label>
                         <div className={styles.btns}>
                           <button
@@ -206,18 +218,20 @@ const OrdersItem = ({
                 Адрес получателя
               </div>
               <div className="orders__item_about-block_suptitle">
-                Петергофское ш., 51, Санкт-Петербург (этаж 3)
+                {sdek_order.to_location.city}, {sdek_order.to_location.address}
               </div>
             </div>
             <div className="orders__item_about-block">
               <div className="orders__item_about-block_title">Получатель</div>
               <div className="orders__item_about-block_suptitle">
-                Давид Филов
+                {sdek_order.recipient.name}
               </div>
             </div>
             <div className="orders__item_about-block">
               <div className="orders__item_about-block_title">Вес посылки</div>
-              <div className="orders__item_about-block_suptitle">220г</div>
+              <div className="orders__item_about-block_suptitle">
+                {sdek_order.packages[0].weight} г
+              </div>
             </div>
             <div className="orders__item_about-block">
               <div className="orders__item_about-block_title">Трек номер</div>
@@ -234,80 +248,32 @@ const OrdersItem = ({
 
               <div className="orders__item_about-block_timline">
                 <ul className="orders__item_about-block_timline_line">
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
-                  <li></li>
+                  {sdek_order.statuses.map((_, index) => (
+                    <>
+                      <li></li>
+                      <li></li>
+                    </>
+                  ))}
                 </ul>
                 <div className="orders__item_about-block_timline_text">
-                  <div className="orders__item_about-block_timline_text-block">
-                    <div className="orders__item_about-block_timline_text-block_up-block">
-                      <div className="orders__item_about-block_timline_text-block_up-block_title">
-                        Оплата
+                  {sdek_order.statuses.map((status) => (
+                    <div
+                      key={status.code}
+                      className="orders__item_about-block_timline_text-block"
+                    >
+                      <div className="orders__item_about-block_timline_text-block_up-block">
+                        <div className="orders__item_about-block_timline_text-block_up-block_title">
+                          {status.code}
+                        </div>
+                        <div className="orders__item_about-block_timline_text-block_up-block_date">
+                          {status.date_time.slice(0, 10)}
+                        </div>
                       </div>
-                      <div className="orders__item_about-block_timline_text-block_up-block_date">
-                        13.05.22
-                      </div>
-                    </div>
-                    <div className="orders__item_about-block_timline_text-block_description">
-                      Ваш заказ успешно прошел оплату!
-                    </div>
-                  </div>
-                  <div className="orders__item_about-block_timline_text-block">
-                    <div className="orders__item_about-block_timline_text-block_up-block">
-                      <div className="orders__item_about-block_timline_text-block_up-block_title">
-                        Сборка
-                      </div>
-                      <div className="orders__item_about-block_timline_text-block_up-block_date">
-                        13.05.22
+                      <div className="orders__item_about-block_timline_text-block_description">
+                        {status.name}
                       </div>
                     </div>
-                    <div className="orders__item_about-block_timline_text-block_description">
-                      Мы начали собирать ваш заказ!
-                    </div>
-                  </div>
-                  <div className="orders__item_about-block_timline_text-block">
-                    <div className="orders__item_about-block_timline_text-block_up-block">
-                      <div className="orders__item_about-block_timline_text-block_up-block_title">
-                        Доставка
-                      </div>
-                      <div className="orders__item_about-block_timline_text-block_up-block_date">
-                        13.05.22
-                      </div>
-                    </div>
-                    <div className="orders__item_about-block_timline_text-block_description">
-                      Ваш заказ отправлен! Чтобы узнать подробное расположение
-                      посылки используйте трек-номер
-                    </div>
-                  </div>
-                  <div className="orders__item_about-block_timline_text-block">
-                    <div className="orders__item_about-block_timline_text-block_up-block">
-                      <div className="orders__item_about-block_timline_text-block_up-block_title">
-                        Прибытие
-                      </div>
-                      <div className="orders__item_about-block_timline_text-block_up-block_date">
-                        13.05.22
-                      </div>
-                    </div>
-                    <div className="orders__item_about-block_timline_text-block_description">
-                      Заказ прибыл на место получение
-                    </div>
-                  </div>
-                  <div className="orders__item_about-block_timline_text-block">
-                    <div className="orders__item_about-block_timline_text-block_up-block">
-                      <div className="orders__item_about-block_timline_text-block_up-block_title">
-                        Получен
-                      </div>
-                      <div className="orders__item_about-block_timline_text-block_up-block_date">
-                        13.05.22
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>

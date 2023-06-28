@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Navigation, Thumbs } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-const FullItemSlider = ({ id }) => {
+const FullItemSlider = ({ id, image }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
+  console.log(JSON.parse(image)[0])
   return (
     <>
       <Swiper
@@ -14,30 +15,11 @@ const FullItemSlider = ({ id }) => {
         speed={1000}
         onSwiper={setThumbsSwiper}
       >
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_big-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
+        {JSON.parse(image).map((image) => (
+          <SwiperSlide key={image} className="fullitem__card-slider_big-item">
+            <img src={image} alt="" />
+          </SwiperSlide>
+        ))}
       </Swiper>
       <Swiper
         className="fullitem__card-slider_small-wrapper"
@@ -51,30 +33,11 @@ const FullItemSlider = ({ id }) => {
         spaceBetween={15}
         speed={1000}
       >
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
-        <SwiperSlide className="fullitem__card-slider_small-item">
-          <img src={`../assets/products_img/${id}.png`} alt="" />
-        </SwiperSlide>
+        {JSON.parse(image).map((image) => (
+          <SwiperSlide key={image} className="fullitem__card-slider_small-item">
+            <img src={image} alt="" />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   )

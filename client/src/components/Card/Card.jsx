@@ -95,9 +95,9 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
     <>
       {view === 'grid' ? (
         <div className={styles.main_catalog__products_wrapper_item}>
-          <div className={styles.main_catalog__products_wrapper_item_category}>
+          {/* <div className={styles.main_catalog__products_wrapper_item_category}>
             <span>Хит продаж</span>
-          </div>
+          </div> */}
           <button
             onClick={onChangeFavorite}
             className={styles.main_catalog__products_wrapper_item_favorite}
@@ -212,7 +212,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
       ) : (
         <div className="catalog__main_item">
           <Link to={`/item/${id}`} className="catalog__main_item_left">
-            <img src={`../assets/products_img/${id}.png`} alt="" />
+            <img src={JSON.parse(image)[0]} alt="" />
           </Link>
           <div className="catalog__main_item_mid">
             <Link to={`/item/${id}`} className="catalog__main_item_mid-title">

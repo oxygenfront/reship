@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './Comment.module.sass'
-const Comment = ({ rating, first_name, last_name, text }) => {
+const Comment = ({ anon, author_id, date, rating, text }) => {
   return (
     <div className={styles.reviews__slider_slide_item}>
       <div className={styles.reviews__slider_slide_item_header}>
@@ -8,7 +8,7 @@ const Comment = ({ rating, first_name, last_name, text }) => {
           <div
             className={styles.reviews__slider_slide_item_header_left_img_block}
           >
-            <img src="" alt="" />
+            <img src="../assets/user_img/default.jpg" alt="user" />
           </div>
           <div
             className={
@@ -25,17 +25,13 @@ const Comment = ({ rating, first_name, last_name, text }) => {
           </div>
         </div>
         <div className={styles.reviews__slider_slide_item_header_stars}>
-          <img src="/assets/img/star-review.png" alt="star" />
-          <img src="/assets/img/star-review.png" alt="star" />
-          <img src="/assets/img/star-review.png" alt="star" />
-          <img src="/assets/img/star-review.png" alt="star" />
-          <img src="/assets/img/star-review.png" alt="star" />
+          {[...new Array(rating)].map(() => (
+            <img src="/assets/img/star-review.png" alt="star" />
+          ))}
         </div>
       </div>
       <div className={styles.reviews__slider_slide_item_description}>
-        Заказывал мышку, шла до МСК 7 дней. Все супер гуд, советую.Отдельный
-        респект филу за то, что отправил мышку на следующий день в 7 утра, хотя
-        заказ оформил в 23 00 по мск.
+        {text}
       </div>
     </div>
   )

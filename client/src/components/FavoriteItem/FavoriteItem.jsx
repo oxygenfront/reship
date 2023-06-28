@@ -15,14 +15,14 @@ import {
   removeFavorite,
 } from '../../redux/slices/favoriteSlice'
 
-const FavoriteItem = ({ name, price, image, id }) => {
+const FavoriteItem = ({ name, price, image, id, color }) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
   const addedCount = cartItem ? cartItem.count : 0
   const [navigate, setNavigate] = useState(false)
-  const [color, setColor] = useState('')
+
   const onClickAdd = () => {
     const item = {
       id,
@@ -43,7 +43,7 @@ const FavoriteItem = ({ name, price, image, id }) => {
     dispatch(minusItem(id))
   }
   const onClickRemove = () => {
-    dispatch(removeItem(id))
+    dispatch(removeFavorite(id))
   }
 
   return (
@@ -52,16 +52,19 @@ const FavoriteItem = ({ name, price, image, id }) => {
         <img src={JSON.parse(image)[0]} alt="product" />
       </Link>
       <div className={styles.favorite__item_columnBlock}>
-        <div className={styles.favorite__item_columnBlock_upBlock}>
-          <span className={styles.favorite__item_columnBlock_upBlock_name}>
-            {name}
-          </span>
-          <span className={styles.favorite__item_columnBlock_upBlock_price}>
-            {price} руб
-          </span>
-        </div>
+        <Link to={`/item/${id}`}>
+          <div className={styles.favorite__item_columnBlock_upBlock}>
+            <span className={styles.favorite__item_columnBlock_upBlock_name}>
+              {name}
+            </span>
+            <span className={styles.favorite__item_columnBlock_upBlock_price}>
+              {price} руб
+            </span>
+          </div>
+        </Link>
+
         <div className={styles.favorite__item_midBlock}>
-          <span className={styles.favorite__item_midBlock_color}>черный</span>
+          <span className={styles.favorite__item_midBlock_color}>{color}</span>
         </div>
         <div className={styles.favorite__item_bottomBlock}>
           <button

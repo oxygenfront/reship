@@ -96,3 +96,56 @@
         margin-bottom: 50px
         font-size: 20px
         margin-bottom: 78px
+@media (max-width: 1199px)
+    .delpay
+        &__slider
+            &_item
+                width: 435px !important
+            & .swiper-button-prev
+                left: 390px
+                top: 290px
+            & .swiper-button-next
+                right: 410px
+                top: 290px
+@media (max-width: 991px)
+    .delpay
+        &__slider
+            &_item
+                padding: 0
+                display: flex
+                align-items: center
+                justify-content: center
+                flex-direction: column
+                width: 100% !important
+                &_description
+                    text-align: center
+                    font-size: 30px
+            & .swiper-button-prev
+                left: 290px
+                top: 290px
+            & .swiper-button-next
+                right: 290px
+                top: 290px
+@media (max-width: 767px)
+    .delpay
+        &__slider
+            &_item
+                &_description
+                    font-size: 25px
+            & .swiper-button-prev
+                left: 185px
+                top: 290px
+            & .swiper-button-next
+                right: 185px
+                top: 290px
+@media (max-width: 575px)
+    .delpay
+        &__title
+            font-size: 15vw
+        &__slider
+            & .swiper-button-prev
+                left: unset
+                right: calc(50% + 15px)
+            & .swiper-button-next
+                right: unset
+                left: calc(50% + 15px)

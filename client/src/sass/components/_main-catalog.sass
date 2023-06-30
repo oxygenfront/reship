@@ -130,6 +130,11 @@
     &__slider
         margin-bottom: 83px
         position: unset !important
+        &-wrapper
+            display: flex
+            justify-content: center
+            width: 100%
+            height: 100%
         &-sm_title
             color: white
             font-size: 34px
@@ -162,9 +167,13 @@
             border: 2px solid #416EF2
             border-radius: 50%
         & .swiper-button-prev
-            left: -124px
+            top: 165px
+            left: unset
+            right: calc(90% + 8vw)
         & .swiper-button-next
-            right: -124px
+            top: 165px
+            right: unset
+            left: calc(90% + 8vw)
         & .swiper-button-next:after
             position: absolute
             right: 15px
@@ -200,9 +209,9 @@
             left: 13px
 
         & .swiper-pagination .swiper-pagination-bullet
-            background: #416EF2
+            background: black
             width: 15px
-            height: 2px
+            height: 3px
             border-radius: 1px
             &-slide
                 margin-top: 21px
@@ -228,6 +237,7 @@
                 background-repeat: no-repeat
                 width: 100%
                 height: 100%
+
     &__title
         color: var(--color)
         font-size: 51px
@@ -256,18 +266,22 @@
 @media (max-width: 1199px)
     .main-catalog
         &__slider
-        & .swiper-button-prev
-            left: -100px
-        & .swiper-button-next
-            right: -100px
-        &-slide
-            width: 283px !important
-            height: 270px !important
+            & .swiper-button-prev
+                top: 165px
+                left: unset
+                right: calc(50% + 45vw)
+            & .swiper-button-next
+                top: 165px
+                right: unset
+                left: calc(50% + 45vw)
+            &-slide
+                width: 283px !important
+                height: 270px !important
         &__lg
-        &-items
-            &-item
-                width: 430px
-                height: 450px
+            &-items
+                &-item
+                    width: 430px
+                    height: 450px
         &__products-wrapper
             grid-template-columns: repeat(3, 280px)
 
@@ -275,9 +289,13 @@
     .main-catalog
         &__slider
             & .swiper-button-prev
-                left: 0
+                top: 165px
+                left: unset
+                right: calc(50% + 43vw)
             & .swiper-button-next
-                right: 0
+                top: 165px
+                right: unset
+                left: calc(50% + 43vw)
             &-slide
                 width: 330px !important
                 height: 290px !important
@@ -294,14 +312,27 @@
             text-align: center
         &__slider
             & .swiper-button-prev
-                left: -100px
+                left: unset
+                right: calc(50% + 40vw)
+                top: 165px
             & .swiper-button-next
+                top: 165px
                 right: unset
-                // right: -12vw
-                left: 10vw
+                left: calc(50% + 40vw)
+            &-wrapper
+                display: flex
+                justify-content: center
+                width: 100%
+                height: 100%
             &-slide
                 width: 100% !important
                 height: 290px !important
+                &_item
+                    width: 80%
+                    height: 100%
+                    border-radius: 30px
+            & .swiper-pagination
+                bottom: -15px !important
         &__products-wrapper
             grid-template-columns: repeat(1, 305px)
             justify-content: center
@@ -335,7 +366,7 @@
                 right: unset
                 left: calc(50% + 15px)
             & .swiper-pagination
-                bottom: 0 !important
+                bottom: 20px !important
         &__lg-items
             &-item
                 width: 100%
@@ -346,7 +377,11 @@
             width: 100%
             margin-right: auto
             margin-left: auto
+            flex-direction: column
+            align-items: center
             &_item
                 font-size: 18px
                 padding: 10px 15px
-@media (max-width: 375px)
+                width: fit-content
+                &:not(:last-child)
+                    margin-bottom: 20px

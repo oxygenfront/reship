@@ -141,3 +141,17 @@
                 &_item
                     &:not(:last-child)
                         margin-bottom: 40px
+@media (max-width: 575px)
+    .reviews
+        &__slider
+            &_slide
+                &_item
+                    width: 100% !important
+                    &_header
+                        &_left
+                            flex-direction: column
+                            align-items: start
+                            &_img_block
+                                margin-bottom: 10px
+                        &_stars
+                            width: 150px

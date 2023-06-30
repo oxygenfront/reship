@@ -99,7 +99,7 @@
             padding-left: 200px
             &_title
                 width: 100%
-                // text-align: center
+                font-size: 7vw
         & .swiper-button-next
             right: 50px
         & .swiper-button-prev
@@ -107,10 +107,34 @@
 @media (max-width: 767px)
     .slider__section
         &__item
-            padding-left: 165px
+            padding-left: 20vw
+            &_title
+                font-size: 10vw
             &_link
                 padding: 20px 40px
-        // & .swiper-button-next
-        //     right: 50px
-        // & .swiper-button-prev
-        //     left: 50px
+        & .swiper-button-prev
+            top: 50%
+            left: unset
+            right: calc(50% + 35vw)
+        & .swiper-button-next
+            top: 50%
+            right: unset
+            left: calc(50% + 35vw)
+@media (max-width: 575px)
+    .slider__section
+        &__item
+            padding: 0
+            justify-content: center
+            align-items: center
+            &_title
+                width: fit-content
+            &_link
+                font-size: 7vw
+        & .swiper-button-prev
+            top: 80%
+            left: unset
+            right: calc(50% + 10vw)
+        & .swiper-button-next
+            top: 80%
+            right: unset
+            left: calc(50% + 10vw)

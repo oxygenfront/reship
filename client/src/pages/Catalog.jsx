@@ -98,7 +98,7 @@ const Catalog = () => {
                 {categories.map((category) => (
                   <label
                     key={category}
-                    htmlFor="category1"
+                    htmlFor={category}
                     className="catalog__sort_checkbox-name"
                   >
                     {category}
@@ -114,7 +114,7 @@ const Catalog = () => {
                       }}
                       checked={localCategories.includes(category)}
                       readOnly
-                      id="category1"
+                      id={category}
                       type="checkbox"
                       className="catalog__sort_checkbox"
                     />
@@ -126,7 +126,7 @@ const Catalog = () => {
                 {brands.map((brand) => (
                   <label
                     key={brand}
-                    htmlFor="category4"
+                    htmlFor={brand}
                     className="catalog__sort_checkbox-name"
                   >
                     {brand}
@@ -140,7 +140,7 @@ const Catalog = () => {
                       }}
                       checked={localBrands.includes(brand)}
                       readOnly
-                      id="category4"
+                      id={brand}
                       type="checkbox"
                       className="catalog__sort_checkbox"
                     />

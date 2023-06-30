@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -54,7 +55,7 @@ const Header = () => {
 
   return (
     <header className={styles.header}>
-      <div className={styles.header__container}>
+      <div className={classNames(styles.header__container, styles.container)}>
         <div className={styles.header__cont}>
           <div className={styles.header_switch_wrapper}>
             <Switch
@@ -71,14 +72,10 @@ const Header = () => {
                 aria-hidden='true'
               />
               <div className={styles.header_switch_sun}>
-                {windowWidth > 575 ? (
-                  <img src='../assets/img/sun.svg' alt='sun' />
-                ) : null}
+                <img src='../assets/img/sun.svg' alt='sun' />
               </div>
               <div className={styles.header_switch_moon}>
-                {windowWidth > 575 ? (
-                  <img src='../assets/img/moon.svg' alt='moon' />
-                ) : null}
+                <img src='../assets/img/moon.svg' alt='moon' />
               </div>
             </Switch>
           </div>

@@ -128,3 +128,50 @@
         height: 2px
         background: white
         left: 13px
+@media (max-width: 1199px)
+@media (max-width: 991px)
+    .reviews
+        &__title
+            text-align: center
+        &__slider
+            position: unset
+            &-wrapper
+                position: relative
+            &-slide
+                height: unset !important
+                &_two-items
+                    flex-direction: column
+                    align-items: center
+        & .swiper-button-prev
+            left: 280px
+            top: 950px
+        & .swiper-button-next
+            right: 280px
+            top: 950px
+@media (max-width: 767px)
+    .reviews
+        &__slider
+            &-wrapper
+            &-slide
+                &_two-items
+            & .swiper-button-prev
+                left: 190px
+                top: 950px
+            & .swiper-button-next
+                right: 190px
+                top: 950px
+@media (max-width: 575px)
+    .reviews
+        &__slider
+            & .swiper-button-prev
+                left: unset
+                right: calc(50% + 15px)
+            & .swiper-button-next
+                right: unset
+                left: calc(50% + 15px)
+        &__main-block
+            align-items: center
+        &-title
+            font-size: 28px
+        &__links
+            width: unset

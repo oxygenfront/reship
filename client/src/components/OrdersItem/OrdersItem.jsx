@@ -28,6 +28,7 @@ const OrdersItem = ({
   readOnly,
   width,
 }) => {
+  
   const dispatch = useDispatch()
   const token = localStorage.getItem('token')
 
@@ -99,33 +100,33 @@ const OrdersItem = ({
         maxValue,
       }}
     >
-      <div className="orders__item">
-        <div className="orders__item_card">
-          <div className="orders__item_left-block_wrapper">
-            <div className="orders__item_img-block">
+      <div className='orders__item'>
+        <div className='orders__item_card'>
+          <div className='orders__item_left-block_wrapper'>
+            <div className='orders__item_img-block'>
               {/* <img src={JSON.parse(image)[0]} alt="" /> */}
             </div>
-            <div className="orders__item_left-block">
-              <p className="orders__item_left-block_name">{name}</p>
-              <p className="orders__item_left-block_color">{color}</p>
-              <p className="orders__item_left-block_date">Сен 26, 2023</p>
+            <div className='orders__item_left-block'>
+              <p className='orders__item_left-block_name'>{name}</p>
+              <p className='orders__item_left-block_color'>{color}</p>
+              <p className='orders__item_left-block_date'>Сен 26, 2023</p>
             </div>
           </div>
-          <div className="orders__item_right-block">
-            <div className="orders__item_right-block_status">
+          <div className='orders__item_right-block'>
+            <div className='orders__item_right-block_status'>
               <span>Получено</span>
             </div>
-            <p className="orders__item_right-block_price">{price}руб</p>
-            <p className="orders__item_right-block_count">{count}шт</p>
+            <p className='orders__item_right-block_price'>{price}руб</p>
+            <p className='orders__item_right-block_count'>{count}шт</p>
 
-            <div className="orders__item_right-block_buttons">
+            <div className='orders__item_right-block_buttons'>
               <Dialog
-                as="div"
+                as='div'
                 className={styles.modal}
                 open={modalOpen}
                 onClose={() => setModalOpen(false)}
               >
-                <div className={styles.modal_bg} aria-hidden="true"></div>
+                <div className={styles.modal_bg} aria-hidden='true'></div>
                 <div className={styles.modal_scroll}>
                   <div className={styles.modal_container}>
                     <Dialog.Panel>
@@ -156,20 +157,20 @@ const OrdersItem = ({
                         <textarea
                           onChange={updateReview}
                           value={review.text}
-                          type="text"
-                          name="text"
-                          id=""
+                          type='text'
+                          name='text'
+                          id=''
                           className={styles.item_inp}
-                          placeholder="Комментарий к отзыву..."
+                          placeholder='Комментарий к отзыву...'
                         />
-                        <label htmlFor="anon" className={styles.item_checkbox}>
+                        <label htmlFor='anon' className={styles.item_checkbox}>
                           Анонимный отзыв
                           <input
                             checked={anon}
                             onChange={() => setAnon(!anon)}
-                            type="checkbox"
-                            name=""
-                            id="anon"
+                            type='checkbox'
+                            name=''
+                            id='anon'
                           />
                         </label>
                         <div className={styles.btns}>
@@ -193,16 +194,20 @@ const OrdersItem = ({
               </Dialog>
               <button
                 onClick={() => setModalOpen(true)}
-                className="orders__item_right-block_buttons_review"
+                className='orders__item_right-block_buttons_review'
               >
                 <span>Оставить отзыв</span>
               </button>
               <button
-                className="orders__item_right-block_buttons_add"
+                className={
+                  !isOpen
+                    ? 'orders__item_right-block_buttons_add'
+                    : 'orders__item_right-block_buttons_add active'
+                }
                 onClick={() => setIsOpen(!isOpen)}
               >
-                <div className="orders__item_right-block_buttons_add_plush"></div>
-                <div className="orders__item_right-block_buttons_add_plusv"></div>
+                <div className='orders__item_right-block_buttons_add_plush'></div>
+                <div className='orders__item_right-block_buttons_add_plusv'></div>
               </button>
             </div>
           </div>
@@ -212,42 +217,53 @@ const OrdersItem = ({
             isOpen ? 'orders__item_about active' : 'orders__item_about'
           }
         >
-          <div className="orders__item_about-block_wrapper">
-            <div className="orders__item_about-block">
-              <div className="orders__item_about-block_title">
+          <div className='orders__item_about-block_wrapper'>
+            <div className='orders__item_about-block'>
+              <div className='orders__item_about-block_title'>
                 Адрес получателя
               </div>
-              <div className="orders__item_about-block_suptitle">
+              <div className='orders__item_about-block_suptitle'>
                 {sdek_order.to_location.city}, {sdek_order.to_location.address}
               </div>
             </div>
-            <div className="orders__item_about-block">
-              <div className="orders__item_about-block_title">Получатель</div>
-              <div className="orders__item_about-block_suptitle">
+            <div className='orders__item_about-block'>
+              <div className='orders__item_about-block_title'>Получатель</div>
+              <div className='orders__item_about-block_suptitle'>
                 {sdek_order.recipient.name}
               </div>
             </div>
-            <div className="orders__item_about-block">
-              <div className="orders__item_about-block_title">Вес посылки</div>
-              <div className="orders__item_about-block_suptitle">
+            <div className='orders__item_about-block'>
+              <div className='orders__item_about-block_title'>Вес посылки</div>
+              <div className='orders__item_about-block_suptitle'>
                 {sdek_order.packages[0].weight} г
               </div>
             </div>
-            <div className="orders__item_about-block">
-              <div className="orders__item_about-block_title">Трек номер</div>
-              <div className="orders__item_about-block_suptitle">
+            <div className='orders__item_about-block'>
+              <div className='orders__item_about-block_title'>Трек номер</div>
+              <div className='orders__item_about-block_suptitle'>
                 RH155087446CN
               </div>
             </div>
+            <div className='orders__item_about-block'>
+              <div className='orders__item_about-block_title'>
+                Характеристика товара
+              </div>
+              <Link
+                to={`/item/${id}`}
+                className='orders__item_about-block_suptitle'
+              >
+                Перейти к товару <span></span>
+              </Link>
+            </div>
           </div>
-          <div className="orders__item_about-block_wrapper">
-            <div className="orders__item_about-block">
-              <div className="orders__item_about-block_title">
+          <div className='orders__item_about-block_wrapper'>
+            <div className='orders__item_about-block'>
+              <div className='orders__item_about-block_title'>
                 Этапы отправки
               </div>
 
-              <div className="orders__item_about-block_timline">
-                <ul className="orders__item_about-block_timline_line">
+              <div className='orders__item_about-block_timline'>
+                <ul className='orders__item_about-block_timline_line'>
                   {sdek_order.statuses.map((_, index) => (
                     <>
                       <li></li>
@@ -255,21 +271,21 @@ const OrdersItem = ({
                     </>
                   ))}
                 </ul>
-                <div className="orders__item_about-block_timline_text">
+                <div className='orders__item_about-block_timline_text'>
                   {sdek_order.statuses.map((status) => (
                     <div
                       key={status.code}
-                      className="orders__item_about-block_timline_text-block"
+                      className='orders__item_about-block_timline_text-block'
                     >
-                      <div className="orders__item_about-block_timline_text-block_up-block">
-                        <div className="orders__item_about-block_timline_text-block_up-block_title">
+                      <div className='orders__item_about-block_timline_text-block_up-block'>
+                        <div className='orders__item_about-block_timline_text-block_up-block_title'>
                           {status.code}
                         </div>
-                        <div className="orders__item_about-block_timline_text-block_up-block_date">
+                        <div className='orders__item_about-block_timline_text-block_up-block_date'>
                           {status.date_time.slice(0, 10)}
                         </div>
                       </div>
-                      <div className="orders__item_about-block_timline_text-block_description">
+                      <div className='orders__item_about-block_timline_text-block_description'>
                         {status.name}
                       </div>
                     </div>
@@ -277,19 +293,11 @@ const OrdersItem = ({
                 </div>
               </div>
             </div>
-            <div className="orders__item_about-block">
-              <div className="orders__item_about-block_title">
-                Характеристика товара
-              </div>
-              <Link to={`/item/${id}`}>
-                Перейти к товару <span></span>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
     </BodyReviewContext.Provider>
-  )
+  );
 }
 OrdersItem.propTypes = {
   defaultState: PropTypes.number,

@@ -100,12 +100,19 @@
                         width: 2px
                         background: #416EF2
                         transform: translateX(-8px)
+                        transition: all .2s linear
                     &_plush
                         content: ''
                         height: 2px
                         width: 18px
                         background: #416EF2
                         transform: translateX(2px)
+                        transition: all .2s linear
+                    &.active > &_plush
+                        opacity: 0
+                    &.active > &_plusv
+                        transform: rotate(-90deg) translateY(-8px) 
+                    
         &_about
 
             border-radius: 30px
@@ -139,10 +146,23 @@
                     color: #416EF2
                     margin-bottom: 18px
                 &_suptitle
+                    display: flex
+                    align-items: center
                     width: 215px
                     font-size: 16px
                     color: var(--color)
                     font-weight: 500
+                    & span
+                        margin-left: 5px
+                        display: inline-block
+                        width: 12px
+                        height: 12px
+                        border-right: 2px solid black
+                        border-bottom: 2px solid black
+                        transform: rotate(-45deg)
+                        transition: all .2s linear
+                    &:hover span
+                        transform: translateX(5px) rotate(-45deg)
                 &_timline
                     display: flex
 

@@ -49,7 +49,48 @@ const Menu = () => {
   const [localCategoryEn, setLocalCategoryEn] = useState('mouse');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showBurger, setShowBurger] = useState(false);
+
   const favoriteCount = favorites ? favorites.length : null;
+
+  const stylesBurgerMenuWrapperNoShow = {
+    width: '100vw',
+    height: '100vh',
+    position: 'absolute',
+    left: '0',
+    top: '100px',
+    zIndex: '0',
+    background: 'none',
+  };
+  const stylesBurgerMenuWrapperShow = {
+    width: '100vw',
+    height: '100vh',
+    position: 'absolute',
+    left: '0',
+    top: '100px',
+    zIndex: '0',
+    background: 'rgba(0, 0, 0, .6)',
+    transition: 'all .2s linear',
+  };
+  const stylesBurgerMenuListNoShow = {
+    transition: 'all .2s linear',
+    position: 'absolute',
+    background: 'transparent',
+    borderRadius: '30px',
+    top: '14px',
+    right: '-250px',
+    height: '85vh',
+    width: '247px',
+  };
+  const stylesBurgerMenuListShow = {
+    transition: 'all .2s linear',
+    position: 'absolute',
+    background: 'white',
+    borderRadius: '30px',
+    top: '14px',
+    right: '35px',
+    height: '84vh',
+    width: '247px',
+  };
 
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort));
@@ -453,7 +494,18 @@ const Menu = () => {
                     </DropDown>
                   </div>
                 </div>
-              ) : null}
+              ) : (
+                <button
+                  onClick={() => setShowBurger(!showBurger)}
+                  className={classNames(styles.search_section_burger, {
+                    [styles.active]: showBurger,
+                  })}
+                >
+                  <span />
+                  <span />
+                  <span />
+                </button>
+              )}
             </>
           )
         ) : (
@@ -464,8 +516,10 @@ const Menu = () => {
               </Link>
             ) : (
               <button
-                onCLick={!showBurger}
-                // className={showBurger ? styles.search_section_burger }
+                onClick={() => setShowBurger(!showBurger)}
+                className={classNames(styles.search_section_burger, {
+                  [styles.active]: showBurger,
+                })}
               >
                 <span />
                 <span />
@@ -474,6 +528,118 @@ const Menu = () => {
             )}
           </>
         )}
+
+        <div
+          className={styles.search_section_burger_wrapper}
+          style={
+            !showBurger
+              ? stylesBurgerMenuWrapperNoShow
+              : stylesBurgerMenuWrapperShow
+          }
+        >
+          {isAuth ? (
+            status === 'success' && (
+              <ul
+                className={styles.search_section_burger_items}
+                style={
+                  !showBurger
+                    ? stylesBurgerMenuListNoShow
+                    : stylesBurgerMenuListShow
+                }
+              >
+                <Link
+                  onClick={() => setShowBurger(!showBurger)}
+                  to='/personal'
+                  className={styles.search_section_burger_items_item}
+                >
+                  Профиль
+                </Link>
+                <hr className='hr' />
+                <Link
+                  onClick={() => setShowBurger(!showBurger)}
+                  to='/cart'
+                  className={styles.search_section_burger_items_item}
+                >
+                  Моя корзина
+                </Link>
+                <hr className='hr' />
+                <Link
+                  onClick={() => setShowBurger(!showBurger)}
+                  to='/personal/favorites'
+                  className={styles.search_section_burger_items_item}
+                >
+                  Избранное
+                </Link>
+                <hr className='hr' />
+                <Link
+                  onClick={() => setShowBurger(!showBurger)}
+                  to='/settings'
+                  className={styles.search_section_burger_items_item}
+                >
+                  Настройки
+                </Link>
+                <hr className='hr' />
+                <Link
+                  to='/orders'
+                  onClick={() => setShowBurger(!showBurger)}
+                  className={styles.search_section_burger_items_item}
+                >
+                  Мои заказы
+                </Link>
+                <hr className='hr' />
+                <li
+                  onClick={(() => setShowBurger(!showBurger), onClickLogout)}
+                  className={styles.search_section_burger_items_item}
+                >
+                  Выйти
+                </li>
+              </ul>
+            )
+          ) : (
+            <ul
+              className={styles.search_section_burger_items}
+              style={
+                !showBurger
+                  ? stylesBurgerMenuListNoShow
+                  : stylesBurgerMenuListShow
+              }
+            >
+              <Link
+                onClick={() => setShowBurger(!showBurger)}
+                to='/login'
+                className={styles.search_section_burger_items_item}
+              >
+                Войти
+              </Link>
+              <hr className='hr' />
+              <Link
+                onClick={() => setShowBurger(!showBurger)}
+                to='/register'
+                className={styles.search_section_burger_items_item}
+              >
+                Зарегистрироваться
+              </Link>
+              <hr className='hr' />
+              <li
+                onClick={() => setShowBurger(!showBurger)}
+                className={styles.search_section_burger_items_item}
+              >
+                Мои избранные
+              </li>
+              <hr className='hr' />
+              <li
+                onClick={() => setShowBurger(!showBurger)}
+                className={styles.search_section_burger_items_item}
+              >
+                Моя корзина
+              </li>
+              <li
+                onClick={() => setShowBurger(!showBurger)}
+                className={styles.search_section_burger_items_item}
+              ></li>
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

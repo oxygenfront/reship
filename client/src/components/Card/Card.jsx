@@ -121,13 +121,13 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                   styles.main_catalog__products_wrapper_item_slider_slide
                 }
                 style={{
-                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
+                  // backgroundImage: `url('${JSON.parse(image)[0]}')`,
                   backgroundSize: 'cover',
                 }}
               ></SwiperSlide>
               <SwiperSlide
                 style={{
-                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
+                  // backgroundImage: `url('${JSON.parse(image)[0]}')`,
                   backgroundSize: 'cover',
                 }}
                 className={
@@ -136,7 +136,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               ></SwiperSlide>
               <SwiperSlide
                 style={{
-                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
+                  // backgroundImage: `url('${JSON.parse(image)[0]}')`,
                   backgroundSize: 'cover',
                 }}
                 className={

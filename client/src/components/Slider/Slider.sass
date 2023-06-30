@@ -97,7 +97,20 @@
     .slider__section
         &__item
             padding-left: 200px
+            &_title
+                width: 100%
+                // text-align: center
         & .swiper-button-next
             right: 50px
         & .swiper-button-prev
             left: 50px
+@media (max-width: 767px)
+    .slider__section
+        &__item
+            padding-left: 165px
+            &_link
+                padding: 20px 40px
+        // & .swiper-button-next
+        //     right: 50px
+        // & .swiper-button-prev
+        //     left: 50px

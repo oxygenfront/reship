@@ -148,6 +148,7 @@
     right: 15px
     bottom: 21px
 .search_section
+  position: relative
   display: flex
   align-items: center
   margin-top: 80px
@@ -161,20 +162,50 @@
   z-index: 50
   // border-bottom: 1px solid #E8EBF5
   &_burger
+    position: relative
     display: flex
     flex-direction: column
-    justify-content: space-between
-    width: 20px
-    height: 13px
+    justify-content: center
+    align-items: center
+    width: 40px
     background: transparent
+    transition: all .2s ease
+    border-radius: 30px
+    height: 37px
     & span
       display: block
       content: ''
-      width: 100%
-      height: 2px
+      width: 20px
+      height: 3px
       background: #0540F2
       border-radius: 10px
       transition: all .2s linear
+      &:not(:last-child)
+        margin-bottom: 4px
+    &.active
+      background: #AEC5F2
+    &_wrapper
+      // width: 100vw
+      // height: 100vh
+      // position: absolute
+      // left: 0
+      // top: 100px
+      // background: rgba(0, 0, 0, .6)
+      transition: all .2s linear
+    &_items
+      transition: all .2s linear
+      padding: 22px 35px
+      // position: absolute
+      // background: white
+      // border-radius: 30px
+      // top: 14px
+      // right: 35px
+      // height: 85vh
+      // width: 247px
+      &_item
+        font-size: 16px
+        font-weight: 500
+        cursor: pointer
   &__container
     display: flex
     justify-content: space-between
@@ -458,9 +489,29 @@
     border-bottom: 2px solid var(--togray)
 
 @media (max-width: 1199px)
-
+  .container
+    max-width: 960px
 @media (max-width: 991px)
-
+  .container
+    max-width: 720px
+  .search_section
+    &__search_block
+      width: 60%
 @media (max-width: 767px)
-
+  .container
+    max-width: 540px
+  .search_section
+    &__search_block
+      width: 50%
+    &__catalog
+      width: 110px
+      font-size: 15px
 @media (max-width: 575px)
+  .search_section
+    &__search_block
+      width: 50%
+    &__catalog
+      width: 100px
+      font-size: 14px
+  .container
+    max-width: 100%

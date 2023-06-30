@@ -37,6 +37,7 @@ const initialState = {
   data: null,
   commentsStatus: 'loading', // 'loading', 'success', 'error'
   comments: [],
+  arrStatus: 'loading',
 }
 const commentSlice = createSlice({
   name: 'comment',
@@ -57,16 +58,16 @@ const commentSlice = createSlice({
       state.data = []
     })
     builder.addCase(fetchGetReviewsForProductId.pending, (state, action) => {
-      state.commentsStatus = 'loading'
+      state.arrStatus = 'loading'
       state.comments = []
     })
     builder.addCase(fetchGetReviewsForProductId.fulfilled, (state, action) => {
       state.comments = action.payload
-      state.commentsStatus = 'success'
+      state.arrStatus = 'success'
     })
     builder.addCase(fetchGetReviewsForProductId.rejected, (state, action) => {
       console.log(action)
-      state.commentsStatus = 'error'
+      state.arrStatus = 'error'
       state.comments = []
     })
     builder.addCase(fetchGetReviewsFromAuthor.pending, (state, action) => {

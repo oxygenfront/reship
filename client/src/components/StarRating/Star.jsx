@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
-import { BodyReviewContext } from '../OrdersItem/OrdersItem';
-import * as image from '../../images/index';
+import React, { useContext, useState } from 'react'
+import { BodyReviewContext } from '../OrdersItem/OrdersItem'
+
 function Star({ value }) {
   const {
     emptyColor,
@@ -11,21 +11,21 @@ function Star({ value }) {
     setHover,
     setRating,
     width,
-  } = useContext(BodyReviewContext);
+  } = useContext(BodyReviewContext)
   // const [rating, setRating] = useState(0)
   // const [hover, setHover] = useState(null)
 
   return (
     <div
-      className='star'
+      className="star"
       onClick={() => setRating(value)}
       onMouseEnter={() => setHover(value)}
       onMouseLeave={() => setHover(null)}
     >
       {value <= (hover || rating) ? (
-        <img src={image.starOutline} alt='' />
+        <img src="../assets/img/star 14.png" alt="star" />
       ) : (
-        <img src={image.starFull} alt='' />
+        <img src="../assets/img/star 16.png" alt="star" />
       )}
       {/* <svg
         data-rating={value}
@@ -39,9 +39,8 @@ function Star({ value }) {
           points='9.9, 1.1, 3.3, 21.78, 19.8, 8.58, 0, 8.58, 16.5, 21.78'
         />
       </svg> */}
-      
     </div>
-  );
+  )
 }
 
-export default Star;
+export default Star

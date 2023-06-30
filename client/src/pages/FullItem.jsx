@@ -30,7 +30,7 @@ const FullItem = () => {
   const token = localStorage.getItem('token')
   const theme = useSelector((state) => state.theme)
   const { id } = useParams()
-  const { comments, commentsStatus } = useSelector(selectCommentsData)
+  const { comments, arrStatus } = useSelector(selectCommentsData)
   const { item, status } = useSelector(selectFullItemData)
   const dispatch = useDispatch()
   const { favorites } = useSelector(selectFavorites)
@@ -303,7 +303,7 @@ const FullItem = () => {
       <div className="fullitem__comments container">
         <p className="fullitem__comments_title">Отзывы</p>
         <div className="fullitem__comments_items">
-          {commentsStatus === 'success' && comments.items.length > 0 ? (
+          {arrStatus === 'success' && comments.items.length > 0 ? (
             comments.items.map((comment) => (
               <Comment
                 anon={comment.anon}

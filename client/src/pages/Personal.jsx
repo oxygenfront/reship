@@ -185,7 +185,11 @@ const Personal = () => {
                           <DropDown.Button className="">
                             <div onClick={() => setIsOpen(!isOpen)}>
                               <img
-                                src="../assets/img/settings-button.png"
+                                src={
+                                  theme === 'dark'
+                                    ? '../assets/img/settings dark theme.jpg'
+                                    : '../assets/img/settings-button.png'
+                                }
                                 alt="settings"
                               />
                             </div>
@@ -386,8 +390,9 @@ const Personal = () => {
             <div className="personal__reviews-block_title">Мои отзывы</div>
 
             {commentsStatus === 'success' && comments.length > 0 ? (
-              comments.rows.map((comment) => (
+              comments.rows.map((comment, index) => (
                 <Swiper
+                  key={comment}
                   modules={[Navigation]}
                   navigation
                   speed={1300}
@@ -473,9 +478,9 @@ const Personal = () => {
                       <div key={index}>
                         <SwiperSlide className="personal__interesting_slider-item">
                           <Card
-                            key={item.id}
                             view={'grid'}
                             id={item.id}
+                            image={item.image_link}
                             price={item.price}
                             name={item.name}
                           ></Card>
@@ -497,7 +502,7 @@ const Personal = () => {
                     .map((item) => (
                       <Card
                         view="grid"
-                        image={JSON.parse(item.image_link)}
+                        image={item.image_link}
                         key={item.id}
                         id={item.id}
                         name={item.name}

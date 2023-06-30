@@ -5,6 +5,7 @@ import { selectUserData } from '../redux/slices/authSlice'
 import {
   fetchChangeBasic,
   fetchChangeDelivery,
+  fetchChangeName,
   fetchChangePassword,
 } from '../redux/slices/changeSlice'
 
@@ -133,6 +134,19 @@ function Settings() {
     }
     if (data.payload) {
       return alert('Контактная информация успешно изменена')
+    }
+  }
+  console.log(changeProfile)
+  const onClickSaveName = async () => {
+    setChange({ contacts: !change.profile })
+
+    console.log(changeProfile)
+    const data = await dispatch(fetchChangeName(changeProfile))
+    if (!data.payload) {
+      return alert('Не удалось изменить имя')
+    }
+    if (data.payload) {
+      return alert('Имя успешно изменено')
     }
   }
 
@@ -318,6 +332,7 @@ function Settings() {
                         <div className="settings__change_block_title">Имя</div>
                         <input
                           autoFocus
+                          name="first_name"
                           onChange={updateProfile}
                           value={changeProfile.first_name}
                           type="text"
@@ -331,6 +346,7 @@ function Settings() {
                           Фамилия
                         </div>
                         <input
+                          name="last_name"
                           onChange={updateProfile}
                           value={changeProfile.last_name}
                           type="text"
@@ -347,7 +363,10 @@ function Settings() {
                       >
                         Отменить
                       </button>
-                      <button className="settings__change_block_buttons_save">
+                      <button
+                        onClick={onClickSaveName}
+                        className="settings__change_block_buttons_save"
+                      >
                         Сохранить изменения
                       </button>
                     </div>

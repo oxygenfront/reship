@@ -22,7 +22,7 @@ const Catalog = () => {
 
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
-  const { choosenCategorie, searchValue, choosenPrice } =
+  const { choosenCategorie, searchValue, choosenPrice, choosenType } =
     useSelector(selectFilter)
   console.log(choosenPrice)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
@@ -71,7 +71,7 @@ const Catalog = () => {
   }
   const categories = [...set]
   const brands = [...brandSet]
-  if (searchValue === '' && choosenCategorie === '') {
+  if (searchValue === '' && choosenCategorie === '' && choosenType === '') {
     return <Navigate to="/"></Navigate>
   }
 
@@ -150,12 +150,23 @@ const Catalog = () => {
               <div className="catalog__sort-block">
                 <div className="catalog__sort_title">Тип </div>
                 <label
-                  htmlFor="category7"
+                  htmlFor="category8"
                   className="catalog__sort_checkbox-name"
                 >
-                  Оптическая
+                  В наличии
                   <input
-                    id="category7"
+                    id="category8"
+                    type="checkbox"
+                    className="catalog__sort_checkbox"
+                  />
+                </label>
+                <label
+                  htmlFor="category9"
+                  className="catalog__sort_checkbox-name"
+                >
+                  Со скидкой
+                  <input
+                    id="category9"
                     type="checkbox"
                     className="catalog__sort_checkbox"
                   />
@@ -192,30 +203,7 @@ const Catalog = () => {
                   />
                 </InputGroup>
               </div>
-              <div className="catalog__sort-block">
-                <label
-                  htmlFor="category8"
-                  className="catalog__sort_checkbox-name"
-                >
-                  В наличии
-                  <input
-                    id="category8"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-                <label
-                  htmlFor="category9"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Со скидкой
-                  <input
-                    id="category9"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-              </div>
+              <div className="catalog__sort-block"></div>
               <div className="catalog__sort-block_buttons">
                 <button
                   onClick={confirmFilters}

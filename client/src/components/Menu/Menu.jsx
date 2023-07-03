@@ -84,7 +84,7 @@ const Menu = () => {
   const stylesBurgerMenuListShow = {
     transition: 'all .2s linear',
     position: 'absolute',
-    background: 'white',
+   
     borderRadius: '30px',
     top: '14px',
     right: '35px',

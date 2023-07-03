@@ -8,21 +8,14 @@ import {
   selectCartItemById,
 } from '../../redux/slices/cartSlice'
 import styles from './Card.module.sass'
-import {
-  fetchAuthMe,
-  selectIsAuth,
-  selectUserData,
-} from '../../redux/slices/authSlice'
+import { selectIsAuth, selectUserData } from '../../redux/slices/authSlice'
 import {
   addFavorite,
-  fetchAddFavorite,
-  fetchDeleteFavorite,
   removeFavorite,
   selectFavorites,
 } from '../../redux/slices/favoriteSlice'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
-import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
 
 const Card = ({ name, image, price, id, old_price, view, description }) => {
   const dispatch = useDispatch()
@@ -121,13 +114,13 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                   styles.main_catalog__products_wrapper_item_slider_slide
                 }
                 style={{
-                  // backgroundImage: `url('${JSON.parse(image)[0]}')`,
+                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
                   backgroundSize: 'cover',
                 }}
               ></SwiperSlide>
               <SwiperSlide
                 style={{
-                  // backgroundImage: `url('${JSON.parse(image)[0]}')`,
+                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
                   backgroundSize: 'cover',
                 }}
                 className={
@@ -136,7 +129,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               ></SwiperSlide>
               <SwiperSlide
                 style={{
-                  // backgroundImage: `url('${JSON.parse(image)[0]}')`,
+                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
                   backgroundSize: 'cover',
                 }}
                 className={

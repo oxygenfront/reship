@@ -23,7 +23,7 @@ const AdminItem = ({ id, price, image, name }) => {
         <div>
           <img
             className={styles.image}
-            src={`../assets/products_img/${id}.png`}
+            src={JSON.parse(image)[0]}
             alt="img"
           />
         </div>

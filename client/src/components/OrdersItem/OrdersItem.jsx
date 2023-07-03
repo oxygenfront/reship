@@ -134,7 +134,7 @@ const OrdersItem = ({
                       <div className={styles.item_wrapper}>
                         <div className={styles.item_titles}>
                           <p>Товар</p>
-                          <Link>Перейти к товару</Link>
+                          <Link to={`/item/${id}`}>Перейти к товару</Link>
                         </div>
                         <div className={styles.item}>
                           <div className={styles.item_left}>

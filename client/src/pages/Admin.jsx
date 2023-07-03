@@ -40,33 +40,21 @@ const Admin = () => {
       <Link className="admin-wrapper-promocodesbtn" to="/admin/promocodes">
         Промокоды
       </Link>
-      {categories.map((categorie, index) => (
-        <>
-          <div className="catalog__suptitle" key={categorie} id={categorie}>
-            <span>{categorie}</span>
-          </div>
-          <div key={index} className="admin-items-block">
+      
             {status === 'loading'
               ? null
               : items
-                  .filter((item) => {
-                    if (item.category === categorie) {
-                      return true
-                    } else {
-                      return false
-                    }
-                  })
+                  
                   .map((item) => (
                     <AdminItem
+                    image={item.image_link}
                       key={item.id}
                       id={item.id}
                       name={item.name}
                       price={item.price}
                     ></AdminItem>
                   ))}
-          </div>
-        </>
-      ))}
+          
     </div>
   )
 }

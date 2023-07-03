@@ -25,9 +25,8 @@ export const fetchDeleteItem = createAsyncThunk(
 )
 export const fetchGetPayments = createAsyncThunk(
   'auth/fetchGetPayments',
-  async (token) => {
-   
-    const { data } = await axios.post('/getPayments', token)
+  async () => {
+    const { data } = await axios.get('/getPayments')
     console.log(data)
     return data
   }
@@ -43,9 +42,8 @@ export const fetchAcceptPayment = createAsyncThunk(
 )
 export const fetchAllOrders = createAsyncThunk(
   'auth/fetchAllOrders',
-  async (token) => {
-    console.log(token)
-    const { data } = await axios.post('/getOrdersAll', token)
+  async () => {
+    const { data } = await axios.get('/getOrdersAll')
     console.log(data)
     return data
   }

@@ -334,8 +334,9 @@ const Personal = () => {
               </div>
               <div className="personal__middle-block_latest-orders_items-block">
                 {ordersStatus !== 'success' ? (
-                  [...new Array(3)].map(() => (
+                  [...new Array(3)].map((_, index) => (
                     <ContentLoader
+                      key={index}
                       speed={1.5}
                       width={350}
                       height={200}

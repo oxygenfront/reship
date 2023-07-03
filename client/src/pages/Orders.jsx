@@ -30,8 +30,9 @@ function Orders() {
           Мои <span>заказы</span>
         </div>
         {ordersStatus !== 'success' ? (
-          [...new Array(3)].map(() => (
+          [...new Array(3)].map((_, index) => (
             <ContentLoader
+              key={index}
               speed={1.5}
               width={736}
               height={250}

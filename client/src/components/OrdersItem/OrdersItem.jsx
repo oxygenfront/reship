@@ -215,6 +215,8 @@ const OrdersItem = ({
                     ? 'orders__item_right-block_buttons_add'
                     : 'orders__item_right-block_buttons_add active'
                 }
+                style={uuid === '' ? { opacity: '.45' } : {}}
+                disabled={uuid === ''}
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <div className="orders__item_right-block_buttons_add_plush"></div>
@@ -234,25 +236,26 @@ const OrdersItem = ({
                 Адрес получателя
               </div>
               <div className="orders__item_about-block_suptitle">
-                {sdek_order.to_location.city}, {sdek_order.to_location.address}
+                {uuid !== '' ? sdek_order.to_location.city : null},{' '}
+                {uuid !== '' ? sdek_order.to_location.adress : null}
               </div>
             </div>
             <div className="orders__item_about-block">
               <div className="orders__item_about-block_title">Получатель</div>
               <div className="orders__item_about-block_suptitle">
-                {sdek_order.recipient.name}
+                {uuid !== '' ? sdek_order.recipient.name : null}
               </div>
             </div>
             <div className="orders__item_about-block">
               <div className="orders__item_about-block_title">Вес посылки</div>
               <div className="orders__item_about-block_suptitle">
-                {sdek_order.packages[0].weight} г
+                {uuid !== '' ? sdek_order.packages[0].weight : null} г
               </div>
             </div>
             <div className="orders__item_about-block">
               <div className="orders__item_about-block_title">Трек номер</div>
               <div className="orders__item_about-block_suptitle">
-                {sdek_order.cdek_number}
+                {uuid !== '' ? sdek_order.cdek_number : null}
               </div>
             </div>
             <div className="orders__item_about-block">
@@ -275,32 +278,34 @@ const OrdersItem = ({
 
               <div className="orders__item_about-block_timline">
                 <ul className="orders__item_about-block_timline_line">
-                  {sdek_order.statuses.map((_, index) => (
-                    <React.Fragment key={index}>
-                      <li></li>
-                      <li></li>
-                    </React.Fragment>
-                  ))}
+                  {uuid !== '' &&
+                    sdek_order.statuses.map((_, index) => (
+                      <React.Fragment key={index}>
+                        <li></li>
+                        <li></li>
+                      </React.Fragment>
+                    ))}
                 </ul>
                 <div className="orders__item_about-block_timline_text">
-                  {sdek_order.statuses.map((status) => (
-                    <div
-                      key={status.code}
-                      className="orders__item_about-block_timline_text-block"
-                    >
-                      <div className="orders__item_about-block_timline_text-block_up-block">
-                        <div className="orders__item_about-block_timline_text-block_up-block_title">
-                          {status.code}
+                  {uuid !== '' &&
+                    sdek_order.statuses.map((status) => (
+                      <div
+                        key={status.code}
+                        className="orders__item_about-block_timline_text-block"
+                      >
+                        <div className="orders__item_about-block_timline_text-block_up-block">
+                          <div className="orders__item_about-block_timline_text-block_up-block_title">
+                            {status.code}
+                          </div>
+                          <div className="orders__item_about-block_timline_text-block_up-block_date">
+                            {status.date_time.slice(0, 10)}
+                          </div>
                         </div>
-                        <div className="orders__item_about-block_timline_text-block_up-block_date">
-                          {status.date_time.slice(0, 10)}
+                        <div className="orders__item_about-block_timline_text-block_description">
+                          {status.name}
                         </div>
                       </div>
-                      <div className="orders__item_about-block_timline_text-block_description">
-                        {status.name}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             </div>

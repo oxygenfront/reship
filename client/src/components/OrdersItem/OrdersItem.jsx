@@ -43,7 +43,7 @@ const OrdersItem = ({
     text: '',
     product_id: Number(id),
   })
-  console.log(sdek_order)
+  console.log(sdek_order, uuid)
 
   const setRatingFn = (value) => {
     if (readOnly) return
@@ -223,19 +223,19 @@ const OrdersItem = ({
                 Адрес получателя
               </div>
               <div className='orders__item_about-block_suptitle'>
-                {sdek_order.to_location.city}, {sdek_order.to_location.address}
+                {/* {sdek_order.to_location.city}, {sdek_order.to_location.address} */}
               </div>
             </div>
             <div className='orders__item_about-block'>
               <div className='orders__item_about-block_title'>Получатель</div>
               <div className='orders__item_about-block_suptitle'>
-                {sdek_order.recipient.name}
+                {/* {sdek_order.recipient.name} */}
               </div>
             </div>
             <div className='orders__item_about-block'>
               <div className='orders__item_about-block_title'>Вес посылки</div>
               <div className='orders__item_about-block_suptitle'>
-                {sdek_order.packages[0].weight} г
+                {/* {sdek_order.packages[0].weight} г */}
               </div>
             </div>
             <div className='orders__item_about-block'>
@@ -264,15 +264,15 @@ const OrdersItem = ({
 
               <div className='orders__item_about-block_timline'>
                 <ul className='orders__item_about-block_timline_line'>
-                  {sdek_order.statuses.map((_, index) => (
+                  {/* {sdek_order.statuses.map((_, index) => (
                     <>
                       <li></li>
                       <li></li>
                     </>
-                  ))}
+                  ))} */}
                 </ul>
                 <div className='orders__item_about-block_timline_text'>
-                  {sdek_order.statuses.map((status) => (
+                  {/* {sdek_order.statuses.map((status) => (
                     <div
                       key={status.code}
                       className='orders__item_about-block_timline_text-block'
@@ -289,7 +289,7 @@ const OrdersItem = ({
                         {status.name}
                       </div>
                     </div>
-                  ))}
+                  ))} */}
                 </div>
               </div>
             </div>

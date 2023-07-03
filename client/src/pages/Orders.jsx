@@ -30,6 +30,7 @@ function Orders() {
         </div>
         {ordersStatus === 'success' && orders.length > 0 ? (
           orders.map((order) =>
+            
             order.products.map((product) => (
               <OrdersItem
                 image={product.image}
@@ -42,7 +43,8 @@ function Orders() {
                 color={product.color}
                 count={product.count}
               ></OrdersItem>
-            ))
+            )
+            )
           )
         ) : (
           <div className="cart__empty_wrapper">

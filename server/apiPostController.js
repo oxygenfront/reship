@@ -1340,9 +1340,9 @@ class ApiPostController {
         }
 
         for (let i = 0; i < ready_json.length; i++) {
-          if (ready_json[0].uuid !== "") {
-            const sdek_order = await getOrderSdek(ready_json[0].uuid_sdek);
-            ready_json[0].sdek_order = sdek_order;
+          if (ready_json[i].uuid !== "") {
+            const sdek_order = await getOrderSdek(ready_json[i].uuid_sdek);
+            ready_json[i].sdek_order = sdek_order;
           }
         }
 

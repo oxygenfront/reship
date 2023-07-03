@@ -1,58 +1,46 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import { Card, DeliveryItem, PersonItem } from '../components';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAuth, selectUserData } from '../redux/slices/authSlice';
-
-import { selectItemsData } from '../redux/slices/itemsSlice';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper';
-import { Menu as DropDown } from '@headlessui/react';
-import { DateRangePicker } from 'rsuite';
-import {
-  fetchGetOrdersById,
-  selectOrderData,
-} from '../redux/slices/orderSlice';
+import React, { useEffect, useState, Fragment } from 'react'
+import { Link, Navigate } from 'react-router-dom'
+import { Card, DeliveryItem, PersonItem } from '../components'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
+import ContentLoader from 'react-content-loader'
+import { selectItemsData } from '../redux/slices/itemsSlice'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation } from 'swiper'
+import { Menu as DropDown } from '@headlessui/react'
+import { DateRangePicker } from 'rsuite'
+import { fetchGetOrdersById, selectOrderData } from '../redux/slices/orderSlice'
 import {
   fetchGetReviewsFromAuthor,
   selectCommentsData,
-} from '../redux/slices/commentSlice';
+} from '../redux/slices/commentSlice'
 
 const Personal = () => {
-  const dispatch = useDispatch();
-  const { orders, ordersStatus } = useSelector(selectOrderData);
+  const dispatch = useDispatch()
+  const { orders, ordersStatus } = useSelector(selectOrderData)
 
-  const { comments, commentsStatus } = useSelector(selectCommentsData);
-  const theme = useSelector((state) => state.theme);
-  const isAuth = useSelector(selectIsAuth);
-  const { data, status } = useSelector(selectUserData);
-  const { items, itemsStatus = status } = useSelector(selectItemsData);
-  const token = localStorage.getItem('token');
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { comments, commentsStatus } = useSelector(selectCommentsData)
+  const theme = useSelector((state) => state.theme)
+  const isAuth = useSelector(selectIsAuth)
+  const { data, status } = useSelector(selectUserData)
+  const { items, itemsStatus = status } = useSelector(selectItemsData)
+  const token = localStorage.getItem('token')
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [sortBy, setSortBy] = useState({
     date: false,
     status: false,
     price: false,
-  });
-  const [calendarValue, setCalendarValue] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [sortStatus, setSortStatus] = useState('all');
-  const [sortPrice, setSortPrice] = useState('');
+  })
+  const [calendarValue, setCalendarValue] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [sortStatus, setSortStatus] = useState('all')
+  const [sortPrice, setSortPrice] = useState('')
   const [personName, setPersonName] = useState({
     firstName: 'Имя',
     lastName: 'Фамилия',
-  });
-  console.log(calendarValue);
+  })
+  console.log(calendarValue)
 
-  function timeConverter(UNIX_timestamp) {
-    const date = new Date(UNIX_timestamp);
-
-    return date.toLocaleString('ru-US', {
-      day: 'numeric',
-      year: 'numeric',
-      month: 'long',
-    });
-  }
   useEffect(() => {
     status === 'success' &&
       dispatch(
@@ -83,33 +71,33 @@ const Personal = () => {
                 ).getTime()
               : '',
         })
-      );
-  }, [status, sortPrice, sortStatus, calendarValue]);
+      )
+  }, [status, sortPrice, sortStatus, calendarValue])
   useEffect(() => {
-    dispatch(fetchGetReviewsFromAuthor(token));
-  }, []);
+    dispatch(fetchGetReviewsFromAuthor(token))
+  }, [])
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     if (status === 'success') {
       setPersonName({
         firstName: data.first_name,
         lastName: data.last_name,
-      });
+      })
     }
-  }, [status]);
+  }, [status])
 
   if (status === 'success' && !isAuth) {
-    return <Navigate to='/'></Navigate>;
+    return <Navigate to="/"></Navigate>
   }
   // if (status === 'success') {
   //   data.favorites.map((order) => console.log(order))
@@ -117,10 +105,10 @@ const Personal = () => {
 
   return (
     <>
-      <div className='personal'>
-        <div className='personal__container container'>
-          <div className='personal__user-block'>
-            <div className='personal__user-block_name'>
+      <div className="personal">
+        <div className="personal__container container">
+          <div className="personal__user-block">
+            <div className="personal__user-block_name">
               Добрый день, <br />{' '}
               {status === 'success' && data.first_name ? (
                 <span>
@@ -128,21 +116,21 @@ const Personal = () => {
                 </span>
               ) : null}
             </div>
-            <div className='personal__user-block_profile'>
-              <div className='personal__user-block_profile_img-block'>
+            <div className="personal__user-block_profile">
+              <div className="personal__user-block_profile_img-block">
                 <img
-                  src='../assets/user_img/default.jpg'
-                  alt='avatar'
-                  className='person__img'
+                  src="../assets/user_img/default.jpg"
+                  alt="avatar"
+                  className="person__img"
                 />
               </div>
-              <div className='personal__user-block_profile_right-block'>
-                <div className='personal__user-block_profile_right-block_name'>
+              <div className="personal__user-block_profile_right-block">
+                <div className="personal__user-block_profile_right-block_name">
                   {personName.firstName} {personName.lastName}
                 </div>
                 <Link
-                  to='/settings'
-                  className='personal__user-block_profile_right-block_button'
+                  to="/settings"
+                  className="personal__user-block_profile_right-block_button"
                 >
                   Изменить профиль
                 </Link>
@@ -150,42 +138,42 @@ const Personal = () => {
             </div>
           </div>
 
-          <div className='personal__middle-block'>
-            <div className='personal__middle-block_buttons'>
+          <div className="personal__middle-block">
+            <div className="personal__middle-block_buttons">
               <Link
-                to='/personal/favorites'
-                className='personal__middle-block_buttons_item'
+                to="/personal/favorites"
+                className="personal__middle-block_buttons_item"
               >
                 Избранные
               </Link>
-              <Link to='/cart' className='personal__middle-block_buttons_item'>
+              <Link to="/cart" className="personal__middle-block_buttons_item">
                 Корзина
               </Link>
               <Link
-                to='/settings'
-                className='personal__middle-block_buttons_item'
+                to="/settings"
+                className="personal__middle-block_buttons_item"
               >
                 Настройки
               </Link>
               <Link
-                to='/orders'
-                className='personal__middle-block_buttons_item'
+                to="/orders"
+                className="personal__middle-block_buttons_item"
               >
                 Мои заказы
               </Link>
             </div>
-            <div className='personal__middle-block_latest-orders'>
-              <div className='personal__middle-block_latest-orders_header'>
+            <div className="personal__middle-block_latest-orders">
+              <div className="personal__middle-block_latest-orders_header">
                 <span>Последние заказы</span>
-                <div className='personal__middle-block_latest-orders_menu_wrapper'>
+                <div className="personal__middle-block_latest-orders_menu_wrapper">
                   <DropDown
-                    as='div'
-                    className='personal__middle-block_latest-orders_menu'
+                    as="div"
+                    className="personal__middle-block_latest-orders_menu"
                   >
                     {({ open }) => (
                       <>
                         <div>
-                          <DropDown.Button className=''>
+                          <DropDown.Button className="">
                             <div onClick={() => setIsOpen(!isOpen)}>
                               <img
                                 src={
@@ -193,7 +181,7 @@ const Personal = () => {
                                     ? '../assets/img/settings dark theme.jpg'
                                     : '../assets/img/settings-button.png'
                                 }
-                                alt='settings'
+                                alt="settings"
                               />
                             </div>
                           </DropDown.Button>
@@ -201,25 +189,25 @@ const Personal = () => {
                         {isOpen && (
                           <DropDown.Items
                             static
-                            className='personal__middle-block_latest-orders_menu_items'
+                            className="personal__middle-block_latest-orders_menu_items"
                           >
-                            <p className='personal__middle-block_latest-orders_menu_items-title'>
+                            <p className="personal__middle-block_latest-orders_menu_items-title">
                               Сортировать по
                             </p>
 
-                            <div className='personal__middle-block_latest-orders_menu_items-wrapper'>
+                            <div className="personal__middle-block_latest-orders_menu_items-wrapper">
                               <DropDown.Item
                                 onClick={(e) => {
-                                  setSortBy({ date: !sortBy.date });
+                                  setSortBy({ date: !sortBy.date })
                                 }}
-                                className='personal__middle-block_latest-orders_menu_items-item'
+                                className="personal__middle-block_latest-orders_menu_items-item"
                               >
-                                <div className=''>
+                                <div className="">
                                   <p>Дате</p>
-                                  <div className='personal__middle-block_latest-orders_menu_items-item_pluses'>
-                                    <div className='personal__middle-block_latest-orders_menu_items-item_pluses_block'>
-                                      <div className='personal__middle-block_latest-orders_menu_items-item_pluses_itemv'></div>
-                                      <div className='personal__middle-block_latest-orders_menu_items-item_pluses_itemh'></div>
+                                  <div className="personal__middle-block_latest-orders_menu_items-item_pluses">
+                                    <div className="personal__middle-block_latest-orders_menu_items-item_pluses_block">
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemv"></div>
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemh"></div>
                                     </div>
                                   </div>
                                 </div>
@@ -229,9 +217,9 @@ const Personal = () => {
                                   onChange={(value) => setCalendarValue(value)}
                                   value={calendarValue}
                                   isoWeek={true}
-                                  character=' до '
-                                  appearance='subtle'
-                                  size='xs'
+                                  character=" до "
+                                  appearance="subtle"
+                                  size="xs"
                                   placeholder={'Укажите период'}
                                   showOneCalendar={true}
                                   preventOverflow={false}
@@ -239,23 +227,23 @@ const Personal = () => {
                               ) : null}
                               <DropDown.Item
                                 onClick={(e) => {
-                                  setSortBy({ status: !sortBy.status });
-                                  e.cancelBubble = true;
+                                  setSortBy({ status: !sortBy.status })
+                                  e.cancelBubble = true
                                 }}
-                                className='personal__middle-block_latest-orders_menu_items-item'
+                                className="personal__middle-block_latest-orders_menu_items-item"
                               >
-                                <div className=''>
+                                <div className="">
                                   <p>Статусу заказа</p>
-                                  <div className='personal__middle-block_latest-orders_menu_items-item_pluses'>
-                                    <div className='personal__middle-block_latest-orders_menu_items-item_pluses_block'>
-                                      <div className='personal__middle-block_latest-orders_menu_items-item_pluses_itemv'></div>
-                                      <div className='personal__middle-block_latest-orders_menu_items-item_pluses_itemh'></div>
+                                  <div className="personal__middle-block_latest-orders_menu_items-item_pluses">
+                                    <div className="personal__middle-block_latest-orders_menu_items-item_pluses_block">
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemv"></div>
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemh"></div>
                                     </div>
                                   </div>
                                 </div>
                               </DropDown.Item>
                               {sortBy.status === true ? (
-                                <div className='personal__middle-block_latest-orders_menu_items-item_status-wrapper'>
+                                <div className="personal__middle-block_latest-orders_menu_items-item_status-wrapper">
                                   <ul>
                                     <li
                                       className={
@@ -294,20 +282,20 @@ const Personal = () => {
                                 onClick={() =>
                                   setSortBy({ price: !sortBy.price })
                                 }
-                                className='personal__middle-block_latest-orders_menu_items-item'
+                                className="personal__middle-block_latest-orders_menu_items-item"
                               >
-                                <div className=''>
+                                <div className="">
                                   <p>Цене</p>
-                                  <div className='personal__middle-block_latest-orders_menu_items-item_pluses'>
-                                    <div className='personal__middle-block_latest-orders_menu_items-item_pluses_block'>
-                                      <div className='personal__middle-block_latest-orders_menu_items-item_pluses_itemv'></div>
-                                      <div className='personal__middle-block_latest-orders_menu_items-item_pluses_itemh'></div>
+                                  <div className="personal__middle-block_latest-orders_menu_items-item_pluses">
+                                    <div className="personal__middle-block_latest-orders_menu_items-item_pluses_block">
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemv"></div>
+                                      <div className="personal__middle-block_latest-orders_menu_items-item_pluses_itemh"></div>
                                     </div>
                                   </div>
                                 </div>
                               </DropDown.Item>
                               {sortBy.price === true ? (
-                                <div className='personal__middle-block_latest-orders_menu_items-item_status-wrapper'>
+                                <div className="personal__middle-block_latest-orders_menu_items-item_status-wrapper">
                                   <ul>
                                     <li
                                       className={
@@ -316,9 +304,9 @@ const Personal = () => {
                                           : null
                                       }
                                       onClick={() => {
-                                        setSortPrice('highest');
+                                        setSortPrice('highest')
                                       }}
-                                      value='highest'
+                                      value="highest"
                                     >
                                       От наибольшей
                                     </li>
@@ -327,9 +315,9 @@ const Personal = () => {
                                         sortPrice === 'lowest' ? 'active' : null
                                       }
                                       onClick={() => {
-                                        setSortPrice('lowest');
+                                        setSortPrice('lowest')
                                       }}
-                                      value='lowest'
+                                      value="lowest"
                                     >
                                       От наименьшей
                                     </li>
@@ -344,11 +332,73 @@ const Personal = () => {
                   </DropDown>
                 </div>
               </div>
-              <div className='personal__middle-block_latest-orders_items-block'>
-                {ordersStatus === 'success' && orders.length > 0 ? (
+              <div className="personal__middle-block_latest-orders_items-block">
+                {ordersStatus !== 'success' ? (
+                  [...new Array(3)].map(() => (
+                    <ContentLoader
+                      speed={1.5}
+                      width={350}
+                      height={200}
+                      viewBox="0 0 350 200"
+                      backgroundColor="#f2f2f2"
+                      foregroundColor="#7db3ed"
+                    >
+                      <rect
+                        x="15"
+                        y="34"
+                        rx="8"
+                        ry="8"
+                        width="80"
+                        height="60"
+                      />
+                      <rect
+                        x="114"
+                        y="48"
+                        rx="7"
+                        ry="7"
+                        width="120"
+                        height="16"
+                      />
+                      <rect
+                        x="17"
+                        y="113"
+                        rx="7"
+                        ry="7"
+                        width="83"
+                        height="14"
+                      />
+                      <rect
+                        x="250"
+                        y="75"
+                        rx="7"
+                        ry="7"
+                        width="92"
+                        height="23"
+                      />
+                      <rect
+                        x="285"
+                        y="47"
+                        rx="7"
+                        ry="7"
+                        width="50"
+                        height="11"
+                      />
+                      <rect
+                        x="316"
+                        y="127"
+                        rx="5"
+                        ry="5"
+                        width="23"
+                        height="18"
+                      />
+                    </ContentLoader>
+                  ))
+                ) : ordersStatus === 'success' && orders.length > 0 ? (
                   orders.map((order) =>
                     order.products.map((product) => (
                       <PersonItem
+                        status={product.status}
+                        date_craete={product.date_create}
                         image={product.image}
                         key={product.id}
                         id={product.id}
@@ -360,8 +410,8 @@ const Personal = () => {
                     ))
                   )
                 ) : (
-                  <div className='personal__empty_wrapper'>
-                    <div className='container personal__empty_container'>
+                  <div className="personal__empty_wrapper">
+                    <div className="container personal__empty_container">
                       <div
                         style={{
                           backgroundImage:
@@ -370,7 +420,7 @@ const Personal = () => {
                               : `url('../assets/img/no-item.png')`,
                           backgroundSize: 'cover',
                         }}
-                        className='personal__empty'
+                        className="personal__empty"
                       >
                         Пусто
                       </div>
@@ -378,8 +428,8 @@ const Personal = () => {
                   </div>
                 )}
                 <Link
-                  to='/orders'
-                  className='personal__middle-block_latest-orders_items-block_all'
+                  to="/orders"
+                  className="personal__middle-block_latest-orders_items-block_all"
                 >
                   Все заказы <span></span>
                 </Link>
@@ -387,8 +437,8 @@ const Personal = () => {
             </div>
           </div>
 
-          <div className='personal__reviews-block'>
-            <div className='personal__reviews-block_title'>Мои отзывы</div>
+          <div className="personal__reviews-block">
+            <div className="personal__reviews-block_title">Мои отзывы</div>
 
             {commentsStatus === 'success' && comments.length > 0 ? (
               comments.rows.map((comment, index) => (
@@ -399,38 +449,38 @@ const Personal = () => {
                   speed={1300}
                   slidesPerView={windowWidth < 767 ? 1 : 2}
                   spaceBetween={windowWidth < 575 ? 10 : 45}
-                  className='personal__reviews-block_slider'
+                  className="personal__reviews-block_slider"
                 >
-                  <SwiperSlide className='personal__reviews-block_slider-item'>
-                    <div className='personal__reviews-block_slider-item_header'>
-                      <div className='personal__reviews-block_slider-item_header_left-block'>
-                        <div className='personal__reviews-block_slider-item_header_img-block'>
-                          <img src='../assets/img/logitech-lk.png' alt='' />
+                  <SwiperSlide className="personal__reviews-block_slider-item">
+                    <div className="personal__reviews-block_slider-item_header">
+                      <div className="personal__reviews-block_slider-item_header_left-block">
+                        <div className="personal__reviews-block_slider-item_header_img-block">
+                          <img src="../assets/img/logitech-lk.png" alt="" />
                         </div>
-                        <div className='personal__reviews-block_slider-item_header_info'>
-                          <div className='personal__reviews-block_slider-item_header_info_name'>
+                        <div className="personal__reviews-block_slider-item_header_info">
+                          <div className="personal__reviews-block_slider-item_header_info_name">
                             Logitech G Pro
                           </div>
-                          <div className='personal__reviews-block_slider-item_header_info_color'>
+                          <div className="personal__reviews-block_slider-item_header_info_color">
                             Черный
                           </div>
                         </div>
                       </div>
-                      <div className='personal__reviews-block_slider-item_header_right-block'>
-                        <div className='personal__reviews-block_slider-item_header_stars'>
-                          <img src='../assets/img/star-review.png' alt='' />
-                          <img src='../assets/img/star-review.png' alt='' />
-                          <img src='../assets/img/star-review.png' alt='' />
-                          <img src='../assets/img/star-review.png' alt='' />
-                          <img src='../assets/img/star-review.png' alt='' />
+                      <div className="personal__reviews-block_slider-item_header_right-block">
+                        <div className="personal__reviews-block_slider-item_header_stars">
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
+                          <img src="../assets/img/star-review.png" alt="" />
                         </div>
-                        <div className='personal__reviews-block_slider-item_header_date'>
+                        <div className="personal__reviews-block_slider-item_header_date">
                           Сен 26, 2023
                         </div>
                       </div>
                     </div>
-                    <hr className='hr' />
-                    <div className='personal__reviews-block_slider-item_review'>
+                    <hr className="hr" />
+                    <div className="personal__reviews-block_slider-item_review">
                       <span>
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Dolore itaque labore minima culpa porro eligendi sed
@@ -442,8 +492,8 @@ const Personal = () => {
                 </Swiper>
               ))
             ) : (
-              <div className='personal__empty_wrapper'>
-                <div className='container personal__empty_container'>
+              <div className="personal__empty_wrapper">
+                <div className="container personal__empty_container">
                   <div
                     style={{
                       backgroundImage:
@@ -452,7 +502,7 @@ const Personal = () => {
                           : `url('../assets/img/no-item.png')`,
                       backgroundSize: 'cover',
                     }}
-                    className='personal__empty'
+                    className="personal__empty"
                   >
                     Вы пока ещё не оставили отзыв
                   </div>
@@ -462,22 +512,22 @@ const Personal = () => {
           </div>
           {windowWidth < 1199 ? (
             <div>
-              <h1 className='personal__interesting_title'>
+              <h1 className="personal__interesting_title">
                 Возможно вам понравятся
               </h1>
-              <div className='personal__interesting_slider_wrapper'>
+              <div className="personal__interesting_slider_wrapper">
                 <Swiper
                   modules={[Navigation]}
                   navigation
                   speed={1300}
                   slidesPerView={windowWidth < 1199 ? 2 : 0}
                   spaceBetween={windowWidth < 767 ? 10 : 45}
-                  className='personal__interesting_slider'
+                  className="personal__interesting_slider"
                 >
                   {itemsStatus === 'success' &&
                     items.slice(0, 3).map((item, index) => (
                       <div key={index}>
-                        <SwiperSlide className='personal__interesting_slider-item'>
+                        <SwiperSlide className="personal__interesting_slider-item">
                           <Card
                             view={'grid'}
                             id={item.id}
@@ -492,17 +542,17 @@ const Personal = () => {
               </div>
             </div>
           ) : itemsStatus === 'success' && items.length > 0 ? (
-            <div className='personal__interesting_wrapper'>
-              <h1 className='personal__interesting_title'>
+            <div className="personal__interesting_wrapper">
+              <h1 className="personal__interesting_title">
                 Возможно вам понравятся
               </h1>
-              <div className='personal__interesting'>
+              <div className="personal__interesting">
                 {itemsStatus === 'success' &&
                   items
                     .slice(0, 3)
                     .map((item) => (
                       <Card
-                        view='grid'
+                        view="grid"
                         image={item.image_link}
                         key={item.id}
                         id={item.id}
@@ -516,7 +566,7 @@ const Personal = () => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Personal;
+export default Personal

@@ -103,7 +103,7 @@ router.post("/deleteProduct", apiPostController.deleteProduct);
 router.post("/acceptPayment", apiPostController.acceptPayment);
 router.post("/addPromocode", apiPostController.addPromocode);
 router.get("/getOrdersAll", apiPostController.getOrdersAll);
-router.get("/getAllPromocodes", apiPostController.getAllPromocodes);
+router.post("/getAllPromocodes", apiPostController.getAllPromocodes);
 router.get("/getPayments", apiPostController.getPayments);
 
 export default router;

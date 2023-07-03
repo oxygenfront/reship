@@ -2,7 +2,25 @@ import classNames from 'classnames'
 import React from 'react'
 import styles from './PersonItem.module.sass'
 
-const PersonItem = ({ id, image, status, color, price, count, name }) => {
+const PersonItem = ({
+  id,
+  image,
+  status,
+  color,
+  price,
+  count,
+  name,
+  date_craete,
+}) => {
+  function timeConverter(UNIX_timestamp) {
+    const date = new Date(UNIX_timestamp)
+
+    return date.toLocaleString('ru-US', {
+      day: 'numeric',
+      year: 'numeric',
+      month: 'long',
+    })
+  }
   return (
     <div
       className={styles.personal__middle_block_latest_orders_items_block_item}
@@ -17,7 +35,7 @@ const PersonItem = ({ id, image, status, color, price, count, name }) => {
             styles.personal__middle_block_latest_orders_items_block_item_up_img_block
           }
         >
-          {/* <img src={JSON.parse(image)[0]} alt="" /> */}
+          <img src={JSON.parse(image)[0]} alt="" />
         </div>
         <div
           className={
@@ -70,7 +88,7 @@ const PersonItem = ({ id, image, status, color, price, count, name }) => {
             styles.personal__middle_block_latest_orders_items_block_item_bottom_date
           }
         >
-          Сен 26, 2023
+          {timeConverter(date_craete).slice(0, -1)}
         </div>
         <div
           className={

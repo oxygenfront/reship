@@ -13,7 +13,7 @@ import { fetchItems, selectItemsData } from '../redux/slices/itemsSlice'
 import { RangeSlider, InputGroup, InputNumber } from 'rsuite'
 import { Navigate } from 'react-router-dom'
 import { Menu as DropDown } from '@headlessui/react'
-import { debounce } from 'lodash'
+import ContentLoader from 'react-content-loader'
 
 const Catalog = () => {
   const dispatch = useDispatch()
@@ -85,9 +85,10 @@ const Catalog = () => {
     <section className="catalog">
       <div className="catalog__container container">
         <div className="catalog__title">
-          {searchValue !== ''
+          {/* {searchValue !== ''
             ? searchValue[0].toUpperCase() + searchValue.slice(1)
-            : choosenCategorie[0].toUpperCase() + choosenCategorie.slice(1)}
+            : choosenCategorie[0].toUpperCase() + choosenCategorie.slice(1)} */}
+          Каталог
         </div>
         <div className="catalog__wrapper">
           {showFilters || windowWidth > 767 ? (
@@ -349,7 +350,7 @@ const Catalog = () => {
               >
                 {status !== 'success' ? (
                   [...new Array(6)].map((item, index) => (
-                    <Skeleton key={index}></Skeleton>
+                    <Skeleton view={choosenView} key={index}></Skeleton>
                   ))
                 ) : status === 'success' && items.length > 0 ? (
                   items.map((item) => (

@@ -132,10 +132,7 @@ const Cart = () => {
                     />
                   </button>
                 </form>
-                <Link
-                  to="/order"
-                  className="cart__total-wrapper-buttons_link buttons__16"
-                >
+                <Link to="/order" className="cart__total-wrapper-buttons_link">
                   Продолжить оформление
                 </Link>
               </div>

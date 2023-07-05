@@ -131,7 +131,7 @@ const Register = () => {
   if (isAuth) {
     return <Navigate to='/' />;
   }
-  // console.log(adress);
+  console.log(adress);
   return (
     <section className='register'>
       <div className='container register__container'>
@@ -246,7 +246,10 @@ const Register = () => {
             <hr className='hr' />
             <form
               action=''
-                style={{ display: windowWidth <= 575 ? 'flex' : 'block', flexDirection: windowWidth <= 575 ? 'column' : 'row', }}
+              style={{
+                display: windowWidth <= 575 ? 'flex' : 'block',
+                flexDirection: windowWidth <= 575 ? 'column' : 'row',
+              }}
             >
               <input
                 autoFocus
@@ -284,6 +287,8 @@ const Register = () => {
                 token='82173f834fc389954239d4414514d3ce2634ae1e'
                 value={regForm.adress_delivery}
                 onChange={(event) => {
+                  console.log(event);
+
                   setAdress(event.value);
                 }}
                 inputProps={{

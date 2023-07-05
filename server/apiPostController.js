@@ -217,7 +217,8 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    const { title, category, price_start, price_end } = request.query;
+    const { title, category, price_start, price_end, type, brand, feature } =
+      request.query;
 
     let sql = "SELECT * FROM products WHERE 1=1";
 
@@ -245,6 +246,58 @@ class ApiPostController {
           .status(500)
           .json({ error: "Ошибка на сервере", bcode: 2.2 });
       }
+
+      if (type || brand || feature) {
+        const ready_rows = [];
+
+        for (let i = 0; i < rows.length; i++) {
+
+          if (type) {
+            const type_list = type.split(',')
+            const type_row = JSON.parse(rows[i].type);
+
+            for (let j = 0; j < type_row.length; j++) {
+              if (type_list.includes(type_row[j])) {
+                ready_rows.push(rows[i])
+                break
+              }
+            }
+          }
+
+          if (brand) {
+            const brand_list = brand.split(',')
+            const brand_row = rows[i].brand;
+
+            for (let j = 0; j < brand_list.length; j++) {
+              if (brand_list.includes(brand_row)) {
+                if (ready_rows.includes(rows[i])) continue
+
+                ready_rows.push(rows[i])
+                break
+              }
+            }
+          }
+
+          if (feature) {
+            const feature_list = feature.split(',')
+            const feature_row = JSON.parse(rows[i].feature);
+
+            for (let j = 0; j < feature_row.length; j++) {
+              console.log(Object.values(feature_row[j]))
+              if (feature_list.includes(Object.values(feature_row[j])[1])) {
+                if (ready_rows.includes(rows[i])) continue
+
+                ready_rows.push(rows[i])
+                break
+              }
+            }
+          }
+
+        }
+
+        rows = ready_rows;
+      }
+
       response.json(rows);
     });
   }
@@ -271,7 +324,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 3.1,  });
+            .json({ error: "Ошибка на сервере", bcode: 3.1 });
         }
 
         if (rows.length == 1) {
@@ -670,7 +723,6 @@ class ApiPostController {
                     return response.status(500).json({
                       error: "Ошибка на сервере",
                       bcode: 11.4,
-                      
                     });
                   }
 
@@ -889,7 +941,6 @@ class ApiPostController {
           return response.status(400).json({
             error: "Ошибка при удалении товара из БД",
             bcode: 13.1,
-            
           });
         }
 
@@ -906,7 +957,7 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+    if (missingKey || !request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 14 });
@@ -1070,7 +1121,7 @@ class ApiPostController {
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+      if (missingKey || !request.headers.hasOwnProperty("authorization")) {
         return response
           .status(400)
           .json({ error: "Некорректные данные", bcode: 17 });
@@ -1153,7 +1204,7 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 17.3,  });
+                  .json({ error: "Ошибка на сервере", bcode: 17.3 });
               }
 
               database.query(
@@ -1212,7 +1263,6 @@ class ApiPostController {
                             return response.status(400).json({
                               error: "Ошибка на сервере",
                               bcode: 17.6,
-                              
                             });
                           }
 
@@ -1340,9 +1390,9 @@ class ApiPostController {
         }
 
         for (let i = 0; i < ready_json.length; i++) {
-          if (ready_json[0].uuid !== "") {
-            const sdek_order = await getOrderSdek(ready_json[0].uuid_sdek);
-            ready_json[0].sdek_order = sdek_order;
+          if (ready_json[i].uuid !== "") {
+            const sdek_order = await getOrderSdek(ready_json[i].uuid_sdek);
+            ready_json[i].sdek_order = sdek_order;
           }
         }
 
@@ -1386,7 +1436,7 @@ class ApiPostController {
   }
 
   async getOrdersAll(request, response) {
-    if (!request.headers.hasOwnProperty('authorization')) {
+    if (!request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 20 });
@@ -1439,7 +1489,7 @@ class ApiPostController {
   }
 
   async getPayments(request, response) {
-    if (!request.headers.hasOwnProperty('authorization')) {
+    if (!request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 24 });
@@ -1493,7 +1543,7 @@ class ApiPostController {
       (key) => !requestData.hasOwnProperty(key)
     );
 
-    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+    if (missingKey || !request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 25 });
@@ -1583,7 +1633,7 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+    if (missingKey || !request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 26 });
@@ -1792,7 +1842,7 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+    if (missingKey || !request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 31 });
@@ -1881,7 +1931,7 @@ class ApiPostController {
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+      if (missingKey || !request.headers.hasOwnProperty("authorization")) {
         return response
           .status(400)
           .json({ error: "Некорректные данные", bcode: 32 });
@@ -1943,7 +1993,7 @@ class ApiPostController {
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+      if (missingKey || !request.headers.hasOwnProperty("authorization")) {
         return response
           .status(400)
           .json({ error: "Некорректные данные", bcode: 33 });
@@ -2010,7 +2060,6 @@ class ApiPostController {
                               return response.status(500).json({
                                 error: "Ошибка на сервере",
                                 bcode: 33.3,
-                                
                               });
                             }
                             response.json({
@@ -2061,7 +2110,7 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey || !request.headers.hasOwnProperty('authorization')) {
+    if (missingKey || !request.headers.hasOwnProperty("authorization")) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 34 });
@@ -2183,33 +2232,42 @@ class ApiPostController {
         .json({ error: "Некорректные данные", bcode: 36 });
     }
 
-    const token = tools.delInjection(request.headers.authorization)
-    const first_name = tools.delInjection(request.body.first_name)
-    const last_name = tools.delInjection(request.body.last_name)
+    const token = tools.delInjection(request.headers.authorization);
+    const first_name = tools.delInjection(request.body.first_name);
+    const last_name = tools.delInjection(request.body.last_name);
 
-    database.query(`SELECT * FROM \`users\` WHERE token='${token}';`, (error, rows) => {
-      if (error) {
-        return response
-          .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 36.1 });
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${token}';`,
+      (error, rows) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 36.1 });
+        }
+
+        if (rows.length !== 1) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка доступа", bcode: 36.2 });
+        } else {
+          database.query(
+            `UPDATE \`users\` SET first_name = '${first_name}', last_name = '${last_name}' WHERE token='${token}';`,
+            (error, rows) => {
+              if (error) {
+                return response
+                  .status(500)
+                  .json({ error: "Ошибка на сервере", bcode: 36.3 });
+              }
+
+              response.json({
+                message: "Успех",
+                items: { first_name: first_name, last_name: last_name },
+              });
+            }
+          );
+        }
       }
-
-      if (rows.length !== 1) {
-        return response
-          .status(500)
-          .json({ error: "Ошибка доступа", bcode: 36.2 });
-      } else {
-        database.query(`UPDATE \`users\` SET first_name = '${first_name}', last_name = '${last_name}' WHERE token='${token}';`, (error, rows) => {
-          if (error) {
-            return response
-              .status(500)
-              .json({ error: "Ошибка на сервере", bcode: 36.3 });
-          }
-
-          response.json({message: 'Успех', items: {first_name: first_name, last_name: last_name}})
-        })
-      }
-    })
+    );
   }
 }
 

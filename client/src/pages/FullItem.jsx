@@ -44,7 +44,7 @@ const FullItem = () => {
     const tovar = {
       id: item.id,
       name: item.name,
-      image: item.image,
+      image: item.image_link,
       price: item.price,
       parametr,
       color,

@@ -109,33 +109,18 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               pagination={{ clickable: true }}
               centeredSlides={true}
             >
-              <SwiperSlide
-                className={
-                  styles.main_catalog__products_wrapper_item_slider_slide
-                }
-                style={{
-                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
-                  backgroundSize: 'cover',
-                }}
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
-                  backgroundSize: 'cover',
-                }}
-                className={
-                  styles.main_catalog__products_wrapper_item_slider_slide
-                }
-              ></SwiperSlide>
-              <SwiperSlide
-                style={{
-                  backgroundImage: `url('${JSON.parse(image)[0]}')`,
-                  backgroundSize: 'cover',
-                }}
-                className={
-                  styles.main_catalog__products_wrapper_item_slider_slide
-                }
-              ></SwiperSlide>
+              {JSON.parse(image).map((image) => (
+                <SwiperSlide
+                  key={image}
+                  className={
+                    styles.main_catalog__products_wrapper_item_slider_slide
+                  }
+                  style={{
+                    backgroundImage: `url('${image}')`,
+                    backgroundSize: 'cover',
+                  }}
+                ></SwiperSlide>
+              ))}
             </Swiper>
           </Link>
 

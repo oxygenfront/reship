@@ -1,30 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
-import InputMask from 'react-input-mask';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
-import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
+import React, { useEffect, useRef, useState } from 'react'
+import InputMask from 'react-input-mask'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom'
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi'
 import {
   fetchAuthMe,
   fetchRegister,
   selectIsAuth,
-} from '../redux/slices/authSlice';
+} from '../redux/slices/authSlice'
 
-import { AddressSuggestions } from 'react-dadata';
+import { AddressSuggestions } from 'react-dadata'
 const Register = () => {
-  const dispatch = useDispatch();
-  const isAuth = useSelector(selectIsAuth);
-  const [checkPass, setCheckPass] = useState(true);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [nextPage, setNextPage] = useState(false);
-  const [adress, setAdress] = useState('');
+  const dispatch = useDispatch()
+  const isAuth = useSelector(selectIsAuth)
+  const [checkPass, setCheckPass] = useState(true)
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [nextPage, setNextPage] = useState(false)
+  const [adress, setAdress] = useState('')
   const [showPassword, setShowPassword] = useState({
     newPassword: false,
     confirmPassword: false,
-  });
+  })
   const [hasFocus, setHasFocus] = useState({
     newPassword: false,
     confirmPassword: false,
-  });
+  })
 
   const [regForm, setRegForm] = useState({
     firstName: '',
@@ -34,30 +34,30 @@ const Register = () => {
     confirmPassword: '',
     birthdate: '',
     adress_delivery: adress,
-  });
-  const inputsRef = useRef([]);
+  })
+  const inputsRef = useRef([])
 
   const handleKeyDown = (event, index) => {
     if (event.key === 'Enter') {
-      const nextIndex = index + 1;
+      const nextIndex = index + 1
       if (nextIndex < inputsRef.current.length) {
         if (
           inputsRef.current[nextIndex] &&
           inputsRef.current[nextIndex].focus
         ) {
-          inputsRef.current[nextIndex].focus();
+          inputsRef.current[nextIndex].focus()
         }
       }
     }
-  };
+  }
   const handleNextPage = (event) => {
     if (event.key === 'Enter') {
-      setNextPage(!nextPage);
+      setNextPage(!nextPage)
     }
-  };
+  }
   const timeStamp = new Date(
     regForm.birthdate.toLocaleString().split('-').reverse().join('.')
-  ).getTime();
+  ).getTime()
   const form = {
     first_name: regForm.firstName,
     last_name: regForm.lastName,
@@ -65,45 +65,45 @@ const Register = () => {
     email: regForm.email,
     date_of_birth_unix: timeStamp,
     adress_delivery: adress,
-  };
+  }
   const updateForm = (e) => {
     setRegForm({
       ...regForm,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const closeError = (e) => {
-    e.preventDefault();
-    setCheckPass(true);
-  };
+    e.preventDefault()
+    setCheckPass(true)
+  }
 
   const handleChildFocus = (e) => {
-    setHasFocus({ [e.target.name]: !hasFocus[e.target.name] });
+    setHasFocus({ [e.target.name]: !hasFocus[e.target.name] })
     // console.log(!hasFocus[e.target.name]);
-  };
+  }
 
   const handleChildBlur = (e) => {
-    setHasFocus({ [e.target.name]: !hasFocus[e.target.name] });
-  };
+    setHasFocus({ [e.target.name]: !hasFocus[e.target.name] })
+  }
 
   const sendForm = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (regForm.newPassword === regForm.confirmPassword) {
-      setCheckPass(true);
-      console.log(form);
+      setCheckPass(true)
+      console.log(form)
       const data = await dispatch(
         fetchRegister({ ...form, adress_delivery: JSON.stringify({ adress }) })
-      );
+      )
       if (!data.payload) {
-        return alert('Не удалось зарегистрироваться');
+        return alert('Не удалось зарегистрироваться')
       }
 
       if ('token' in data.payload) {
-        window.localStorage.setItem('token', data.payload.token);
+        window.localStorage.setItem('token', data.payload.token)
 
-        await dispatch(fetchAuthMe(data.payload.token));
+        await dispatch(fetchAuthMe(data.payload.token))
       }
       setRegForm({
         firstName: '',
@@ -112,55 +112,55 @@ const Register = () => {
         password: { newPassword: '', confirmPassword: '' },
         birthdate: '',
         adress_delivery: '',
-      });
+      })
     } else {
-      setCheckPass(false);
+      setCheckPass(false)
     }
-  };
+  }
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   if (isAuth) {
-    return <Navigate to='/' />;
+    return <Navigate to="/" />
   }
   console.log(adress);
   return (
-    <section className='register'>
-      <div className='container register__container'>
+    <section className="register">
+      <div className="container register__container">
         {!nextPage ? (
-          <div className='register__wrapper'>
-            <div className='register__wrapper-title'>Регистрация</div>
-            <hr className='hr' />
-            <form action=''>
+          <div className="register__wrapper">
+            <div className="register__wrapper-title">Регистрация</div>
+            <hr className="hr" />
+            <form action="">
               <input
                 autoFocus
-                className='register__wrapper-input'
-                type='text'
-                name='email'
-                placeholder='Адрес электронной почты'
+                className="register__wrapper-input"
+                type="text"
+                name="email"
+                placeholder="Адрес электронной почты"
                 value={regForm.email}
                 onChange={updateForm}
                 onKeyDown={(e) => handleKeyDown(e, 0)}
                 ref={(el) => (inputsRef.current[0] = el)}
               />
               <div
-                className='register__wrapper-input pass'
+                className="register__wrapper-input pass"
                 style={{
-                  border: hasFocus.newPassword ? '2px solid #416EF2' : null,
+                  border: hasFocus.newPassword ? '2px solid #0540F2' : null,
                 }}
               >
                 <input
                   type={showPassword.newPassword ? 'text' : 'password'}
-                  name='newPassword'
-                  placeholder='Пароль'
+                  name="newPassword"
+                  placeholder="Пароль"
                   value={regForm.newPassword}
                   onChange={updateForm}
                   onKeyDown={(e) => handleKeyDown(e, 1)}
@@ -185,15 +185,15 @@ const Register = () => {
                 )}
               </div>
               <div
-                className='register__wrapper-input pass'
+                className="register__wrapper-input pass"
                 style={{
-                  border: hasFocus.confirmPassword ? '2px solid #416EF2' : null,
+                  border: hasFocus.confirmPassword ? '2px solid #0540F2' : null,
                 }}
               >
                 <input
                   type={showPassword.confirmPassword ? 'text' : 'password'}
-                  name='confirmPassword'
-                  placeholder='Повторите пароль'
+                  name="confirmPassword"
+                  placeholder="Повторите пароль"
                   value={regForm.confirmPassword}
                   onChange={updateForm}
                   onKeyDown={(e) => handleNextPage(e, 2)}
@@ -224,16 +224,16 @@ const Register = () => {
                 )}
               </div>
             </form>
-            <div className='register__wrapper-link'>
-              Уже есть аккаунт? <Link to='/login'>Войти</Link>
+            <div className="register__wrapper-link">
+              Уже есть аккаунт? <Link to="/login">Войти</Link>
             </div>
 
-            <div className='register__wrapper-buttons'>
-              <Link to='/forgot' className='register__wrapper-buttons_forgot'>
+            <div className="register__wrapper-buttons">
+              <Link to="/forgot" className="register__wrapper-buttons_forgot">
                 Забыл пароль
               </Link>
               <button
-                className='register__wrapper-buttons_next'
+                className="register__wrapper-buttons_next"
                 onClick={() => setNextPage(!nextPage)}
               >
                 Продолжить
@@ -241,9 +241,9 @@ const Register = () => {
             </div>
           </div>
         ) : (
-          <div className='register__wrapper second-page'>
-            <div className='register__wrapper-title'>Регистрация</div>
-            <hr className='hr' />
+          <div className="register__wrapper second-page">
+            <div className="register__wrapper-title">Регистрация</div>
+            <hr className="hr" />
             <form
               action=''
               style={{
@@ -253,67 +253,65 @@ const Register = () => {
             >
               <input
                 autoFocus
-                className='register__wrapper-input second-page sm'
-                type='text'
-                name='firstName'
-                placeholder='Имя'
+                className="register__wrapper-input second-page sm"
+                type="text"
+                name="firstName"
+                placeholder="Имя"
                 value={regForm.firstName}
                 onChange={updateForm}
                 onKeyDown={(e) => handleKeyDown(e, 3)}
                 // ref={(el) => (inputsRef.current[3] = el)}
               />
               <input
-                className='register__wrapper-input second-page sm'
-                type='text'
-                name='lastName'
-                placeholder='Фамилия'
+                className="register__wrapper-input second-page sm"
+                type="text"
+                name="lastName"
+                placeholder="Фамилия"
                 value={regForm.lastName}
                 onChange={updateForm}
                 onKeyDown={(e) => handleKeyDown(e, 4)}
                 ref={(el) => (inputsRef.current[4] = el)}
               />
               <InputMask
-                mask='99-99-9999'
-                className='register__wrapper-input second-page sm db'
-                type='text'
-                name='birthdate'
-                placeholder='XX-XX-XXXX'
+                mask="99-99-9999"
+                className="register__wrapper-input second-page sm db"
+                type="text"
+                name="birthdate"
+                placeholder="XX-XX-XXXX"
                 value={regForm.birthdate}
                 onChange={updateForm}
               />
               <AddressSuggestions
-                className='register__wrapper-input second-page'
+                className="register__wrapper-input second-page"
                 setInputValue={regForm.adress_delivery}
-                token='82173f834fc389954239d4414514d3ce2634ae1e'
+                token="82173f834fc389954239d4414514d3ce2634ae1e"
                 value={regForm.adress_delivery}
                 onChange={(event) => {
-                  console.log(event);
-
-                  setAdress(event.value);
+                  setAdress(event.value)
                 }}
                 inputProps={{
                   placeholder: 'Страна, город',
                   value: adress,
                   onKeyDown: () => sendForm,
                   onChange: (event) => {
-                    setAdress(event.target.value);
+                    setAdress(event.target.value)
                   },
                 }}
               />
             </form>
-            <div className='register__wrapper-link'>
-              Уже есть аккаунт? <Link to='/login'>Войти</Link>
+            <div className="register__wrapper-link">
+              Уже есть аккаунт? <Link to="/login">Войти</Link>
             </div>
 
-            <div className='register__wrapper-buttons second-page'>
+            <div className="register__wrapper-buttons second-page">
               <button
-                className='register__wrapper-buttons_prev'
+                className="register__wrapper-buttons_prev"
                 onClick={() => setNextPage(!nextPage)}
               >
                 Назад
               </button>
               <button
-                className='register__wrapper-buttons_next second-page'
+                className="register__wrapper-buttons_next second-page"
                 onClick={sendForm}
               >
                 Готово
@@ -323,7 +321,7 @@ const Register = () => {
         )}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

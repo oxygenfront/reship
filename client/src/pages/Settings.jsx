@@ -146,6 +146,7 @@ function Settings() {
       return alert('Не удалось изменить имя')
     }
     if (data.payload) {
+      window.location.reload()
       return alert('Имя успешно изменено')
     }
   }

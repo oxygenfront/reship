@@ -110,8 +110,14 @@ const Order = () => {
       data_adress.length > 1 &&
         setAdress({
           city: data_adress[1],
-          street: data_adress[2] + data_adress[3],
+          street: data_adress[2] + (data_adress[3] ? data_adress[3] : ''),
         })
+      setOrder({
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        number: data.number_tel !== '' ? data.number_tel : '',
+      })
     }
   }, [status])
   if (cartItems.length === 0) {

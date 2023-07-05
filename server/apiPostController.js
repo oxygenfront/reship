@@ -1153,7 +1153,7 @@ class ApiPostController {
               if (error) {
                 return response
                   .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 17.3,  });
+                  .json({ error: "Ошибка на сервере", bcode: 17.3 });
               }
 
               database.query(

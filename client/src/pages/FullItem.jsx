@@ -223,35 +223,17 @@ const FullItem = () => {
           </div>
           <div className="">
             <p>Особенности</p>
-            <div className="fullitem__description_left_spec">
-              <div className="fullitem__description_left_spec_title">
-                Раздельный форм фактор
-              </div>
-              <div className="fullitem__description_left_spec_text">
-                Позволит вам повелевать расположением ваших рук как угодно. Всё
-                ради наилучшей эргономичности.
-              </div>
-            </div>
-            <div className="fullitem__description_left_spec">
-              <div className="fullitem__description_left_spec_title">
-                Программируемая
-              </div>
-              <div className="fullitem__description_left_spec_text">
-                Вся клавиатура программируется, включая разделённую клавишу
-                пробела, каждую из частей которого можно настроить отдельно.
-                Поддерживаются 3 слоя макросов.
-              </div>
-            </div>
-            <div className="fullitem__description_left_spec">
-              <div className="fullitem__description_left_spec_title">
-                Программируемая
-              </div>
-              <div className="fullitem__description_left_spec_text">
-                Вся клавиатура программируется, включая разделённую клавишу
-                пробела, каждую из частей которого можно настроить отдельно.
-                Поддерживаются 3 слоя макросов.
-              </div>
-            </div>
+            {status === 'success' &&
+              JSON.parse(item.feature).map((feature) => (
+                <div className="fullitem__description_left_spec">
+                  <div className="fullitem__description_left_spec_title">
+                    {feature.title}
+                  </div>
+                  <div className="fullitem__description_left_spec_text">
+                    {feature.desc}
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
         <div className="fullitem__description_right">

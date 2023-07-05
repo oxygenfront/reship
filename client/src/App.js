@@ -42,8 +42,14 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchAuthMe())
   }, [])
-  const { choosenCategorie, searchValue, choosenPrice, choosenSort } =
-    useSelector(selectFilter)
+  const {
+    choosenCategorie,
+    searchValue,
+    choosenPrice,
+    choosenSort,
+    choosenBrand,
+    choosenType,
+  } = useSelector(selectFilter)
 
   useEffect(() => {
     dispatch(
@@ -52,10 +58,18 @@ const App = () => {
         searchValue,
         choosenPrice,
         choosenSort,
-        token,
+        choosenBrand,
+        choosenType,
       })
     )
-  }, [choosenCategorie, searchValue, choosenSort, choosenPrice])
+  }, [
+    choosenCategorie,
+    searchValue,
+    choosenSort,
+    choosenPrice,
+    choosenBrand,
+    choosenType,
+  ])
 
   return (
     <>

@@ -287,6 +287,7 @@ const Register = () => {
                 token="82173f834fc389954239d4414514d3ce2634ae1e"
                 value={regForm.adress_delivery}
                 onChange={(event) => {
+                  console.log(event)
                   setAdress(event.value)
                 }}
                 inputProps={{

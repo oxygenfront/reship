@@ -6,6 +6,7 @@ import {
   setChoosenBrand,
   setChoosenCategorie,
   setChoosenPrice,
+  setChoosenType,
   setSearchValue,
 } from '../redux/slices/fiterSlice'
 import { fetchFullItem } from '../redux/slices/fullItemSlice'
@@ -19,6 +20,7 @@ const Catalog = () => {
   const dispatch = useDispatch()
   const set = new Set()
   const brandSet = new Set()
+  const typesSet = new Set()
 
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
@@ -32,21 +34,25 @@ const Catalog = () => {
 
   const [localBrands, setLocalBrands] = useState('')
   const [localCategories, setLocalCategories] = useState('')
+  const [localTypes, setLocalTypes] = useState('')
 
   console.log(localBrands)
   console.log(localCategories)
   const confirmFilters = () => {
     dispatch(setChoosenBrand(localBrands))
+    dispatch(setChoosenType(localTypes))
     dispatch(setChoosenCategorie(localCategories))
     dispatch(setChoosenPrice(price))
   }
-  const cancelFilters = () => {
+  const cancelFilters = async () => {
     setLocalBrands('')
     setLocalCategories('')
+    setLocalTypes('')
     setPrice([2000, 12000])
-    dispatch(setLocalBrands(''))
-    dispatch(setLocalCategories(''))
-    dispatch(setPrice([2000, 12000]))
+    await dispatch(setChoosenBrand(''))
+    await dispatch(setChoosenCategorie(''))
+    await dispatch(setChoosenType(''))
+    await dispatch(setChoosenPrice([2000, 12000]))
   }
 
   useEffect(() => {
@@ -68,12 +74,11 @@ const Catalog = () => {
   if (status === 'success') {
     items.map((item) => set.add(item.category))
     items.map((item) => brandSet.add(item.brand))
+    items.map((item) => typesSet.add(JSON.parse(item.type).join('')))
   }
   const categories = [...set]
   const brands = [...brandSet]
-  if (searchValue === '' && choosenCategorie === '' && choosenType === '') {
-    return <Navigate to="/"></Navigate>
-  }
+  const types = [...typesSet]
 
   // const fnShowFilters = () => {
   //   if (windowWidth > 767) {
@@ -107,10 +112,10 @@ const Catalog = () => {
                       onClick={(e) => {
                         e.target.checked
                           ? setLocalCategories(
-                              (prev) => (prev += category + ' ')
+                              (prev) => (prev += category + ',')
                             )
                           : setLocalCategories((prev) =>
-                              prev.replace(category + ' ', '')
+                              prev.replace(category + ',', '')
                             )
                       }}
                       checked={localCategories.includes(category)}
@@ -134,9 +139,9 @@ const Catalog = () => {
                     <input
                       onClick={(e) => {
                         e.target.checked
-                          ? setLocalBrands((prev) => (prev += brand + ' '))
+                          ? setLocalBrands((prev) => (prev += brand + ','))
                           : setLocalBrands((prev) =>
-                              prev.replace(brand + ' ', '')
+                              prev.replace(brand + ',', '')
                             )
                       }}
                       checked={localBrands.includes(brand)}
@@ -150,28 +155,29 @@ const Catalog = () => {
               </div>
               <div className="catalog__sort-block">
                 <div className="catalog__sort_title">Тип </div>
-                <label
-                  htmlFor="category8"
-                  className="catalog__sort_checkbox-name"
-                >
-                  В наличии
-                  <input
-                    id="category8"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
-                <label
-                  htmlFor="category9"
-                  className="catalog__sort_checkbox-name"
-                >
-                  Со скидкой
-                  <input
-                    id="category9"
-                    type="checkbox"
-                    className="catalog__sort_checkbox"
-                  />
-                </label>
+                {types.map((type) => (
+                  <label
+                    key={type}
+                    htmlFor="category8"
+                    className="catalog__sort_checkbox-name"
+                  >
+                    {type}
+                    <input
+                      onClick={(e) => {
+                        e.target.checked
+                          ? setLocalTypes((prev) => (prev += type + ','))
+                          : setLocalTypes((prev) =>
+                              prev.replace(type + ',', '')
+                            )
+                      }}
+                      checked={localTypes.includes(type)}
+                      readOnly
+                      id={type}
+                      type="checkbox"
+                      className="catalog__sort_checkbox"
+                    />
+                  </label>
+                ))}
               </div>
               <div className="catalog__sort-block mb73">
                 <div className="catalog__sort_title">Цена</div>

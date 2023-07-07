@@ -1,5 +1,4 @@
-.swiper-pagination-bullet .swiper-pagination-bullet-active
-    background: red !important
+
 .main_catalog
     &__products_wrapper
         margin-top: 72px
@@ -119,3 +118,36 @@
                 font-weight: 500
                 font-size: 20px
                 color: var(--color)
+@media (max-width: 575px)
+    .main_catalog
+        &__products_wrapper
+            &_item
+                width: 50vw
+                &_title
+                    font-size: 18px
+                    width: 160px
+                &_price
+                    font-size: 14px
+                &_button
+                    width: 80px
+                    height: 30px
+                    font-size: 12px
+                    gap: 5px
+                    span
+                        width: 13px
+                        font-size: 15px
+                    &_minus
+                        height: 2px
+                        width: 70%
+                    &_pluses
+                        &_itemv
+                            width: 2px
+                            height: 12px
+                            transform: translate(5px, )
+                        &_itemh
+                            width: 12px
+                            height: 2px
+                            transform: translateY(-7px)
+                &_bottom_block
+                    justify-content: flex-start
+                    gap: 10px

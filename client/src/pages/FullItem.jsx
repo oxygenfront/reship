@@ -285,7 +285,7 @@ const FullItem = () => {
       <div className="fullitem__comments container">
         <p className="fullitem__comments_title">Отзывы</p>
         <div className="fullitem__comments_items">
-          {arrStatus === 'success' && comments.items.length > 0 ? (
+          {arrStatus === 'success' && comments.items?.length > 0 ? (
             comments.items.map((comment) => (
               <Comment
                 anon={comment.anon}

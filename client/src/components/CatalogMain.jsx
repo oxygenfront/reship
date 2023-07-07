@@ -9,15 +9,19 @@ import {
   setChoosenCategorie,
   setChoosenType,
 } from '../redux/slices/fiterSlice'
-import { selectItemsData } from '../redux/slices/itemsSlice'
+import {
+  fetchHomeItems,
+  fetchItems,
+  selectItemsData,
+} from '../redux/slices/itemsSlice'
 import Card from './Card/Card'
 
 function CatalogMain() {
   const dispatch = useDispatch()
   const [active, setActive] = useState(false)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const { items, status } = useSelector(selectItemsData)
-  const { choosenType } = useSelector(selectFilter)
+  const { items, status, homeItems, homeStatus } = useSelector(selectItemsData)
+
   const onChangeCategory = useCallback((sort) => {
     dispatch(setChoosenCategorie(sort))
   }, [])
@@ -31,20 +35,29 @@ function CatalogMain() {
 
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+  const { choosenType } = useSelector(selectFilter)
+
+  useEffect(() => {
+    dispatch(
+      fetchHomeItems({
+        choosenType,
+      })
+    )
+  }, [choosenType])
 
   return (
-    <section className='main-catalog'>
-      <div className='container main-catalog__container'>
-        <h1 className='main-catalog__title'>
+    <section className="main-catalog">
+      <div className="container main-catalog__container">
+        <h1 className="main-catalog__title">
           Каталог {windowWidth > 767 || windowWidth <= 575 ? <br /> : null}
           <span>товаров</span>
         </h1>
 
-        <div className='main-catalog__lg-items'>
+        <div className="main-catalog__lg-items">
           <Link
-            to='/catalog'
+            to="/catalog"
             onClick={() => onChangeCategory('клавиатуры')}
-            className='main-catalog__lg-items-item'
+            className="main-catalog__lg-items-item"
             style={{
               backgroundImage: `url('/assets/img/boards-main-catalog.png')`,
               backgroundColor: '#DBDBDC',
@@ -55,23 +68,23 @@ function CatalogMain() {
           </Link>
           <Link
             onClick={() => onChangeCategory('микрофоны')}
-            to='/catalog'
+            to="/catalog"
             style={{
               backgroundImage: `url('/assets/img/microphone-main-catalog.png')`,
               backgroundColor: '#DBDBDC',
               backgroundRepeat: 'no-repeat',
             }}
-            className='main-catalog__lg-items-item'
+            className="main-catalog__lg-items-item"
           >
             <span>Микрофоны</span>
           </Link>
         </div>
 
-        <hr className='hr' />
+        <hr className="hr" />
 
-        <div className='main-catalog__slider-wrapper'>
+        <div className="main-catalog__slider-wrapper">
           <Swiper
-            className='main-catalog__slider'
+            className="main-catalog__slider"
             modules={[Pagination, Navigation, A11y]}
             pagination={{ clickable: true }}
             slidesPerView={
@@ -95,12 +108,12 @@ function CatalogMain() {
             navigation
             speed={700}
           >
-            <SwiperSlide className='main-catalog__slider-slide'>
-              <div className='main-catalog__slider-wrapper'>
+            <SwiperSlide className="main-catalog__slider-slide">
+              <div className="main-catalog__slider-wrapper">
                 <Link
                   onClick={() => onChangeCategory('мышки')}
-                  to='/catalog'
-                  className='main-catalog__slider-slide_item'
+                  to="/catalog"
+                  className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/mouse-main-catalog.png')`,
                     backgroundPosition: 'center',
@@ -109,16 +122,16 @@ function CatalogMain() {
                     backgroundColor: '#DBDBDC',
                   }}
                 >
-                  <div className='main-catalog__slider-sm_title'>Мышки</div>
+                  <div className="main-catalog__slider-sm_title">Мышки</div>
                 </Link>
               </div>
             </SwiperSlide>
-            <SwiperSlide className='main-catalog__slider-slide'>
-              <div className='main-catalog__slider-wrapper'>
+            <SwiperSlide className="main-catalog__slider-slide">
+              <div className="main-catalog__slider-wrapper">
                 <Link
                   onClick={() => onChangeCategory('аксессуары')}
-                  to='/catalog'
-                  className='main-catalog__slider-slide_item'
+                  to="/catalog"
+                  className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/accessory-main-catalog.png')`,
                     backgroundColor: '#DBDBDC',
@@ -127,18 +140,18 @@ function CatalogMain() {
                     backgroundRepeat: 'no-repeat',
                   }}
                 >
-                  <div className='main-catalog__slider-sm_title'>
+                  <div className="main-catalog__slider-sm_title">
                     Аксессуары
                   </div>
                 </Link>
               </div>
             </SwiperSlide>
-            <SwiperSlide className='main-catalog__slider-slide'>
-              <div className='main-catalog__slider-wrapper'>
+            <SwiperSlide className="main-catalog__slider-slide">
+              <div className="main-catalog__slider-wrapper">
                 <Link
                   onClick={() => onChangeCategory('веб-камеры')}
-                  to='/catalog'
-                  className='main-catalog__slider-slide_item'
+                  to="/catalog"
+                  className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/camera-main-catalog.png')`,
                     backgroundColor: '#DBDBDC',
@@ -147,18 +160,18 @@ function CatalogMain() {
                     backgroundRepeat: 'no-repeat',
                   }}
                 >
-                  <div className='main-catalog__slider-sm_title'>
+                  <div className="main-catalog__slider-sm_title">
                     Веб-камеры
                   </div>
                 </Link>
               </div>
             </SwiperSlide>
-            <SwiperSlide className='main-catalog__slider-slide'>
-              <div className='main-catalog__slider-wrapper'>
+            <SwiperSlide className="main-catalog__slider-slide">
+              <div className="main-catalog__slider-wrapper">
                 <Link
                   onClick={() => onChangeCategory('наушники')}
-                  to='/catalog'
-                  className='main-catalog__slider-slide_item'
+                  to="/catalog"
+                  className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/headphones-main-catalog.png')`,
                     backgroundColor: '#DBDBDC',
@@ -167,16 +180,16 @@ function CatalogMain() {
                     backgroundRepeat: 'no-repeat',
                   }}
                 >
-                  <div className='main-catalog__slider-sm_title'>Наушники</div>
+                  <div className="main-catalog__slider-sm_title">Наушники</div>
                 </Link>
               </div>
             </SwiperSlide>
 
-            <hr className='hr' />
+            <hr className="hr" />
           </Swiper>
         </div>
 
-        <div className='main-catalog__products-buttons'>
+        <div className="main-catalog__products-buttons">
           <button
             onClick={() => dispatch(setChoosenType('новинки'))}
             className={
@@ -188,9 +201,9 @@ function CatalogMain() {
             Новинки
           </button>
           <button
-            onClick={() => dispatch(setChoosenType('популярные'))}
+            onClick={() => dispatch(setChoosenType('популярное'))}
             className={
-              choosenType === 'популярные'
+              choosenType === 'популярное'
                 ? 'main-catalog__products-buttons_item active'
                 : 'main-catalog__products-buttons_item'
             }
@@ -208,11 +221,11 @@ function CatalogMain() {
             Акции
           </button>
         </div>
-        <hr className='hr' />
+        <hr className="hr" />
 
-        <div className='main-catalog__products-wrapper'>
-          {status === 'success' &&
-            items
+        <div className="main-catalog__products-wrapper">
+          {homeStatus === 'success' &&
+            homeItems
               .slice(0, 6)
               .map((item) => (
                 <Card
@@ -226,14 +239,14 @@ function CatalogMain() {
               ))}
         </div>
 
-        <Link to='/catalog' className='main-catalog__main-category'>
+        <Link to="/catalog" className="main-catalog__main-category">
           <button>Все {choosenType}</button>
         </Link>
 
-        <hr className='hr' />
+        <hr className="hr" />
       </div>
     </section>
-  );
+  )
 }
 
 export default React.memo(CatalogMain)

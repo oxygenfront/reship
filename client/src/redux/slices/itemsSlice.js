@@ -23,8 +23,19 @@ export const fetchItems = createAsyncThunk(
     return data
   }
 )
+export const fetchHomeItems = createAsyncThunk(
+  'items/fetchHomeItems',
+  async ({ choosenType }) => {
+    const { data } = await axios.get(`/getProducts?&type=${choosenType}`)
+    console.log(data)
+
+    return data
+  }
+)
 
 const initialState = {
+  homeItems: [],
+  homeStatus: 'loading',
   items: [],
   status: 'loading', // 'loading', 'success', 'error'
 }
@@ -45,6 +56,19 @@ const ItemsSlice = createSlice({
       console.log(action)
       state.status = 'error'
       state.items = []
+    })
+    builder.addCase(fetchHomeItems.pending, (state, action) => {
+      state.homeStatus = 'loading'
+      state.homeItems = []
+    })
+    builder.addCase(fetchHomeItems.fulfilled, (state, action) => {
+      state.homeItems = action.payload
+      state.homeStatus = 'success'
+    })
+    builder.addCase(fetchHomeItems.rejected, (state, action) => {
+      console.log(action)
+      state.homeStatus = 'error'
+      state.homeItems = []
     })
   },
 })

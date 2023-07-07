@@ -178,7 +178,7 @@ const Personal = () => {
                               <img
                                 src={
                                   theme === 'dark'
-                                    ? '../assets/img/settings dark theme.jpg'
+                                    ? '../assets/img/settings-button dark theme.png'
                                     : '../assets/img/settings-button.png'
                                 }
                                 alt="settings"

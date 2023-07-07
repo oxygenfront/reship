@@ -21,11 +21,17 @@ const Catalog = () => {
   const set = new Set()
   const brandSet = new Set()
   const typesSet = new Set()
-
+  const {
+    choosenCategorie,
+    searchValue,
+    choosenPrice,
+    choosenSort,
+    choosenBrand,
+    choosenType,
+  } = useSelector(selectFilter)
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
-  const { choosenCategorie, searchValue, choosenPrice, choosenType } =
-    useSelector(selectFilter)
+
   console.log(choosenPrice)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [showFilters, setShowFilters] = useState(false)
@@ -70,6 +76,26 @@ const Catalog = () => {
       setShowFilters(false)
     }
   }, [windowWidth])
+
+  useEffect(() => {
+    dispatch(
+      fetchItems({
+        choosenCategorie,
+        searchValue,
+        choosenPrice,
+        choosenSort,
+        choosenBrand,
+        choosenType,
+      })
+    )
+  }, [
+    choosenType,
+    choosenBrand,
+    choosenCategorie,
+    choosenPrice,
+    searchValue,
+    choosenSort,
+  ])
 
   if (status === 'success') {
     items.map((item) => set.add(item.category))

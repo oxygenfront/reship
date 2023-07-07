@@ -118,6 +118,8 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
                   style={{
                     backgroundImage: `url('${image}')`,
                     backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
                   }}
                 ></SwiperSlide>
               ))}

@@ -39,13 +39,14 @@ const Order = () => {
     number: '',
     email: '',
     adress: '',
-    token,
+
     promocode: window.localStorage.getItem('promocode')
       ? window.localStorage.getItem('promocode')
       : '',
     basket: JSON.stringify(cartItems),
     tariff_code: '1',
   })
+
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {
     setOrder({
@@ -113,6 +114,7 @@ const Order = () => {
           street: data_adress[2] + (data_adress[3] ? data_adress[3] : ''),
         })
       setOrder({
+        ...order,
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,

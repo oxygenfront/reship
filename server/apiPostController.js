@@ -216,89 +216,74 @@ class ApiPostController {
     }
   }
 
-  async getProducts(request, response) {
+  getProducts(request, response) {
     const { title, category, price_start, price_end, type, brand, feature, sort } =
       request.query;
-
-    let sql = "SELECT * FROM products WHERE 1=1";
-
-    if (title) {
-      sql += ` AND name LIKE '%${tools.delInjection(title)}%'`;
+     let sql = "SELECT * FROM products WHERE 1=1";
+     if (sort === "lowest") {
+      sql += " ORDER BY price";
+    } else if (sort === "highest") {
+      sql += " ORDER BY price DESC";
     }
-
-    if (category) {
-      sql += ` AND category='${tools.delInjection(category)}'`;
+     if (title) {
+      sql += ` AND name LIKE ?`;
     }
-
-    if (price_start && price_end) {
-      sql += ` AND price BETWEEN ${tools.delInjection(
-        price_start
-      )} AND ${tools.delInjection(price_end)}`;
+     if (category) {
+      sql += ` AND category=?`;
+    }
+     if (price_start && price_end) {
+      sql += ` AND price BETWEEN ? AND ?`;
     } else if (price_start) {
-      sql += ` AND price > ${tools.delInjection(price_start)}`;
+      sql += ` AND price > ?`;
     } else if (price_end) {
-      sql += ` AND price < ${tools.delInjection(price_end)}`;
+      sql += ` AND price < ?`;
     }
-
-    database.query(sql, (error, rows, fields) => {
+     const params = [];
+    if (title) {
+      params.push(`%${tools.delInjection(title)}%`);
+    }
+    if (category) {
+      params.push(tools.delInjection(category));
+    }
+    if (price_start && price_end) {
+      params.push(tools.delInjection(price_start));
+      params.push(tools.delInjection(price_end));
+    } else if (price_start) {
+      params.push(tools.delInjection(price_start));
+    } else if (price_end) {
+      params.push(tools.delInjection(price_end));
+    }
+     database.query(sql, params, (error, rows, fields) => {
       if (error) {
         return response
           .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.2 });
+          .json({ error: "Ошибка на сервере", bcode: 2.2, e: error });
       }
-
-      if (type || brand || feature) {
-        const ready_rows = [];
-
-        for (let i = 0; i < rows.length; i++) {
-
-          if (type) {
-            const type_list = type.split(',')
-            const type_row = JSON.parse(rows[i].type);
-
-            for (let j = 0; j < type_row.length; j++) {
-              if (type_list.includes(type_row[j])) {
-                ready_rows.push(rows[i])
-                break
-              }
-            }
+       if (type || brand || feature) {
+        const typeSet = new Set(type ? type.split(",") : []);
+        const brandSet = new Set(brand ? brand.split(",") : []);
+        const featureSet = new Set(feature ? feature.split(",") : []);
+         const ready_rows = rows.filter((row) => {
+          const type_row = JSON.parse(row.type);
+          const feature_row = JSON.parse(row.feature);
+           if (type && !type_row.some((t) => typeSet.has(t))) {
+            return false;
           }
-
-          if (brand) {
-            const brand_list = brand.split(',')
-            const brand_row = rows[i].brand;
-
-            for (let j = 0; j < brand_list.length; j++) {
-              if (brand_list.includes(brand_row)) {
-                if (ready_rows.includes(rows[i])) continue
-
-                ready_rows.push(rows[i])
-                break
-              }
-            }
+          if (brand && !brandSet.has(row.brand)) {
+            return false;
           }
-
-          if (feature) {
-            const feature_list = feature.split(',')
-            const feature_row = JSON.parse(rows[i].feature);
-
-            for (let j = 0; j < feature_row.length; j++) {
-              console.log(Object.values(feature_row[j]))
-              if (feature_list.includes(Object.values(feature_row[j])[1])) {
-                if (ready_rows.includes(rows[i])) continue
-
-                ready_rows.push(rows[i])
-                break
-              }
-            }
+          if (
+            feature &&
+            !feature_row.some((f) => featureSet.has(Object.values(f)[1]))
+          ) {
+            return false;
           }
-
-        }
-
-        rows = ready_rows;
+           return true;
+        });
+         response.json(ready_rows);
+      } else {
+        response.json(rows);
       }
-
-      response.json(rows);
     });
   }
 

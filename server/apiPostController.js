@@ -217,7 +217,7 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
-    const { title, category, price_start, price_end, type, brand, feature } =
+    const { title, category, price_start, price_end, type, brand, feature, sort } =
       request.query;
 
     let sql = "SELECT * FROM products WHERE 1=1";

@@ -40,29 +40,21 @@ const Menu = () => {
   const { items, itemsStatus = status } = useSelector(selectItemsData);
   const { cartItems } = useSelector(selectCart);
   const theme = useSelector((state) => state.theme);
-
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0);
-
   const [isOpen, setIsOpen] = useState(false);
-
   const refInput = useRef(null);
   const [focusedInput, setFocusedInput] = useState(false);
   const handleFocus = () => {
     setFocusedInput(true);
   };
-
   const handleBlur = () => {
     setFocusedInput(false);
   };
-
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showBurger, setShowBurger] = useState(false);
-
   const favoriteCount = favorites ? favorites.length : null;
-
   const stylesBurgerMenuWrapperNoShow = {
     width: '100vw',
     height: '100vh',
@@ -95,14 +87,12 @@ const Menu = () => {
   const stylesBurgerMenuListShow = {
     transition: 'all .2s linear',
     position: 'absolute',
-
     borderRadius: '30px',
     top: '14px',
     right: '35px',
     height: '84vh',
     width: '247px',
   };
-
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout());
@@ -113,38 +103,34 @@ const Menu = () => {
   const onClickClear = () => {
     dispatch(setSearchValue(''));
   };
-
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
     }
-
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
   useEffect(() => {
     if (isMounted.current) {
       const json = JSON.stringify(cartItems);
       const favJson = JSON.stringify(favorites);
-
       localStorage.setItem('cart', json);
       localStorage.setItem('favorites', favJson);
     }
     isMounted.current = true;
   }, [cartItems, favorites]);
-
   useEffect(() => {
     const handleScroll = () => setScrollTop(window.scrollY);
     window.addEventListener('scroll', handleScroll);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   function handelFocesedInput() {
     setFocusedInput(true);
     refInput.current.focus();
+  }
+  function handleOpenModalCtalog() {
+    setFocusedInput(false);
+    setIsOpen(true);
   }
   return (
     <div
@@ -164,11 +150,11 @@ const Menu = () => {
 
           <Link
             style={
-              focusedInput
-                ? { width: '0px', fontSize: '0', border: 'unset' }
+              focusedInput && windowWidth <= 450
+                ? { width: '42px', fontSize: '0' }
                 : null
             }
-            onClick={() => setIsOpen(true)}
+            onClick={handleOpenModalCtalog}
             className={styles.search_section__catalog}
           >
             <span>Каталог</span>
@@ -176,9 +162,7 @@ const Menu = () => {
             <div
               className={styles.search_section__catalog_arrow}
               style={
-                focusedInput
-                  ? { width: '0px', fontSize: '0', border: 'unset' }
-                  : null
+                focusedInput && windowWidth <= 450 ? { marginLeft: 0 } : null
               }
             ></div>
           </Link>
@@ -203,7 +187,7 @@ const Menu = () => {
             type='text'
             placeholder={
               focusedInput && windowWidth <= 450
-                ? 'Поиск по каталогу'
+                ? 'Поиск'
                 : windowWidth > 450
                 ? 'Поиск  по каталогу'
                 : null
@@ -244,9 +228,9 @@ const Menu = () => {
               <i className='fa-solid fa-magnifying-glass'></i>
             </button>
           ) : windowWidth <= 450 ? (
-              <Link
-                onClick={() => setFocusedInput(!focusedInput)}
+            <Link
               to='/catalog'
+              onClick={() => setFocusedInput(!focusedInput)}
               className={styles.search_section__search_block_glass}
             >
               <i className='fa-solid fa-magnifying-glass'></i>

@@ -1,6 +1,6 @@
 import { Suspense, useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 
 import Header from './components/Header/Header'
 
@@ -36,6 +36,11 @@ import { fetchItems } from './redux/slices/itemsSlice'
 
 const App = () => {
   const dispatch = useDispatch()
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   const token = localStorage.getItem('token')
 

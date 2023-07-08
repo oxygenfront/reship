@@ -54,44 +54,44 @@ const Footer = () => {
             </div>
             <div className={styles.footer__block}>
               <div className={styles.footer__title}>Покупателям</div>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Доставка и оплата
               </a>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Гарантия и возврат
               </a>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Политика конфиденцильности
               </a>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Пользовательское соглашение
               </a>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Договор-оферта
               </a>
             </div>
             <div className={styles.footer__block}>
               <div className={styles.footer__title}>Поддержка</div>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Каждый день
               </a>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 11:00-20:00
               </a>
-              <a href='#' className={styles.footer__block_suptitle}>
+              <a href='/' className={styles.footer__block_suptitle}>
                 Номер телефона
               </a>
             </div>
             <div className={styles.footer__block}>
               <div className={styles.footer__title}>Соцсети</div>
               <div className={styles.footer__block_social}>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   <img src='../assets/img/vk.svg' alt='vk' />
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   <img src='../assets/img/discord.svg' alt='discord' />
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   <img
                     src='../assets/img/tg-decor.png'
                     alt='telegram'
@@ -130,19 +130,19 @@ const Footer = () => {
               </div>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Покупателям</div>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Доставка и оплата
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Гарантия и возврат
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Политика конфиденцильности
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Пользовательское соглашение
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Договор-оферта
                 </a>
               </div>
@@ -150,26 +150,26 @@ const Footer = () => {
             <div className={styles.footer__titles}>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Поддержка</div>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Каждый день
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   11:00-20:00
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Номер телефона
                 </a>
               </div>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Соцсети</div>
                 <div className={styles.footer__block_social}>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img src='../assets/img/vk.svg' alt='vk' />
                   </a>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img src='../assets/img/discord.svg' alt='discord' />
                   </a>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img
                       src='../assets/img/tg-decor.png'
                       alt='telegram'
@@ -209,19 +209,19 @@ const Footer = () => {
               </div>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Покупателям</div>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Доставка и оплата
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Гарантия и возврат
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Политика конфиденцильности
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Пользовательское соглашение
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Договор-оферта
                 </a>
               </div>
@@ -229,26 +229,26 @@ const Footer = () => {
             <div className={styles.footer__titles}>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Поддержка</div>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Каждый день
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   11:00-20:00
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Номер телефона
                 </a>
               </div>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Соцсети</div>
                 <div className={styles.footer__block_social}>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img src='../assets/img/vk.svg' alt='vk' />
                   </a>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img src='../assets/img/discord.svg' alt='discord' />
                   </a>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img
                       src='../assets/img/tg-decor.png'
                       alt='telegram'
@@ -290,44 +290,44 @@ const Footer = () => {
             <div className={styles.footer__titles}>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Покупателям</div>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Доставка и оплата
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Гарантия и возврат
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Политика конфиденцильности
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Пользовательское соглашение
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Договор-оферта
                 </a>
               </div>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Поддержка</div>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Каждый день
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   11:00-20:00
                 </a>
-                <a href='#' className={styles.footer__block_suptitle}>
+                <a href='/' className={styles.footer__block_suptitle}>
                   Номер телефона
                 </a>
               </div>
               <div className={styles.footer__block}>
                 <div className={styles.footer__title}>Соцсети</div>
                 <div className={styles.footer__block_social}>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img src='../assets/img/vk.svg' alt='vk' />
                   </a>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img src='../assets/img/discord.svg' alt='discord' />
                   </a>
-                  <a href='#' className={styles.footer__block_suptitle}>
+                  <a href='/' className={styles.footer__block_suptitle}>
                     <img
                       src='../assets/img/tg-decor.png'
                       alt='telegram'

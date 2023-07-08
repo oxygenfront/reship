@@ -275,9 +275,20 @@ const Catalog = () => {
                 </div>
               ) : (
                 <div className="catalog__main_filters_popular">
-                  <span>С подсветкой</span>
-                  <span>Razer</span>
-                  <span>Проводные</span>
+                  {localBrands.split(' ')[0] !== ''
+                    ? localBrands
+                        .split(' ')
+                        .slice(0, -1)
+                        .map((brand) => <span key={brand}>{brand}</span>)
+                    : null}
+                  {localCategories.split(' ')[0] !== ''
+                    ? localCategories
+                        .split(' ')
+                        .slice(0, -1)
+                        .map((category) => (
+                          <span key={category}>{category}</span>
+                        ))
+                    : null}
                 </div>
               )}
 

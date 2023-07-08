@@ -20,6 +20,7 @@ import { selectCart } from '../../redux/slices/cartSlice'
 import { Menu as DropDown } from '@headlessui/react'
 import { getFavoritesFromLs } from '../../utils/getFavoritesFromLs'
 import { addFavorite, selectFavorites } from '../../redux/slices/favoriteSlice'
+import Modal from './Modal'
 
 const Menu = () => {
   const dispatch = useDispatch()
@@ -38,8 +39,7 @@ const Menu = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrollTop, setScrollTop] = useState(0)
-  const [localCategory, setLocalCategory] = useState('мышки')
-  const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [showBurger, setShowBurger] = useState(false)
 
@@ -85,9 +85,6 @@ const Menu = () => {
     width: '247px',
   }
 
-  const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort))
-  }, [])
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
       dispatch(logout())
@@ -162,173 +159,7 @@ const Menu = () => {
           {searchValue ? (
             <div className={styles.search_section__search_item_close}></div>
           ) : null}
-          <Dialog
-            as="div"
-            className={styles.modal}
-            open={isOpen}
-            onClose={() => setIsOpen(false)}
-          >
-            <div className={styles.modal_bg} aria-hidden="true"></div>
-            <div className={styles.modal_scroll}>
-              <div className={styles.modal_container}>
-                <Dialog.Panel>
-                  <div className={styles.modal_items}>
-                    <div className={styles.modal_leftcol}>
-                      <ul>
-                        <li
-                          className={
-                            localCategory === 'мышки'
-                              ? styles.modal_leftcol_active
-                              : null
-                          }
-                          onClick={() => {
-                            setLocalCategoryEn('mouse')
-                            setLocalCategory('мышки')
-                          }}
-                        >
-                          <img src="../assets/img/mouse.svg" alt="mouse" />
-                          Мышки
-                        </li>
-                        <li
-                          className={
-                            localCategory === 'клавиатуры'
-                              ? styles.modal_leftcol_active
-                              : null
-                          }
-                          onClick={() => {
-                            setLocalCategoryEn('boards')
-                            setLocalCategory('клавиатуры')
-                          }}
-                        >
-                          <img
-                            src="../assets/img/keyboard.svg"
-                            alt="keyboard"
-                          />
-                          Клавиатуры
-                        </li>
-                        <li
-                          className={
-                            localCategory === 'наушники'
-                              ? styles.modal_leftcol_active
-                              : null
-                          }
-                          onClick={() => {
-                            setLocalCategoryEn('headphones')
-                            setLocalCategory('наушники')
-                          }}
-                        >
-                          <img
-                            src="../assets/img/headphones.svg"
-                            alt="headphones"
-                          />
-                          Наушники
-                        </li>
-                        <li
-                          className={
-                            localCategory === 'микрофоны'
-                              ? styles.modal_leftcol_active
-                              : null
-                          }
-                          onClick={() => {
-                            setLocalCategoryEn('microphone')
-                            setLocalCategory('микрофоны')
-                          }}
-                        >
-                          <img
-                            src="../assets/img/microfone.svg"
-                            alt="microfone"
-                          />
-                          Микрофоны
-                        </li>
-                        <li
-                          className={
-                            localCategory === 'аксессуары'
-                              ? styles.modal_leftcol_active
-                              : null
-                          }
-                          onClick={() => {
-                            setLocalCategoryEn('accessory')
-                            setLocalCategory('аксессуары')
-                          }}
-                        >
-                          <img src="../assets/img/accessory.svg" alt="access" />
-                          Аксессуары
-                        </li>
-                        <li
-                          className={
-                            localCategory === 'веб-камеры'
-                              ? styles.modal_leftcol_active
-                              : null
-                          }
-                          onClick={() => {
-                            setLocalCategoryEn('camera')
-                            setLocalCategory('веб-камеры')
-                          }}
-                        >
-                          <img src="../assets/img/camera.svg" alt="camera" />
-                          Веб-камеры
-                        </li>
-                      </ul>
-                    </div>
-                    <div className={styles.modal_center}>
-                      <div className={styles.modal_center_title}>
-                        <div>
-                          <p>Особенности</p>
-                        </div>
-                        <div>
-                          <p>Бренды</p>
-                        </div>
-                      </div>
-                      <div className={styles.modal_center_items}>
-                        <ul>
-                          <li>Беспроводные</li>
-                          <li>С русскими букавами</li>
-                          <li>RGB-подсветка</li>
-                          <li>Эргономичные </li>
-                        </ul>
-                        <ul>
-                          <li>Varmilo</li>
-                          <li>С русскими букавами</li>
-                          <li>RGB-подсветка</li>
-                          <li>Эргономичные </li>
-                        </ul>
-                      </div>
-                      <div className={styles.modal_center_title}>
-                        <div>
-                          <p>Размер</p>
-                        </div>
-                      </div>
-                      <div className={styles.modal_center_items}>
-                        <ul>
-                          <li>Полноразмерные 100%</li>
-                          <li>Без нампада 75-80% </li>
-                          <li>Без F-ряда 60-65%</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className={styles.modal_right}>
-                      <Link
-                        to="/catalog"
-                        onClick={() => {
-                          setIsOpen(false)
-                          onChangeCategory(localCategory)
-                        }}
-                      >
-                        <img
-                          src={`../assets/img/${localCategoryEn}-main-catalog.png`}
-                          alt="mouse"
-                        />
-                        <span>Просмотреть все {localCategory}</span>
-                        <div className={styles.swiper_button_next_wrapper}>
-                          <div className={styles.swiper_button_next}></div>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                </Dialog.Panel>
-              </div>
-            </div>
-          </Dialog>
+          <Modal setIsOpen={setIsOpen} isOpen={isOpen}></Modal>
           {/* <Dialog
             as="div"
             className={styles.modal}

@@ -54,6 +54,7 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
+  const [pass, setPass] = useState(false)
   function updateAdress(e) {
     setAdress({
       ...adress,
@@ -65,6 +66,8 @@ const Order = () => {
       ...order,
       adress: JSON.stringify({ adress: Object.values(adress).join(', ') }),
     })
+    setPass(true)
+    alert('Адресс доставки подтвержден')
   }
 
   async function sendForm(e) {
@@ -428,9 +431,23 @@ const Order = () => {
             </div>
           )}
         </div>
-        <button className="main-form_submit" onClick={sendForm}>
-          Подтвердить заказ
-        </button>
+        {pass ? (
+          <button
+            className="main-form_submit"
+            onClick={sendForm}
+            disabled={false}
+          >
+            Подтвердить заказ
+          </button>
+        ) : (
+          <button
+            className="main-form_submit disabled"
+            onClick={sendForm}
+            disabled={true}
+          >
+            Подтвердите адрес
+          </button>
+        )}
       </div>
     </section>
   )

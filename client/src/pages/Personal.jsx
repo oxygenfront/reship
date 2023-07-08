@@ -521,7 +521,9 @@ const Personal = () => {
                   modules={[Navigation]}
                   navigation
                   speed={1300}
-                  slidesPerView={windowWidth < 1199 ? 2 : 0}
+                  slidesPerView={
+                    windowWidth < 1199 ? (windowWidth < 565 ? 1 : 2) : 0
+                  }
                   spaceBetween={windowWidth < 767 ? 10 : 45}
                   className="personal__interesting_slider"
                 >

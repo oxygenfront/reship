@@ -335,7 +335,7 @@ input[type="checkbox"]
         &__sort
             width: 35vw
             position: absolute
-            top: 50px
+            top: 15px
             left: 0
             padding-top: 45px
             &-block hr
@@ -345,7 +345,8 @@ input[type="checkbox"]
 
             &_wrapper
                 &_grid
-                    grid-template-columns: repeat(2, 250px)
+                    grid-template-columns: repeat(2, 240px)
+                    justify-content: space-between
             &_filters
                 &-main
                     width: 100%
@@ -362,7 +363,7 @@ input[type="checkbox"]
     //     height: 12px
     .catalog
         &__sort
-            top: 50px
+            top: 10px
             width: 43%
             padding: 45px 7px 15px 7px
             &_title
@@ -387,7 +388,7 @@ input[type="checkbox"]
                             margin-right: 0
             &_wrapper
                 &_grid
-                    grid-template-columns: repeat(1, 80vw)
+                    grid-template-columns: repeat(1, 100%)
+                    justify-content: center
 @media (max-width: 384px)
     .catalog__sort
-        top: 87px

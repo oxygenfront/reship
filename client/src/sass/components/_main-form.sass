@@ -12,6 +12,10 @@
         color: #fff
         width: 264px
         height: 55px
+        &.disabled
+            color: var(--color)
+            background: none
+            border: 2px solid #0540F2
     &_payment
         margin-bottom: 100px
         &_items
@@ -109,7 +113,7 @@
 
     &__total
         &_delivery
-            font-size: 14px
+            font-size: 19px
             display: flex
             align-items: center
             justify-content: space-between
@@ -121,7 +125,7 @@
             padding-bottom: 25px
             margin-bottom: 20px
         &_item
-            font-size: 14px
+            font-size: 19px
             display: flex
             align-items: center
             justify-content: space-between

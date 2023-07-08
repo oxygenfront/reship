@@ -39,13 +39,14 @@ const Order = () => {
     number: '',
     email: '',
     adress: '',
-    token,
+
     promocode: window.localStorage.getItem('promocode')
       ? window.localStorage.getItem('promocode')
       : '',
     basket: JSON.stringify(cartItems),
     tariff_code: '1',
   })
+
   const [isValidEmail, setIsValidEmail] = useState(false)
   function updateOrder(e) {
     setOrder({
@@ -53,6 +54,7 @@ const Order = () => {
       [e.target.name]: e.target.value,
     })
   }
+  const [pass, setPass] = useState(false)
   function updateAdress(e) {
     setAdress({
       ...adress,
@@ -64,6 +66,8 @@ const Order = () => {
       ...order,
       adress: JSON.stringify({ adress: Object.values(adress).join(', ') }),
     })
+    setPass(true)
+    alert('Адресс доставки подтвержден')
   }
 
   async function sendForm(e) {
@@ -113,6 +117,7 @@ const Order = () => {
           street: data_adress[2] + (data_adress[3] ? data_adress[3] : ''),
         })
       setOrder({
+        ...order,
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
@@ -426,9 +431,23 @@ const Order = () => {
             </div>
           )}
         </div>
-        <button className="main-form_submit" onClick={sendForm}>
-          Подтвердить заказ
-        </button>
+        {pass ? (
+          <button
+            className="main-form_submit"
+            onClick={sendForm}
+            disabled={false}
+          >
+            Подтвердить заказ
+          </button>
+        ) : (
+          <button
+            className="main-form_submit disabled"
+            onClick={sendForm}
+            disabled={true}
+          >
+            Подтвердите адрес
+          </button>
+        )}
       </div>
     </section>
   )

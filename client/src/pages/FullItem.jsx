@@ -243,8 +243,8 @@ const FullItem = () => {
               <div className=''>
                 <p>Особенности</p>
                 {status === 'success' &&
-                  JSON.parse(item.feature).map((feature) => (
-                    <div className='fullitem__description_left_spec'>
+                  JSON.parse(item.feature).map((feature, index) => (
+                    <div key={index} className='fullitem__description_left_spec'>
                       <div className='fullitem__description_left_spec_title'>
                         {feature.title}
                       </div>
@@ -304,7 +304,7 @@ const FullItem = () => {
           <div className='fullitem__comments container'>
             <p className='fullitem__comments_title'>Отзывы</p>
             <div className='fullitem__comments_items'>
-              {arrStatus === 'success' && comments.items.length > 0 ? (
+              {arrStatus === 'success' && comments.items?.length > 0 ? (
                 comments.items.map((comment) => (
                   <Comment
                     anon={comment.anon}

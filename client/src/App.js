@@ -47,34 +47,6 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchAuthMe())
   }, [])
-  const {
-    choosenCategorie,
-    searchValue,
-    choosenPrice,
-    choosenSort,
-    choosenBrand,
-    choosenType,
-  } = useSelector(selectFilter)
-
-  useEffect(() => {
-    dispatch(
-      fetchItems({
-        choosenCategorie,
-        searchValue,
-        choosenPrice,
-        choosenSort,
-        choosenBrand,
-        choosenType,
-      })
-    )
-  }, [
-    choosenCategorie,
-    searchValue,
-    choosenSort,
-    choosenPrice,
-    choosenBrand,
-    choosenType,
-  ])
 
   return (
     <>

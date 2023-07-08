@@ -109,15 +109,17 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
               pagination={{ clickable: true }}
               centeredSlides={true}
             >
-              {JSON.parse(image).map((image) => (
+              {JSON.parse(image).map((image, index) => (
                 <SwiperSlide
-                  key={image}
+                  key={index}
                   className={
                     styles.main_catalog__products_wrapper_item_slider_slide
                   }
                   style={{
                     backgroundImage: `url('${image}')`,
                     backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
                   }}
                 ></SwiperSlide>
               ))}

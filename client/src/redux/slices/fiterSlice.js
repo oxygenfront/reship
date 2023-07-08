@@ -5,7 +5,7 @@ const initialState = {
   choosenSort: '',
   catalogSort: '',
   searchValue: '',
-  choosenPrice: [2000, 12000],
+  choosenPrice: [0, 9999999],
   choosenBrand: '',
   choosenType: '',
 }

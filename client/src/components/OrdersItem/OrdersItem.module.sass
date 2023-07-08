@@ -79,6 +79,7 @@
 			font-weight: 600
 			font-size: 20px
 			color: #0540F2
+			white-space: nowrap
 	&_left
 		display: flex
 	&_img
@@ -118,5 +119,51 @@
 		color: #fff
 		background: #0540F2
 		border-radius: 30px
+@media (max-width: 767px)
+	.btns
+		width: 80vw
+		&_cancel
+		&_submit
+	.item
+		width: 55vw
+		&_titles
+			width: 55vw
+		&_title
+			width: 17vw
+			p
+				font-size: 14px
 
+		&_right
+			span
+				font-size: 16px
+		&_inp
+			width: 80vw
+	.modal
+		&_container
+			width: 90vw
+@media (max-width: 575px)
+	.btns
+		&_cancel
+			width: 110px
+			height: 38px
+			font-size: 14px
+		&_submit
+			width: 110px
+			height: 38px
+			font-size: 14px
+	.item
+		width: 75vw
+		padding-top: 15px
+		padding-left: 5px
+		padding-right: 10px
+		height: 85px
 
+		&_titles
+			width: 75vw
+		&_inp
+			width: 75vw
+	.modal
+		&_container
+			padding: 15px
+			width: 90vw
+			margin-top: 70px

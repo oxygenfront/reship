@@ -135,7 +135,7 @@ const FullItem = () => {
                 <div className="fullitem__card_info-params_block">
                   <p>Цвет</p>
                   <div className="fullitem__card_info-params_block-wrapper">
-                    {renderStatus &&
+                    {/* {renderStatus &&
                       JSON.parse(item.colors).map((color) => (
                         <button
                           onClick={(e) => setColor(e.target.value)}
@@ -145,7 +145,7 @@ const FullItem = () => {
                         >
                           {color[0].toUpperCase() + color.slice(1)}
                         </button>
-                      ))}
+                      ))} */}
                   </div>
                 </div>
               )}

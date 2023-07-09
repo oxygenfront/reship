@@ -233,7 +233,7 @@ class ApiPostController {
     let query = "SELECT * FROM products";
 
     if (priceStart && priceEnd) {
-      query += ` WHERE price BETWEEN ${priceStart} AND ${priceEnd}`;
+      query += ` WHERE price BETWEEN ${tools.delInjection(priceStart)} AND ${tools.delInjection(priceEnd)}`;
     }
 
     if (sort === "lowest") {

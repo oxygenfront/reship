@@ -52,5 +52,13 @@ function removeItemAll(arr, value) {
     }
     return arr;
   }
+  function compareLists(list1, list2) {
+    for (let i = 0; i < list1.length; i++) {
+      if (list2.includes(list1[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 export default {checkJsonKey, createToken, delInjection, removeItemAll, generateCode};

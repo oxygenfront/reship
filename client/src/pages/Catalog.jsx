@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, Skeleton } from '../components'
 import {
   selectFilter,
+  setCatalogSort,
   setChoosenBrand,
   setChoosenCategorie,
   setChoosenPrice,
@@ -25,7 +26,7 @@ const Catalog = () => {
     choosenCategorie,
     searchValue,
     choosenPrice,
-    choosenSort,
+    catalogSort,
     choosenBrand,
     choosenType,
   } = useSelector(selectFilter)
@@ -36,14 +37,13 @@ const Catalog = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [showFilters, setShowFilters] = useState(false)
   const [choosenView, setChoosenView] = useState('grid')
-  const [price, setPrice] = useState([2000, 12000])
+  const [price, setPrice] = useState([2000, 30000])
 
   const [localBrands, setLocalBrands] = useState('')
   const [localCategories, setLocalCategories] = useState('')
   const [localTypes, setLocalTypes] = useState('')
 
-  console.log(localBrands)
-  console.log(localCategories)
+  console.log(catalogSort)
   const confirmFilters = () => {
     dispatch(setChoosenBrand(localBrands))
     dispatch(setChoosenType(localTypes))
@@ -83,7 +83,7 @@ const Catalog = () => {
         choosenCategorie,
         searchValue,
         choosenPrice,
-        choosenSort,
+        catalogSort,
         choosenBrand,
         choosenType,
       })
@@ -94,7 +94,7 @@ const Catalog = () => {
     choosenCategorie,
     choosenPrice,
     searchValue,
-    choosenSort,
+    catalogSort,
   ])
 
   if (status === 'success') {
@@ -104,7 +104,13 @@ const Catalog = () => {
   }
   const categories = [...set]
   const brands = [...brandSet]
-  const types = [...typesSet]
+  const types = [...typesSet].filter((item) => {
+    if (item === '') {
+      return false
+    } else {
+      return true
+    }
+  })
 
   // const fnShowFilters = () => {
   //   if (windowWidth > 767) {
@@ -339,10 +345,16 @@ const Catalog = () => {
                         <DropDown.Item className="catalog__main_filters-main_menu_item">
                           <div>По популярности</div>
                         </DropDown.Item>
-                        <DropDown.Item className="catalog__main_filters-main_menu_item">
+                        <DropDown.Item
+                          className="catalog__main_filters-main_menu_item"
+                          onClick={() => dispatch(setCatalogSort('highest'))}
+                        >
                           <div>Подоророже</div>
                         </DropDown.Item>
-                        <DropDown.Item className="catalog__main_filters-main_menu_item">
+                        <DropDown.Item
+                          className="catalog__main_filters-main_menu_item"
+                          onClick={() => dispatch(setCatalogSort('lowest'))}
+                        >
                           <div>Подешевле</div>
                         </DropDown.Item>
                       </div>

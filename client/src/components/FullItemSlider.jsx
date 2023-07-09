@@ -1,12 +1,45 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Thumbs } from 'swiper'
 import 'swiper/swiper-bundle.css'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  addFavorite,
+  removeFavorite,
+  selectFavorites,
+} from '../redux/slices/favoriteSlice'
+import { selectFullItemData } from '../redux/slices/fullItemSlice'
 
 const FullItemSlider = ({ id, image }) => {
+  console.log(id)
+  const dispatch = useDispatch()
   const parsedImage = JSON.parse(image)
+  const { favorites } = useSelector(selectFavorites)
+  const { item, status } = useSelector(selectFullItemData)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [isFavorite, setIsFavorite] = useState(false)
   const swiperRef = useRef(null)
+
+  const onChangeFavorite = () => {
+    if (!isFavorite) {
+      dispatch(
+        addFavorite({
+          id,
+          name: item.name,
+          image: item.image_link,
+          price: item.price,
+          color: item.color,
+        })
+      )
+
+      return setIsFavorite(true)
+    }
+    if (isFavorite) {
+      dispatch(removeFavorite(id))
+
+      return setIsFavorite(false)
+    }
+  }
 
   const handleSlideChange = (swiper) => {
     const currentIndex = swiper.realIndex
@@ -31,9 +64,26 @@ const FullItemSlider = ({ id, image }) => {
     }
   }
 
+  useEffect(() => {
+    const ids = favorites.map((item) => item.id)
+
+    setIsFavorite(ids.includes(id))
+    console.log(isFavorite)
+  }, [])
+
   return (
     <>
       <div className="fullitem__card-slider_big-wrapper">
+        <button
+          onClick={onChangeFavorite}
+          className="fullitem__card-slider_big-favorite"
+        >
+          {isFavorite ? (
+            <img src="../assets/img/active-heart-main-catalog.png"></img>
+          ) : (
+            <img src="../assets/img/heart-main-catalog.png"></img>
+          )}
+        </button>
         <img
           src={parsedImage[currentSlide]}
           alt="Большая картинка"

@@ -54,11 +54,11 @@ const Catalog = () => {
     setLocalBrands('')
     setLocalCategories('')
     setLocalTypes('')
-    setPrice([2000, 12000])
+    setPrice([2000, 30000])
     await dispatch(setChoosenBrand(''))
     await dispatch(setChoosenCategorie(''))
     await dispatch(setChoosenType(''))
-    await dispatch(setChoosenPrice([2000, 12000]))
+    await dispatch(setChoosenPrice([2000, 30000]))
   }
 
   useEffect(() => {
@@ -342,7 +342,10 @@ const Catalog = () => {
 
                     <DropDown.Items className="catalog__main_filters-main_menu_items">
                       <div className="catalog__main_filters-main_menu_items_wrapper">
-                        <DropDown.Item className="catalog__main_filters-main_menu_item">
+                        <DropDown.Item
+                          onClick={() => dispatch(setCatalogSort(5))}
+                          className="catalog__main_filters-main_menu_item"
+                        >
                           <div>По популярности</div>
                         </DropDown.Item>
                         <DropDown.Item

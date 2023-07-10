@@ -6,6 +6,85 @@
     padding: 50px
     border: 2px solid #0540F2
     border-radius: 30px
+    &_faq
+        margin-bottom: 90px
+
+        &__accordeon
+            width: 100%
+            margin-bottom: 50px
+        &__item
+            position: relative
+            height: auto
+            transition: all 0.4s ease-in-out
+            background: var(--togray)
+            border-radius: 30px
+
+            color: var(--color)
+            font-size: 18px
+            &_tariff
+                position: relative
+                height: auto
+                transition: all 0.4s ease-in-out
+                background: #AEC5F2
+                border-radius: 30px
+
+                color: var(--color)
+                font-size: 18px
+                &:not(:last-child)
+                    margin-bottom: 20px
+            &.active
+                border-radius: 30px
+                background: var(--togray)
+
+                transition: background 0.4s ease-in-out
+                &-arrows
+
+            &.active &-arrows
+                transform: rotate(225deg)
+                border-right-color: #0540F2
+                border-bottom-color: #0540F2
+            &:not(:last-child)
+                margin-bottom: 20px
+            &-first-block
+                display: flex
+                justify-content: space-between
+                padding: 36px 57px 26px 33px
+            &-title
+                width: 50%
+                font-size: 24px
+                font-weight: 600
+                color: var(--color)
+
+            &-arrows
+
+                width: 16px
+                height: 16px
+                border-right: 4px solid #0540F2
+                border-bottom: 4px solid #0540F2
+                transform: rotate(45deg)
+                transition: all .4s linear
+                margin-left: 25px
+                &_block
+                    display: flex
+
+            &-about
+                line-height: 24px
+                height: 0px
+                transition: height 0.4s ease-in-out
+                overflow: hidden
+                padding: 0px 50px 0px 33px
+                &-title
+                    font-size: 18px
+                    color: #0540F2
+                    font-weight: 600
+                    margin-bottom: 10px
+                &-text
+
+                    margin-bottom: 20px
+
+            &.active &-about
+                height: 220px
+                transition: height 0.4s ease-in-out
     &_submit
         background: #0540F2
         border-radius: 30px
@@ -148,6 +227,9 @@
             font-weight: 600
             color: var(--color)
             margin-bottom: 40px
+            p
+                margin-top: 10px
+                font-size: 16px
         &_item
             &_buttons
                 margin-top: 90px

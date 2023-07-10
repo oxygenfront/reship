@@ -20,3 +20,4 @@ export { default as Orders } from './Orders'
 
 export { default as Favorites } from './Favorites'
 export { default as NewPassword } from './NewPassword'
+export { default as ConfirmedOrder } from './ConfirmedOrder'

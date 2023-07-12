@@ -56,7 +56,7 @@ function CatalogMain() {
         <div className="main-catalog__lg-items">
           <Link
             to="/catalog"
-            onClick={() => onChangeCategory('клавиатуры')}
+            onClick={() => onChangeCategory('Клавиатуры')}
             className="main-catalog__lg-items-item"
             style={{
               backgroundImage: `url('/assets/img/boards-main-catalog.png')`,
@@ -67,7 +67,7 @@ function CatalogMain() {
             <span>Клавиатуры</span>
           </Link>
           <Link
-            onClick={() => onChangeCategory('микрофоны')}
+            onClick={() => onChangeCategory('Микрофоны')}
             to="/catalog"
             style={{
               backgroundImage: `url('/assets/img/microphone-main-catalog.png')`,
@@ -111,7 +111,7 @@ function CatalogMain() {
             <SwiperSlide className="main-catalog__slider-slide">
               <div className="main-catalog__slider-wrapper">
                 <Link
-                  onClick={() => onChangeCategory('мышки')}
+                  onClick={() => onChangeCategory('Мышки')}
                   to="/catalog"
                   className="main-catalog__slider-slide_item"
                   style={{
@@ -129,7 +129,7 @@ function CatalogMain() {
             <SwiperSlide className="main-catalog__slider-slide">
               <div className="main-catalog__slider-wrapper">
                 <Link
-                  onClick={() => onChangeCategory('аксессуары')}
+                  onClick={() => onChangeCategory('Аксессуары')}
                   to="/catalog"
                   className="main-catalog__slider-slide_item"
                   style={{
@@ -149,7 +149,7 @@ function CatalogMain() {
             <SwiperSlide className="main-catalog__slider-slide">
               <div className="main-catalog__slider-wrapper">
                 <Link
-                  onClick={() => onChangeCategory('веб-камеры')}
+                  onClick={() => onChangeCategory('Веб-камеры')}
                   to="/catalog"
                   className="main-catalog__slider-slide_item"
                   style={{
@@ -169,7 +169,7 @@ function CatalogMain() {
             <SwiperSlide className="main-catalog__slider-slide">
               <div className="main-catalog__slider-wrapper">
                 <Link
-                  onClick={() => onChangeCategory('наушники')}
+                  onClick={() => onChangeCategory('Наушники')}
                   to="/catalog"
                   className="main-catalog__slider-slide_item"
                   style={{

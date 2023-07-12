@@ -2,21 +2,6 @@
     position: relative
 
 .react-dadata__input
-    background: var(--togray)
-    color: var(--color)
-    border-radius: 30px
-    box-sizing: border-box
-    display: block
-    font-size: 16px
-    height: 48px
-    outline: none
-    padding: 0 20px
-    width: 363px
-    margin-bottom: 43px
-    border: 2px solid transparent
-    transition: border .2s linear
-    &:focus
-        border: 2px solid #0540F2
 
 .react-dadata__suggestions
     background-color: #fff
@@ -79,11 +64,14 @@
 
 .register
 
-    margin: 0 auto
+    margin-top: 150px
+    margin-bottom: 100px
+    &__container
+        position: relative
+        overflow: hidden
+        max-width: 1300px
     &__wrapper
         margin: 0 auto
-        margin-top: 150px
-        margin-bottom: 100px
         width: 541px
         height: 613px
         border: 2px solid #0540F2
@@ -107,6 +95,8 @@
             color: var(--color)
             border: 2px solid transparent
             transition: border .2s linear
+            &.error
+                background: #F5E8EE
             &.pass
                 display: flex
                 align-items: center
@@ -127,6 +117,24 @@
                     margin-right: 33px
                 &.sm
                     width: 163px
+                &.lg
+                    background: var(--togray)
+                    color: var(--color)
+                    border-radius: 30px
+                    box-sizing: border-box
+                    display: block
+                    font-size: 16px
+                    height: 48px
+                    outline: none
+                    padding: 0 20px
+                    width: 363px
+                    margin-bottom: 43px
+                    border: 2px solid transparent
+                    transition: border .2s linear
+                    &:focus
+                        border: 2px solid #0540F2
+                    &.error
+                        background: #F5E8EE
         &-link
             font-size: 16px
             font-weight: 400
@@ -162,7 +170,7 @@
         top: 60px
     .register
         &__wrapper
-            padding: 40px 20px 20px 
+            padding: 40px 20px 20px
             &-input
                 width: 100%
             &-link

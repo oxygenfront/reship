@@ -17,6 +17,7 @@ import {
   Settings,
   Orders,
   NewPassword,
+  ConfirmedOrder,
 } from './pages'
 import Cart from './pages/Cart'
 import Catalog from './pages/Catalog'
@@ -36,11 +37,11 @@ import { fetchItems } from './redux/slices/itemsSlice'
 
 const App = () => {
   const dispatch = useDispatch()
-  const location = useLocation();
+  const location = useLocation()
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
+    window.scrollTo(0, 0)
+  }, [location])
 
   const token = localStorage.getItem('token')
 
@@ -103,6 +104,10 @@ const App = () => {
           <Route path="/catalog" element={<Catalog></Catalog>}></Route>
           <Route path="/forgot/message" element={<ForgotMessage />}></Route>
           <Route path="/forgot/new_password" element={<NewPassword />}></Route>
+          <Route
+            path="/order/confirmed"
+            element={<ConfirmedOrder></ConfirmedOrder>}
+          ></Route>
         </Routes>
         <Footer></Footer>
       </div>

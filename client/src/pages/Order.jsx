@@ -4,17 +4,30 @@ import InputMask from 'react-input-mask'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchCreateOrder } from '../redux/slices/orderSlice'
 import { fetchAuthMe, selectUserData } from '../redux/slices/authSlice'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { clearItems } from '../redux/slices/cartSlice'
 import { getCartFromLS } from '../utils/getCartFromLs'
 import { calcTotalPrice } from '../utils/calcTotalPrice'
+
 const Order = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
   const { cartItems } = getCartFromLS()
   const totalPrice = calcTotalPrice(cartItems)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [accordeon, setAccordeon] = useState({
+    first_item: false,
+    second_item: false,
+    third_item: false,
+    fourth_item: false,
+    fifth_item: false,
+    sixth_item: false,
+    seventh_item: false,
+    eighth_item: false,
+  })
+  const [tariff, setTariff] = useState('1')
 
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
   const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
@@ -26,6 +39,7 @@ const Order = () => {
     adress: '',
     promocode: '',
     basket: [],
+    tariff_code: '',
   }
   const [adress, setAdress] = useState({
     region: '',
@@ -44,7 +58,7 @@ const Order = () => {
       ? window.localStorage.getItem('promocode')
       : '',
     basket: JSON.stringify(cartItems),
-    tariff_code: '1',
+    tariff_code: tariff,
   })
 
   const [isValidEmail, setIsValidEmail] = useState(false)
@@ -79,22 +93,22 @@ const Order = () => {
     }
 
     console.log(order)
-    const data = await dispatch(fetchCreateOrder(order))
+    const data = await dispatch(
+      fetchCreateOrder({ ...order, tariff_code: tariff.toString() })
+    )
     if (!data.payload) {
       alert('Не удалось создать заказ')
+      console.log(data)
     } else {
-      alert('Заказ успешно создан')
       localStorage.removeItem('promocode')
       dispatch(clearItems())
       dispatch(fetchAuthMe(token))
       setAdress({ region: '', street: '', postal_code: '', city: '' })
       setOrder(initialState)
+      return navigate('/order/confirmed')
     }
 
     setIsValidEmail(isEmail(order.email))
-
-    console.log(isValidEmail)
-    return <Navigate to="/"></Navigate>
   }
 
   useEffect(() => {
@@ -125,9 +139,8 @@ const Order = () => {
       })
     }
   }, [status])
-  if (cartItems.length === 0) {
-    return <Navigate to="/"></Navigate>
-  }
+
+  console.log(order.tariff_code)
 
   return (
     <section className="auth">
@@ -315,6 +328,333 @@ const Order = () => {
                 >
                   Сохранить изменения
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="main-form_delivery">
+          <div className="main-form_buyer_title">
+            Доставка<p>Доставка происходит через СДЭК</p>
+          </div>
+
+          <div className="main-form_faq__accordeon">
+            <div
+              className={
+                accordeon.first_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 136
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+              onClick={() => setTariff(136)}
+            >
+              <div className="main-form_faq__item-first-block">
+                <div className="main-form_faq__item-title">
+                  Посылка склад-склад
+                </div>
+
+                <div
+                  onClick={() =>
+                    setAccordeon({ first_item: !accordeon.first_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">485 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.second_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 137
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(137)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  Посылка склад-дверь
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ second_item: !accordeon.second_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">630 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.third_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 368
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(368)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  Посылка дверь-постамат
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ third_item: !accordeon.third_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">630 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.fourth_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 233
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(233)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  Экономичная посылка склад-дверь
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ fourth_item: !accordeon.fourth_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">665 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.fifth_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 234
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(234)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  Экономичная посылка склад-склад
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ fifth_item: !accordeon.fifth_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">775 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.sixth_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 378
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(378)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  Экономичная посылка склад-постамат
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ sixth_item: !accordeon.sixth_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">775 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.seventh_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 291
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(291)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  CDEK Express склад-склад
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ seventh_item: !accordeon.seventh_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">940 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                accordeon.eighth_item
+                  ? 'main-form_faq__item active'
+                  : tariff === 294
+                  ? 'main-form_faq__item_tariff'
+                  : 'main-form_faq__item'
+              }
+            >
+              <div
+                onClick={() => setTariff(294)}
+                className="main-form_faq__item-first-block"
+              >
+                <div className="main-form_faq__item-title">
+                  CDEK Express склад-дверь
+                </div>
+                <div
+                  onClick={() =>
+                    setAccordeon({ eighth_item: !accordeon.eighth_item })
+                  }
+                  className="main-form_faq__item-arrows_block"
+                >
+                  <div className="main-form_faq__item-price">1020 руб</div>
+                  <div className="main-form_faq__item-arrows"></div>
+                </div>
+              </div>
+              <div className="main-form_faq__item-about">
+                <div className="main-form_faq__item-about-title">
+                  Как это работает?
+                </div>
+                <div className="main-form_faq__item-about-text">
+                  Мы привозим посылку в СДЭК, а дальше в городе доставки
+                  получатель самостоятельно забирает ее
+                </div>
+                <div className="main-form_faq__item-about-title">Сроки</div>
+                <div className="main-form_faq__item-about-text">
+                  3 - 5 рабочих дней
+                </div>
               </div>
             </div>
           </div>

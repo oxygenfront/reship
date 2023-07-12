@@ -216,73 +216,111 @@ class ApiPostController {
     }
   }
 
-  getProducts(request, response) {
-    const { title, category, price_start, price_end, type, brand, feature, sort } =
-      request.query;
-     let sql = "SELECT * FROM products WHERE 1=1";
-     if (sort === "lowest") {
-      sql += " ORDER BY price";
+  async getProducts(request, response) {
+    const priceStart = request.query.price_start;
+    const priceEnd = request.query.price_end;
+    const categories = request.query.categories
+      ? request.query.categories.split(",")
+      : [];
+    const brands = request.query.brands ? request.query.brands.split(",") : [];
+    const types = request.query.types ? request.query.types.split(",") : [];
+    const features = request.query.features
+      ? request.query.features.split(",")
+      : [];
+    const sort = request.query.sort;
+    const popularity = request.query.popularity;
+
+    let query = "SELECT * FROM products";
+
+    if (priceStart && priceEnd) {
+      query += ` WHERE price BETWEEN ${tools.delInjection(priceStart)} AND ${tools.delInjection(priceEnd)}`;
+    }
+
+    if (sort === "lowest") {
+      query += " ORDER BY price ASC";
     } else if (sort === "highest") {
-      sql += " ORDER BY price DESC";
+      query += " ORDER BY price DESC";
     }
-     if (title) {
-      sql += ` AND name LIKE ?`;
-    }
-     if (category) {
-      sql += ` AND category=?`;
-    }
-     if (price_start && price_end) {
-      sql += ` AND price BETWEEN ? AND ?`;
-    } else if (price_start) {
-      sql += ` AND price > ?`;
-    } else if (price_end) {
-      sql += ` AND price < ?`;
-    }
-     const params = [];
-    if (title) {
-      params.push(`%${tools.delInjection(title)}%`);
-    }
-    if (category) {
-      params.push(tools.delInjection(category));
-    }
-    if (price_start && price_end) {
-      params.push(tools.delInjection(price_start));
-      params.push(tools.delInjection(price_end));
-    } else if (price_start) {
-      params.push(tools.delInjection(price_start));
-    } else if (price_end) {
-      params.push(tools.delInjection(price_end));
-    }
-     database.query(sql, params, (error, rows, fields) => {
+
+    database.query(query, (error, results) => {
       if (error) {
         return response
           .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.2, e: error });
+          .json({ error: "Ошибка на сервере", bcode: 2.2 });
       }
-       if (type || brand || feature) {
-        const typeSet = new Set(type ? type.split(",") : []);
-        const brandSet = new Set(brand ? brand.split(",") : []);
-        const featureSet = new Set(feature ? feature.split(",") : []);
-         const ready_rows = rows.filter((row) => {
-          const type_row = JSON.parse(row.type);
-          const feature_row = JSON.parse(row.feature);
-           if (type && !type_row.some((t) => typeSet.has(t))) {
-            return false;
+
+      if (categories.length >= 1) {
+        results = results.filter((result) =>
+          categories.includes(result.category)
+        );
+      }
+
+      if (brands.length >= 1) {
+        results = results.filter((result) => brands.includes(result.brand));
+      }
+
+      if (types.length >= 1) {
+        results = results.filter((result) => {
+          for (let i = 0; i < types.length; i++) {
+            if (result.type.includes(types[i])) {
+              return true;
+            }
           }
-          if (brand && !brandSet.has(row.brand)) {
-            return false;
-          }
-          if (
-            feature &&
-            !feature_row.some((f) => featureSet.has(Object.values(f)[1]))
-          ) {
-            return false;
-          }
-           return true;
+          return false;
         });
-         response.json(ready_rows);
+      }
+
+      if (features.length >= 1) {
+        results = results.filter((result) => {
+          for (let i = 0; i < features.length; i++) {
+            const values = [];
+              for (let _ = 0; _ < result.feature.length; _++) {
+                try {
+                  values.push(JSON.parse(result.feature)[_].title);
+                } catch {
+                  continue
+                }
+              }
+            if (values.includes(features[i])) {
+              return true;
+            }
+          }
+          return false;
+        });
+      }
+
+      if (popularity) {
+        database.query(`SELECT * FROM \`reviews\``, (error, rows) => {
+          if (error) {
+            return response
+              .status(500)
+              .json({ error: "Ошибка на сервере", bcode: 2.2 });
+          }
+
+          for (let i = 0; i < results.length; i++) {
+            const product_reviews = []
+
+            for (let _ = 0; _ < rows.length; _++) {
+              if (rows[_].product_id === results[i].id) {
+                product_reviews.push(rows[_].rating)
+              }
+            }
+
+            let sum = 0
+            
+            if (product_reviews.length >= 1) {
+             sum = product_reviews.reduce((acc, curr) => acc + curr, 0) / product_reviews.length;
+            } 
+
+            results[i].rating = sum
+          }
+
+          results.sort((a, b) => b.rating - a.rating);
+
+          response.json(results);
+        })
       } else {
-        response.json(rows);
+        response.json(results);
       }
     });
   }
@@ -345,7 +383,7 @@ class ApiPostController {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 4.1 });
+            .json({ error: "Ошибка на сервере", bcode: 4.1, e: error });
         }
 
         if (rows.length == 1) {

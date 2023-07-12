@@ -52,7 +52,7 @@ const Login = () => {
       return setIsError(true);
     }
 
-    if ( 'token' in data.payload && isError) {
+    if ( 'token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token);
       dispatch(fetchAuthMe(data.payload.token));
     }

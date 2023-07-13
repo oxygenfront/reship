@@ -28,9 +28,9 @@ const Order = () => {
     eighth_item: false,
   })
   const [tariff, setTariff] = useState('1')
-
+  const [delPrice, setDelPrice] = useState(0)
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
-  const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
+  // const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
   const initialState = {
     first_name: '',
     last_name: '',
@@ -227,7 +227,7 @@ const Order = () => {
                   </div>
                   <div className="main-form__total_delivery">
                     <p>Доставка</p>
-                    <p>300 руб</p>
+                    <p>{delPrice > 0 ? delPrice : 0} руб</p>
                   </div>
                 </div>
 
@@ -236,10 +236,10 @@ const Order = () => {
                   <span>
                     {window.localStorage.getItem('promocode')
                       ? Math.round(
-                          (totalPrice + deliveryPrice) *
+                          (totalPrice + delPrice) *
                             (1 - window.localStorage.getItem('promocode') / 100)
                         )
-                      : totalPrice + deliveryPrice}{' '}
+                      : totalPrice + delPrice}{' '}
                     руб
                   </span>
                 </div>
@@ -346,7 +346,10 @@ const Order = () => {
                   ? 'main-form_faq__item_tariff'
                   : 'main-form_faq__item'
               }
-              onClick={() => setTariff(136)}
+              onClick={() => {
+                setTariff(136)
+                setDelPrice(485)
+              }}
             >
               <div className="main-form_faq__item-first-block">
                 <div className="main-form_faq__item-title">
@@ -387,7 +390,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(137)}
+                onClick={() => {
+                  setTariff(137)
+                  setDelPrice(630)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">
@@ -427,7 +433,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(368)}
+                onClick={() => {
+                  setTariff(368)
+                  setDelPrice(630)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">
@@ -467,7 +476,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(233)}
+                onClick={() => {
+                  setTariff(233)
+                  setDelPrice(665)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">
@@ -507,7 +519,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(234)}
+                onClick={() => {
+                  setTariff(234)
+                  setDelPrice(775)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">
@@ -547,7 +562,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(378)}
+                onClick={() => {
+                  setTariff(378)
+                  setDelPrice(775)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">
@@ -587,7 +605,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(291)}
+                onClick={() => {
+                  setTariff(291)
+                  setDelPrice(940)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">
@@ -627,7 +648,10 @@ const Order = () => {
               }
             >
               <div
-                onClick={() => setTariff(294)}
+                onClick={() => {
+                  setTariff(294)
+                  setDelPrice(1020)
+                }}
                 className="main-form_faq__item-first-block"
               >
                 <div className="main-form_faq__item-title">

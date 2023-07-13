@@ -64,7 +64,8 @@ const FullItem = () => {
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
     dispatch(fetchGetReviewsForProductId({ token, id }))
-  }, [])
+  }, [color])
+  console.log(color)
   if (navigate) {
     return <Navigate to="/login"></Navigate>
   }
@@ -115,18 +116,21 @@ const FullItem = () => {
                     </>
                   ) : (
                     <div className="fullitem__card_info-params_block">
-                      <p>Цвет</p>
+                      <p>
+                        {JSON.parse(item.colors).length > 0 ? 'Цвет' : null}
+                      </p>
                       <div className="fullitem__card_info-params_block-wrapper">
                         {renderStatus &&
                           JSON.parse(item.colors).map((color) => (
-                            <button
-                              onClick={(e) => setColor(e.target.value)}
+                            <Link
+                              to={`/item/${color.id}`}
+                              onClick={(e) => setColor(e.target.innerHTML)}
                               className="fullitem__card_info-params_block_text"
-                              key={color}
-                              value={color}
+                              key={color.id}
+                              value={color.color}
                             >
-                              {color[0].toUpperCase() + color.slice(1)}
-                            </button>
+                              {color.color}
+                            </Link>
                           ))}
                       </div>
                     </div>
@@ -352,14 +356,15 @@ const FullItem = () => {
                       <div className="fullitem__card_info-params_block-wrapper">
                         {renderStatus &&
                           JSON.parse(item.colors).map((color) => (
-                            <button
+                            <Link
+                              to={`/item/${color.id}`}
                               onClick={(e) => setColor(e.target.value)}
                               className="fullitem__card_info-params_block_text"
-                              key={color}
-                              value={color}
+                              key={color.id}
+                              value={color.color}
                             >
-                              {color[0].toUpperCase() + color.slice(1)}
-                            </button>
+                              {color.color}
+                            </Link>
                           ))}
                       </div>
                     </div>

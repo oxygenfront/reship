@@ -62,13 +62,13 @@ const PersonItem = ({
             styles.personal__middle_block_latest_orders_items_block_item_up_info_more
           }
         >
-          <div
+          {/* <div
             className={
               styles.personal__middle_block_latest_orders_items_block_item_up_info_more_status
             }
           >
             Получено
-          </div>
+          </div> */}
           <div
             className={
               styles.personal__middle_block_latest_orders_items_block_item_up_info_more_price

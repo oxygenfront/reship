@@ -43,8 +43,6 @@ const App = () => {
     window.scrollTo(0, 0)
   }, [location])
 
-  const token = localStorage.getItem('token')
-
   useEffect(() => {
     dispatch(fetchAuthMe())
   }, [])

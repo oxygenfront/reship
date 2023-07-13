@@ -96,7 +96,7 @@ const Personal = () => {
     }
   }, [status])
 
-  if (status === 'success' && !isAuth) {
+  if (!isAuth) {
     return <Navigate to="/"></Navigate>
   }
   // if (status === 'success') {

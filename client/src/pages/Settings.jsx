@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import InputMask from 'react-input-mask'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectUserData } from '../redux/slices/authSlice'
+import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
 import {
   fetchChangeBasic,
   fetchChangeDelivery,
   fetchChangeName,
   fetchChangePassword,
 } from '../redux/slices/changeSlice'
+import { useNavigate, Navigate } from 'react-router-dom'
 
 function Settings() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const isAuth = useSelector(selectIsAuth)
   const token = localStorage.getItem('token')
   const { data, status } = useSelector(selectUserData)
   const [active, setActive] = useState({
@@ -133,6 +136,7 @@ function Settings() {
       return alert('Не удалось изменить контактную информацию')
     }
     if (data.payload) {
+      window.location.reload()
       return alert('Контактная информация успешно изменена')
     }
   }
@@ -167,6 +171,7 @@ function Settings() {
       return alert('Не удалось изменить адрес')
     }
     if (data.payload) {
+      window.location.reload()
       return alert('Адрес успешно изменен')
     }
   }
@@ -184,7 +189,9 @@ function Settings() {
       return alert('Не удалось изменить пароль')
     }
     if (data.payload) {
-      return alert('Пароль успешно изменен')
+      window.location.reload()
+      alert('Пароль успешно изменен')
+      return navigate('/')
     }
 
     setChangePassword({ curr_password: '', new_password: '' })
@@ -224,6 +231,10 @@ function Settings() {
       )
     }
     return null
+  }
+
+  if (!isAuth) {
+    return <Navigate to="/"></Navigate>
   }
   return (
     <>

@@ -54,30 +54,34 @@ function CatalogMain() {
         </h1>
 
         <div className="main-catalog__lg-items">
-          <Link
-            to="/catalog"
-            onClick={() => onChangeCategory('Клавиатуры')}
-            className="main-catalog__lg-items-item"
-            style={{
-              backgroundImage: `url('/assets/img/boards-main-catalog.png')`,
-              backgroundColor: '#DBDBDC',
-              backgroundRepeat: 'no-repeat',
-            }}
-          >
-            <span>Клавиатуры</span>
-          </Link>
-          <Link
-            onClick={() => onChangeCategory('Микрофоны')}
-            to="/catalog"
-            style={{
-              backgroundImage: `url('/assets/img/microphone-main-catalog.png')`,
-              backgroundColor: '#DBDBDC',
-              backgroundRepeat: 'no-repeat',
-            }}
-            className="main-catalog__lg-items-item"
-          >
-            <span>Микрофоны</span>
-          </Link>
+          <div className="main-catalog__lg-items_wrapper">
+            <Link
+              to="/catalog"
+              onClick={() => onChangeCategory('Клавиатуры')}
+              className="main-catalog__lg-items-item"
+              style={{
+                backgroundImage: `url('/assets/img/boards-main-catalog.png')`,
+
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
+              <span>Клавиатуры</span>
+            </Link>
+          </div>
+          <div className="main-catalog__lg-items_wrapper">
+            <Link
+              onClick={() => onChangeCategory('Микрофоны')}
+              to="/catalog"
+              style={{
+                backgroundImage: `url('/assets/img/microphone-main-catalog.png')`,
+
+                backgroundRepeat: 'no-repeat',
+              }}
+              className="main-catalog__lg-items-item"
+            >
+              <span>Микрофоны</span>
+            </Link>
+          </div>
         </div>
 
         <hr className="hr" />
@@ -119,7 +123,6 @@ function CatalogMain() {
                     backgroundPosition: 'center',
                     // backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
-                    backgroundColor: '#DBDBDC',
                   }}
                 >
                   <div className="main-catalog__slider-sm_title">Мышки</div>
@@ -134,7 +137,7 @@ function CatalogMain() {
                   className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/accessory-main-catalog.png')`,
-                    backgroundColor: '#DBDBDC',
+
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
@@ -154,7 +157,7 @@ function CatalogMain() {
                   className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/camera-main-catalog.png')`,
-                    backgroundColor: '#DBDBDC',
+
                     backgroundPosition: 'center',
                     // backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
@@ -174,7 +177,7 @@ function CatalogMain() {
                   className="main-catalog__slider-slide_item"
                   style={{
                     backgroundImage: `url('/assets/img/headphones-main-catalog.png')`,
-                    backgroundColor: '#DBDBDC',
+
                     backgroundPosition: 'right',
                     // backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',

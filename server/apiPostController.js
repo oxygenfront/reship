@@ -4,6 +4,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import date_correct from "date-fns";
 import axios from "axios";
+import exec from 'child_process';
 
 const url = "http://localhost:5000";
 const logging = "[LOGGING]";
@@ -38,7 +39,7 @@ async function getTokenSDEK() {
   };
 
   const token = await axios.post(
-    "https://api.cdek.ru/v2/oauth/token",
+    `https://${sdek_url}/v2/oauth/token`,
     payload,
     { headers }
   );
@@ -63,6 +64,56 @@ async function getOrderSdek(uuid) {
     );
 
     return resp.data.entity;
+  } catch (e) {
+    return -1;
+  }
+}
+
+async function calcFromTarifCode(city, tariff_code, weight) {
+  try {
+    const token = await getTokenSDEK();
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    };
+
+    const resp = await axios.get(
+      `https://${sdek_url}/v2/location/cities?city=${city} `,
+      { headers }
+    );
+
+    if (resp.data.length > 0) {
+
+
+      const data = {
+        tariff_code: tariff_code,
+        from_location: {
+          code: 278,
+        },
+        to_location: {
+          code: 12,
+        },
+        packages: [
+          {
+            weight: weight,
+          },
+        ],
+      };
+
+
+      const response = await axios.post(
+        `https://${sdek_url}/v2/calculator/tariff`,
+        JSON.stringify(data),
+        { headers }
+      );
+
+      return response.data
+
+
+    } else {
+      return 0;
+    };
   } catch (e) {
     return -1;
   }
@@ -1169,8 +1220,8 @@ class ApiPostController {
         adress: JSON.parse(adress),
         promocode: tools.delInjection(promocode),
         basket: JSON.parse(basket),
-        token: tools.delInjection(request.headers.authorization),
         tariff_code: tools.delInjection(tariff_code),
+        token: tools.delInjection(request.headers.authorization),
       };
 
       const date_create = Date.now();
@@ -1198,14 +1249,22 @@ class ApiPostController {
           }
 
           let full_price = 0;
+          let weight = 0
           for (let i = 0; i < basket_json.length; i++) {
             full_price += basket_json[i].price;
+            weight += basket_json[i].weight;
 
             basket_json[i].date_create = date_create;
             basket_json[i].init =
               sanitizedValues.first_name + " " + sanitizedValues.last_name;
             basket_json[i].adress = sanitizedValues.adress;
             basket_json[i].status = -1;
+          }
+
+          if (weight > 29990) {
+            return response
+              .status(500)
+              .json({ error: "Вес посылки не должен составлять больше 29990 грамм.", bcode: 17.9 });
           }
 
           database.query(
@@ -1232,7 +1291,7 @@ class ApiPostController {
 
               database.query(
                 `UPDATE \`users\` SET \`basket\` = '[]' WHERE \`id\` = ${customer_id};`,
-                (error, rows) => {
+                async (error, rows) => {
                   if (error) {
                     return response
                       .status(400)
@@ -1240,7 +1299,22 @@ class ApiPostController {
                   }
 
                   let old_price = 0;
+                  
+                  const price_calc = await calcFromTarifCode(sanitizedValues.adress.city, sanitizedValues.tariff_code, weight)
 
+                  if (price_calc === -1) {
+                    return response
+                      .status(400)
+                      .json({ error: "Ошибка расчета доставки", bcode: 17.8 });
+                  }
+
+                  if (price_calc === 0) {
+                    return response
+                      .status(400)
+                      .json({ error: "Город не найден", bcode: 17.10 });
+                  }
+
+                  full_price += price_calc.total_sum;
                   old_price = full_price;
 
                   database.query(
@@ -1294,6 +1368,7 @@ class ApiPostController {
                             code_payment: code_payment,
                             old_price: old_price,
                             full_price: Math.round(full_price),
+                            delivery_price: price_calc.total_sum,
                             info: info,
                             adress: sanitizedValues.adress,
                           });

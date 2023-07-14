@@ -202,11 +202,11 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
           </div>
           <div className="catalog__main_item_right">
             <div className="catalog__main_item_right-price">от {price} руб</div>
-            <div className="catalog__main_item_right-rating">
+            {/* <div className="catalog__main_item_right-rating">
               <img src="../assets/img/star-review.png" alt="" />
               <span>4.5</span>
               <span>5 отзывов</span>
-            </div>
+            </div> */}
             {addedCount > 0 ? (
               <div
                 className={styles.main_catalog__products_wrapper_item_button}

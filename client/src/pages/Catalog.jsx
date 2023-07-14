@@ -103,7 +103,13 @@ const Catalog = () => {
     items.map((item) => typesSet.add(JSON.parse(item.type).join('')))
   }
   const categories = [...set]
-  const brands = [...brandSet]
+  const brands = [...brandSet].filter((item) => {
+    if (item === '') {
+      return false
+    } else {
+      return true
+    }
+  })
   const types = [...typesSet].filter((item) => {
     if (item === '') {
       return false

@@ -117,7 +117,10 @@ const FullItem = () => {
                   ) : (
                     <div className="fullitem__card_info-params_block">
                       <p>
-                        {JSON.parse(item.colors).length > 0 ? 'Цвет' : null}
+                        {status === 'success' &&
+                        JSON.parse(item.colors).length > 0
+                          ? 'Цвет'
+                          : null}
                       </p>
                       <div className="fullitem__card_info-params_block-wrapper">
                         {renderStatus &&
@@ -358,7 +361,7 @@ const FullItem = () => {
                           JSON.parse(item.colors).map((color) => (
                             <Link
                               to={`/item/${color.id}`}
-                              onClick={(e) => setColor(e.target.value)}
+                              onClick={(e) => setColor(e.target.innerHTML)}
                               className="fullitem__card_info-params_block_text"
                               key={color.id}
                               value={color.color}

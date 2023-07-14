@@ -5,7 +5,7 @@ const NewPassword = () => {
     <div>
       <section className="auth">
         <div className="container auth__container">
-          <div className="main-form">
+          <div className="main-form__forgot">
             <h1 className="auth__title">Новый пароль</h1>
 
             <form className="main-form__form" action="">

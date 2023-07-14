@@ -1,57 +1,57 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import classNames from 'classnames'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   logout,
   selectIsAuth,
   selectUserData,
-} from '../../redux/slices/authSlice';
-import { selectCart } from '../../redux/slices/cartSlice';
-import { setChoosenCategorie } from '../../redux/slices/fiterSlice';
-import styles from './Header.module.sass';
-import { set } from '../../redux/slices/themeSlice';
-import { Switch } from '@headlessui/react';
+} from '../../redux/slices/authSlice'
+import { selectCart } from '../../redux/slices/cartSlice'
+import { setChoosenCategorie } from '../../redux/slices/fiterSlice'
+import styles from './Header.module.sass'
+import { set } from '../../redux/slices/themeSlice'
+import { Switch } from '@headlessui/react'
 const Header = () => {
-  const [isBurger, setIsBurger] = useState(false);
-  const isAuth = useSelector(selectIsAuth);
-  const theme = useSelector((state) => state.theme);
-  const { data, status } = useSelector(selectUserData);
+  const [isBurger, setIsBurger] = useState(false)
+  const isAuth = useSelector(selectIsAuth)
+  const theme = useSelector((state) => state.theme)
+  const { data, status } = useSelector(selectUserData)
   const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort));
-  }, []);
+    dispatch(setChoosenCategorie(sort))
+  }, [])
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout());
-      window.localStorage.removeItem('token');
+      dispatch(logout())
+      window.localStorage.removeItem('token')
     }
-  };
+  }
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth);
+      setWindowWidth(window.innerWidth)
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
 
-    return () => window.removeEventListener('resize', handleResize);
-  });
+    return () => window.removeEventListener('resize', handleResize)
+  })
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('theme', theme)
+  }, [theme])
   const onCloseBurger = () => {
-    setIsBurger(!isBurger);
-  };
+    setIsBurger(!isBurger)
+  }
 
   const handleChange = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    dispatch(set(next));
-  };
+    const next = theme === 'dark' ? 'light' : 'dark'
+    dispatch(set(next))
+  }
 
   return (
     <header className={styles.header}>
@@ -69,30 +69,38 @@ const Header = () => {
                     ? styles.header_switch_circle
                     : styles.header_switch_circle_active
                 }
-                aria-hidden='true'
+                aria-hidden="true"
               />
               <div className={styles.header_switch_sun}>
-                <img src='../assets/img/sun.svg' alt='sun' />
+                <img src="../assets/img/sun.svg" alt="sun" />
               </div>
               <div className={styles.header_switch_moon}>
-                <img src='../assets/img/moon.svg' alt='moon' />
+                <img src="../assets/img/moon.svg" alt="moon" />
               </div>
             </Switch>
           </div>
           <div className={styles.header_center}>
-            <Link to='/' className={styles.header__delivery}>
+            <Link to="/" className={styles.header__delivery}>
               Доставка и оплата
             </Link>
-            <Link to='/' className={styles.header__faq}>
+            <a
+              target="_blank"
+              href="https://vk.com/topic-214661020_49655928"
+              className={styles.header__faq}
+            >
               FAQ
-            </Link>
-            <Link to='/' className={styles.header__comments}>
+            </a>
+            <a
+              target="_blank"
+              href="https://vk.com/topic-214661020_49238528"
+              className={styles.header__comments}
+            >
               Отзывы
-            </Link>
+            </a>
           </div>
 
           {isAuth && status === 'success' && data.admin === 1 ? (
-            <Link to='/admin' className={styles.header__admin}>
+            <Link to="/admin" className={styles.header__admin}>
               ADMIN
             </Link>
           ) : null}
@@ -112,7 +120,7 @@ const Header = () => {
         </button> */}
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default React.memo(Header);
+export default React.memo(Header)

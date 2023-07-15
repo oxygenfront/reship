@@ -275,13 +275,25 @@ class ApiPostController {
       : [];
     const sort = request.query.sort;
     const popularity = request.query.popularity;
+    const search = request.query.search;
 
     let query = "SELECT * FROM products";
 
+    if (search) {
+      query += ` WHERE name LIKE '%${search}%'`
+    }
+
     if (priceStart && priceEnd) {
-      query += ` WHERE price BETWEEN ${tools.delInjection(
-        priceStart
-      )} AND ${tools.delInjection(priceEnd)}`;
+      if (search) {
+        query += ` AND price BETWEEN ${tools.delInjection(
+          priceStart
+        )} AND ${tools.delInjection(priceEnd)}`;
+      }
+      else {
+        query += ` WHERE price BETWEEN ${tools.delInjection(
+          priceStart
+        )} AND ${tools.delInjection(priceEnd)}`;
+      }
     }
 
     if (sort === "lowest") {
@@ -294,7 +306,7 @@ class ApiPostController {
       if (error) {
         return response
           .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.2 });
+          .json({ error: "Ошибка на сервере", bcode: 2.2, e:error});
       }
 
       if (categories.length >= 1) {

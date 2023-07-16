@@ -17,7 +17,16 @@ import {
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 
-const Card = ({ name, image, price, id, old_price, view, description }) => {
+const Card = ({
+  name,
+  image,
+  price,
+  id,
+  old_price,
+  view,
+  description,
+  weight,
+}) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
@@ -33,6 +42,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
       name,
       image,
       price,
+      weight,
       color,
       count: 0,
     }
@@ -70,6 +80,7 @@ const Card = ({ name, image, price, id, old_price, view, description }) => {
           image,
           price,
           color,
+          weight,
         })
       )
 

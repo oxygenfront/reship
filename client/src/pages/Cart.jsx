@@ -15,7 +15,7 @@ const Cart = () => {
   const totalPrice = calcTotalPrice(cartItems)
   console.log(totalPrice)
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
-  const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
+
   const [promocode, setPromocode] = useState('')
   const token = localStorage.getItem('token')
   const [isPromocode, setIsPromocode] = useState(false)
@@ -101,11 +101,11 @@ const Cart = () => {
                     <span>
                       {window.localStorage.getItem('promocode')
                         ? Math.round(
-                            (totalPrice + deliveryPrice) *
+                            totalPrice *
                               (1 -
                                 window.localStorage.getItem('promocode') / 100)
                           ).toLocaleString()
-                        : (totalPrice + deliveryPrice).toLocaleString()}
+                        : totalPrice.toLocaleString()}
                       ₽
                     </span>
                   </div>

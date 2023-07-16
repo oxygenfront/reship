@@ -48,6 +48,7 @@ const FullItem = () => {
       name: item.name,
       image: item.image_link,
       price: item.price,
+      weight: item.weight,
       parametr,
       color,
       count: 0,

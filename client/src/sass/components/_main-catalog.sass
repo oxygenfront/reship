@@ -1,3 +1,4 @@
+
 .main-catalog
     &__lg-items
         display: flex
@@ -14,7 +15,7 @@
             padding: 0 0 50px 44px
 
             background-color: #DBDBDC
-            transition: all .4s linear
+            transition: all .4s ease
             position: relative
             z-index: 20 !important
             background-size: cover
@@ -33,12 +34,27 @@
                 font-size: 40px
                 font-weight: 700
                 z-index: 20
+            &::after
+                width: 100%
+                height: 100%
+                transition: all .4s ease
+
+                content: ''
+                position: absolute
+                z-index: 1
+                opacity: 0
+                top: 0
+                bottom: 0
+                right: 0
+                left: 0
+                border-radius: 30px
+                background: transparent
             &:hover
-                transition: all .4s linear
+
                 &::after
                     width: 100%
                     height: 100%
-                    transition: bg .4s linear
+                    transition: all .4s ease
                     content: ''
                     position: absolute
                     z-index: 1
@@ -49,7 +65,7 @@
                     left: 0
                     border-radius: 30px
 
-                    background-image: linear-gradient(to top, #416ef2, #7c86ec, #a2a0e6, #c0bce0, #d9d9d9)
+                    background: linear-gradient(to top, #416ef2, #7c86ec, #a2a0e6, #c0bce0, #d9d9d9)
         &_wrapper
 
             border-radius: 30px
@@ -277,6 +293,21 @@
                 width: 100%
                 height: 100%
                 background-color: #DBDBDC
+                &::after
+                    width: 100%
+                    height: 100%
+                    transition: all .4s linear
+                    content: ''
+                    position: absolute
+                    z-index: 1
+                    opacity: 0
+                    top: 0
+                    bottom: 0
+                    right: 0
+                    left: 0
+                    border-radius: 30px
+                    background: transparent
+
                 &:hover
                     transition: all .4s linear
                     &::after
@@ -292,8 +323,8 @@
                         right: 0
                         left: 0
                         border-radius: 30px
-                        background: transparent
-                        background-image: linear-gradient(to top, #416ef2, #7c86ec, #a2a0e6, #c0bce0, #d9d9d9)
+
+                        background: linear-gradient(to top, #416ef2, #7c86ec, #a2a0e6, #c0bce0, #d9d9d9)
     &__title
         color: var(--color)
         font-size: 51px

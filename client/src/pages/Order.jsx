@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { isEmail } from 'validator'
 import InputMask from 'react-input-mask'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchCreateOrder } from '../redux/slices/orderSlice'
+import {
+  fetchCreateOrder,
+  fetchGetPreviewPrice,
+} from '../redux/slices/orderSlice'
 import { fetchAuthMe, selectUserData } from '../redux/slices/authSlice'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { clearItems } from '../redux/slices/cartSlice'
@@ -31,6 +34,10 @@ const Order = () => {
   const [delPrice, setDelPrice] = useState(0)
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
   // const deliveryPrice = totalCount === 1 ? 500 : 500 + (totalCount - 1) * 250
+  const total_weight = cartItems.reduce((acc, item) => {
+    return acc + item.count * item.weight
+  }, 0)
+
   const initialState = {
     first_name: '',
     last_name: '',
@@ -82,6 +89,25 @@ const Order = () => {
     })
     setPass(true)
     alert('Адресс доставки подтвержден')
+  }
+  const onClickDelivery = async () => {
+    const data = await dispatch(
+      fetchGetPreviewPrice({
+        city: adress.city,
+        tariff_code: tariff,
+        weight: total_weight,
+      })
+    )
+    if (!data.payload) {
+      alert('Ошибка при расчете доставки')
+    } else {
+      alert(
+        `Стоимость доставки успешно расчитана и составляет ${data.payload.total_sum} руб`
+      )
+      setDelPrice(data.payload.total_sum)
+    }
+
+    return
   }
 
   async function sendForm(e) {
@@ -139,8 +165,6 @@ const Order = () => {
       })
     }
   }, [status])
-
-  console.log(order.tariff_code)
 
   return (
     <section className="auth">
@@ -682,6 +706,19 @@ const Order = () => {
               </div>
             </div>
           </div>
+          {tariff === '1' && adress.city === '' ? (
+            <button
+              disabled={true}
+              onClick={onClickDelivery}
+              className="main-form_submit disabled del"
+            >
+              Выберите тариф и подтвердите адрес доставки
+            </button>
+          ) : (
+            <button onClick={onClickDelivery} className="main-form_submit del">
+              Рассчитать стоимость доставки
+            </button>
+          )}
         </div>
         <div className="main-form_payment">
           <div className="main-form_buyer_title">Оплата/Реквизиты</div>

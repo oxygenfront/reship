@@ -29,6 +29,7 @@ const FullItemSlider = ({ id, image }) => {
           image: item.image_link,
           price: item.price,
           color: item.color,
+          weight: item.weight,
         })
       )
 

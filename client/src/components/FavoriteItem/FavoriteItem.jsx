@@ -15,7 +15,7 @@ import {
   removeFavorite,
 } from '../../redux/slices/favoriteSlice'
 
-const FavoriteItem = ({ name, price, image, id, color }) => {
+const FavoriteItem = ({ name, price, image, id, color, weight }) => {
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
@@ -28,6 +28,7 @@ const FavoriteItem = ({ name, price, image, id, color }) => {
       id,
       name,
       image,
+      weight,
       price,
       color,
       count: 0,

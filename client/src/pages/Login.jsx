@@ -126,7 +126,7 @@ const Login = () => {
                 Забыл пароль
               </Link>
               <button className="auth__button" onClick={sendForm}>
-                Выполнить вход
+                Войти
               </button>
             </div>
           </div>

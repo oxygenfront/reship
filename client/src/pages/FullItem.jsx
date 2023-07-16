@@ -31,6 +31,7 @@ const FullItem = () => {
   const [parametr, setParametr] = useState('')
   const [color, setColor] = useState('')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [paramPrice, setParamPrice] = useState(0)
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth)
@@ -47,10 +48,10 @@ const FullItem = () => {
       id: item.id,
       name: item.name,
       image: item.image_link,
-      price: item.price,
+      price: item.price + paramPrice,
       weight: item.weight,
       parametr,
-      color,
+      color: item.color,
       count: 0,
     }
     dispatch(addItem(tovar))
@@ -66,7 +67,7 @@ const FullItem = () => {
     dispatch(fetchFullItem({ id }))
     dispatch(fetchGetReviewsForProductId({ token, id }))
   }, [color])
-  console.log(color)
+
   if (navigate) {
     return <Navigate to="/login"></Navigate>
   }
@@ -90,31 +91,56 @@ const FullItem = () => {
               <div className="fullitem__card_info-wrapper">
                 <div className="fullitem__card_info-name">{item.name}</div>
                 <div className="fullitem__card_info-params">
-                  {item.category === 'клавиатуры' ? (
-                    <>
+                  {item.category === 'Клавиатуры' ? (
+                    <div>
+                      <div className="fullitem__card_info-params_block">
+                        <p>
+                          {status === 'success' &&
+                          JSON.parse(item.colors).length > 0
+                            ? 'Цвет'
+                            : null}
+                        </p>
+                        <div className="fullitem__card_info-params_block-wrapper">
+                          {renderStatus &&
+                            JSON.parse(item.colors).map((color) => (
+                              <Link
+                                to={`/item/${color.id}`}
+                                onClick={(e) => setColor(e.target.innerHTML)}
+                                className="fullitem__card_info-params_block_text"
+                                key={color.id}
+                                value={color.color}
+                              >
+                                {color.color}
+                              </Link>
+                            ))}
+                        </div>
+                      </div>
                       <div className="fullitem__card_info-params_block">
                         <p>Переключатели</p>
                         <div className="fullitem__card_info-params_block-wrapper">
-                          <button className="fullitem__card_info-params_block_button">
-                            <span>br</span>
-                          </button>
-                          <button className="fullitem__card_info-params_block_button noItem">
-                            <span>r</span>
-                          </button>
+                          {status === 'success' &&
+                            JSON.parse(item.parameters_dop).map((item) =>
+                              item.svitchi.map((svitch) => (
+                                <button
+                                  key={Object.keys(svitch)[0]}
+                                  onClick={(e) =>
+                                    setParamPrice(Number(e.target.value))
+                                  }
+                                  value={Object.values(svitch)[0]}
+                                  className={
+                                    paramPrice ===
+                                    Number(Object.values(svitch)[0])
+                                      ? 'fullitem__card_info-params_block_button active'
+                                      : 'fullitem__card_info-params_block_button'
+                                  }
+                                >
+                                  {Object.keys(svitch)[0]}
+                                </button>
+                              ))
+                            )}
                         </div>
                       </div>
-                      <div className="fullitem__card_info-params_block">
-                        <p>Раскладка</p>
-                        <div className="fullitem__card_info-params_block-wrapper">
-                          <button className="fullitem__card_info-params_block_text">
-                            Русская
-                          </button>
-                          <button className="fullitem__card_info-params_block_text">
-                            Английская
-                          </button>
-                        </div>
-                      </div>
-                    </>
+                    </div>
                   ) : (
                     <div className="fullitem__card_info-params_block">
                       <p>
@@ -141,7 +167,7 @@ const FullItem = () => {
                   )}
                 </div>
                 <div className="fullitem__card_info-bottom">
-                  <span>{item.price} руб</span>
+                  <span>{item.price + paramPrice} руб</span>
                   {addedCount > 0 ? (
                     <div className="fullitem__card_info-bottom_buttons">
                       <Link
@@ -329,7 +355,7 @@ const FullItem = () => {
                   ) : null}
                 </div>
                 <div className="fullitem__card_info-params">
-                  {item.category === 'клавиатуры' ? (
+                  {item.category === 'Клавиатуры' ? (
                     <>
                       <div className="fullitem__card_info-params_block">
                         <p>Переключатели</p>

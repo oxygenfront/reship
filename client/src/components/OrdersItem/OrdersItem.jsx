@@ -112,11 +112,13 @@ const OrdersItem = ({
       <div className="orders__item">
         <div className="orders__item_card">
           <div className="orders__item_left-block_wrapper">
-            <div className="orders__item_img-block">
+            <Link to={`/item/${id}`} className="orders__item_img-block">
               <img src={JSON.parse(image)[0]} alt="" />
-            </div>
+            </Link>
             <div className="orders__item_left-block">
-              <p className="orders__item_left-block_name">{name}</p>
+              <Link to={`/item/${id}`} className="orders__item_left-block_name">
+                {name}
+              </Link>
               <p className="orders__item_left-block_color">{color}</p>
               <p className="orders__item_left-block_date">
                 {timeConverter(date_create).slice(0, -1)}

@@ -1,13 +1,9 @@
-import React, { memo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
-import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
-import {
-  fetchAuth,
-  fetchAuthMe,
-  selectIsAuth,
-} from '../redux/slices/authSlice';
-import Error from '../components/Error/Error';
+import React, { memo, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Navigate } from 'react-router-dom'
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi'
+import { fetchAuth, fetchAuthMe, selectIsAuth } from '../redux/slices/authSlice'
+import Error from '../components/Error/Error'
 
 const Login = () => {
   const dispatch = useDispatch()
@@ -47,8 +43,8 @@ const Login = () => {
   async function sendForm(e) {
     e.preventDefault()
     const data = await dispatch(fetchAuth(authForm))
-
-    if (!data.payload) {
+    console.log(data.payload.bcode)
+    if (data.payload.bcode === 3.2) {
       return setIsError(true)
     }
 
@@ -140,4 +136,4 @@ const Login = () => {
   )
 }
 
-export default React.memo(Login);
+export default React.memo(Login)

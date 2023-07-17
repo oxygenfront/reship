@@ -1,6 +1,15 @@
 import React from 'react'
 import styles from './Comment.module.sass'
-const Comment = ({ anon, author_id, date, rating, text }) => {
+
+const Comment = ({
+  anon,
+  first_name,
+  last_name,
+  author_id,
+  date,
+  rating,
+  text,
+}) => {
   return (
     <div className={styles.reviews__slider_slide_item}>
       <div className={styles.reviews__slider_slide_item_header}>
@@ -20,7 +29,8 @@ const Comment = ({ anon, author_id, date, rating, text }) => {
                 styles.reviews__slider_slide_item_header_left_title_block_name
               }
             >
-              Максим Грязев
+              {first_name.slice(0, 1).toUpperCase() + first_name.slice(1)}{' '}
+              {last_name.slice(0, 1).toUpperCase() + last_name.slice(1)}
             </div>
           </div>
         </div>

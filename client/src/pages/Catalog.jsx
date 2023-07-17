@@ -96,6 +96,9 @@ const Catalog = () => {
     searchValue,
     catalogSort,
   ])
+  useEffect(() => {
+    setLocalCategories(choosenCategorie)
+  }, [])
 
   if (status === 'success') {
     items.map((item) => set.add(item.category))
@@ -419,6 +422,7 @@ const Catalog = () => {
                 ) : status === 'success' && items.length > 0 ? (
                   items.map((item) => (
                     <Card
+                      category={item.category}
                       weight={item.weight}
                       image={item.image_link}
                       description={item.description_small}

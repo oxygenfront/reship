@@ -18,6 +18,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper'
 
 const Card = ({
+  category,
   name,
   image,
   price,
@@ -27,6 +28,7 @@ const Card = ({
   description,
   weight,
 }) => {
+  console.log(category)
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
@@ -147,7 +149,7 @@ const Card = ({
             className={styles.main_catalog__products_wrapper_item_bottom_block}
           >
             <span className={styles.main_catalog__products_wrapper_item_price}>
-              от {price} руб
+              {category === 'Клавиатуры' ? 'от' : null} {price} руб
             </span>
             {addedCount > 0 ? (
               <div
@@ -212,7 +214,10 @@ const Card = ({
             <div className="catalog__main_item_mid-subtitle">{description}</div>
           </div>
           <div className="catalog__main_item_right">
-            <div className="catalog__main_item_right-price">от {price} руб</div>
+            <div className="catalog__main_item_right-price">
+              {category === 'Клавиатуры' ? 'от' : null}
+              {price} руб
+            </div>
             {/* <div className="catalog__main_item_right-rating">
               <img src="../assets/img/star-review.png" alt="" />
               <span>4.5</span>

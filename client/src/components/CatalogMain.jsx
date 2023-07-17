@@ -232,6 +232,7 @@ function CatalogMain() {
               .slice(0, 6)
               .map((item) => (
                 <Card
+                  category={item.category}
                   weight={item.weight}
                   image={item.image_link}
                   view={'grid'}

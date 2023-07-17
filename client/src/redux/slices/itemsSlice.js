@@ -30,7 +30,6 @@ export const fetchHomeItems = createAsyncThunk(
   'items/fetchHomeItems',
   async ({ choosenType }) => {
     const { data } = await axios.get(`/getProducts?&type=${choosenType}`)
-    console.log(data)
 
     return data
   }

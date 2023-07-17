@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Error.module.sass';
 import classnames from 'classnames';
 function Error({ children, isErrorProp }) {
@@ -30,4 +30,4 @@ function Error({ children, isErrorProp }) {
   );
 }
 
-export default Error;
+export default React.memo(Error);

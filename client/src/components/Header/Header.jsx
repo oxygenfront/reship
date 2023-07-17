@@ -80,9 +80,9 @@ const Header = () => {
             </Switch>
           </div>
           <div className={styles.header_center}>
-            <Link to="/" className={styles.header__delivery}>
+            <a href="/#delpay" className={styles.header__delivery}>
               Доставка и оплата
-            </Link>
+            </a>
             <a
               target="_blank"
               href="https://vk.com/topic-214661020_49655928"

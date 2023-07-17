@@ -180,7 +180,7 @@ const FullItem = () => {
                       <div
                         className={'fullitem__card_info-bottom_buttons_button'}
                       >
-                        <div
+                        <button
                           onClick={
                             addedCount > 1 ? onClickMinus : onClickRemove
                           }
@@ -193,7 +193,7 @@ const FullItem = () => {
                               'fullitem__card_info-bottom_buttons_button_minus'
                             }
                           ></div>
-                        </div>
+                        </button>
                         {addedCount}
                         <button
                           onClick={onClickAdd}

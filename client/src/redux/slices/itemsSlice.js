@@ -17,7 +17,7 @@ export const fetchItems = createAsyncThunk(
         choosenPrice !== '' ? choosenPrice[0] : ''
       }&price_end=${
         choosenPrice !== '' ? choosenPrice[1] : ''
-      }&brand=${choosenBrand}&type=${choosenType}&sort=${catalogSort}&popularity=${
+      }&brand=${choosenBrand}&types=${choosenType}&sort=${catalogSort}&popularity=${
         typeof catalogSort === Number ? catalogSort : ''
       }`
     )
@@ -29,8 +29,8 @@ export const fetchItems = createAsyncThunk(
 export const fetchHomeItems = createAsyncThunk(
   'items/fetchHomeItems',
   async ({ choosenType }) => {
-    const { data } = await axios.get(`/getProducts?&type=${choosenType}`)
-
+    const { data } = await axios.get(`/getProducts?&types=${choosenType}`)
+    console.log(data)
     return data
   }
 )

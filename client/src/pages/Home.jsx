@@ -113,19 +113,49 @@ const Home = () => {
                 {windowWidth > 991 ? (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                     <div className="reviews__slider-slide_one-item">
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 )}
@@ -134,19 +164,49 @@ const Home = () => {
                 {windowWidth > 991 ? (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                     <div className="reviews__slider-slide_one-item">
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 )}
@@ -155,19 +215,49 @@ const Home = () => {
                 {windowWidth > 991 ? (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                     <div className="reviews__slider-slide_one-item">
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 )}
@@ -176,19 +266,49 @@ const Home = () => {
                 {windowWidth > 991 ? (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                     <div className="reviews__slider-slide_one-item">
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="reviews__slider-slide_two-items">
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
-                      <Comment rating={5}></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
+                      <Comment
+                        text={'Тестовый комментарий'}
+                        first_name={'test'}
+                        last_name={'test'}
+                        rating={5}
+                      ></Comment>
                     </div>
                   </>
                 )}

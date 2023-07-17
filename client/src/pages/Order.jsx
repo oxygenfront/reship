@@ -120,7 +120,11 @@ const Order = () => {
 
     console.log(order)
     const data = await dispatch(
-      fetchCreateOrder({ ...order, tariff_code: tariff.toString() })
+      fetchCreateOrder({
+        ...order,
+        tariff_code: tariff.toString(),
+        city: adress.city,
+      })
     )
     if (!data.payload) {
       alert('Не удалось создать заказ')
@@ -161,6 +165,7 @@ const Order = () => {
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
+        user_id: data.id,
         number: data.number_tel !== '' ? data.number_tel : '',
       })
     }

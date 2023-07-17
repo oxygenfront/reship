@@ -116,7 +116,11 @@ const FullItem = () => {
                         </div>
                       </div>
                       <div className="fullitem__card_info-params_block">
-                        <p>Переключатели</p>
+                        {status === 'success' &&
+                        JSON.parse(item.parameters_dop).length !== 0 ? (
+                          <p>Переключатели</p>
+                        ) : null}
+
                         <div className="fullitem__card_info-params_block-wrapper">
                           {status === 'success' &&
                             JSON.parse(item.parameters_dop).map((item) =>
@@ -311,6 +315,8 @@ const FullItem = () => {
               {arrStatus === 'success' && comments.items?.length > 0 ? (
                 comments.items.map((comment) => (
                   <Comment
+                    first_name={comment.first_name}
+                    last_name={comment.last_name}
                     anon={comment.anon}
                     author_id={comment.author_id}
                     date={comment.date_timestamp}
@@ -358,17 +364,34 @@ const FullItem = () => {
                   {item.category === 'Клавиатуры' ? (
                     <>
                       <div className="fullitem__card_info-params_block">
-                        <p>Переключатели</p>
+                        {status === 'success' &&
+                        JSON.parse(item.parameters_dop).length !== 0 ? (
+                          <p>Переключатели</p>
+                        ) : null}
                         <div className="fullitem__card_info-params_block-wrapper">
-                          <button className="fullitem__card_info-params_block_button">
-                            <span>br</span>
-                          </button>
-                          <button className="fullitem__card_info-params_block_button noItem">
-                            <span>r</span>
-                          </button>
+                          {status === 'success' &&
+                            JSON.parse(item.parameters_dop).map((item) =>
+                              item.svitchi.map((svitch) => (
+                                <button
+                                  key={Object.keys(svitch)[0]}
+                                  onClick={(e) =>
+                                    setParamPrice(Number(e.target.value))
+                                  }
+                                  value={Object.values(svitch)[0]}
+                                  className={
+                                    paramPrice ===
+                                    Number(Object.values(svitch)[0])
+                                      ? 'fullitem__card_info-params_block_button active'
+                                      : 'fullitem__card_info-params_block_button'
+                                  }
+                                >
+                                  {Object.keys(svitch)[0]}
+                                </button>
+                              ))
+                            )}
                         </div>
                       </div>
-                      <div className="fullitem__card_info-params_block">
+                      {/* <div className="fullitem__card_info-params_block">
                         <p>Раскладка</p>
                         <div className="fullitem__card_info-params_block-wrapper">
                           <button className="fullitem__card_info-params_block_text">
@@ -378,7 +401,7 @@ const FullItem = () => {
                             Английская
                           </button>
                         </div>
-                      </div>
+                      </div> */}
                     </>
                   ) : (
                     <div className="fullitem__card_info-params_block">
@@ -542,6 +565,8 @@ const FullItem = () => {
               {arrStatus === 'success' && comments.items.length > 0 ? (
                 comments.items.map((comment) => (
                   <Comment
+                    first_name={comment.first_name}
+                    last_name={comment.last_name}
                     anon={comment.anon}
                     author_id={comment.author_id}
                     date={comment.date_timestamp}

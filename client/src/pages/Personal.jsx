@@ -556,6 +556,7 @@ const Personal = () => {
                     .slice(0, 3)
                     .map((item) => (
                       <Card
+                        category={item.category}
                         weight={item.weight}
                         view="grid"
                         image={item.image_link}

@@ -31,6 +31,7 @@ const Favorites = () => {
               {favorites.length > 0 ? (
                 favorites.map((item) => (
                   <FavoriteItem
+                    weight={item.weight}
                     image={item.image}
                     name={item.name}
                     id={item.id}

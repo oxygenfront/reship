@@ -13,7 +13,7 @@ export const fetchItems = createAsyncThunk(
   }) => {
     console.log(choosenCategorie, searchValue)
     const { data } = await axios.get(
-      `/getProducts?&categories=${choosenCategorie}&title=${searchValue}&price_start=${
+      `/getProducts?&categories=${choosenCategorie}&search=${searchValue}&price_start=${
         choosenPrice !== '' ? choosenPrice[0] : ''
       }&price_end=${
         choosenPrice !== '' ? choosenPrice[1] : ''

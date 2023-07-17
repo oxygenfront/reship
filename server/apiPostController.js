@@ -4,6 +4,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import date_correct from "date-fns";
 import axios from "axios";
+import exec from "child_process";
 
 const url = "http://localhost:5000";
 const logging = "[LOGGING]";
@@ -38,7 +39,7 @@ async function getTokenSDEK() {
   };
 
   const token = await axios.post(
-    "https://api.cdek.ru/v2/oauth/token",
+    `https://${sdek_url}/v2/oauth/token`,
     payload,
     { headers }
   );
@@ -63,6 +64,51 @@ async function getOrderSdek(uuid) {
     );
 
     return resp.data.entity;
+  } catch (e) {
+    return -1;
+  }
+}
+
+async function calcFromTarifCode(city, tariff_code, weight) {
+  try {
+    const token = await getTokenSDEK();
+
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    const resp = await axios.get(
+      `https://${sdek_url}/v2/location/cities?city=${city} `,
+      { headers }
+    );
+
+    if (resp.data.length > 0) {
+      const data = {
+        tariff_code: tariff_code,
+        from_location: {
+          code: 278,
+        },
+        to_location: {
+          code: 12,
+        },
+        packages: [
+          {
+            weight: weight,
+          },
+        ],
+      };
+
+      const response = await axios.post(
+        `https://${sdek_url}/v2/calculator/tariff`,
+        JSON.stringify(data),
+        { headers }
+      );
+
+      return response.data;
+    } else {
+      return 0;
+    }
   } catch (e) {
     return -1;
   }
@@ -229,11 +275,25 @@ class ApiPostController {
       : [];
     const sort = request.query.sort;
     const popularity = request.query.popularity;
+    const search = request.query.search;
 
     let query = "SELECT * FROM products";
 
+    if (search) {
+      query += ` WHERE name LIKE '%${search}%'`
+    }
+
     if (priceStart && priceEnd) {
-      query += ` WHERE price BETWEEN ${tools.delInjection(priceStart)} AND ${tools.delInjection(priceEnd)}`;
+      if (search) {
+        query += ` AND price BETWEEN ${tools.delInjection(
+          priceStart
+        )} AND ${tools.delInjection(priceEnd)}`;
+      }
+      else {
+        query += ` WHERE price BETWEEN ${tools.delInjection(
+          priceStart
+        )} AND ${tools.delInjection(priceEnd)}`;
+      }
     }
 
     if (sort === "lowest") {
@@ -246,7 +306,7 @@ class ApiPostController {
       if (error) {
         return response
           .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.2 });
+          .json({ error: "Ошибка на сервере", bcode: 2.2, e:error});
       }
 
       if (categories.length >= 1) {
@@ -274,13 +334,13 @@ class ApiPostController {
         results = results.filter((result) => {
           for (let i = 0; i < features.length; i++) {
             const values = [];
-              for (let _ = 0; _ < result.feature.length; _++) {
-                try {
-                  values.push(JSON.parse(result.feature)[_].title);
-                } catch {
-                  continue
-                }
+            for (let _ = 0; _ < result.feature.length; _++) {
+              try {
+                values.push(JSON.parse(result.feature)[_].title);
+              } catch {
+                continue;
               }
+            }
             if (values.includes(features[i])) {
               return true;
             }
@@ -298,27 +358,29 @@ class ApiPostController {
           }
 
           for (let i = 0; i < results.length; i++) {
-            const product_reviews = []
+            const product_reviews = [];
 
             for (let _ = 0; _ < rows.length; _++) {
               if (rows[_].product_id === results[i].id) {
-                product_reviews.push(rows[_].rating)
+                product_reviews.push(rows[_].rating);
               }
             }
 
-            let sum = 0
-            
-            if (product_reviews.length >= 1) {
-             sum = product_reviews.reduce((acc, curr) => acc + curr, 0) / product_reviews.length;
-            } 
+            let sum = 0;
 
-            results[i].rating = sum
+            if (product_reviews.length >= 1) {
+              sum =
+                product_reviews.reduce((acc, curr) => acc + curr, 0) /
+                product_reviews.length;
+            }
+
+            results[i].rating = sum;
           }
 
           results.sort((a, b) => b.rating - a.rating);
 
           response.json(results);
-        })
+        });
       } else {
         response.json(results);
       }
@@ -1137,6 +1199,8 @@ class ApiPostController {
         "promocode",
         "basket",
         "tariff_code",
+        "user_id",
+        "city",
       ];
 
       const requestData = request.body;
@@ -1144,7 +1208,7 @@ class ApiPostController {
       const missingKey = requiredKeys.find(
         (key) => !requestData.hasOwnProperty(key)
       );
-      if (missingKey || !request.headers.hasOwnProperty("authorization")) {
+      if (missingKey) {
         return response
           .status(400)
           .json({ error: "Некорректные данные", bcode: 17 });
@@ -1159,6 +1223,8 @@ class ApiPostController {
         promocode,
         basket,
         tariff_code,
+        user_id,
+        city,
       } = requestData;
 
       const sanitizedValues = {
@@ -1169,136 +1235,150 @@ class ApiPostController {
         adress: JSON.parse(adress),
         promocode: tools.delInjection(promocode),
         basket: JSON.parse(basket),
-        token: tools.delInjection(request.headers.authorization),
         tariff_code: tools.delInjection(tariff_code),
+        user_id: tools.delInjection(user_id),
+        city: tools.delInjection(city),
       };
 
       const date_create = Date.now();
 
-      let customer_id = -1;
+      const customer_id = sanitizedValues.user_id;
       let basket_json = sanitizedValues.basket;
 
+      if (basket_json.length < 1) {
+        return response
+          .status(500)
+          .json({ error: "В корзине нет товаров", bcode: 17.4 });
+      }
+
+      let full_price = 0;
+      let weight = 0;
+      for (let i = 0; i < basket_json.length; i++) {
+        full_price += basket_json[i].price;
+        weight += basket_json[i].weight;
+
+        basket_json[i].date_create = date_create;
+        basket_json[i].init =
+          sanitizedValues.first_name + " " + sanitizedValues.last_name;
+        basket_json[i].adress = sanitizedValues.adress;
+        basket_json[i].status = -1;
+      }
+
+      if (weight > 29990) {
+        return response.status(500).json({
+          error: "Вес посылки не должен составлять больше 29990 грамм.",
+          bcode: 17.9,
+        });
+      }
+
       database.query(
-        `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-        (error, rows, fields) => {
+        "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`, `tariff_code`, `uuid_sdek`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?, ?, ?)",
+        [
+          sanitizedValues.first_name,
+          sanitizedValues.last_name,
+          sanitizedValues.number,
+          sanitizedValues.email,
+          JSON.stringify(sanitizedValues.adress),
+          customer_id,
+          date_create,
+          JSON.stringify(basket_json),
+          full_price,
+          sanitizedValues.tariff_code,
+          "",
+        ],
+        (error, rows_order) => {
           if (error) {
             return response
               .status(500)
-              .json({ error: "Ошибка на сервере", bcode: 17.1 });
-          }
-
-          if (rows.length == 1) {
-            customer_id = rows[0].id;
-          }
-
-          if (basket_json.length < 1) {
-            return response
-              .status(500)
-              .json({ error: "В корзине нет товаров", bcode: 17.4 });
-          }
-
-          let full_price = 0;
-          for (let i = 0; i < basket_json.length; i++) {
-            full_price += basket_json[i].price;
-
-            basket_json[i].date_create = date_create;
-            basket_json[i].init =
-              sanitizedValues.first_name + " " + sanitizedValues.last_name;
-            basket_json[i].adress = sanitizedValues.adress;
-            basket_json[i].status = -1;
+              .json({ error: "Ошибка на сервере", bcode: 17.3 });
           }
 
           database.query(
-            "INSERT INTO `orders` (`first_name`, `last_name`, `number`, `email`, `adress`, `status`, `customer_id`, `date_start`, `date_end`, `products`, `summ_price`, `tariff_code`, `uuid_sdek`) VALUES (?, ?, ?, ?, ?, '-1', ?, ?, '0', ?, ?, ?, ?)",
-            [
-              sanitizedValues.first_name,
-              sanitizedValues.last_name,
-              sanitizedValues.number,
-              sanitizedValues.email,
-              JSON.stringify(sanitizedValues.adress),
-              customer_id,
-              date_create,
-              JSON.stringify(basket_json),
-              full_price,
-              sanitizedValues.tariff_code,
-              "",
-            ],
-            (error, rows_order) => {
+            `UPDATE \`users\` SET \`basket\` = '[]' WHERE \`id\` = ${customer_id};`,
+            async (error, rows) => {
               if (error) {
                 return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 17.3 });
+                  .status(400)
+                  .json({ error: "Ошибка на сервере", bcode: 17.5 });
               }
 
+              let old_price = 0;
+
+              const price_calc = await calcFromTarifCode(
+                sanitizedValues.city,
+                sanitizedValues.tariff_code,
+                weight
+              );
+
+              if (price_calc === -1) {
+                return response
+                  .status(400)
+                  .json({ error: "Ошибка расчета доставки", bcode: 17.8 });
+              }
+
+              if (price_calc === 0) {
+                return response
+                  .status(400)
+                  .json({ error: "Город не найден", bcode: 17.1 });
+              }
+
+              full_price += price_calc.total_sum;
+              old_price = full_price;
+
               database.query(
-                `UPDATE \`users\` SET \`basket\` = '[]' WHERE \`id\` = ${customer_id};`,
-                (error, rows) => {
+                `SELECT * FROM \`promo\` WHERE promocode='${sanitizedValues.promocode}'`,
+                (error, rows_promo) => {
                   if (error) {
                     return response
                       .status(400)
-                      .json({ error: "Ошибка на сервере", bcode: 17.5 });
+                      .json({ error: "Ошибка на сервере", bcode: 17.7 });
                   }
 
-                  let old_price = 0;
+                  let info = {
+                    message: "Промокод не использован",
+                    persent: 0,
+                    promocode: "",
+                  };
 
-                  old_price = full_price;
+                  if (rows_promo.length == 1) {
+                    if (Date.now() < rows_promo[0].date_end) {
+                      full_price =
+                        full_price - (full_price * rows_promo[0].persent) / 100;
+                      info.message = "Промокод использован";
+                      info.persent = rows_promo[0].persent;
+                      info.promocode = rows_promo[0].promocode;
+                    } else {
+                      info.message = "Время действия промокода истекло";
+                      info.persent = rows_promo[0].persent;
+                      info.promocode = rows_promo[0].promocode;
+                    }
+                  }
+
+                  const code_payment = tools.generateCode();
 
                   database.query(
-                    `SELECT * FROM \`promo\` WHERE promocode='${sanitizedValues.promocode}'`,
-                    (error, rows_promo) => {
+                    `INSERT INTO \`payments\` (\`order_id\`, \`price\`, \`date_create\`, \`status\`, \`code\`) VALUES ('${
+                      rows_order.insertId
+                    }', '${Math.round(
+                      full_price
+                    )}', '${Date.now()}', '0', '${code_payment}');`,
+                    (error, rows) => {
                       if (error) {
-                        return response
-                          .status(400)
-                          .json({ error: "Ошибка на сервере", bcode: 17.7 });
+                        return response.status(400).json({
+                          error: "Ошибка на сервере",
+                          bcode: 17.6,
+                        });
                       }
 
-                      let info = {
-                        message: "Промокод не использован",
-                        persent: 0,
-                        promocode: "",
-                      };
-
-                      if (rows_promo.length == 1) {
-                        if (Date.now() < rows_promo[0].date_end) {
-                          full_price =
-                            full_price -
-                            (full_price * rows_promo[0].persent) / 100;
-                          info.message = "Промокод использован";
-                          info.persent = rows_promo[0].persent;
-                          info.promocode = rows_promo[0].promocode;
-                        } else {
-                          info.message = "Время действия промокода истекло";
-                          info.persent = rows_promo[0].persent;
-                          info.promocode = rows_promo[0].promocode;
-                        }
-                      }
-
-                      const code_payment = tools.generateCode();
-
-                      database.query(
-                        `INSERT INTO \`payments\` (\`order_id\`, \`price\`, \`date_create\`, \`status\`, \`code\`) VALUES ('${
-                          rows_order.insertId
-                        }', '${Math.round(
-                          full_price
-                        )}', '${Date.now()}', '0', '${code_payment}');`,
-                        (error, rows) => {
-                          if (error) {
-                            return response.status(400).json({
-                              error: "Ошибка на сервере",
-                              bcode: 17.6,
-                            });
-                          }
-
-                          response.json({
-                            order_id: rows_order.insertId,
-                            code_payment: code_payment,
-                            old_price: old_price,
-                            full_price: Math.round(full_price),
-                            info: info,
-                            adress: sanitizedValues.adress,
-                          });
-                        }
-                      );
+                      response.json({
+                        order_id: rows_order.insertId,
+                        code_payment: code_payment,
+                        old_price: old_price,
+                        full_price: Math.round(full_price),
+                        delivery_price: price_calc.total_sum,
+                        info: info,
+                        adress: sanitizedValues.adress,
+                      });
                     }
                   );
                 }
@@ -2133,7 +2213,7 @@ class ApiPostController {
     const missingKey = requiredKeys.find(
       (key) => !requestData.hasOwnProperty(key)
     );
-    if (missingKey || !request.headers.hasOwnProperty("authorization")) {
+    if (missingKey) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 34 });
@@ -2142,51 +2222,33 @@ class ApiPostController {
     const { product_id } = requestData;
 
     const sanitizedValues = {
-      token: tools.delInjection(request.headers.authorization),
       product_id: tools.delInjection(product_id),
     };
 
     database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
-      (error, rows_user, fields) => {
+      `SELECT * FROM \`reviews\` WHERE product_id='${sanitizedValues.product_id}';`,
+      (error, rows) => {
         if (error) {
           return response
             .status(500)
-            .json({ error: "Ошибка на сервере", bcode: 34.2 });
+            .json({ error: "Ошибка на сервере", bcode: 34.1 });
         }
 
-        if (rows_user.length < 1) {
-          return response
-            .status(500)
-            .json({ error: "Ошибка доступа", bcode: 34.3 });
-        } else {
-          database.query(
-            `SELECT * FROM \`reviews\` WHERE product_id='${sanitizedValues.product_id}';`,
-            (error, rows) => {
-              if (error) {
-                return response
-                  .status(500)
-                  .json({ error: "Ошибка на сервере", bcode: 34.1 });
-              }
+        let all_ratings = 0;
 
-              let all_ratings = 0;
-
-              for (let i = 0; rows.length > i; i++) {
-                if (rows[i].anon === 1) {
-                  rows[i].author_id = -1;
-                  rows[i].first_name = "";
-                  rows[i].last_name = "";
-                }
-                all_ratings += rows[i].rating;
-              }
-
-              response.json({
-                items: rows,
-                average_rating: all_ratings / rows.length,
-              });
-            }
-          );
+        for (let i = 0; rows.length > i; i++) {
+          if (rows[i].anon === 1) {
+            rows[i].author_id = -1;
+            rows[i].first_name = "";
+            rows[i].last_name = "";
+          }
+          all_ratings += rows[i].rating;
         }
+
+        response.json({
+          items: rows,
+          average_rating: all_ratings / rows.length,
+        });
       }
     );
   }
@@ -2291,6 +2353,38 @@ class ApiPostController {
         }
       }
     );
+  }
+
+  async getPreviewPriceOrder(request, response) {
+    if (
+      !request.query.hasOwnProperty("city") ||
+      !request.query.hasOwnProperty("tariff_code") ||
+      !request.query.hasOwnProperty("weight")
+    ) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные", bcode: 37 });
+    }
+
+    const price_calc = await calcFromTarifCode(
+      tools.delInjection(request.query.city),
+      tools.delInjection(request.query.tariff_code),
+      tools.delInjection(request.query.weight)
+    );
+
+    if (price_calc === -1) {
+      return response
+        .status(400)
+        .json({ error: "Ошибка расчета доставки", bcode: 37.1 });
+    }
+
+    if (price_calc === 0) {
+      return response
+        .status(400)
+        .json({ error: "Город не найден", bcode: 37.2 });
+    }
+
+    return response.json(price_calc)
   }
 }
 

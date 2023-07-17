@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import styles from './Error.module.sass';
-import classnames from 'classnames';
+import React, { useEffect, useState } from 'react'
+import styles from './Error.module.sass'
+import classnames from 'classnames'
 function Error({ children, isErrorProp }) {
-  
-  const [isError, setIsError] = useState(isErrorProp);
-  
+  const [isError, setIsError] = useState(isErrorProp)
+
   useEffect(() => {
     setIsError(isErrorProp)
   }, [isErrorProp])
 
   console.log(isError)
-  
-  
+
   return (
     <div
       onClick={() => setIsError(false)}
@@ -27,7 +25,7 @@ function Error({ children, isErrorProp }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default React.memo(Error);

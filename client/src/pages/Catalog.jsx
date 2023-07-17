@@ -419,6 +419,7 @@ const Catalog = () => {
                 ) : status === 'success' && items.length > 0 ? (
                   items.map((item) => (
                     <Card
+                      weight={item.weight}
                       image={item.image_link}
                       description={item.description_small}
                       view={choosenView}

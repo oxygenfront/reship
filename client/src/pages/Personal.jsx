@@ -532,6 +532,7 @@ const Personal = () => {
                       <div key={index}>
                         <SwiperSlide className="personal__interesting_slider-item">
                           <Card
+                            weight={item.weight}
                             view={'grid'}
                             id={item.id}
                             image={item.image_link}
@@ -555,6 +556,7 @@ const Personal = () => {
                     .slice(0, 3)
                     .map((item) => (
                       <Card
+                        weight={item.weight}
                         view="grid"
                         image={item.image_link}
                         key={item.id}

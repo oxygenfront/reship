@@ -21,6 +21,18 @@ export const fetchGetOrdersById = createAsyncThunk(
     return data
   }
 )
+export const fetchGetPreviewPrice = createAsyncThunk(
+  'order/fetchGetPreviewPrice',
+  async (params) => {
+    console.log(params)
+    const { data } = await axios.get(
+      `/getPreviewPriceOrder?&city=${params.city}&weight=${params.weight}&tariff_code=${params.tariff_code}`
+    )
+    console.log(data)
+
+    return data
+  }
+)
 
 const initialState = {
   data: null,
@@ -57,6 +69,18 @@ const orderSlice = createSlice({
     builder.addCase(fetchGetOrdersById.rejected, (state, action) => {
       state.ordersStatus = 'error'
       state.orders = []
+    })
+    builder.addCase(fetchGetPreviewPrice.pending, (state, action) => {
+      state.status = 'loading'
+      state.data = []
+    })
+    builder.addCase(fetchGetPreviewPrice.fulfilled, (state, action) => {
+      state.data = action.payload
+      state.status = 'success'
+    })
+    builder.addCase(fetchGetPreviewPrice.rejected, (state, action) => {
+      state.status = 'error'
+      state.data = []
     })
   },
 })

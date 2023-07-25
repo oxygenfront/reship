@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import styles from './Menu.module.sass'
-import { setChoosenCategorie } from '../../redux/slices/fiterSlice'
+import {
+  setChoosenCategorie,
+  setChoosenType,
+} from '../../redux/slices/fiterSlice'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -325,6 +328,7 @@ const Modal = ({ isOpen, setIsOpen }) => {
                     onClick={() => {
                       setIsOpen(false)
                       onChangeCategory(localCategory)
+                      dispatch(setChoosenType(''))
                     }}
                   >
                     <img

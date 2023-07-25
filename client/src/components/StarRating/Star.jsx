@@ -23,9 +23,9 @@ function Star({ value }) {
       onMouseLeave={() => setHover(null)}
     >
       {value <= (hover || rating) ? (
-        <img src="../assets/img/star 14.png" alt="star" />
+        <img src="../assets/img/Star 14.png" alt="star" />
       ) : (
-        <img src="../assets/img/star 16.png" alt="star" />
+        <img src="../assets/img/Star 16.png" alt="star" />
       )}
       {/* <svg
         data-rating={value}

@@ -73,6 +73,7 @@ const FullItem = () => {
   }
 
   const renderStatus = Boolean(status === 'success')
+  status === 'success' && console.log(item.colors)
   return (
     <>
       {windowWidth > 991 ? (
@@ -101,18 +102,25 @@ const FullItem = () => {
                             : null}
                         </p>
                         <div className="fullitem__card_info-params_block-wrapper">
-                          {renderStatus &&
-                            JSON.parse(item.colors).map((color) => (
-                              <Link
-                                to={`/item/${color.id}`}
-                                onClick={(e) => setColor(e.target.innerHTML)}
-                                className="fullitem__card_info-params_block_text"
-                                key={color.id}
-                                value={color.color}
-                              >
-                                {color.color}
-                              </Link>
-                            ))}
+                          {status === 'success' &&
+                            JSON.parse(item.colors).map(
+                              (colour) => {
+                                console.log(colour)
+                              }
+                              // <Link
+                              //   to={`/item/${colour.id}`}
+                              //   onClick={(e) => setColor(e.target.innerHTML)}
+                              //   className={
+                              //     status === 'success' && item.color === color
+                              //       ? 'fullitem__card_info-params_block_text'
+                              //       : 'fullitem__card_info-params_block_text active'
+                              //   }
+                              //   key={colour.id}
+                              //   value={colour.color}
+                              // >
+                              //   {colour.color}
+                              // </Link>
+                            )}
                         </div>
                       </div>
                       <div className="fullitem__card_info-params_block">
@@ -155,15 +163,21 @@ const FullItem = () => {
                       </p>
                       <div className="fullitem__card_info-params_block-wrapper">
                         {renderStatus &&
-                          JSON.parse(item.colors).map((color) => (
+                          JSON.parse(item.colors).map((colour) => (
                             <Link
-                              to={`/item/${color.id}`}
+                              to={`/item/${colour.id}`}
                               onClick={(e) => setColor(e.target.innerHTML)}
-                              className="fullitem__card_info-params_block_text"
-                              key={color.id}
-                              value={color.color}
+                              className={
+                                status === 'success'
+                                  ? Number(id) === colour.id
+                                    ? 'fullitem__card_info-params_block_text active'
+                                    : 'fullitem__card_info-params_block_text'
+                                  : ''
+                              }
+                              key={colour.id}
+                              value={colour.color}
                             >
-                              {color.color}
+                              {colour.color}
                             </Link>
                           ))}
                       </div>
@@ -408,15 +422,21 @@ const FullItem = () => {
                       <p>Цвет</p>
                       <div className="fullitem__card_info-params_block-wrapper">
                         {renderStatus &&
-                          JSON.parse(item.colors).map((color) => (
+                          JSON.parse(item.colors).map((colour) => (
                             <Link
-                              to={`/item/${color.id}`}
+                              to={`/item/${colour.id}`}
                               onClick={(e) => setColor(e.target.innerHTML)}
-                              className="fullitem__card_info-params_block_text"
-                              key={color.id}
-                              value={color.color}
+                              className={
+                                status === 'success'
+                                  ? Number(id) === colour.id
+                                    ? 'fullitem__card_info-params_block_text active'
+                                    : 'fullitem__card_info-params_block_text'
+                                  : ''
+                              }
+                              key={colour.id}
+                              value={colour.color}
                             >
-                              {color.color}
+                              {colour.color}
                             </Link>
                           ))}
                       </div>

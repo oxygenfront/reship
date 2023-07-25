@@ -19,7 +19,8 @@ const AdminOrder = ({
   products,
 }) => {
   const adress = [city, street, number_home, number_flat, postal_code]
-  console.log(JSON.parse(products))
+  
+  // console.log(JSON.parse(products))
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
 

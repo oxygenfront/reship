@@ -40,7 +40,7 @@ const Home = () => {
                   ? 40
                   : windowWidth <= 991 && windowWidth > 767
                   ? 40
-                  : null
+                  : 50
               }
               // centeredSlides={true}
               slidesPerView={windowWidth <= 991 ? 1 : 'auto'}

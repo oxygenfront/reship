@@ -1,49 +1,90 @@
 .admin
     &-wrapper
-        margin: 0 auto
-        margin-top: 150px
-        width: 1110px
-        &-title
-            text-align: center
-            font-size: 20px
-            margin-bottom: 30px
-        &-paymentsbtn
+        margin: 150px 0
+        width: 100%
+        display: flex
+        &__menu
+            width: 410px
             display: flex
-            align-items: center
-            justify-content: center
-            margin: 0 auto
-            width: 600px
-            height: 100px
-            border-radius: 10px
-            margin-bottom: 30px
-            background-color: rgb(236, 158, 139)
-        &-promocodesbtn
-            display: flex
-            align-items: center
-            justify-content: center
-            margin: 0 auto
-            width: 600px
-            height: 100px
-            border-radius: 10px
-            margin-bottom: 30px
-            background-color: rgb(139, 221, 236)
-        &-createbtn
-            display: flex
-            align-items: center
-            justify-content: center
-            margin: 0 auto
-            width: 600px
-            height: 100px
-            border-radius: 10px
-            margin-bottom: 30px
-            background-color: rgb(155, 236, 139)
-        &-ordersbtn
-            display: flex
-            align-items: center
-            justify-content: center
-            margin: 0 auto
-            width: 600px
-            height: 100px
-            border-radius: 10px
-            margin-bottom: 30px
-            background-color: rgb(141, 139, 236)
+            flex-direction: column
+            padding-left: 10px
+            height: 100%
+            background: #E8EBF5
+            border-top-right-radius: 30px
+            border-bottom-right-radius: 30px
+            transition: all .3s linear
+            &-multilevel
+                &-item
+                    display: flex
+                    align-items: center
+                    font-size: 20px
+                    margin-left: 50px
+                    background: transparent
+                    padding: 15px
+                    border-radius: 30px
+                    transition: all .2s linear
+                    & span
+                        margin-left: 10px
+                    &.active
+                        background: #416EF2
+                        color: white
+                    &:hover
+                        background: #416EF2
+                        color: white
+                    
+                    &:not(:last-child)
+                        margin-bottom: 15px
+                    
+            &-buttons
+                height: 100%
+                display: flex
+                flex-direction: column
+                justify-content: center
+            &.active
+                width: 100px
+                // align-items: center
+                & > .admin-wrapper__menu-item
+                    width: 60px
+
+                    
+            &-item
+                display: flex
+                width: fit-content
+                align-items: center
+                text-align: left
+                background: transparent
+                font-size: 24px
+                padding: 15px
+                border-radius: 30px
+                transition: all .2s linear
+                &.active
+                    background: #416EF2
+                    color: white
+                &:hover
+                    background: #416EF2
+                    color: white
+                & svg
+                    font-size: 30px
+                & span
+                    display: flex
+                    align-items: center
+                    margin-left: 10px
+                &:not(:last-child)
+                    margin-bottom: 20px
+                &.title
+                    font-size: 40px
+                    text-align: center
+                    &:hover
+                        background: transparent
+                        color: black
+                    & button
+                        background: none
+                    & span
+                        margin-right: 30px
+        &__content
+            margin-left: 70px
+            &.grid
+                display: grid
+                grid-template-columns: repeat(4, 1fr)
+                justify-content: space-between
+                gap: 30px

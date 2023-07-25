@@ -11,7 +11,6 @@ export const fetchItems = createAsyncThunk(
     choosenType,
     catalogSort,
   }) => {
-    console.log(choosenCategorie, searchValue)
     const { data } = await axios.get(
       `/getProducts?&categories=${choosenCategorie}&search=${searchValue}&price_start=${
         choosenPrice !== '' ? choosenPrice[0] : ''
@@ -55,7 +54,6 @@ const ItemsSlice = createSlice({
       state.status = 'success'
     })
     builder.addCase(fetchItems.rejected, (state, action) => {
-      console.log(action)
       state.status = 'error'
       state.items = []
     })

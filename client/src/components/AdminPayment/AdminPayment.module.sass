@@ -1,45 +1,65 @@
-.wrapper
-	display: flex
-	align-items: center
-	justify-content: space-between
 .container
 	margin: 0 auto
-	background-color: #0540F2
-	color: #fff
-	width: 600px
+	color: white
+	width: 100%
+	height: 300px
 	display: flex
-	align-items: center
+	flex-direction: column
 	justify-content: space-between
-	margin-bottom: 30px
-	padding: 50px 20px
-	border-radius: 10px
-	&_confirm
-		margin: 0 auto
-		background-color: #414141
-		color: #fff
-		width: 600px
-		display: flex
-		align-items: center
-		justify-content: space-between
-		margin-bottom: 30px
-		padding: 50px 20px
-		border-radius: 30px
-.btn
-	background-color: #90f77b
-	color: #fff
-	width: 100px
-	height: 50px
+	border: 2px solid #0540F2
+	background: #0540F2
+	padding: 20px
 	border-radius: 30px
 	&_confirm
-		background-color: #a8a8a8
+		height: 300px
+		color: black
+		border: 2px solid #0540F2
+		width: 100%
+		display: flex
+		flex-direction: column
+		justify-content: space-between
+		padding: 20px
+		border-radius: 30px
+.btn
+	border: 2px solid #ff0000
+	background-color: #ff0000
+	color: #fff
+	width: 100%
+	height: 50px
+	border-radius: 30px
+	transition: all .2s linear
+	&:hover
+		background: transparent
+	&_confirm
+		background-color: #2bff00
 		color: #fff
-		width: 100px
+		width: 100%
 		height: 50px
-		border-radius: 10px
+		border-radius: 30px
 .uuid
 	color: #fff
 	padding-left: 15px
-	width: 100px
-	height: 30px
-	border: 1px solid yellow
+	width: 100%
+	height: 40px
+	border: 1px solid black
 	border-radius: 30px
+	&::placeholder
+			color: black
+	&_confirmed
+		color: #fff
+		padding-left: 15px
+		width: 100%
+		height: 40px
+		border: 1px solid white
+		border-radius: 30px
+		&::placeholder
+			color: white
+
+.more
+	background: none
+.number_order
+	font-size: 21px
+.date_order
+	font-size: 17px
+.price
+	font-size: 27px

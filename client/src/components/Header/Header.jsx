@@ -69,41 +69,40 @@ const Header = () => {
                     ? styles.header_switch_circle
                     : styles.header_switch_circle_active
                 }
-                aria-hidden="true"
+                aria-hidden='true'
               />
               <div className={styles.header_switch_sun}>
-                <img src="../assets/img/sun.svg" alt="sun" />
+                <img src='../assets/img/sun.svg' alt='sun' />
               </div>
               <div className={styles.header_switch_moon}>
-                <img src="../assets/img/moon.svg" alt="moon" />
+                <img src='../assets/img/moon.svg' alt='moon' />
               </div>
             </Switch>
           </div>
           <div className={styles.header_center}>
-            <a href="/#delpay" className={styles.header__delivery}>
+            <a href='/#delpay' className={styles.header__delivery}>
               Доставка и оплата
             </a>
             <a
-              target="_blank"
-              href="https://vk.com/topic-214661020_49655928"
+              target='_blank'
+              href='https://vk.com/topic-214661020_49655928'
               className={styles.header__faq}
             >
               FAQ
             </a>
             <a
-              target="_blank"
-              href="https://vk.com/topic-214661020_49238528"
+              target='_blank'
+              href='https://vk.com/topic-214661020_49238528'
               className={styles.header__comments}
             >
               Отзывы
             </a>
+            {isAuth && status === 'success' && data.admin === 1 ? (
+              <Link to='/admin' className={styles.header__admin}>
+                ADMIN
+              </Link>
+            ) : null}
           </div>
-
-          {isAuth && status === 'success' && data.admin === 1 ? (
-            <Link to="/admin" className={styles.header__admin}>
-              ADMIN
-            </Link>
-          ) : null}
         </div>
 
         {/* <button
@@ -120,7 +119,7 @@ const Header = () => {
         </button> */}
       </div>
     </header>
-  )
+  );
 }
 
 export default React.memo(Header)

@@ -2,9 +2,9 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import styles from './AdminItem.module.sass'
-import { fetchDeleteItem } from '../../redux/slices/adminSlice'
 import { useDispatch } from 'react-redux'
+import { fetchDeleteItem } from '../../redux/slices/adminSlice'
+import styles from './AdminItem.module.sass'
 
 const AdminItem = ({ id, price, image, name }) => {
   const dispatch = useDispatch()

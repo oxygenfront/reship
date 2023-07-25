@@ -6,12 +6,12 @@ import Header from './components/Header/Header'
 
 import {
   Admin,
-  AdminChange,
-  AdminCreate,
-  AdminCreatePromocode,
-  AdminOrders,
-  AdminPayments,
-  AdminPromocodes,
+  // AdminChange,
+  // AdminCreate,
+  // AdminCreatePromocode,
+  // AdminOrders,
+  // AdminPayments,
+  // AdminPromocodes,
   Favorites,
   ForgotMessage,
   Settings,
@@ -63,30 +63,30 @@ const App = () => {
             }
           ></Route>
           <Route path="/admin" element={<Admin></Admin>}></Route>
-          <Route
+          {/* <Route
             path="/admin/create"
             element={<AdminCreate></AdminCreate>}
-          ></Route>
-          <Route
+          ></Route> */}
+          {/* <Route
             path="/admin/:id"
             element={<AdminChange></AdminChange>}
-          ></Route>
-          <Route
+          ></Route> */}
+          {/* <Route
             path="/admin/payments"
             element={<AdminPayments></AdminPayments>}
-          ></Route>
-          <Route
+          ></Route> */}
+          {/* <Route
             path="/admin/orders"
             element={<AdminOrders></AdminOrders>}
-          ></Route>
-          <Route
+          ></Route> */}
+          {/* <Route
             path="/admin/promocodes"
             element={<AdminPromocodes></AdminPromocodes>}
           ></Route>
           <Route
             path="/admin/createPromocode"
             element={<AdminCreatePromocode></AdminCreatePromocode>}
-          ></Route>
+          ></Route> */}
           <Route path="/register" element={<Register></Register>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/forgot" element={<Forgot></Forgot>}></Route>

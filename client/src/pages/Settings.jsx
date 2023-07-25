@@ -1,56 +1,66 @@
-import { useEffect, useRef, useState } from 'react'
-import InputMask from 'react-input-mask'
-import { useDispatch, useSelector } from 'react-redux'
-import { selectIsAuth, selectUserData } from '../redux/slices/authSlice'
+import { useEffect, useRef, useState } from 'react';
+import InputMask from 'react-input-mask';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsAuth, selectUserData } from '../redux/slices/authSlice';
 import {
   fetchChangeBasic,
   fetchChangeDelivery,
   fetchChangeName,
   fetchChangePassword,
-} from '../redux/slices/changeSlice'
-import { useNavigate, Navigate } from 'react-router-dom'
+} from '../redux/slices/changeSlice';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 function Settings() {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const isAuth = useSelector(selectIsAuth)
-  const token = localStorage.getItem('token')
-  const { data, status } = useSelector(selectUserData)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuth = useSelector(selectIsAuth);
+  const token = localStorage.getItem('token');
+  const { data, status } = useSelector(selectUserData);
   const [active, setActive] = useState({
     profile: true,
     contacts: false,
     adress: false,
     password: false,
-  })
+  });
   const [changePassword, setChangePassword] = useState({
     curr_password: '',
     new_password: '',
     conf_password: '',
-  })
-  const inputRefs = useRef([])
+  });
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const inputRefs = useRef([]);
 
   const handleKeyDown = (event, index) => {
     if (event.key === 'Enter') {
       if (index < inputRefs.current.length - 1) {
-        inputRefs.current[index + 1].focus()
+        inputRefs.current[index + 1].focus();
       } else {
-        event.target.form.submit()
+        event.target.form.submit();
       }
     }
-  }
+  };
   function timeConverter(UNIX_timestamp) {
-    const date = new Date(UNIX_timestamp)
+    const date = new Date(UNIX_timestamp);
 
     return date.toLocaleString('ru-US', {
       day: 'numeric',
       year: 'numeric',
       month: 'numeric',
-    })
+    });
   }
   const [changeProfile, setChangeProfile] = useState({
     first_name: '',
     last_name: '',
-  })
+  });
 
   const [changeContacts, setChangeContacts] = useState({
     new_email: '',
@@ -58,45 +68,45 @@ function Settings() {
     new_date_of_birth: '',
     new_date: '',
     new_country: '',
-  })
+  });
   const [changeAdress, setChangeAdress] = useState({
     country: '',
     city: '',
     street: '',
     flat_number: '',
     postal_code: '',
-  })
+  });
   const [change, setChange] = useState({
     profile: false,
     contacts: false,
     adress: false,
     password: false,
-  })
+  });
 
   const updateProfile = (e) => {
     setChangeProfile({
       ...changeProfile,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const updateContacts = (e) => {
     setChangeContacts({
       ...changeContacts,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const updateAdress = (e) => {
     setChangeAdress({
       ...changeAdress,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const updatePassword = (e) => {
     setChangePassword({
       ...changePassword,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
   const timeStamp = new Date(
     changeContacts.new_date
       .toLocaleString()
@@ -104,7 +114,7 @@ function Settings() {
       .split('.')
       .reverse()
       .join('.')
-  ).getTime()
+  ).getTime();
 
   const onClickEnter = (event) => {
     if (event.key === 'Enter') {
@@ -112,51 +122,51 @@ function Settings() {
         document
           .querySelector('.settings__change_block_buttons_save')
           .addEventListener('click', () => {
-            console.log('log')
-            changeContacts.new_date_of_birth = timeStamp
-          })
+            console.log('log');
+            changeContacts.new_date_of_birth = timeStamp;
+          });
       }
       if (event.target.name === 'flat_number') {
-        onClickSaveDelivery()
+        onClickSaveDelivery();
       }
       if (event.target.name === 'conf_password') {
-        onClickSavePassword()
+        onClickSavePassword();
       }
     }
-  }
+  };
 
   const onClickSaveContacts = async () => {
-    setChange({ contacts: !change.contacts })
+    setChange({ contacts: !change.contacts });
 
-    console.log(timeStamp)
-    console.log(changeContacts)
-    setChange(!change.contacts)
-    const data = await dispatch(fetchChangeBasic({ ...changeContacts, token }))
+    console.log(timeStamp);
+    console.log(changeContacts);
+    setChange(!change.contacts);
+    const data = await dispatch(fetchChangeBasic({ ...changeContacts, token }));
     if (!data.payload) {
-      return alert('Не удалось изменить контактную информацию')
+      return alert('Не удалось изменить контактную информацию');
     }
     if (data.payload) {
-      window.location.reload()
-      return alert('Контактная информация успешно изменена')
+      window.location.reload();
+      return alert('Контактная информация успешно изменена');
     }
-  }
-  console.log(changeProfile)
+  };
+  console.log(changeProfile);
   const onClickSaveName = async () => {
-    setChange({ contacts: !change.profile })
+    setChange({ contacts: !change.profile });
 
-    console.log(changeProfile)
-    const data = await dispatch(fetchChangeName(changeProfile))
+    console.log(changeProfile);
+    const data = await dispatch(fetchChangeName(changeProfile));
     if (!data.payload) {
-      return alert('Не удалось изменить имя')
+      return alert('Не удалось изменить имя');
     }
     if (data.payload) {
-      window.location.reload()
-      return alert('Имя успешно изменено')
+      window.location.reload();
+      return alert('Имя успешно изменено');
     }
-  }
+  };
 
   const onClickSaveDelivery = async () => {
-    setChange({ adress: !change.adress })
+    setChange({ adress: !change.adress });
 
     const data = await dispatch(
       fetchChangeDelivery({
@@ -165,18 +175,18 @@ function Settings() {
         }),
         token,
       })
-    )
-    console.log(data)
+    );
+    console.log(data);
     if (!data.payload) {
-      return alert('Не удалось изменить адрес')
+      return alert('Не удалось изменить адрес');
     }
     if (data.payload) {
-      window.location.reload()
-      return alert('Адрес успешно изменен')
+      window.location.reload();
+      return alert('Адрес успешно изменен');
     }
-  }
+  };
   const onClickSavePassword = async () => {
-    setChange({ password: !change.password })
+    setChange({ password: !change.password });
 
     const data = await dispatch(
       fetchChangePassword({
@@ -184,33 +194,33 @@ function Settings() {
         new_password: changePassword.new_password,
         token,
       })
-    )
+    );
     if (!data.payload) {
-      return alert('Не удалось изменить пароль')
+      return alert('Не удалось изменить пароль');
     }
     if (data.payload) {
-      window.location.reload()
-      alert('Пароль успешно изменен')
-      return navigate('/')
+      window.location.reload();
+      alert('Пароль успешно изменен');
+      return navigate('/');
     }
 
-    setChangePassword({ curr_password: '', new_password: '' })
-  }
+    setChangePassword({ curr_password: '', new_password: '' });
+  };
 
   useEffect(() => {
     if (status === 'success') {
-      const adress = JSON.parse(data.adress_delivery)?.adress.split(',')
+      const adress = JSON.parse(data.adress_delivery)?.adress.split(',');
       setChangeProfile({
         first_name: data.first_name,
         last_name: data.last_name,
-      })
+      });
       setChangeContacts({
         new_email: data.email,
         new_country: JSON.parse(data.adress_delivery).adress,
 
         new_date: timeConverter(data.date_of_birth),
         new_number_tel: data.number_tel !== '' ? data.number_tel : '',
-      })
+      });
 
       setChangeAdress({
         country: 'Россия',
@@ -218,592 +228,1167 @@ function Settings() {
         street: adress[0] === 'Россия' ? adress[2] : adress[1] || '',
         flat_number: adress[0] === 'Россия' ? adress[3] : adress[2] || '',
         postal_code: adress[0] === 'Россия' ? adress[4] : adress[3] || '',
-      })
+      });
     }
-  }, [status])
+  }, [status]);
 
   const formatPhoneNumber = (phoneNumberString) => {
-    var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
-    var match = cleaned.match(/^(?:7|8)?(\d{3})(\d{3})(\d{2})(\d{2})$/)
+    var cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    var match = cleaned.match(/^(?:7|8)?(\d{3})(\d{3})(\d{2})(\d{2})$/);
     if (match) {
       return (
         '+7 (' + match[1] + ') ' + match[2] + '-' + match[3] + '-' + match[4]
-      )
+      );
     }
-    return null
-  }
+    return null;
+  };
 
   if (!isAuth) {
-    return <Navigate to="/"></Navigate>
+    return <Navigate to='/'></Navigate>;
   }
   return (
     <>
-      <div className="settings">
-        <div className="settings__container container">
-          <div className="settings__title">Настройки</div>
-          <div className="settings__wrapper">
-            <div className="settings__buttons-block">
-              <div
-                onClick={() => (
-                  setActive({ profile: true }), setChange({ profile: false })
-                )}
-                className={
-                  active.profile
-                    ? 'settings__buttons-block_item active'
-                    : 'settings__buttons-block_item'
-                }
-              >
-                <span>Профиль</span>
-              </div>
-              <div
-                onClick={() => (
-                  setActive({ contacts: true }), setChange({ profile: false })
-                )}
-                className={
-                  active.contacts
-                    ? 'settings__buttons-block_item active'
-                    : 'settings__buttons-block_item'
-                }
-              >
-                <span>Контактная информация</span>
-              </div>
-              <div
-                onClick={() => (
-                  setActive({ adress: true }), setChange({ profile: false })
-                )}
-                className={
-                  active.adress
-                    ? 'settings__buttons-block_item active'
-                    : 'settings__buttons-block_item'
-                }
-              >
-                <span>Мои адреса</span>
-              </div>
-              <div
-                onClick={() => (
-                  setActive({ password: true }), setChange({ profile: false })
-                )}
-                className={
-                  active.password
-                    ? 'settings__buttons-block_item active'
-                    : 'settings__buttons-block_item'
-                }
-              >
-                <span>Изменение пароля</span>
-              </div>
-            </div>
-
-            <div className="settings__change-wrapper">
-              <div className="settings__profile">
-                <div className="settings__profile-preview">
-                  <div className="settings__profile-preview_img-block">
-                    <img src="../assets/user_img/default.jpg" alt="" />
-                  </div>
-                  <div className="settings__profile-preview_info-block">
-                    {status === 'success' && (
-                      <>
-                        <div className="settings__profile-preview_info-block_name">
-                          {data.first_name} {data.last_name}
-                        </div>
-                        <div className="settings__profile-preview_info-block_about">
-                          {changeAdress.country}, {changeAdress.city} <br />
-                          {new Date(Date.now()).getFullYear() -
-                            new Date(data.date_of_birth).getFullYear()}{' '}
-                          лет
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => (
-                      setChange({
-                        profile: !change.profile,
-                        contacts: false,
-                        adress: false,
-                      }),
-                      setActive({ profile: true, adress: false })
-                    )}
-                    className="settings__change-btn"
-                  >
-                    <img src="../assets/img/pen-edit.png" alt="" />
-                  </button>
+      <div className='settings'>
+        <div className='settings__container container'>
+          <div className='settings__title'>Настройки</div>
+          {windowWidth > 991 ? (
+            <div className='settings__wrapper'>
+              <div className='settings__buttons-block'>
+                <div
+                  onClick={() => (
+                    setActive({ profile: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.profile
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Профиль</span>
+                </div>
+                <div
+                  onClick={() => (
+                    setActive({ contacts: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.contacts
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Контактная информация</span>
+                </div>
+                <div
+                  onClick={() => (
+                    setActive({ adress: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.adress
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Мои адреса</span>
+                </div>
+                <div
+                  onClick={() => (
+                    setActive({ password: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.password
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Изменение пароля</span>
                 </div>
               </div>
 
-              {change.profile ? (
-                <div className="settings__change">
-                  <div className="settings__change_title">Профиль</div>
-
-                  <div className="settings__change_block">
-                    <div className="settings__change_block_title">Фото</div>
-                    <div className="settings__change_block_img-block">
-                      <img src="../assets/user_img/default.jpg" alt="" />
+              <div className='settings__change-wrapper'>
+                <div className='settings__profile'>
+                  <div className='settings__profile-preview'>
+                    <div className='settings__profile-preview_img-block'>
+                      <img src='../assets/user_img/default.jpg' alt='' />
                     </div>
-                    <div className="settings__change_block_inputs">
-                      <div className="settings__change_block_inputs-wrapper">
-                        <div className="settings__change_block_title">Имя</div>
-                        <input
-                          autoFocus
-                          name="first_name"
-                          onChange={updateProfile}
-                          value={changeProfile.first_name}
-                          type="text"
-                          className="settings__change_block_inputs-item"
-                          ref={(ref) => (inputRefs.current[0] = ref)}
-                          onKeyDown={(event) => handleKeyDown(event, 0)}
-                        />
-                      </div>
-                      <div className="settings__change_block_inputs-wrapper">
-                        <div className="settings__change_block_title">
-                          Фамилия
-                        </div>
-                        <input
-                          name="last_name"
-                          onChange={updateProfile}
-                          value={changeProfile.last_name}
-                          type="text"
-                          className="settings__change_block_inputs-item"
-                          ref={(ref) => (inputRefs.current[1] = ref)}
-                          onKeyDown={(event) => handleKeyDown(event, 1)}
-                        />
-                      </div>
+                    <div className='settings__profile-preview_info-block'>
+                      {status === 'success' && (
+                        <>
+                          <div className='settings__profile-preview_info-block_name'>
+                            {data.first_name} {data.last_name}
+                          </div>
+                          <div className='settings__profile-preview_info-block_about'>
+                            {changeAdress.country}, {changeAdress.city} <br />
+                            {new Date(Date.now()).getFullYear() -
+                              new Date(data.date_of_birth).getFullYear()}{' '}
+                            лет
+                          </div>
+                        </>
+                      )}
                     </div>
-                    <div className="settings__change_block_buttons">
-                      <button
-                        className="settings__change_block_buttons_cancel"
-                        onClick={() => setChange({ profile: false })}
-                      >
-                        Отменить
-                      </button>
-                      <button
-                        onClick={onClickSaveName}
-                        className="settings__change_block_buttons_save"
-                      >
-                        Сохранить изменения
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => (
+                        setChange({
+                          profile: !change.profile,
+                          contacts: false,
+                          adress: false,
+                        }),
+                        setActive({ profile: true, adress: false })
+                      )}
+                      className='settings__change-btn'
+                    >
+                      <img src='../assets/img/pen-edit.png' alt='' />
+                    </button>
                   </div>
                 </div>
-              ) : null}
 
-              {active.contacts ? (
-                <div className="settings__change">
-                  <div className="settings__change_title">
-                    Контактная <br /> Информация
-                  </div>
+                {change.profile ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>Профиль</div>
 
-                  {change.contacts ? (
-                    <div className="settings__change_block">
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Электронная почта
+                    <div className='settings__change_block'>
+                      <div className='settings__change_block_title'>Фото</div>
+                      <div className='settings__change_block_img-block'>
+                        <img src='../assets/user_img/default.jpg' alt='' />
+                      </div>
+                      <div className='settings__change_block_inputs'>
+                        <div className='settings__change_block_inputs-wrapper'>
+                          <div className='settings__change_block_title'>
+                            Имя
                           </div>
                           <input
                             autoFocus
-                            onChange={updateContacts}
-                            value={changeContacts.new_email}
-                            name="new_email"
-                            type="text"
-                            className="settings__change_block_inputs-item"
+                            name='first_name'
+                            onChange={updateProfile}
+                            value={changeProfile.first_name}
+                            type='text'
+                            className='settings__change_block_inputs-item'
                             ref={(ref) => (inputRefs.current[0] = ref)}
                             onKeyDown={(event) => handleKeyDown(event, 0)}
                           />
                         </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Номер телефона
-                          </div>
-                          <InputMask
-                            name="new_number_tel"
-                            type="text"
-                            mask="+7 (999) 999-99-99"
-                            onChange={updateContacts}
-                            value={changeContacts.new_number_tel}
-                            placeholder="+7 (___) ___-__-__"
-                            className="settings__change_block_inputs-item"
-                          />
-                        </div>
-                      </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Дата рождения
-                          </div>
-
-                          <InputMask
-                            name="new_date"
-                            onChange={updateContacts}
-                            value={changeContacts.new_date}
-                            mask="99.99.9999"
-                            placeholder="XX-XX-XXXX"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                          />
-                        </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Страна, город
+                        <div className='settings__change_block_inputs-wrapper'>
+                          <div className='settings__change_block_title'>
+                            Фамилия
                           </div>
                           <input
-                            name="new_country"
-                            onChange={updateContacts}
-                            value={changeContacts.new_country}
-                            type="text"
-                            className="settings__change_block_inputs-item"
+                            name='last_name'
+                            onChange={updateProfile}
+                            value={changeProfile.last_name}
+                            type='text'
+                            className='settings__change_block_inputs-item'
                             ref={(ref) => (inputRefs.current[1] = ref)}
-                            onKeyDown={(event) => onClickEnter(event)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
                           />
                         </div>
                       </div>
-                      <div className="settings__change_block_buttons">
+                      <div className='settings__change_block_buttons'>
                         <button
-                          className="settings__change_block_buttons_cancel"
-                          onClick={() => setChange({ contacts: false })}
+                          className='settings__change_block_buttons_cancel'
+                          onClick={() => setChange({ profile: false })}
                         >
                           Отменить
                         </button>
                         <button
-                          onClick={onClickSaveContacts}
-                          onClickCapture={() =>
-                            setChangeContacts({
-                              ...changeContacts,
-                              new_date_of_birth: timeStamp,
-                            })
+                          onClick={onClickSaveName}
+                          className='settings__change_block_buttons_save'
+                        >
+                          Сохранить изменения
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {active.contacts ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>
+                      Контактная <br /> Информация
+                    </div>
+
+                    {change.contacts ? (
+                      <div className='settings__change_block'>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Электронная почта
+                            </div>
+                            <input
+                              autoFocus
+                              onChange={updateContacts}
+                              value={changeContacts.new_email}
+                              name='new_email'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[0] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 0)}
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Номер телефона
+                            </div>
+                            <InputMask
+                              name='new_number_tel'
+                              type='text'
+                              mask='+7 (999) 999-99-99'
+                              onChange={updateContacts}
+                              value={changeContacts.new_number_tel}
+                              placeholder='+7 (___) ___-__-__'
+                              className='settings__change_block_inputs-item'
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дата рождения
+                            </div>
+
+                            <InputMask
+                              name='new_date'
+                              onChange={updateContacts}
+                              value={changeContacts.new_date}
+                              mask='99.99.9999'
+                              placeholder='XX-XX-XXXX'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна, город
+                            </div>
+                            <input
+                              name='new_country'
+                              onChange={updateContacts}
+                              value={changeContacts.new_country}
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[1] = ref)}
+                              onKeyDown={(event) => onClickEnter(event)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_buttons'>
+                          <button
+                            className='settings__change_block_buttons_cancel'
+                            onClick={() => setChange({ contacts: false })}
+                          >
+                            Отменить
+                          </button>
+                          <button
+                            onClick={onClickSaveContacts}
+                            onClickCapture={() =>
+                              setChangeContacts({
+                                ...changeContacts,
+                                new_date_of_birth: timeStamp,
+                              })
+                            }
+                            className='settings__change_block_buttons_save'
+                          >
+                            Сохранить изменения
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='settings__change_block'>
+                        <button
+                          className='settings__change-btn contacts'
+                          onClick={() =>
+                            setChange({ contacts: !change.contacts })
                           }
-                          className="settings__change_block_buttons_save"
                         >
-                          Сохранить изменения
+                          <img src='../assets/img/pen-edit.png' alt='' />
                         </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="settings__change_block">
-                      <button
-                        className="settings__change-btn contacts"
-                        onClick={() =>
-                          setChange({ contacts: !change.contacts })
-                        }
-                      >
-                        <img src="../assets/img/pen-edit.png" alt="" />
-                      </button>
 
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Электронная почта
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Электронная почта
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>{changeContacts.new_email}</span>
+                            </div>
                           </div>
-                          <div className="settings__change_block_inputs-item">
-                            <span>{changeContacts.new_email}</span>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Номер телефона
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>
+                                {formatPhoneNumber(
+                                  changeContacts.new_number_tel
+                                )}
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Номер телефона
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дата рождения
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>{changeContacts.new_date}</span>
+                            </div>
                           </div>
-                          <div className="settings__change_block_inputs-item">
-                            <span>
-                              {formatPhoneNumber(changeContacts.new_number_tel)}
-                            </span>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна, город
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>{changeContacts.new_country}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Дата рождения
-                          </div>
-                          <div className="settings__change_block_inputs-item">
-                            <span>{changeContacts.new_date}</span>
-                          </div>
-                        </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Страна, город
-                          </div>
-                          <div className="settings__change_block_inputs-item">
-                            <span>{changeContacts.new_country}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : null}
-
-              {active.adress ? (
-                <div className="settings__change">
-                  <div className="settings__change_title">
-                    Мои адреса{' '}
-                    <button className="settings__change_add-adress"></button>
+                    )}
                   </div>
+                ) : null}
 
-                  {change.adress ? (
-                    <div className="settings__change_block">
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Страна
-                          </div>
-                          <input
-                            autoFocus
-                            value={changeAdress.country}
-                            onChange={updateAdress}
-                            name="country"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[0] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 0)}
-                          />
-                        </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Город
-                          </div>
-                          <input
-                            value={changeAdress.city}
-                            onChange={updateAdress}
-                            name="city"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[1] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 1)}
-                          />
-                        </div>
-                      </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Улица
-                          </div>
-                          <input
-                            value={changeAdress.street}
-                            onChange={updateAdress}
-                            name="street"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[2] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 2)}
-                          />
-                        </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Почтовый индекс
-                          </div>
-                          <input
-                            value={changeAdress.postal_code}
-                            onChange={updateAdress}
-                            name="postal_code"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[3] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 3)}
-                          />
-                        </div>
-                      </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Дом
-                          </div>
-                          <input
-                            value={changeAdress.flat_number}
-                            onChange={updateAdress}
-                            name="flat_number"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[4] = ref)}
-                            onKeyDown={(event) => onClickEnter(event)}
-                          />
-                        </div>
-                      </div>
-                      <div className="settings__change_block_buttons">
-                        <button
-                          className="settings__change_block_buttons_cancel"
-                          onClick={() => setChange({ adress: false })}
-                        >
-                          Отменить
-                        </button>
-                        <button
-                          className="settings__change_block_buttons_save"
-                          onClick={onClickSaveDelivery}
-                        >
-                          Сохранить изменения
-                        </button>
-                      </div>
+                {active.adress ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>
+                      Мои адреса{' '}
+                      <button className='settings__change_add-adress'></button>
                     </div>
-                  ) : (
-                    <div className="settings__change_block">
-                      <button
-                        className="settings__change-btn contacts"
-                        onClick={() => setChange({ adress: !change.adress })}
-                      >
-                        <img src="../assets/img/pen-edit.png" alt="" />
-                      </button>
 
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Страна
+                    {change.adress ? (
+                      <div className='settings__change_block'>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна
+                            </div>
+                            <input
+                              autoFocus
+                              value={changeAdress.country}
+                              onChange={updateAdress}
+                              name='country'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[0] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 0)}
+                            />
                           </div>
-
-                          <div className="settings__change_block_inputs-item">
-                            {changeAdress.country}
-                          </div>
-                        </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Город
-                          </div>
-                          <div className="settings__change_block_inputs-item">
-                            {changeAdress.city}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Улица
-                          </div>
-                          <div className="settings__change_block_inputs-item">
-                            {changeAdress.street}
-                          </div>
-                        </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Почтовый индекс
-                          </div>
-                          <div className="settings__change_block_inputs-item">
-                            {changeAdress.postal_code}
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Город
+                            </div>
+                            <input
+                              value={changeAdress.city}
+                              onChange={updateAdress}
+                              name='city'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[1] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 1)}
+                            />
                           </div>
                         </div>
-                      </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Дом
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Улица
+                            </div>
+                            <input
+                              value={changeAdress.street}
+                              onChange={updateAdress}
+                              name='street'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[2] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 2)}
+                            />
                           </div>
-                          <div className="settings__change_block_inputs-item">
-                            {changeAdress.flat_number}
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Почтовый индекс
+                            </div>
+                            <input
+                              value={changeAdress.postal_code}
+                              onChange={updateAdress}
+                              name='postal_code'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[3] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 3)}
+                            />
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : null}
-              {active.password ? (
-                <div className="settings__change">
-                  <div className="settings__change_title">Изменение пароля</div>
-
-                  {change.password ? (
-                    <div className="settings__change_block">
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Текущий пароль
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дом
+                            </div>
+                            <input
+                              value={changeAdress.flat_number}
+                              onChange={updateAdress}
+                              name='flat_number'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[4] = ref)}
+                              onKeyDown={(event) => onClickEnter(event)}
+                            />
                           </div>
-                          <input
-                            autoFocus
-                            onChange={updatePassword}
-                            value={changePassword.curr_password}
-                            name="curr_password"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[0] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 0)}
-                          />
                         </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Новый пароль
-                          </div>
-                          <input
-                            onChange={updatePassword}
-                            value={changePassword.new_password}
-                            name="new_password"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[1] = ref)}
-                            onKeyDown={(event) => handleKeyDown(event, 1)}
-                          />
-                        </div>
-                      </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Повторите пароль
-                          </div>
-
-                          <input
-                            onChange={updatePassword}
-                            value={changePassword.conf_password}
-                            name="conf_password"
-                            type="text"
-                            className="settings__change_block_inputs-item"
-                            ref={(ref) => (inputRefs.current[2] = ref)}
-                            onKeyDown={(event) => onClickEnter(event)}
-                          />
+                        <div className='settings__change_block_buttons'>
+                          <button
+                            className='settings__change_block_buttons_cancel'
+                            onClick={() => setChange({ adress: false })}
+                          >
+                            Отменить
+                          </button>
+                          <button
+                            className='settings__change_block_buttons_save'
+                            onClick={onClickSaveDelivery}
+                          >
+                            Сохранить изменения
+                          </button>
                         </div>
                       </div>
-                      <div className="settings__change_block_buttons">
+                    ) : (
+                      <div className='settings__change_block'>
                         <button
-                          className="settings__change_block_buttons_cancel"
-                          onClick={() => setChange({ password: false })}
+                          className='settings__change-btn contacts'
+                          onClick={() => setChange({ adress: !change.adress })}
                         >
-                          Отменить
+                          <img src='../assets/img/pen-edit.png' alt='' />
                         </button>
-                        <button
-                          onClick={onClickSavePassword}
-                          className="settings__change_block_buttons_save"
-                        >
-                          Сохранить изменения
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="settings__change_block">
-                      <button
-                        className="settings__change-btn contacts"
-                        onClick={() =>
-                          setChange({ password: !change.password })
-                        }
-                      >
-                        <img src="../assets/img/pen-edit.png" alt="" />
-                      </button>
 
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Текущий пароль
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна
+                            </div>
+
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.country}
+                            </div>
                           </div>
-                          <div className="settings__change_block_inputs-item"></div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Город
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.city}
+                            </div>
+                          </div>
                         </div>
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Новый пароль
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Улица
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.street}
+                            </div>
                           </div>
-                          <div className="settings__change_block_inputs-item"></div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Почтовый индекс
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.postal_code}
+                            </div>
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дом
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.flat_number}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="settings__change_block_inputs">
-                        <div className="settings__change_block_inputs-wrapper">
-                          <div className="settings__change_block_title">
-                            Повторите пароль
-                          </div>
-                          <div className="settings__change_block_inputs-item"></div>
-                        </div>
-                      </div>
+                    )}
+                  </div>
+                ) : null}
+                {active.password ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>
+                      Изменение пароля
                     </div>
-                  )}
-                </div>
-              ) : null}
+
+                    {change.password ? (
+                      <div className='settings__change_block'>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Текущий пароль
+                            </div>
+                            <input
+                              autoFocus
+                              onChange={updatePassword}
+                              value={changePassword.curr_password}
+                              name='curr_password'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[0] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 0)}
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Новый пароль
+                            </div>
+                            <input
+                              onChange={updatePassword}
+                              value={changePassword.new_password}
+                              name='new_password'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[1] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 1)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Повторите пароль
+                            </div>
+
+                            <input
+                              onChange={updatePassword}
+                              value={changePassword.conf_password}
+                              name='conf_password'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[2] = ref)}
+                              onKeyDown={(event) => onClickEnter(event)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_buttons'>
+                          <button
+                            className='settings__change_block_buttons_cancel'
+                            onClick={() => setChange({ password: false })}
+                          >
+                            Отменить
+                          </button>
+                          <button
+                            onClick={onClickSavePassword}
+                            className='settings__change_block_buttons_save'
+                          >
+                            Сохранить изменения
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='settings__change_block'>
+                        <button
+                          className='settings__change-btn contacts'
+                          onClick={() =>
+                            setChange({ password: !change.password })
+                          }
+                        >
+                          <img src='../assets/img/pen-edit.png' alt='' />
+                        </button>
+
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Текущий пароль
+                            </div>
+                            <div className='settings__change_block_inputs-item'></div>
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Новый пароль
+                            </div>
+                            <div className='settings__change_block_inputs-item'></div>
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Повторите пароль
+                            </div>
+                            <div className='settings__change_block_inputs-item'></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className='settings__wrapper'>
+              <div className='settings__buttons-block'>
+                <div
+                  onClick={() => (
+                    setActive({ profile: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.profile
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Профиль</span>
+                </div>
+                <div
+                  onClick={() => (
+                    setActive({ contacts: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.contacts
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Контактная информация</span>
+                </div>
+                <div
+                  onClick={() => (
+                    setActive({ adress: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.adress
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Мои адреса</span>
+                </div>
+                <div
+                  onClick={() => (
+                    setActive({ password: true }), setChange({ profile: false })
+                  )}
+                  className={
+                    active.password
+                      ? 'settings__buttons-block_item active'
+                      : 'settings__buttons-block_item'
+                  }
+                >
+                  <span>Изменение пароля</span>
+                </div>
+              </div>
+              <div className='settings__change-wrapper'>
+                <div className='settings__profile'>
+                  <div className='settings__profile-preview'>
+                    <div className='settings__profile-preview_img-block'>
+                      <img src='../assets/user_img/default.jpg' alt='' />
+                    </div>
+                    <div className='settings__profile-preview_info-block'>
+                      {status === 'success' && (
+                        <>
+                          <div className='settings__profile-preview_info-block_name'>
+                            {data.first_name} {data.last_name}
+                          </div>
+                          <div className='settings__profile-preview_info-block_about'>
+                            {changeAdress.country}, {changeAdress.city} <br />
+                            {new Date(Date.now()).getFullYear() -
+                              new Date(data.date_of_birth).getFullYear()}{' '}
+                            лет
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => (
+                        setChange({
+                          profile: !change.profile,
+                          contacts: false,
+                          adress: false,
+                        }),
+                        setActive({ profile: true, adress: false })
+                      )}
+                      className='settings__change-btn'
+                    >
+                      <img src='../assets/img/pen-edit.png' alt='' />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className=''>
+                {change.profile ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>Профиль</div>
+
+                    <div className='settings__change_block'>
+                      <div className='settings__change_block_title'>Фото</div>
+                      <div className='settings__change_block_img-block'>
+                        <img src='../assets/user_img/default.jpg' alt='' />
+                      </div>
+                      <div className='settings__change_block_inputs'>
+                        <div className='settings__change_block_inputs-wrapper'>
+                          <div className='settings__change_block_title'>
+                            Имя
+                          </div>
+                          <input
+                            autoFocus
+                            name='first_name'
+                            onChange={updateProfile}
+                            value={changeProfile.first_name}
+                            type='text'
+                            className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[0] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 0)}
+                          />
+                        </div>
+                        <div className='settings__change_block_inputs-wrapper'>
+                          <div className='settings__change_block_title'>
+                            Фамилия
+                          </div>
+                          <input
+                            name='last_name'
+                            onChange={updateProfile}
+                            value={changeProfile.last_name}
+                            type='text'
+                            className='settings__change_block_inputs-item'
+                            ref={(ref) => (inputRefs.current[1] = ref)}
+                            onKeyDown={(event) => handleKeyDown(event, 1)}
+                          />
+                        </div>
+                      </div>
+                      <div className='settings__change_block_buttons'>
+                        <button
+                          className='settings__change_block_buttons_cancel'
+                          onClick={() => setChange({ profile: false })}
+                        >
+                          Отменить
+                        </button>
+                        <button
+                          onClick={onClickSaveName}
+                          className='settings__change_block_buttons_save'
+                        >
+                          Сохранить изменения
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {active.contacts ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>
+                      Контактная <br /> Информация
+                    </div>
+
+                    {change.contacts ? (
+                      <div className='settings__change_block'>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Электронная почта
+                            </div>
+                            <input
+                              autoFocus
+                              onChange={updateContacts}
+                              value={changeContacts.new_email}
+                              name='new_email'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[0] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 0)}
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Номер телефона
+                            </div>
+                            <InputMask
+                              name='new_number_tel'
+                              type='text'
+                              mask='+7 (999) 999-99-99'
+                              onChange={updateContacts}
+                              value={changeContacts.new_number_tel}
+                              placeholder='+7 (___) ___-__-__'
+                              className='settings__change_block_inputs-item'
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дата рождения
+                            </div>
+
+                            <InputMask
+                              name='new_date'
+                              onChange={updateContacts}
+                              value={changeContacts.new_date}
+                              mask='99.99.9999'
+                              placeholder='XX-XX-XXXX'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна, город
+                            </div>
+                            <input
+                              name='new_country'
+                              onChange={updateContacts}
+                              value={changeContacts.new_country}
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[1] = ref)}
+                              onKeyDown={(event) => onClickEnter(event)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_buttons'>
+                          <button
+                            className='settings__change_block_buttons_cancel'
+                            onClick={() => setChange({ contacts: false })}
+                          >
+                            Отменить
+                          </button>
+                          <button
+                            onClick={onClickSaveContacts}
+                            onClickCapture={() =>
+                              setChangeContacts({
+                                ...changeContacts,
+                                new_date_of_birth: timeStamp,
+                              })
+                            }
+                            className='settings__change_block_buttons_save'
+                          >
+                            Сохранить изменения
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='settings__change_block'>
+                        <button
+                          className='settings__change-btn contacts'
+                          onClick={() =>
+                            setChange({ contacts: !change.contacts })
+                          }
+                        >
+                          <img src='../assets/img/pen-edit.png' alt='' />
+                        </button>
+
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Электронная почта
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>{changeContacts.new_email}</span>
+                            </div>
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Номер телефона
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>
+                                {formatPhoneNumber(
+                                  changeContacts.new_number_tel
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дата рождения
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>{changeContacts.new_date}</span>
+                            </div>
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна, город
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              <span>{changeContacts.new_country}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+
+                {active.adress ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>
+                      Мои адреса{' '}
+                      <button className='settings__change_add-adress'></button>
+                    </div>
+
+                    {change.adress ? (
+                      <div className='settings__change_block'>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна
+                            </div>
+                            <input
+                              autoFocus
+                              value={changeAdress.country}
+                              onChange={updateAdress}
+                              name='country'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[0] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 0)}
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Город
+                            </div>
+                            <input
+                              value={changeAdress.city}
+                              onChange={updateAdress}
+                              name='city'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[1] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 1)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Улица
+                            </div>
+                            <input
+                              value={changeAdress.street}
+                              onChange={updateAdress}
+                              name='street'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[2] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 2)}
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Почтовый индекс
+                            </div>
+                            <input
+                              value={changeAdress.postal_code}
+                              onChange={updateAdress}
+                              name='postal_code'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[3] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 3)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дом
+                            </div>
+                            <input
+                              value={changeAdress.flat_number}
+                              onChange={updateAdress}
+                              name='flat_number'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[4] = ref)}
+                              onKeyDown={(event) => onClickEnter(event)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_buttons'>
+                          <button
+                            className='settings__change_block_buttons_cancel'
+                            onClick={() => setChange({ adress: false })}
+                          >
+                            Отменить
+                          </button>
+                          <button
+                            className='settings__change_block_buttons_save'
+                            onClick={onClickSaveDelivery}
+                          >
+                            Сохранить изменения
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='settings__change_block'>
+                        <button
+                          className='settings__change-btn contacts'
+                          onClick={() => setChange({ adress: !change.adress })}
+                        >
+                          <img src='../assets/img/pen-edit.png' alt='' />
+                        </button>
+
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Страна
+                            </div>
+
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.country}
+                            </div>
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Город
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.city}
+                            </div>
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Улица
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.street}
+                            </div>
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Почтовый индекс
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.postal_code}
+                            </div>
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Дом
+                            </div>
+                            <div className='settings__change_block_inputs-item'>
+                              {changeAdress.flat_number}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+
+                {active.password ? (
+                  <div className='settings__change'>
+                    <div className='settings__change_title'>
+                      Изменение пароля
+                    </div>
+
+                    {change.password ? (
+                      <div className='settings__change_block'>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Текущий пароль
+                            </div>
+                            <input
+                              autoFocus
+                              onChange={updatePassword}
+                              value={changePassword.curr_password}
+                              name='curr_password'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[0] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 0)}
+                            />
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Новый пароль
+                            </div>
+                            <input
+                              onChange={updatePassword}
+                              value={changePassword.new_password}
+                              name='new_password'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[1] = ref)}
+                              onKeyDown={(event) => handleKeyDown(event, 1)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Повторите пароль
+                            </div>
+
+                            <input
+                              onChange={updatePassword}
+                              value={changePassword.conf_password}
+                              name='conf_password'
+                              type='text'
+                              className='settings__change_block_inputs-item'
+                              ref={(ref) => (inputRefs.current[2] = ref)}
+                              onKeyDown={(event) => onClickEnter(event)}
+                            />
+                          </div>
+                        </div>
+                        <div className='settings__change_block_buttons'>
+                          <button
+                            className='settings__change_block_buttons_cancel'
+                            onClick={() => setChange({ password: false })}
+                          >
+                            Отменить
+                          </button>
+                          <button
+                            onClick={onClickSavePassword}
+                            className='settings__change_block_buttons_save'
+                          >
+                            Сохранить изменения
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='settings__change_block'>
+                        <button
+                          className='settings__change-btn contacts'
+                          onClick={() =>
+                            setChange({ password: !change.password })
+                          }
+                        >
+                          <img src='../assets/img/pen-edit.png' alt='' />
+                        </button>
+
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Текущий пароль
+                            </div>
+                            <div className='settings__change_block_inputs-item'></div>
+                          </div>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Новый пароль
+                            </div>
+                            <div className='settings__change_block_inputs-item'></div>
+                          </div>
+                        </div>
+                        <div className='settings__change_block_inputs'>
+                          <div className='settings__change_block_inputs-wrapper'>
+                            <div className='settings__change_block_title'>
+                              Повторите пароль
+                            </div>
+                            <div className='settings__change_block_inputs-item'></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default Settings
+export default Settings;

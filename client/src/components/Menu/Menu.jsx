@@ -125,7 +125,7 @@ const Menu = () => {
     setIsOpen(true)
   }
   return (
-    <div
+    <section
       className={styles.search_section}
       style={scrollTop > 0 ? { transform: 'translateY(-80px)' } : null}
     >
@@ -517,7 +517,7 @@ const Menu = () => {
           </div>
         ) : null}
       </div>
-    </div>
+    </section>
   )
 }
 

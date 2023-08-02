@@ -77,7 +77,7 @@ const AdminCreatePromocode = () => {
               value={newPromocode.date_end}
               onChange={updatePromocode}
               type="text"
-              placeholder="Дата окончания(UNIX)"
+              placeholder="Дата окончания"
             />
 
             <input

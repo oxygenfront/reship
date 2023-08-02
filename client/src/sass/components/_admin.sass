@@ -28,6 +28,7 @@
                     &.active
                         background: #416EF2
                         color: white
+                    
                     &:hover
                         background: #416EF2
                         color: white
@@ -57,9 +58,13 @@
                 padding: 15px
                 border-radius: 30px
                 transition: all .2s linear
+                & span svg
+                    transition: all .2s linear
                 &.active
                     background: #416EF2
                     color: white
+                    & span svg
+                        transform: rotate(180deg)
                 &:hover
                     background: #416EF2
                     color: white
@@ -85,6 +90,7 @@
             margin-left: 70px
             &.grid
                 display: grid
-                grid-template-columns: repeat(4, 1fr)
-                justify-content: space-between
+                grid-template-columns: repeat(3, 1fr)
+                height: auto
+                // justify-content: space-between
                 gap: 30px

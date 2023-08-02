@@ -46,7 +46,7 @@ const AdminOrder = ({
             <div key={index}> {item},</div>
           ))}
         </div>
-        <div className="">ID заказчика: {customer_id}</div>
+        <div className="">ID покупателя: {customer_id}</div>
         <div className="">
           Заказ создан: <div>{timeConverter(date_start)}</div>
         </div>

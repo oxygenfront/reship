@@ -14,6 +14,7 @@ import { RxCrossCircled } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import {
+  AdminAllItem,
   AdminChange,
   AdminCreate,
   AdminCreatePromocode,
@@ -30,7 +31,7 @@ const Admin = () => {
 
   const { data, userStatus = status } = useSelector(selectUserData);
   const [isOpen, setIsOpen] = useState(true);
-  const [paymentsMulti, setPaymentsMulti] = useState('all')
+  const [paymentsMulti, setPaymentsMulti] = useState('all');
   const [content, setContent] = useState({
     create: true,
     payments: false,
@@ -40,14 +41,14 @@ const Admin = () => {
     allItems: false,
   });
   const [multiLevel, setMultiLevel] = useState(content.payments);
-  
+
   useEffect(() => {
     setMultiLevel(content.payments);
-    content.payments === true && setPaymentsMulti('all')
+    content.payments === true && setPaymentsMulti('all');
   }, [content.payments]);
 
   function paymentFn() {
-    setPaymentsMulti('all')
+    setPaymentsMulti('all');
     setContent({ payments: true });
   }
   useEffect(() => {
@@ -208,14 +209,25 @@ const Admin = () => {
             ? 'admin-wrapper__content grid'
             : 'admin-wrapper__content'
         }
-        style={!isOpen ? { width: '87%', marginLeft: '50px' } : content.orders ? {gridTemplateColumns: 'repeat(2, 2fr)'}  : null}
+        style={
+          !isOpen
+            ? { width: '87%', marginLeft: '50px' }
+            : content.orders
+            ? { gridTemplateColumns: 'repeat(2, 2fr)' }
+            : content.promocodes
+            ? {
+                gridTemplateRows: '150px',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+              }
+            : null
+        }
       >
         {content.create ? <AdminCreate /> : null}
         {content.payments ? <AdminPayments select={paymentsMulti} /> : null}
         {content.orders ? <AdminOrders /> : null}
         {content.promocodes ? <AdminPromocodes /> : null}
         {content.createPromocode ? <AdminCreatePromocode /> : null}
-        {content.allItems ? <AdminChange /> : null}
+        {content.allItems ? <AdminAllItem /> : null}
       </div>
       {/* {status === 'loading'
         ? null

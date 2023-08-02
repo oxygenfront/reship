@@ -7,19 +7,14 @@ const AdminOrder = ({
   price,
   number,
   email,
-  city,
-  street,
-  number_home,
-  number_flat,
-  postal_code,
+  adress,
+
   status,
   customer_id,
   date_start,
   date_end,
   products,
 }) => {
-  const adress = [city, street, number_home, number_flat, postal_code]
-  
   // console.log(JSON.parse(products))
   function timeConverter(UNIX_timestamp) {
     const date = new Date(UNIX_timestamp)
@@ -40,13 +35,8 @@ const AdminOrder = ({
         <div className="">
           Контакты: <div>{number} </div> {email}
         </div>
-        <div className={styles.adress}>
-          Адрес:{' '}
-          {adress.map((item, index) => (
-            <div key={index}> {item},</div>
-          ))}
-        </div>
-        <div className="">ID покупателя: {customer_id}</div>
+        <div className={styles.adress}>Адрес: {JSON.parse(adress).adress}</div>
+        <div className="">ID заказчика: {customer_id}</div>
         <div className="">
           Заказ создан: <div>{timeConverter(date_start)}</div>
         </div>

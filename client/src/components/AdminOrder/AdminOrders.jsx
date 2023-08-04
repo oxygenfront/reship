@@ -22,19 +22,9 @@ const AdminOrders = () => {
     <>
       {ordersStatus === 'success' &&
         orders.map((item) => (
+          
           <AdminOrder
-            price={item.price}
-            number={item.number}
-            email={item.email}
-            adress={item.adress}
-            date_start={item.date_start}
-            status={item.status}
-            key={item.id}
-            init={item.init}
-            customer_id={item.customer_id}
-            id={item.id}
-            postal_code={item.postal_code}
-            products={item.products}
+            obj={item}
           ></AdminOrder>
         ))}
     </>

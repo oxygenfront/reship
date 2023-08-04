@@ -1,3 +1,6 @@
+.basic-single
+    &:not(:last-child)
+        margin-bottom: 20px
 .admin
     &-wrapper
         margin: 150px 0
@@ -87,9 +90,10 @@
                         margin-right: 30px
         &__content
             margin-left: 70px
+            width: 68%
             &.grid
                 display: grid
                 grid-template-columns: repeat(3, 1fr)
-                height: auto
+                height: fit-content
                 // justify-content: space-between
                 gap: 30px

@@ -206,8 +206,8 @@ const Admin = () => {
       <div
         className={
           contentBoolean
-            ? 'admin-wrapper__content grid'
-            : 'admin-wrapper__content'
+            ? 'admin-wrapper__content grid container'
+            : 'admin-wrapper__content container'
         }
         style={
           !isOpen

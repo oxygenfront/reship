@@ -1,23 +1,13 @@
-import React from 'react'
-import styles from './AdminOrder.module.sass'
+import React from 'react';
+import styles from './AdminOrder.module.sass';
 
-const AdminOrder = ({
-  id,
-  init,
-  price,
-  number,
-  email,
-  adress,
+const AdminOrder = ({ obj }) => {
+  console.log(obj.summ_price, JSON.parse(obj.products), obj.customer_id);
+  const address = [JSON.parse(obj.adress).adress];
+  const words = address[0].replace(/[^\p{L}\d\s]+/gu, '').split(' ');
 
-  status,
-  customer_id,
-  date_start,
-  date_end,
-  products,
-}) => {
-  // console.log(JSON.parse(products))
   function timeConverter(UNIX_timestamp) {
-    const date = new Date(UNIX_timestamp)
+    const date = new Date(UNIX_timestamp);
 
     return date.toLocaleString('ru-US', {
       hour: 'numeric',
@@ -25,33 +15,61 @@ const AdminOrder = ({
       day: 'numeric',
 
       month: 'long',
-    })
+    });
+  }
+
+  function selectDel(obj) {
+    if (obj.tariff_code === 368) {
+      return 'Посылка склад-постамат';
+    }
   }
   return (
+    
     <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <div>{id}</div>
-        <div className="">ФИО: {init}</div>
-        <div className="">
-          Контакты: <div>{number} </div> {email}
+      <div className={styles.info_buyer}>
+        <div className={styles.info_title}>Информация о заказе</div>
+        <div className={styles.info_suptitle}>
+          {timeConverter(obj.date_start)}
         </div>
-        <div className={styles.adress}>Адрес: {JSON.parse(adress).adress}</div>
-        <div className="">ID заказчика: {customer_id}</div>
-        <div className="">
-          Заказ создан: <div>{timeConverter(date_start)}</div>
+        <hr className='hr' />
+        <p className={styles.info_item}>
+          ФИО: <br />{' '}
+          <li>
+            {obj.first_name} {obj.last_name}
+          </li>
+        </p>
+        <p className={styles.info_item}>
+          Номер телефона: <br />
+          <li>{obj.number}</li>
+        </p>
+        <ul className={styles.info_item}>
+          <span>Адресс доставки:</span>
+          <li>Город: {words[0]}</li>
+          <li>
+            Улица: {words[1]} {words[2]} {words[3]}
+          </li>
+          <li>
+            Область: {words[4]} {words[5]}
+          </li>
+          <li>Индекс: {words[6]}</li>
+          <span>Вид доставки:</span>
+          <li>{selectDel(obj)}</li>
+        </ul>
+        <div className={styles.info_item}>
+          Общая сумма заказа: <br />
+          <li>{obj.summ_price}</li>
         </div>
-        <div className={styles.name}>
-          Товары:
-          {JSON.parse(products).map((item) => (
-            <div key={item.id}>
-              <div>id:{item.id}</div> <div>name:{item.name}</div> count:
-              {item.count}
-            </div>
-          ))}
+        <div className={styles.info_item}>
+          Статус подтверждения заказа: <br />
+          {obj.status === -1 ? (
+            <li>Не подтвержден</li>
+          ) : obj.status === 1 ? (
+            <li>Подтвержден</li>
+          ) : null}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AdminOrder
+export default AdminOrder;

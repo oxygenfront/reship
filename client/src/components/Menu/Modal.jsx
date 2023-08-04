@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 const Modal = ({ isOpen, setIsOpen }) => {
   const dispatch = useDispatch()
 
-  const [localCategory, setLocalCategory] = useState('мышки')
+  const [localCategory, setLocalCategory] = useState('Мышки')
   const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 

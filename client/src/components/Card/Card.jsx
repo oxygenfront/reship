@@ -70,10 +70,6 @@ const Card = ({
   }, [])
 
   const onChangeFavorite = () => {
-    // if (!isAuth) {
-    //   console.log('not auth')
-    //   return setNavigate(true)
-    // }
     if (!isFavorite) {
       dispatch(
         addFavorite({

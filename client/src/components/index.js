@@ -22,7 +22,7 @@ export { default as AdminPayment } from './AdminPayment/AdminPayment';
 export { default as AdminPayments } from './AdminPayment/AdminPayments';
 export { default as AdminOrders } from './AdminOrder/AdminOrders';
 export { default as AdminOrder } from './AdminOrder/AdminOrder';
-export { default as AdminAllItem } from './AdminAllItem/AdminAllItem';
+export { default as AdminAllItems } from './AdminAllItem/AdminAllItems';
 export { default as AdminPromocode } from './AdminPromocode/AdminPromocode';
 export { default as AdminPromocodes } from './AdminPromocode/AdminPromocodes';
 export { default as AdminCreatePromocode } from './AdminPromocode/AdminCreatePromocode';

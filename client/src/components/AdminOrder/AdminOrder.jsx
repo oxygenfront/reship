@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './AdminOrder.module.sass';
 
 const AdminOrder = ({ obj }) => {
-  console.log(obj.summ_price, JSON.parse(obj.products), obj.customer_id);
   const address = [JSON.parse(obj.adress).adress];
   const words = address[0].replace(/[^\p{L}\d\s]+/gu, '').split(' ');
 

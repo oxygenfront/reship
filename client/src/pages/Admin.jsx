@@ -14,7 +14,7 @@ import { RxCrossCircled } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import {
-  AdminAllItem,
+  AdminAllItems,
   AdminCreateChange,
   AdminCreatePromocode,
   AdminOrders,
@@ -226,19 +226,8 @@ const Admin = () => {
         {content.orders ? <AdminOrders /> : null}
         {content.promocodes ? <AdminPromocodes /> : null}
         {content.createPromocode ? <AdminCreatePromocode /> : null}
-        {content.allItems ? <AdminAllItem /> : null}
+        {content.allItems ? <AdminAllItems /> : null}
       </div>
-      {/* {status === 'loading'
-        ? null
-        : items.map((item) => (
-            <AdminItem
-              image={item.image_link}
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              price={item.price}
-            ></AdminItem>
-          ))} */}
     </div>
   );
 };

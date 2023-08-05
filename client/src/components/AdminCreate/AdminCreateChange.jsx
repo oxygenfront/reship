@@ -44,7 +44,12 @@ const AdminCreateChange = () => {
     colors_avail: '',
     parameters: '',
     parameters_avail: '',
-    image_links: [],
+    image_links: [
+      {
+        image: '',
+        id: Math.random(),
+      },
+    ],
     category: categoryOptions[0],
     token: token,
   };
@@ -78,7 +83,7 @@ const AdminCreateChange = () => {
       return <Navigate to='/'></Navigate>;
     }
   }, [status, data]);
-  
+
   const uploadImage = async (file) => {
     try {
       const formData = new FormData();
@@ -91,12 +96,17 @@ const AdminCreateChange = () => {
       const imageURL = response.data.data.url;
       setNewItem((prevNewItem) => ({
         ...prevNewItem,
-        image_links: [...prevNewItem.image_links, imageURL],
+        image_links: [
+          ...prevNewItem.image_links,
+          { image: imageURL, id: Math.random() },
+        ],
       }));
     } catch (error) {
       console.log('Error uploading image:', error);
     }
   };
+
+  const handleDeleteImage = (id) => {};
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -240,15 +250,23 @@ const AdminCreateChange = () => {
             Загрузка фотографий товара
           </p>
           <div className={styles.upload_photos}>
-            {newItem.image_links?.map((imageURL, index) => (
-              <a href={imageURL} target='_blank' rel='noreferrer' key={index}>
-                <img
-                  src={imageURL}
-                  alt={`Загруженное изображение ${index}`}
-                  className={styles.uploaded_photo}
-                />
-              </a>
-            ))}
+            {newItem.image_links?.map(
+              (imageURL, index) =>
+                imageURL.image && (
+                  <a
+                    href={imageURL.image !== '' ? imageURL.image : null}
+                    target='_blank'
+                    rel='noreferrer'
+                    key={index}
+                  >
+                    <img
+                      src={imageURL.image}
+                      alt={`Загруженное изображение ${index}`}
+                      className={styles.uploaded_photo}
+                    />
+                  </a>
+                )
+            )}
             <div className={styles.upload_photo_btn}>
               <input
                 type='file'
@@ -300,7 +318,9 @@ const AdminCreateChange = () => {
             classNamePrefix='select'
             defaultValue={categoryOptions[0]}
             isClearable={isClearable}
-            onChange={(event) => handleCreatableSelectChange('category', event.value)}
+            onChange={(event) =>
+              handleCreatableSelectChange('category', event.value)
+            }
             isSearchable={isSearchable}
             name='category'
             options={categoryOptions}

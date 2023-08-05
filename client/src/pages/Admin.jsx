@@ -15,12 +15,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import {
   AdminAllItem,
-  AdminChange,
-  AdminCreate,
+  AdminCreateChange,
   AdminCreatePromocode,
   AdminOrders,
   AdminPayments,
-  AdminPromocodes,
+  AdminPromocodes
 } from '../components';
 // import AdminPromocodes from '../components/AdminPromocode/AdminPromocodes';
 import { selectUserData } from '../redux/slices/authSlice';
@@ -213,7 +212,7 @@ const Admin = () => {
           !isOpen
             ? { width: '87%', marginLeft: '50px' }
             : content.orders
-            ? { gridTemplateColumns: 'repeat(2, 2fr)' }
+            ? { gridTemplateColumns: 'repeat(3, 1fr)' }
             : content.promocodes
             ? {
                 gridTemplateRows: '150px',
@@ -222,7 +221,7 @@ const Admin = () => {
             : null
         }
       >
-        {content.create ? <AdminCreate /> : null}
+        {content.create ? <AdminCreateChange /> : null}
         {content.payments ? <AdminPayments select={paymentsMulti} /> : null}
         {content.orders ? <AdminOrders /> : null}
         {content.promocodes ? <AdminPromocodes /> : null}

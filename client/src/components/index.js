@@ -16,7 +16,7 @@ export { default as OrdersItem } from './OrdersItem/OrdersItem';
 export { default as Star } from './StarRating/Star';
 export { default as StarList } from './StarRating/StarList';
 export { default as AdminChange } from './AdminChange';
-export { default as AdminCreate } from './AdminCreate/AdminCreate';
+export { default as AdminCreateChange } from './AdminCreate/AdminCreateChange';
 export { default as AdminItem } from './AdminItem/AdminItem';
 export { default as AdminPayment } from './AdminPayment/AdminPayment';
 export { default as AdminPayments } from './AdminPayment/AdminPayments';

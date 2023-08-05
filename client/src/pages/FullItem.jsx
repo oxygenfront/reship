@@ -32,15 +32,8 @@ const FullItem = () => {
   const [color, setColor] = useState('')
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [paramPrice, setParamPrice] = useState(0)
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth)
-    }
 
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  console.log(status, item)
   const cartItem = useSelector(selectCartItemById(item.id))
   const addedCount = cartItem ? cartItem.count : 0
   const onClickAdd = () => {
@@ -64,6 +57,16 @@ const FullItem = () => {
   }
 
   useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  console.log('1')
+  useEffect(() => {
     dispatch(fetchFullItem({ id }))
     dispatch(fetchGetReviewsForProductId({ token, id }))
   }, [color])
@@ -71,6 +74,7 @@ const FullItem = () => {
   if (navigate) {
     return <Navigate to="/login"></Navigate>
   }
+  const renderStatus = Boolean(status === 'success')
 
   return (
     <>

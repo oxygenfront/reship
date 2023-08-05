@@ -1,17 +1,17 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { AiOutlineCheckCircle } from 'react-icons/ai';
-import { BsPlusCircle } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
-import { fetchNewItem } from '../../redux/slices/adminSlice';
-import { selectUserData } from '../../redux/slices/authSlice';
-import styles from './AdminCreate.module.sass';
-import DescriptionItem from './DescriptionItem';
-import FeatureItem from './FeatureItem';
-import ParameterItem from './ParameterItem';
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { AiOutlineCheckCircle } from 'react-icons/ai'
+import { BsPlusCircle } from 'react-icons/bs'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
+import Select from 'react-select'
+import CreatableSelect from 'react-select/creatable'
+import { fetchNewItem } from '../../redux/slices/adminSlice'
+import { selectUserData } from '../../redux/slices/authSlice'
+import styles from './AdminCreate.module.sass'
+import DescriptionItem from './DescriptionItem'
+import FeatureItem from './FeatureItem'
+import ParameterItem from './ParameterItem'
 import {
   availableOptions,
   brandsAccessory,
@@ -27,11 +27,11 @@ import {
   layoutKeyboards,
   platesKeyboards,
   switchesKeyboard,
-} from './optionsData';
+} from './optionsData'
 const AdminCreateChange = () => {
-  const dispatch = useDispatch();
-  const { data, status } = useSelector(selectUserData);
-  const token = localStorage.getItem('token');
+  const dispatch = useDispatch()
+  const { data, status } = useSelector(selectUserData)
+  const token = localStorage.getItem('token')
   const initialState = {
     name: '',
     brand: '',
@@ -44,16 +44,13 @@ const AdminCreateChange = () => {
     colors_avail: '',
     parameters: '',
     parameters_avail: '',
-    image_links: [
-      {
-        image: '',
-        id: Math.random(),
-      },
-    ],
-    category: categoryOptions[0],
+    type: '',
+    image_links: [],
+    weight: 0,
+    category: categoryOptions[0].value,
     token: token,
-  };
-  const [newItem, setNewItem] = useState(initialState);
+  }
+  const [newItem, setNewItem] = useState(initialState)
   const [parameters, setParameters] = useState([
     {
       id: Math.random(),
@@ -61,7 +58,7 @@ const AdminCreateChange = () => {
       value2: '',
       isEditing: true,
     },
-  ]);
+  ])
   const [features, setFeatures] = useState([
     {
       id: Math.random(),
@@ -69,75 +66,67 @@ const AdminCreateChange = () => {
       desc: '',
       isEditing: true,
     },
-  ]);
+  ])
   const [description, setDescription] = useState({
     id: Math.random(),
     desc: '',
     isEditing: true,
-  });
-  const [height, setHeight] = useState(38);
-  const [isClearable, setIsClearable] = useState(true);
-  const [isSearchable, setIsSearchable] = useState(true);
-  useEffect(() => {
-    if (status === 'success' && data !== null && data.admin !== 1) {
-      return <Navigate to='/'></Navigate>;
-    }
-  }, [status, data]);
+  })
+  const [height, setHeight] = useState(38)
+  const [isClearable] = useState(true)
+  const [isSearchable] = useState(true)
 
   const uploadImage = async (file) => {
     try {
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('key', '835dbdbb109ca2b4323a35bd10d9d6bc');
+      const formData = new FormData()
+      formData.append('image', file)
+      formData.append('key', '835dbdbb109ca2b4323a35bd10d9d6bc')
       const response = await axios.post(
         'https://api.imgbb.com/1/upload',
         formData
-      );
-      const imageURL = response.data.data.url;
+      )
+      const imageURL = response.data.data.url
       setNewItem((prevNewItem) => ({
         ...prevNewItem,
-        image_links: [
-          ...prevNewItem.image_links,
-          { image: imageURL, id: Math.random() },
-        ],
-      }));
+        image_links: [...prevNewItem.image_links, imageURL],
+      }))
     } catch (error) {
-      console.log('Error uploading image:', error);
+      console.log('Error uploading image:', error)
     }
-  };
+  }
 
-  const handleDeleteImage = (id) => {};
+  const handleDeleteImage = (id) => {}
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    uploadImage(file);
-  };
+    const file = event.target.files[0]
+    uploadImage(file)
+  }
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value } = event.target
     setNewItem((prevNewItem) => ({
       ...prevNewItem,
       [name]: value,
-    }));
-    setHeight(`${event.target.scrollHeight}px`);
-  };
+    }))
+    setHeight(`${event.target.scrollHeight}px`)
+  }
 
   const handleCreatableSelectChange = (name, value) => {
     setNewItem((prevNewItem) => ({
       ...prevNewItem,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const sendForm = async (e) => {
-    e.preventDefault();
-    const response = await dispatch(fetchNewItem(newItem));
+    e.preventDefault()
+    const response = await dispatch(fetchNewItem(newItem))
     if (!response.payload) {
-      alert('Не удалось создать товар');
+      alert('Не удалось создать товар')
     } else {
-      setNewItem(initialState);
+      setNewItem(initialState)
     }
-  };
+  }
 
   const handleAddParameter = () => {
     setParameters([
@@ -148,42 +137,42 @@ const AdminCreateChange = () => {
         value2: '',
         isEditing: true,
       },
-    ]);
-  };
+    ])
+  }
 
   const handleChangeParameter = async (event) => {
-    const { name, value, id } = event.target;
+    const { name, value, id } = event.target
     await setParameters((prevParameters) => {
       const updatedParameters = prevParameters.map((prevParameter) => {
         if (Number(prevParameter.id) === Number(id)) {
           return {
             ...prevParameter,
             [name]: value,
-          };
+          }
         }
-        return prevParameter;
-      });
+        return prevParameter
+      })
 
-      return updatedParameters;
-    });
-  };
+      return updatedParameters
+    })
+  }
 
   const handleDeleteParameter = (id) => {
     const deletedParameter = parameters.filter(
       (parameter) => parameter.id !== id
-    );
-    setParameters(deletedParameter);
-  };
+    )
+    setParameters(deletedParameter)
+  }
 
   const handleEditingParameter = (id) => {
     const updatedParameters = parameters.map((parameter) => {
       if (parameter.id === id) {
-        return { ...parameter, isEditing: true };
+        return { ...parameter, isEditing: true }
       }
-      return parameter;
-    });
-    setParameters(updatedParameters);
-  };
+      return parameter
+    })
+    setParameters(updatedParameters)
+  }
 
   const handleAddFeature = () => {
     setFeatures([
@@ -194,54 +183,63 @@ const AdminCreateChange = () => {
         desc: '',
         isEditing: true,
       },
-    ]);
-  };
+    ])
+  }
 
   const handleChangeFeatures = async (event) => {
-    const { name, value, id } = event.target;
+    const { name, value, id } = event.target
     await setFeatures((prevFeatures) => {
       const updatedFeatures = prevFeatures.map((prevFeatures) => {
         if (Number(prevFeatures.id) === Number(id)) {
           return {
             ...prevFeatures,
             [name]: value,
-          };
+          }
         }
-        return prevFeatures;
-      });
+        return prevFeatures
+      })
 
-      return updatedFeatures;
-    });
-  };
+      return updatedFeatures
+    })
+  }
 
   const handleDeleteFeatures = (id) => {
-    const deletedFeature = features.filter((parameter) => parameter.id !== id);
-    setFeatures(deletedFeature);
-  };
+    const deletedFeature = features.filter((parameter) => parameter.id !== id)
+    setFeatures(deletedFeature)
+  }
 
   const handleEditingFeatures = (id) => {
     const updatedFeatures = features.map((feature) => {
       if (feature.id === id) {
-        return { ...feature, isEditing: true };
+        return { ...feature, isEditing: true }
       }
-      return feature;
-    });
-    setFeatures(updatedFeatures);
-  };
+      return feature
+    })
+    setFeatures(updatedFeatures)
+  }
 
   const handleChangeDescription = (event) => {
     setDescription({
       ...description,
       desc: event.target.value,
-    });
-  };
+    })
+  }
 
   const handleEditingDescription = () => {
     setDescription((prevDesc) => ({
       ...prevDesc,
       isEditing: true,
-    }));
-  };
+    }))
+  }
+
+  useEffect(() => {
+    if (status === 'success' && data !== null && data.admin !== 1) {
+      return <Navigate to="/"></Navigate>
+    }
+  }, [status, data])
+
+  console.log(newItem, features, parameters, description)
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_left}>
@@ -252,15 +250,15 @@ const AdminCreateChange = () => {
           <div className={styles.upload_photos}>
             {newItem.image_links?.map(
               (imageURL, index) =>
-                imageURL.image && (
+                imageURL && (
                   <a
-                    href={imageURL.image !== '' ? imageURL.image : null}
-                    target='_blank'
-                    rel='noreferrer'
+                    href={imageURL !== '' ? imageURL : null}
+                    target="_blank"
+                    rel="noreferrer"
                     key={index}
                   >
                     <img
-                      src={imageURL.image}
+                      src={imageURL}
                       alt={`Загруженное изображение ${index}`}
                       className={styles.uploaded_photo}
                     />
@@ -269,9 +267,9 @@ const AdminCreateChange = () => {
             )}
             <div className={styles.upload_photo_btn}>
               <input
-                type='file'
+                type="file"
                 className={styles.upload_photo}
-                placeholder=''
+                placeholder=""
                 onChange={handleFileChange}
               />
               <BsPlusCircle />
@@ -280,244 +278,236 @@ const AdminCreateChange = () => {
         </div>
         <div className={styles.info_item}>
           <input
-            type='text'
-            name='name'
+            type="text"
+            name="name"
             value={newItem.name}
             onChange={handleChange}
-            placeholder='Введите название товара'
+            placeholder="Введите название товара"
             className={styles.info_item_input}
           />
           <input
-            type='text'
-            name='price'
+            type="text"
+            name="price"
             value={newItem.price}
             onChange={handleChange}
-            placeholder='Введите цену товара'
+            placeholder="Введите цену товара"
             className={styles.info_item_input}
           />
           <textarea
-            type='text'
-            name='description_small'
+            type="text"
+            name="description_small"
             value={newItem.description_small}
             onChange={handleChange}
             style={{ height }}
-            placeholder='Введите краткое описание товара'
+            placeholder="Введите краткое описание товара"
             className={styles.info_item_input}
           />
-          <textarea
-            type='text'
-            name='description_full'
-            value={newItem.description_full}
-            onChange={handleChange}
-            style={{ height }}
-            placeholder='Введите полное описание товара'
-            className={styles.info_item_input}
-          />
+
           <CreatableSelect
-            className='basic-single'
-            classNamePrefix='select'
+            className="basic-single"
+            classNamePrefix="select"
             defaultValue={categoryOptions[0]}
             isClearable={isClearable}
             onChange={(event) =>
               handleCreatableSelectChange('category', event.value)
             }
             isSearchable={isSearchable}
-            name='category'
+            name="category"
             options={categoryOptions}
           />
           {newItem.category === 'Мышки' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд мышки или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд мышки или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsMouse}
               />
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
+                className="basic-single"
+                classNamePrefix="select"
                 isMulti
-                placeholder='Выберите цвет мышки или введите цвет которого нет в списке'
+                placeholder="Выберите цвет мышки или введите цвет которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('color', event.value)
                 }
                 isSearchable={isSearchable}
-                name='color'
+                name="color"
                 options={colorsMouse}
               />
             </>
           ) : newItem.category === 'Клавиатуры' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд клавиатуры или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд клавиатуры или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsKeyboards}
               />
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите цвет клавиатуры или введите цвет которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите цвет клавиатуры или введите цвет которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('color', event.value)
                 }
                 isSearchable={isSearchable}
-                name='color'
+                name="color"
                 options={colorsMouse}
               />
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
+                className="basic-single"
+                classNamePrefix="select"
                 isMulti
-                placeholder='Выберите раскладку клавиатуры или введите раскладку которого нет в списке'
+                placeholder="Выберите раскладку клавиатуры или введите раскладку которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('layout', event.value)
                 }
                 isSearchable={isSearchable}
-                name='layout'
+                name="layout"
                 options={layoutKeyboards}
               />
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите свитчи клавиатуры или введите свитчи которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите свитчи клавиатуры или введите свитчи которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('switches', event.value)
                 }
                 isSearchable={isSearchable}
-                name='switches'
+                name="switches"
                 options={switchesKeyboard}
               />
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите материал платы клавиатуры или введите материал платы которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите материал платы клавиатуры или введите материал платы которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('plate', event.value)
                 }
                 isSearchable={isSearchable}
-                name='plate'
+                name="plate"
                 options={platesKeyboards}
               />
             </>
           ) : newItem.category === 'Наушники' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд наушников или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд наушников или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsHeadphones}
               />
             </>
           ) : newItem.category === 'Микрофоны' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд микрофона или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд микрофона или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsMicrophone}
               />
             </>
           ) : newItem.category === 'Аксессуары' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд аксессуара или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд аксессуара или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsAccessory}
               />
             </>
           ) : newItem.category === 'Кейкапы' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд кейкапов или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд кейкапов или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsKeycap}
               />
             </>
           ) : newItem.category === 'Коврики' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд коврика или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд коврика или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsCover}
               />
             </>
           ) : newItem.category === 'Веб-камеры' ? (
             <>
               <CreatableSelect
-                className='basic-single'
-                classNamePrefix='select'
-                placeholder='Выберите бренд веб-камеры или введите бренд которого нет в списке'
+                className="basic-single"
+                classNamePrefix="select"
+                placeholder="Выберите бренд веб-камеры или введите бренд которого нет в списке"
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
                 isSearchable={isSearchable}
-                name='brand'
+                name="brand"
                 options={brandsWebCam}
               />
             </>
           ) : null}
           <Select
-            className='basic-single'
-            classNamePrefix='select'
+            className="basic-single"
+            classNamePrefix="select"
             defaultValue={availableOptions[0]}
             isClearable={isClearable}
             onChange={(event) =>
               handleCreatableSelectChange('availability', event.value)
             }
             isSearchable={isSearchable}
-            name='availability'
+            name="availability"
             options={availableOptions}
           />
         </div>
@@ -540,7 +530,7 @@ const AdminCreateChange = () => {
                   setDescription((prevDescription) => ({
                     ...prevDescription,
                     isEditing: !prevDescription.isEditing,
-                  }));
+                  }))
                 }}
               >
                 <AiOutlineCheckCircle />
@@ -569,13 +559,13 @@ const AdminCreateChange = () => {
                               return {
                                 ...prevParameter,
                                 isEditing: !prevParameter.isEditing,
-                              };
+                              }
                             }
-                            return prevParameter;
+                            return prevParameter
                           }
-                        );
-                        return updatedParameters;
-                      });
+                        )
+                        return updatedParameters
+                      })
                     }}
                   >
                     <AiOutlineCheckCircle />
@@ -614,13 +604,13 @@ const AdminCreateChange = () => {
                               return {
                                 ...prevFeature,
                                 isEditing: !prevFeature.isEditing,
-                              };
+                              }
                             }
-                            return prevFeature;
+                            return prevFeature
                           }
-                        );
-                        return updatedFeatures;
-                      });
+                        )
+                        return updatedFeatures
+                      })
                     }}
                   >
                     <AiOutlineCheckCircle />
@@ -637,6 +627,6 @@ const AdminCreateChange = () => {
         </div>
       </div>
     </div>
-  );
-};
-export default AdminCreateChange;
+  )
+}
+export default AdminCreateChange

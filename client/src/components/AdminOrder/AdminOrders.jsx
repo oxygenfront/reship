@@ -21,9 +21,10 @@ const AdminOrders = () => {
   return (
     <>
       {ordersStatus === 'success' &&
-        orders.map((item) => (
+        orders.map((item, index) => (
           
           <AdminOrder
+          key={index}
             obj={item}
           ></AdminOrder>
         ))}

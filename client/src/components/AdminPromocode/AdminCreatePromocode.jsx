@@ -33,7 +33,13 @@ const AdminCreatePromocode = () => {
   async function sendForm(e) {
     e.preventDefault()
 
-    const data = await dispatch(fetchAddPromocode(newPromocode))
+    const data = await dispatch(fetchAddPromocode({...newPromocode, persent: Number(newPromocode.persent.slice(0,-1)), date_end: new Date(
+      newPromocode.date_end
+        .toLocaleString()
+        .split('-')
+        .reverse()
+        .join('.')
+    ).getTime()}))
 
     if (!data.payload) {
       return alert('Не удалось создать промокод')

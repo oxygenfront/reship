@@ -1,13 +1,12 @@
-import React from 'react';
-import styles from './AdminOrder.module.sass';
+import React from 'react'
+import styles from './AdminOrder.module.sass'
 
 const AdminOrder = ({ obj }) => {
-  console.log(obj.summ_price, JSON.parse(obj.products), obj.customer_id);
-  const address = [JSON.parse(obj.adress).adress];
-  const words = address[0].replace(/[^\p{L}\d\s]+/gu, '').split(' ');
+  const address = [JSON.parse(obj.adress).adress]
+  const words = address[0].replace(/[^\p{L}\d\s]+/gu, '').split(' ')
 
   function timeConverter(UNIX_timestamp) {
-    const date = new Date(UNIX_timestamp);
+    const date = new Date(UNIX_timestamp)
 
     return date.toLocaleString('ru-US', {
       hour: 'numeric',
@@ -15,23 +14,22 @@ const AdminOrder = ({ obj }) => {
       day: 'numeric',
 
       month: 'long',
-    });
+    })
   }
 
   function selectDel(obj) {
     if (obj.tariff_code === 368) {
-      return 'Посылка склад-постамат';
+      return 'Посылка склад-постамат'
     }
   }
   return (
-    
     <div className={styles.wrapper}>
       <div className={styles.info_buyer}>
         <div className={styles.info_title}>Информация о заказе</div>
         <div className={styles.info_suptitle}>
           {timeConverter(obj.date_start)}
         </div>
-        <hr className='hr' />
+        <hr className="hr" />
         <p className={styles.info_item}>
           ФИО: <br />{' '}
           <li>
@@ -69,7 +67,7 @@ const AdminOrder = ({ obj }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminOrder;
+export default AdminOrder

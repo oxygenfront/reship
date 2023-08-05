@@ -13,12 +13,10 @@ const favoriteSlice = createSlice({
   initialState,
   reducers: {
     addFavorite(state, action) {
-      console.log(action)
       state.favorites.push(action.payload)
     },
 
     removeFavorite(state, action) {
-      console.log(action.payload)
       state.favorites = state.favorites.filter(
         (obj) => obj.id !== action.payload
       )

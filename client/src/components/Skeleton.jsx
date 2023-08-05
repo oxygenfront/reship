@@ -2,8 +2,6 @@ import React from 'react'
 import ContentLoader from 'react-content-loader'
 
 const Skeleton = ({ view }) => {
-  console.log(view)
-
   return view === 'grid' ? (
     <ContentLoader
       speed={1.5}

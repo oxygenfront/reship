@@ -39,7 +39,6 @@ const Personal = () => {
     firstName: 'Имя',
     lastName: 'Фамилия',
   })
-  console.log(calendarValue)
 
   useEffect(() => {
     status === 'success' &&
@@ -99,9 +98,6 @@ const Personal = () => {
   if (!isAuth) {
     return <Navigate to="/"></Navigate>
   }
-  // if (status === 'success') {
-  //   data.favorites.map((order) => console.log(order))
-  // }
 
   return (
     <>

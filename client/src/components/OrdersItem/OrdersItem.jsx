@@ -43,7 +43,6 @@ const OrdersItem = ({
     text: '',
     product_id: Number(id),
   })
-  console.log(sdek_order, uuid)
 
   const setRatingFn = (value) => {
     if (readOnly) return
@@ -78,7 +77,6 @@ const OrdersItem = ({
   async function sendForm(e) {
     e.preventDefault()
 
-    console.log(review)
     const data = await dispatch(
       fetchCreateReview({
         ...review,

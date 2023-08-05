@@ -28,7 +28,6 @@ const Card = ({
   description,
   weight,
 }) => {
-  console.log(category)
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)
@@ -70,10 +69,6 @@ const Card = ({
   }, [])
 
   const onChangeFavorite = () => {
-    // if (!isAuth) {
-    //   console.log('not auth')
-    //   return setNavigate(true)
-    // }
     if (!isFavorite) {
       dispatch(
         addFavorite({

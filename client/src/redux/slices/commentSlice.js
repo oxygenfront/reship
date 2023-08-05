@@ -4,9 +4,7 @@ import axios from '../../axios'
 export const fetchCreateReview = createAsyncThunk(
   'comment/fetchCreateReview',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post(`/createReview`, params)
-    console.log(data)
 
     return data
   }
@@ -14,11 +12,9 @@ export const fetchCreateReview = createAsyncThunk(
 export const fetchGetReviewsForProductId = createAsyncThunk(
   'comment/fetchGetReviewForProductId',
   async ({ token, id }) => {
-    console.log(token, id)
     const { data } = await axios.get(
       `/getReviewsForProductId?&token=${token}&product_id=${id}`
     )
-    console.log(data)
 
     return data
   }
@@ -27,7 +23,6 @@ export const fetchGetReviewsFromAuthor = createAsyncThunk(
   'comment/fetchGetReviewsFromAuthor',
   async (token) => {
     const { data } = await axios.get(`/getReviewsFromAuthor?&token=${token}`)
-    console.log(data)
 
     return data
   }
@@ -53,7 +48,6 @@ const commentSlice = createSlice({
       state.commentsStatus = 'success'
     })
     builder.addCase(fetchCreateReview.rejected, (state, action) => {
-      console.log(action)
       state.commentsStatus = 'error'
       state.data = []
     })
@@ -66,7 +60,6 @@ const commentSlice = createSlice({
       state.arrStatus = 'success'
     })
     builder.addCase(fetchGetReviewsForProductId.rejected, (state, action) => {
-      console.log(action)
       state.arrStatus = 'error'
       state.comments = []
     })
@@ -79,7 +72,6 @@ const commentSlice = createSlice({
       state.commentsStatus = 'success'
     })
     builder.addCase(fetchGetReviewsFromAuthor.rejected, (state, action) => {
-      console.log(action)
       state.commentsStatus = 'error'
       state.comments = []
     })

@@ -72,8 +72,6 @@ const FullItem = () => {
     return <Navigate to="/login"></Navigate>
   }
 
-  const renderStatus = Boolean(status === 'success')
-  status === 'success' && console.log(item.colors)
   return (
     <>
       {windowWidth > 991 ? (

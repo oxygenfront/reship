@@ -7,7 +7,6 @@ const { cartItems } = getCartFromLS()
 export const fetchCheckPromocode = createAsyncThunk(
   'auth/fetchCheckPromocode',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post('/checkPromocode', params)
     return data
   }

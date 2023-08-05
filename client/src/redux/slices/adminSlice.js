@@ -18,7 +18,6 @@ export const fetchChangeItem = createAsyncThunk(
 export const fetchDeleteItem = createAsyncThunk(
   'auth/fetchDeleteItem',
   async (id) => {
-    console.log(id)
     const { data } = await axios.post('/deleteProduct', id)
     return data
   }
@@ -27,16 +26,15 @@ export const fetchGetPayments = createAsyncThunk(
   'auth/fetchGetPayments',
   async () => {
     const { data } = await axios.get('/getPayments')
-    console.log(data)
+
     return data
   }
 )
 export const fetchAcceptPayment = createAsyncThunk(
   'auth/fetchAcceptPayment',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post('/acceptPayment', params)
-    console.log(data)
+
     return data
   }
 )
@@ -44,25 +42,23 @@ export const fetchAllOrders = createAsyncThunk(
   'auth/fetchAllOrders',
   async () => {
     const { data } = await axios.get('/getOrdersAll')
-    console.log(data)
+
     return data
   }
 )
 export const fetchAllPromocodes = createAsyncThunk(
   'auth/fetchAllPromocodes',
   async (token) => {
-    console.log(token)
     const { data } = await axios.post('/getAllPromocodes', token)
-    console.log(data)
+
     return data
   }
 )
 export const fetchAddPromocode = createAsyncThunk(
   'auth/fetchAddPromocode',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post('/addPromocode', params)
-    console.log(data)
+
     return data
   }
 )

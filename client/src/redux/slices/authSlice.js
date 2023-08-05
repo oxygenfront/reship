@@ -8,7 +8,7 @@ export const fetchAuth = createAsyncThunk(
       const { data } = await axios.post('/auth', params)
       return data
     } catch (error) {
-      console.log(error.response.data)
+      
       return rejectWithValue(error.response.data)
     }
   }

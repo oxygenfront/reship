@@ -20,7 +20,6 @@ export const fetchItems = createAsyncThunk(
         typeof catalogSort === Number ? catalogSort : ''
       }`
     )
-    console.log(data)
 
     return data
   }
@@ -29,7 +28,7 @@ export const fetchHomeItems = createAsyncThunk(
   'items/fetchHomeItems',
   async ({ choosenType }) => {
     const { data } = await axios.get(`/getProducts?&types=${choosenType}`)
-    console.log(data)
+
     return data
   }
 )
@@ -66,7 +65,6 @@ const ItemsSlice = createSlice({
       state.homeStatus = 'success'
     })
     builder.addCase(fetchHomeItems.rejected, (state, action) => {
-      console.log(action)
       state.homeStatus = 'error'
       state.homeItems = []
     })

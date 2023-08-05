@@ -43,7 +43,7 @@ const Login = () => {
   async function sendForm(e) {
     e.preventDefault()
     const data = await dispatch(fetchAuth(authForm))
-    console.log(data.payload.bcode)
+
     if (data.payload.bcode === 3.2) {
       return setIsError(true)
     }

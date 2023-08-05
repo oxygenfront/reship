@@ -4,16 +4,14 @@ import axios from '../../axios'
 export const fetchCreateOrder = createAsyncThunk(
   'order/fetchCreateOrder',
   async (params) => {
-    console.log(params)
     const { data } = await axios.post('/createOrder', params)
-    console.log(data)
+
     return data
   }
 )
 export const fetchGetOrdersById = createAsyncThunk(
   'order/fetchGetOrderById',
   async (params) => {
-    console.log(params)
     const { data } = await axios.get(
       `/getOrdersByCustomerId?&type=${params.type}&customer_id=${params.customer_id}&price_filter=${params.price}`
     )
@@ -24,11 +22,9 @@ export const fetchGetOrdersById = createAsyncThunk(
 export const fetchGetPreviewPrice = createAsyncThunk(
   'order/fetchGetPreviewPrice',
   async (params) => {
-    console.log(params)
     const { data } = await axios.get(
       `/getPreviewPriceOrder?&city=${params.city}&weight=${params.weight}&tariff_code=${params.tariff_code}`
     )
-    console.log(data)
 
     return data
   }

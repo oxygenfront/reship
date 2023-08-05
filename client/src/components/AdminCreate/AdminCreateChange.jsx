@@ -78,6 +78,7 @@ const AdminCreateChange = () => {
       return <Navigate to='/'></Navigate>;
     }
   }, [status, data]);
+  
   const uploadImage = async (file) => {
     try {
       const formData = new FormData();
@@ -109,13 +110,6 @@ const AdminCreateChange = () => {
       [name]: value,
     }));
     setHeight(`${event.target.scrollHeight}px`);
-  };
-
-  const handleSelectChange = (name, value) => {
-    setNewItem((prevNewItem) => ({
-      ...prevNewItem,
-      [name]: value,
-    }));
   };
 
   const handleCreatableSelectChange = (name, value) => {
@@ -306,7 +300,7 @@ const AdminCreateChange = () => {
             classNamePrefix='select'
             defaultValue={categoryOptions[0]}
             isClearable={isClearable}
-            onChange={(event) => handleSelectChange('category', event.value)}
+            onChange={(event) => handleCreatableSelectChange('category', event.value)}
             isSearchable={isSearchable}
             name='category'
             options={categoryOptions}
@@ -500,14 +494,16 @@ const AdminCreateChange = () => {
             defaultValue={availableOptions[0]}
             isClearable={isClearable}
             onChange={(event) =>
-              handleSelectChange('availability', event.value)
+              handleCreatableSelectChange('availability', event.value)
             }
             isSearchable={isSearchable}
             name='availability'
             options={availableOptions}
           />
         </div>
-        <div className={styles.create_wrapper}><button className={styles.create}>Создать товар</button></div>
+        <div className={styles.create_wrapper}>
+          <button className={styles.create}>Создать товар</button>
+        </div>
       </div>
       <div className={styles.wrapper_right}>
         <div className={styles.description}>

@@ -11,7 +11,6 @@ import {
 import { selectFullItemData } from '../redux/slices/fullItemSlice'
 
 const FullItemSlider = ({ id, image }) => {
-  console.log(id)
   const dispatch = useDispatch()
   const parsedImage = JSON.parse(image)
   const { favorites } = useSelector(selectFavorites)
@@ -57,8 +56,6 @@ const FullItemSlider = ({ id, image }) => {
 
   const goToNextSlide = () => {
     if (swiperRef.current) {
-      console.log(swiperRef.current)
-
       const swiperInstance = swiperRef.current.swiper
       swiperInstance.slideNext()
       setCurrentSlide(swiperInstance.realIndex)
@@ -69,7 +66,6 @@ const FullItemSlider = ({ id, image }) => {
     const ids = favorites.map((item) => item.id)
 
     setIsFavorite(ids.includes(id))
-    console.log(isFavorite)
   }, [])
 
   return (

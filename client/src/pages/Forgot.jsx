@@ -16,7 +16,7 @@ function Forgot() {
 
   const sendForm = (e) => {
     e.preventDefault()
-    console.log(forgotForm)
+
     setForgotForm({
       email: '',
     })

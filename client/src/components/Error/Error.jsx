@@ -8,8 +8,6 @@ function Error({ children, isErrorProp }) {
     setIsError(isErrorProp)
   }, [isErrorProp])
 
-  console.log(isError)
-
   return (
     <div
       onClick={() => setIsError(false)}
@@ -28,4 +26,4 @@ function Error({ children, isErrorProp }) {
   )
 }
 
-export default React.memo(Error);
+export default React.memo(Error)

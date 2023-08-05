@@ -13,7 +13,7 @@ const Cart = () => {
   const { cartItems } = useSelector(selectCart)
   const theme = useSelector((state) => state.theme)
   const totalPrice = calcTotalPrice(cartItems)
-  console.log(totalPrice)
+
   const totalCount = cartItems.reduce((sum, item) => sum + item.count, 0)
 
   const [promocode, setPromocode] = useState('')

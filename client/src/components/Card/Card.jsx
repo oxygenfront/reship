@@ -28,7 +28,6 @@ const Card = ({
   description,
   weight,
 }) => {
-  console.log(category)
   const dispatch = useDispatch()
   const cartItem = useSelector(selectCartItemById(id))
   const isAuth = useSelector(selectIsAuth)

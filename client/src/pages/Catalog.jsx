@@ -33,7 +33,6 @@ const Catalog = () => {
   const { items, status } = useSelector(selectItemsData)
   const theme = useSelector((state) => state.theme)
 
-  console.log(choosenPrice)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   const [showFilters, setShowFilters] = useState(false)
   const [choosenView, setChoosenView] = useState('grid')
@@ -43,7 +42,6 @@ const Catalog = () => {
   const [localCategories, setLocalCategories] = useState('')
   const [localTypes, setLocalTypes] = useState('')
 
-  console.log(catalogSort)
   const confirmFilters = () => {
     dispatch(setChoosenBrand(localBrands))
     dispatch(setChoosenType(localTypes))

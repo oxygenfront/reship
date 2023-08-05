@@ -16,7 +16,7 @@ const AdminChange = () => {
   useEffect(() => {
     dispatch(fetchFullItem({ id }))
   }, [])
-  console.log(item)
+
   const initialState = {
     name: '',
     description_small: '',
@@ -64,9 +64,9 @@ const AdminChange = () => {
 
   async function sendForm(e) {
     e.preventDefault()
-    console.log(changeItem)
+
     const data = await dispatch(fetchChangeItem(changeItem))
-    console.log(data)
+
     if (!data.payload) {
       return alert('Не удалось изменить товар')
     }

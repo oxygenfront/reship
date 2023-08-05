@@ -118,7 +118,6 @@ const Order = () => {
       return
     }
 
-    console.log(order)
     const data = await dispatch(
       fetchCreateOrder({
         ...order,
@@ -128,7 +127,6 @@ const Order = () => {
     )
     if (!data.payload) {
       alert('Не удалось создать заказ')
-      console.log(data)
     } else {
       localStorage.removeItem('promocode')
       dispatch(clearItems())
@@ -154,7 +152,7 @@ const Order = () => {
   useEffect(() => {
     if (status === 'success') {
       const data_adress = JSON.parse(data.adress_delivery)?.adress.split(',')
-      console.log(data_adress)
+
       data_adress.length > 1 &&
         setAdress({
           city: data_adress[1],

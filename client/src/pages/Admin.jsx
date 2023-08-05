@@ -19,7 +19,7 @@ import {
   AdminCreatePromocode,
   AdminOrders,
   AdminPayments,
-  AdminPromocodes
+  AdminPromocodes,
 } from '../components';
 // import AdminPromocodes from '../components/AdminPromocode/AdminPromocodes';
 import { selectUserData } from '../redux/slices/authSlice';
@@ -211,13 +211,19 @@ const Admin = () => {
         style={
           !isOpen
             ? { width: '87%', marginLeft: '50px' }
-            : content.orders
+            : isOpen && content.orders
             ? { gridTemplateColumns: 'repeat(3, 1fr)' }
-            : content.promocodes
+            : isOpen && content.promocodes
             ? {
                 gridTemplateRows: '150px',
                 gridTemplateColumns: 'repeat(4, 1fr)',
               }
+            : isOpen && content.allItems
+            ? {
+                gridTemplateColumns: 'repeat(3, 340px)',
+              }
+            : isOpen && content.payments
+            ? { gridTemplateColumns: 'repeat(3, 1fr)' }
             : null
         }
       >

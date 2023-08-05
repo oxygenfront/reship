@@ -8,7 +8,6 @@ function AdminAllItems() {
   const dispatch = useDispatch();
   const { items } = useSelector(selectItemsData);
   const filterData = useSelector(selectFilter);
-  console.log(items);
 
   const {
     choosenCategorie,
@@ -47,7 +46,9 @@ function AdminAllItems() {
   ]);
   return (
     <>
-      <AdminAllItem />
+      {items.map((item) => (
+        <AdminAllItem props={item}/>
+      ))}
     </>
   );
 }

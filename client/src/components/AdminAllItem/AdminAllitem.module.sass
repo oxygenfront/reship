@@ -1,1 +1,74 @@
-.test
+.item
+  position: relative
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  height: 500px
+  width: 100%
+  & a:hover
+    color: inherit
+  &_slider
+    width: 100%
+    height: 242px
+    background-color: #E8EBF5
+    border-radius: 60px
+    margin-bottom: 13px
+    &_wrapper
+      position: relative
+  &_title
+    font-size: 24px
+    font-weight: 700
+    color: #0540F2
+    margin-bottom: 15px
+  &_availability
+    width: fit-content
+    font-style: italic
+    font-size: 20px
+  &_type_ticket
+    position: absolute
+    top: 20px
+    left: 20px
+    z-index: 10
+    width: fit-content
+    font-size: 13px
+    background: white
+    padding: 10px 15px
+    border-radius: 30px
+    color: #0540F2
+  &_flex_block
+    width: 100%
+    display: flex
+    align-items: center
+    column-gap: 70px
+    margin-bottom: 15px
+  &_prices
+    display: flex
+    flex-direction: column
+    font-size: 20px
+    &_actual, &_old_price
+      color: #0540F2
+      font-weight: 600
+      & strike
+        font-weight: inherit
+  &_buttons
+    display: flex
+    align-items: center
+    justify-content: space-between
+    &_item
+      background: transparent
+      font-size: 20px
+      padding: 10px 20px
+      border: 2px solid #0540F2
+      color: #0540F2
+      border-radius: 30px
+      transition: all .2s linear
+      &:hover
+        color: white
+        background: #0540F2
+      &.delete
+        border-color: red
+        color: red
+        &:hover
+          background: red
+          color: white
+

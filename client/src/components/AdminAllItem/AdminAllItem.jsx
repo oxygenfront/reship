@@ -1,95 +1,60 @@
-import Swiper, { Pagination } from 'swiper';
+import { Pagination } from 'swiper';
 import styles from './AdminAllitem.module.sass';
-import { SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
-function AdminAllItem() {
+function AdminAllItem({ props }) {
+  console.log(props);
+
   return (
     <>
-      <div className={styles.main_catalog__products_wrapper_item}>
-        <button className={styles.main_catalog__products_wrapper_item_favorite}>
-          {/* {isFavorite ? (
-            <img src='/assets/img/active-heart-main-catalog.png'></img>
-          ) : (
-            <img src='/assets/img/heart-main-catalog.png'></img>
-          )} */}
-        </button>
-        {/* <Swiper
-          className={styles.main_catalog__products_wrapper_item_slider}
-          modules={[Pagination]}
-          pagination={{ clickable: true }}
-          centeredSlides={true}
-        >
-          {JSON.parse(image).map((image, index) => (
-            <SwiperSlide
-              key={index}
-              className={
-                styles.main_catalog__products_wrapper_item_slider_slide
-              }
-              style={{
-                backgroundImage: `url('${image}')`,
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center',
-              }}
-            ></SwiperSlide>
-          ))}
-        </Swiper> */}
-        <div className={styles.main_catalog__products_wrapper_item_title}>
-          {/* {name} */}
+      <div className={styles.item}>
+        <div className={styles.item_slider_wrapper}>
+          <div className={styles.item_type_ticket}>
+            {JSON.parse(props.type)}
+          </div>
+          <Swiper
+            className={styles.item_slider}
+            modules={[Pagination]}
+            pagination={{ clickable: true }}
+            centeredSlides={true}
+          >
+            {JSON.parse(props.image_link).map((image, index) => (
+              <SwiperSlide
+                key={index}
+                className={styles.item_slider_slide}
+                style={{
+                  backgroundImage: `url('${image}')`,
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}
+              ></SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-        <div
-          className={styles.main_catalog__products_wrapper_item_bottom_block}
-        >
-          <span className={styles.main_catalog__products_wrapper_item_price}>
-            {/* {category === 'Клавиатуры' ? 'от' : null} {price} руб */}
-          </span>
-          {/* {addedCount > 0 ? (
-            <div className={styles.main_catalog__products_wrapper_item_button}>
-              <button
-                onClick={addedCount > 1 ? onClickMinus : onClickRemove}
-                className={
-                  styles.main_catalog__products_wrapper_item_button_minus_wrapper
-                }
-              >
-                <div
-                  className={
-                    styles.main_catalog__products_wrapper_item_button_minus
-                  }
-                ></div>
-              </button>
-              <span>{addedCount}</span>
-              <button
-                onClick={onClickAdd}
-                className={
-                  styles.main_catalog__products_wrapper_item_button_pluses
-                }
-              >
-                <div
-                  className={
-                    styles.main_catalog__products_wrapper_item_button_pluses_block
-                  }
-                >
-                  <div
-                    className={
-                      styles.main_catalog__products_wrapper_item_button_pluses_itemv
-                    }
-                  ></div>
-                  <div
-                    className={
-                      styles.main_catalog__products_wrapper_item_button_pluses_itemh
-                    }
-                  ></div>
-                </div>
-              </button>
+        <div className={styles.item_title}>{props.name}</div>
+        <div className={styles.item_flex_block}>
+          <div className={styles.item_info}>
+            <div className={styles.item_availability}>
+              {props.availability === 1 ? 'Есть' : 'Нет'} в наличии
             </div>
-          ) : (
-            <button
-              onClick={onClickAdd}
-              className={styles.main_catalog__products_wrapper_item_button}
-            >
-              В корзину
-            </button>
-          )} */}
+          </div>
+          <div className={styles.item_prices}>
+            <div className={styles.item_prices_old_price}>
+              <strike>{props.old_price}</strike> руб
+            </div>
+            <div className={styles.item_prices_actual}>{props.price} руб</div>
+          </div>
+        </div>
+        <div className={styles.item_buttons}>
+          <button className={styles.item_buttons_item}>Редактировать</button>
+          <button
+            className={classNames(styles.item_buttons_item, styles.delete)}
+          >
+            Удалить
+          </button>
         </div>
       </div>
     </>

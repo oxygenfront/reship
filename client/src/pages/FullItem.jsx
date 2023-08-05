@@ -160,7 +160,7 @@ const FullItem = () => {
                           : null}
                       </p>
                       <div className="fullitem__card_info-params_block-wrapper">
-                        {renderStatus &&
+                        {status &&
                           JSON.parse(item.colors).map((colour) => (
                             <Link
                               to={`/item/${colour.id}`}
@@ -419,7 +419,7 @@ const FullItem = () => {
                     <div className="fullitem__card_info-params_block">
                       <p>Цвет</p>
                       <div className="fullitem__card_info-params_block-wrapper">
-                        {renderStatus &&
+                        {status &&
                           JSON.parse(item.colors).map((colour) => (
                             <Link
                               to={`/item/${colour.id}`}

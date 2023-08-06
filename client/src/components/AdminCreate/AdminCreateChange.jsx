@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import { fetchNewItem } from '../../redux/slices/adminSlice';
+import { fetchDeleteItem, fetchNewItem } from '../../redux/slices/adminSlice';
 import { selectUserData } from '../../redux/slices/authSlice';
 import styles from './AdminCreate.module.sass';
 import DescriptionItem from './DescriptionItem';
@@ -94,7 +94,7 @@ const AdminCreateChange = ({ propsItem }) => {
     : null || [];
   const dispatch = useDispatch();
   const { data, status } = useSelector(selectUserData);
-  const token = localStorage.getItem('token');
+  
   const initialState = {
     name: dataChange?.name || '',
     brand: dataChange?.brand || '',
@@ -113,7 +113,7 @@ const AdminCreateChange = ({ propsItem }) => {
     image_links: parsedImage,
     weight: dataChange?.weight || '',
     category: dataChange?.category || categoryOptions[0].value,
-    token: token,
+    
   };
   const [newItem, setNewItem] = useState(initialState);
   const [parameters, setParameters] = useState(
@@ -187,6 +187,8 @@ const AdminCreateChange = ({ propsItem }) => {
       [name]: value,
     }));
   };
+
+  
 
   const sendForm = async (e) => {
     e.preventDefault();
@@ -693,7 +695,7 @@ const AdminCreateChange = ({ propsItem }) => {
           />
         </div>
         <div className={styles.create_wrapper}>
-          <button className={styles.create}>
+          <button onClick={sendForm} className={styles.create}>
             {dataChange ? 'Редактировать' : 'Создать'} товар
           </button>
         </div>

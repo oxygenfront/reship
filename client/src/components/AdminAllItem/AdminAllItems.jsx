@@ -4,7 +4,7 @@ import { fetchItems, selectItemsData } from '../../redux/slices/itemsSlice';
 import { selectFilter } from '../../redux/slices/fiterSlice';
 import AdminAllItem from './AdminAllItem';
 
-function AdminAllItems() {
+function AdminAllItems({ onEdit, onProps }) {
   const dispatch = useDispatch();
   const { items } = useSelector(selectItemsData);
   const filterData = useSelector(selectFilter);
@@ -47,10 +47,14 @@ function AdminAllItems() {
   return (
     <>
       {items.map((item) => (
-        <AdminAllItem props={item}/>
+        <AdminAllItem
+          key={item.id}
+          props={item}
+          onEdit={onEdit}
+          onProps={onProps}
+        />
       ))}
     </>
   );
 }
-
 export default AdminAllItems;

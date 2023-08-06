@@ -40,7 +40,7 @@ const Admin = () => {
     allItems: false,
   });
   const [multiLevel, setMultiLevel] = useState(content.payments);
-
+  const [propsToChange, setPropsToChange] = useState({});
   useEffect(() => {
     setMultiLevel(content.payments);
     content.payments === true && setPaymentsMulti('all');
@@ -59,16 +59,26 @@ const Admin = () => {
     items.map((item) => set.add(item.category));
   }
   if (userStatus === 'success' && data !== null) {
-    if (data.admin !== 1) {
+    if (data.admin === false) {
       return <Navigate to='/'></Navigate>;
     }
   }
+  
   const categories = [...set];
   const contentBoolean =
     content.payments ||
     content.orders ||
     content.promocodes ||
     content.allItems;
+
+  const handleOnEditItem = () => {
+    setContent({ create: true });
+  };
+
+  const fnSetPropsToChange = (props) => {
+    setPropsToChange({ ...propsToChange, props });
+  };
+
   return (
     <div className='admin-wrapper'>
       <div
@@ -227,12 +237,19 @@ const Admin = () => {
             : null
         }
       >
-        {content.create ? <AdminCreateChange /> : null}
+        {content.create ? (
+          <AdminCreateChange propsItem={propsToChange} />
+        ) : null}
         {content.payments ? <AdminPayments select={paymentsMulti} /> : null}
         {content.orders ? <AdminOrders /> : null}
         {content.promocodes ? <AdminPromocodes /> : null}
         {content.createPromocode ? <AdminCreatePromocode /> : null}
-        {content.allItems ? <AdminAllItems /> : null}
+        {content.allItems ? (
+          <AdminAllItems
+            onEdit={handleOnEditItem}
+            onProps={fnSetPropsToChange}
+          />
+        ) : null}
       </div>
     </div>
   );

@@ -4,16 +4,22 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-function AdminAllItem({ props }) {
-  console.log(props);
+function AdminAllItem({ props, onEdit, onProps }) {
 
+  const fnClickEdit = (props) => {
+    onEdit()
+    onProps(props)
+  }
+  
   return (
     <>
       <div className={styles.item}>
         <div className={styles.item_slider_wrapper}>
-          <div className={styles.item_type_ticket}>
-            {JSON.parse(props.type)}
-          </div>
+          {JSON.parse(props.type).length !== 0 && (
+            <div className={styles.item_type_ticket}>
+              {JSON.parse(props.type)}
+            </div>
+          )}
           <Swiper
             className={styles.item_slider}
             modules={[Pagination]}
@@ -49,7 +55,9 @@ function AdminAllItem({ props }) {
           </div>
         </div>
         <div className={styles.item_buttons}>
-          <button className={styles.item_buttons_item}>Редактировать</button>
+          <button className={styles.item_buttons_item} onClick={() => fnClickEdit(props)}>
+            Редактировать
+          </button>
           <button
             className={classNames(styles.item_buttons_item, styles.delete)}
           >

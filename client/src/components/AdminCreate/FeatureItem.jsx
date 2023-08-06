@@ -3,7 +3,8 @@ import styles from './AdminCreate.module.sass';
 import { RxCrossCircled } from 'react-icons/rx';
 import { AiOutlineEdit } from 'react-icons/ai';
 
-function FeatureItem({props, onChange, onDelete, onEditing}) {
+function FeatureItem({ props, onChange, onDelete, onEditing }) {
+  
   return (
     <>
       {props.isEditing ? (

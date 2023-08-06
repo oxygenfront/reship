@@ -742,6 +742,7 @@ class ApiPostController {
         !tools.checkJsonKey(request.body, "feature") ||
         !tools.checkJsonKey(request.body, "type") ||
         !tools.checkJsonKey(request.body, "parameters_dop") ||
+        !tools.checkJsonKey(request.body, "weight") ||
         !tools.checkJsonKey(request.headers, "authorization")
       ) {
         return response
@@ -774,6 +775,7 @@ class ApiPostController {
 
       const image_links = JSON.parse(request.body.image_links);
       const category = tools.delInjection(request.body.category);
+      const weight = tools.delInjection(request.body.weight);
 
       const token = tools.delInjection(request.headers.authorization);
 
@@ -794,7 +796,7 @@ class ApiPostController {
               });
             } else {
               database.query(
-                `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`, \`brand\`, \`feature\`, \`type\`, \`parameters_dop\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
+                `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`, \`brand\`, \`feature\`, \`type\`, \`parameters_dop\`, \`weight\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
                   colors
                 )}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(
                   parameters
@@ -802,7 +804,7 @@ class ApiPostController {
                   image_links
                 )}', '${category}', '${JSON.stringify(info_category)}', '${brand}', '${feature}', '${JSON.stringify(
                   type
-                )}', '${JSON.stringify(parameters_dop)}');`,
+                )}', '${JSON.stringify(parameters_dop)}', '${weight}');`,
                 (error, rows, fields) => {
                   if (error) {
                     return response.status(500).json({

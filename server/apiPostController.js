@@ -832,72 +832,67 @@ class ApiPostController {
   }
 
   async changeProduct(request, response) {
-    const requiredKeys = [
-      "id",
-      "name",
-      "description_small",
-      "description_full",
-      "old_price",
-      "price",
-      "availability",
-      "colors",
-      "colors_avail",
-      "parameters",
-      "parameters_avail",
-      "image_link",
-      "category",
-      "token",
-    ];
-
-    const requestData = request.body;
-
-    const missingKey = requiredKeys.find(
-      (key) => !requestData.hasOwnProperty(key)
-    );
-    if (missingKey) {
+    if (
+      !tools.checkJsonKey(request.body, "product_id") ||
+      !tools.checkJsonKey(request.body, "name") ||
+      !tools.checkJsonKey(request.body, "description_small") ||
+      !tools.checkJsonKey(request.body, "description_full") ||
+      !tools.checkJsonKey(request.body, "old_price") ||
+      !tools.checkJsonKey(request.body, "price") ||
+      !tools.checkJsonKey(request.body, "availability") ||
+      !tools.checkJsonKey(request.body, "colors") ||
+      !tools.checkJsonKey(request.body, "colors_avail") ||
+      !tools.checkJsonKey(request.body, "parameters") ||
+      !tools.checkJsonKey(request.body, "parameters_avail") ||
+      !tools.checkJsonKey(request.body, "image_links") ||
+      !tools.checkJsonKey(request.body, "category") ||
+      !tools.checkJsonKey(request.body, "info_category") ||
+      !tools.checkJsonKey(request.body, "brand") ||
+      !tools.checkJsonKey(request.body, "feature") ||
+      !tools.checkJsonKey(request.body, "type") ||
+      !tools.checkJsonKey(request.body, "parameters_dop") ||
+      !tools.checkJsonKey(request.body, "weight") ||
+      !tools.checkJsonKey(request.headers, "authorization")
+    ) {
       return response
         .status(400)
         .json({ error: "Некорректные данные", bcode: 12 });
     }
 
-    const {
-      id,
-      name,
-      description_small,
-      description_full,
-      old_price,
-      price,
-      availability,
-      colors,
-      colors_avail,
-      parameters,
-      parameters_avail,
-      image_link,
-      category,
-      token,
-    } = requestData;
+    const product_id = tools.delInjection(request.body.product_id);
+    const name = tools.delInjection(request.body.name);
+    const description_small = tools.delInjection(
+      request.body.description_small
+    );
 
-    const sanitizedValues = {
-      id: tools.delInjection(id),
-      name: tools.delInjection(name),
-      description_small: tools.delInjection(description_small),
-      description_full: tools.delInjection(description_full),
-      old_price: tools.delInjection(old_price),
-      price: tools.delInjection(price),
-      availability: tools.delInjection(availability),
+    const description_full = tools.delInjection(
+      request.body.description_full
+    );
 
-      colors: JSON.parse(colors),
-      colors_avail: JSON.parse(colors_avail),
-      parameters: JSON.parse(parameters),
-      parameters_avail: JSON.parse(parameters_avail),
+    const old_price = tools.delInjection(request.body.old_price);
+    const price = tools.delInjection(request.body.price);
+    const availability = tools.delInjection(request.body.availability);
+    const brand = tools.delInjection(request.body.brand);
+    // const feature = tools.delInjection(request.body.feature);
+    
 
-      image_link: JSON.parse(image_link),
-      category: tools.delInjection(category),
-      token: tools.delInjection(token),
-    };
+    // const info_category = JSON.parse(request.body.info_category);
+    // const colors = JSON.parse(request.body.colors);
+    // const colors_avail = JSON.parse(request.body.colors_avail);
+    // const parameters = JSON.parse(request.body.parameters);
+    // const parameters_avail = JSON.parse(request.body.parameters_avail);
+    // const type = JSON.parse(request.body.type);
+    // const parameters_dop = JSON.parse(request.body.parameters_dop);
+    // const image_links = JSON.parse(request.body.image_links);
+
+    const category = tools.delInjection(request.body.category);
+    const weight = tools.delInjection(request.body.weight);
+
+    const token = tools.delInjection(request.headers.authorization);
+
 
     database.query(
-      `SELECT * FROM \`users\` WHERE token='${sanitizedValues.token}'`,
+      `SELECT * FROM \`users\` WHERE token='${token}'`,
       (error, rows, fields) => {
         if (error) {
           return response
@@ -914,73 +909,108 @@ class ApiPostController {
           } else {
             let sql_start = "UPDATE `products` SET ";
 
-            if (sanitizedValues.name) {
-              sql_start += "`name` = '" + sanitizedValues.name + "',";
+            if (name) {
+              sql_start += "`name` = '" + name + "',";
             }
 
-            if (sanitizedValues.description_small) {
+            if (description_small) {
               sql_start +=
                 "`description_small` = '" +
-                sanitizedValues.description_small +
+                description_small +
                 "',";
             }
 
-            if (sanitizedValues.description_full) {
+            if (description_full) {
               sql_start +=
                 "`description_full` = '" +
-                sanitizedValues.description_full +
+                description_full +
                 "',";
             }
 
-            if (sanitizedValues.old_price) {
-              sql_start += "`old_price` = '" + sanitizedValues.old_price + "',";
+            if (old_price) {
+              sql_start += "`old_price` = '" + old_price + "',";
             }
 
-            if (sanitizedValues.price) {
-              sql_start += "`price` = '" + sanitizedValues.price + "',";
+            if (price) {
+              sql_start += "`price` = '" + price + "',";
             }
 
-            if (sanitizedValues.availability) {
+            if (availability) {
               sql_start +=
-                "`availability` = '" + sanitizedValues.availability + "',";
+                "`availability` = '" + availability + "',";
             }
 
-            if (sanitizedValues.colors) {
+            if (request.body.colors) {
               sql_start +=
-                "`colors` = '" + JSON.stringify(sanitizedValues.colors) + "',";
+                "`colors` = '" + JSON.stringify(JSON.parse(request.body.colors)) + "',";
             }
 
-            if (sanitizedValues.colors_avail) {
+            if (weight) {
+              sql_start +=
+                "`weight` = '" + weight + "',";
+            }
+
+            if (request.body.colors_avail) {
               sql_start +=
                 "`colors_avail` = '" +
-                JSON.stringify(sanitizedValues.colors_avail) +
+                JSON.stringify(JSON.parse(request.body.colors_avail)) +
                 "',";
             }
 
-            if (sanitizedValues.parameters) {
+            if (request.body.image_links) {
+              sql_start +=
+                "`image_link` = '" +
+                JSON.stringify(JSON.parse(request.body.image_links)) +
+                "',";
+            }
+
+            if (request.body.type) {
+              sql_start +=
+                "`type` = '" +
+                JSON.stringify(JSON.parse(request.body.type)) +
+                "',";
+            }
+
+            if (request.body.parameters) {
               sql_start +=
                 "`parameters` = '" +
-                JSON.stringify(sanitizedValues.parameters) +
+                JSON.stringify(JSON.parse(request.body.parameters)) +
                 "',";
             }
 
-            if (sanitizedValues.parameters_avail) {
+            if (request.body.parameters_avail) {
               sql_start +=
                 "`parameters_avail` = '" +
-                JSON.stringify(sanitizedValues.parameters_avail) +
+                JSON.stringify(JSON.parse(request.body.parameters_avail)) +
                 "',";
             }
 
-            if (sanitizedValues.image_link) {
+            if (request.body.parameters_dop) {
               sql_start +=
-                "`image_link` = '" + sanitizedValues.image_link + "',";
+                "`parameters_dop` = '" +
+                JSON.stringify(JSON.parse(request.body.parameters_dop)) +
+                "',";
             }
 
-            if (sanitizedValues.category) {
-              sql_start += "`category` = '" + sanitizedValues.category + "'";
+            if (request.body.feature) {
+              sql_start +=
+                "`feature` = '" +
+                JSON.stringify(JSON.parse(request.body.feature)) +
+                "',";
             }
 
-            let sql_end = sql_start + " WHERE id='" + sanitizedValues.id + "';";
+            if (brand) {
+              sql_start +=
+                "`brand` = '" +
+                brand +
+                "',";
+            }
+
+            if (category) {
+              sql_start += "`category` = '" + category + "'";
+            }
+
+            let sql_end = sql_start.replace(/,\s*$/, "") + " WHERE id='" + product_id + "';";
 
             database.query(sql_end, (error, rows, fields) => {
               if (error) {
@@ -989,7 +1019,7 @@ class ApiPostController {
                   .json({ error: "Ошибка на сервере", bcode: 12.5 });
               }
 
-              return response.json({ product_id: sanitizedValues.id });
+              return response.json({ product_id: product_id });
             });
           }
         } else {

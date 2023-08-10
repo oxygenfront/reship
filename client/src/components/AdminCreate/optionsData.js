@@ -9,8 +9,8 @@ export const categoryOptions = [
   { value: 'Веб-камеры', label: 'Веб-камера' },
 ];
 export const availableOptions = [
-  { value: '1', label: 'Есть в наличии' },
-  { value: '0', label: 'Нет в наличии' },
+  { value: 1, label: 'Есть в наличии' },
+  { value: 0, label: 'Нет в наличии' },
 ];
 export const colorsMouse = [
   { value: 'Черный', label: 'Черный' },
@@ -19,6 +19,12 @@ export const colorsMouse = [
   { value: 'Красный', label: 'Красный' },
   { value: 'Синий', label: 'Синий' },
   { value: 'Желтый', label: 'Желтый' },
+];
+
+export const tickets = [
+  { value: 'популярное', label: 'Популярное' },
+  { value: 'хит продаж', label: 'Хит продаж' },
+  { value: 'акция', label: 'Акция' },
 ];
 export const brandsMouse = [
   { value: 'Logitech', label: 'Logitech' },
@@ -62,13 +68,14 @@ export const brandsWebCam = [
   { value: 'Fifine', label: 'Fifine' },
 ];
 export const layoutKeyboards = [
-  { value: 'ru', label: 'Русская' },
-  { value: 'eng', label: 'Английская' },
-  { value: 'jpn', label: 'Японская' },
+  { value: {rus: 0}, label: 'Русская' },
+  { value: {eng: 0}, label: 'Английская' },
+  { value: {jpn: 0}, label: 'Японская' },
 ];
 export const platesKeyboards = [
   { value: 'Allum', label: 'Алюминиевый' },
   { value: 'Latun', label: 'Латунный' },
+  { value: 'lol', label: 'LOL' },
 ];
 export const switchesKeyboard = [
   { value: 'Gateron Milky Yellow', label: 'Gateron Milky Yellow' },

@@ -86,7 +86,7 @@
     border: 1px solid rgb(204, 204, 204)
     background: var(--togray)
     border-radius: 4px
-    padding: 2px 8px
+    padding: 8px
     resize: vertical
 .parameters
   padding: 15px 21px
@@ -150,12 +150,10 @@
     &_wrapper
       display: flex
       justify-content: center
-
+      margin-bottom: 30px
     & svg
       font-size: 50px
       color: #0540F2
-  &_wrapper
-    margin-bottom: 30px
 .feature
   padding: 15px 21px
   width: calc(509px)
@@ -223,6 +221,7 @@
     &_wrapper
       display: flex
       justify-content: center
+      margin-bottom: 30px
       & svg
         font-size: 50px
         color: #0540F2
@@ -237,6 +236,8 @@
     display: flex
     flex-direction: column
     align-items: end
+    & textarea
+      height: 330px
     & button
       background: none
       & svg
@@ -257,6 +258,7 @@
     background-color: var(--togray)
     border-radius: 30px
     margin-bottom: 15px
+    
     &_buttons
       width: 100%
       display: flex

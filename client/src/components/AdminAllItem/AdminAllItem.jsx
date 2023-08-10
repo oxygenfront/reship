@@ -3,17 +3,30 @@ import styles from './AdminAllitem.module.sass';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import { fetchDeleteItem } from '../../redux/slices/adminSlice';
 
-function AdminAllItem({ props }) {
-  console.log(props);
-
+function AdminAllItem({ props, onEdit, onProps }) {
+  const dispatch = useDispatch()
+  const fnClickEdit = (props) => {
+    onEdit()
+    onProps(props)
+  }
+  const onClickDelete = () => {
+    if (window.confirm('Вы действительно хотите удалить товар?')) {
+      dispatch(fetchDeleteItem({ id: props.id }))
+    }
+  }
+  
   return (
     <>
       <div className={styles.item}>
         <div className={styles.item_slider_wrapper}>
-          <div className={styles.item_type_ticket}>
-            {JSON.parse(props.type)}
-          </div>
+          {JSON.parse(props.type).length !== 0 && (
+            <div className={styles.item_type_ticket}>
+              {JSON.parse(props.type)}
+            </div>
+          )}
           <Swiper
             className={styles.item_slider}
             modules={[Pagination]}
@@ -49,8 +62,11 @@ function AdminAllItem({ props }) {
           </div>
         </div>
         <div className={styles.item_buttons}>
-          <button className={styles.item_buttons_item}>Редактировать</button>
+          <button className={styles.item_buttons_item} onClick={() => fnClickEdit(props)}>
+            Редактировать
+          </button>
           <button
+          onClick={onClickDelete}
             className={classNames(styles.item_buttons_item, styles.delete)}
           >
             Удалить

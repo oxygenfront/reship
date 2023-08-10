@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchItems, selectItemsData } from '../../redux/slices/itemsSlice';
 import { selectFilter } from '../../redux/slices/fiterSlice';
 import AdminAllItem from './AdminAllItem';
+import Skeleton from '../Skeleton';
 
-function AdminAllItems() {
+function AdminAllItems({ onEdit, onProps }) {
   const dispatch = useDispatch();
-  const { items } = useSelector(selectItemsData);
+  const { items, status } = useSelector(selectItemsData);
   const filterData = useSelector(selectFilter);
 
   const {
@@ -43,14 +44,23 @@ function AdminAllItems() {
     choosenPrice,
     searchValue,
     catalogSort,
+   
   ]);
   return (
     <>
-      {items.map((item) => (
-        <AdminAllItem props={item}/>
-      ))}
+      {status === 'success' ? items.map((item) => (
+        <AdminAllItem
+          key={item.id}
+          props={item}
+          onEdit={onEdit}
+          onProps={onProps}
+        />
+      )) : (
+        [...new Array(6)].map((item, index) => (
+          <Skeleton view={'grid'} key={index}></Skeleton>
+        ))
+      ) }
     </>
   );
 }
-
 export default AdminAllItems;

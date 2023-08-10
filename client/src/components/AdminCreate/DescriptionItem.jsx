@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import styles from './AdminCreate.module.sass'
+import styles from './AdminCreate.module.sass';
 import { AiOutlineEdit } from 'react-icons/ai';
 
-function DescriptionItem({ props, onChange, onEditing }) {
+function DescriptionItem({ props, onChange, onEditing, propsValue }) {
   
   return (
     <>
@@ -11,18 +11,18 @@ function DescriptionItem({ props, onChange, onEditing }) {
           <textarea
             id={props.id}
             onChange={onChange}
-            value={props.desc || ''}
+            value={propsValue || props.desc || ''}
             name='desc'
-            placeholder='Описание'
+            placeholder='Полное описание'
             className={classNames(styles.description_item, styles.input)}
           />
         </>
       ) : (
         <>
           <div className={styles.description_item}>
-            {props.desc || 'Описание'}
+            {propsValue || props.desc || 'Описание'}
           </div>
-          
+
           <div className={styles.description_item_buttons}>
             <button onClick={onEditing}>
               <AiOutlineEdit />

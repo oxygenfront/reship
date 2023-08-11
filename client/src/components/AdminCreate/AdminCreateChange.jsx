@@ -56,7 +56,7 @@ const AdminCreateChange = ({ propsItem }) => {
     }
   );
 
-  const switchesParsedParametersDop = parsedParametersDop[1].switches?.map(
+  const switchesParsedParametersDop = parsedParametersDop[1]?.switches?.map(
     (obj) => {
       return obj;
     }
@@ -203,8 +203,8 @@ const AdminCreateChange = ({ propsItem }) => {
   };
 
   const handleAddParameter = () => {
-    setParameters([
-      ...parameters,
+    setParameters((prevParameters) => [
+      ...prevParameters,
       {
         id: Math.random(),
         value1: '',
@@ -214,89 +214,73 @@ const AdminCreateChange = ({ propsItem }) => {
     ]);
   };
 
-  const handleChangeParameter = async (event) => {
+  const handleChangeParameter = (event) => {
     const { name, value, id } = event.target;
-    await setParameters((prevParameters) => {
-      const updatedParameters = prevParameters.map((prevParameter) => {
-        if (Number(prevParameter.id) === Number(id)) {
-          return {
-            ...prevParameter,
-            [name]: value,
-          };
-        }
-        return prevParameter;
-      });
-
-      return updatedParameters;
+    setParameters((prevParameters) => {
+      return prevParameters.map((prevParameter) =>
+        Number(prevParameter.id) === Number(id)
+          ? { ...prevParameter, [name]: value }
+          : prevParameter
+      );
     });
   };
 
   const handleDeleteParameter = (id) => {
-    const deletedParameter = parameters.filter(
-      (parameter) => parameter.id !== id
+    setParameters((prevParameters) =>
+      prevParameters.filter((parameter) => parameter.id !== id)
     );
-    setParameters(deletedParameter);
   };
 
   const handleEditingParameter = (id) => {
-    const updatedParameters = parameters.map((parameter) => {
-      if (parameter.id === id) {
-        return { ...parameter, isEditing: true };
-      }
-      return parameter;
-    });
-    setParameters(updatedParameters);
+    setParameters((prevParameters) =>
+      prevParameters.map((parameter) =>
+        parameter.id === id ? { ...parameter, isEditing: true } : parameter
+      )
+    );
   };
 
-  const handleAddFeature = () => {
-    setFeatures([
-      ...features,
-      {
-        id: Math.random(),
-        title: '',
-        desc: '',
-        isEditing: true,
-      },
-    ]);
-  };
+ const handleAddFeature = () => {
+   setFeatures((prevFeatures) => [
+     ...prevFeatures,
+     {
+       id: Math.random(),
+       title: '',
+       desc: '',
+       isEditing: true,
+     },
+   ]);
+ };
 
-  const handleChangeFeatures = async (event) => {
+  const handleChangeFeatures = (event) => {
     const { name, value, id } = event.target;
-    await setFeatures((prevFeatures) => {
-      const updatedFeatures = prevFeatures.map((prevFeatures) => {
-        if (Number(prevFeatures.id) === Number(id)) {
-          return {
-            ...prevFeatures,
-            [name]: value,
-          };
-        }
-        return prevFeatures;
-      });
-
-      return updatedFeatures;
+    setFeatures((prevFeatures) => {
+      return prevFeatures.map((prevFeature) =>
+        Number(prevFeature.id) === Number(id)
+          ? { ...prevFeature, [name]: value }
+          : prevFeature
+      );
     });
   };
 
   const handleDeleteFeatures = (id) => {
-    const deletedFeature = features.filter((parameter) => parameter.id !== id);
-    setFeatures(deletedFeature);
+    setFeatures((prevFeatures) =>
+      prevFeatures.filter((feature) => feature.id !== id)
+    );
   };
 
   const handleEditingFeatures = (id) => {
-    const updatedFeatures = features.map((feature) => {
-      if (feature.id === id) {
-        return { ...feature, isEditing: true };
-      }
-      return feature;
-    });
-    setFeatures(updatedFeatures);
+    setFeatures((prevFeatures) =>
+      prevFeatures.map((feature) =>
+        feature.id === id ? { ...feature, isEditing: true } : feature
+      )
+    );
   };
 
   const handleChangeDescription = (event) => {
-    setDescription({
-      ...description,
+    setDescription((prevDesc) => ({
+      ...prevDesc,
       desc: event.target.value,
-    });
+    }));
   };
 
   const handleEditingDescription = () => {
@@ -307,10 +291,10 @@ const AdminCreateChange = ({ propsItem }) => {
   };
 
   const searchValueCategory = (categoryData) => {
-    const filteredArray = categoryOptions.find(
-      (category) => category.value === categoryData
+    return (
+      categoryOptions.find((category) => category.value === categoryData) ||
+      null
     );
-    return filteredArray || null;
   };
 
   const searchValueBrand = (brandData) => {
@@ -329,24 +313,19 @@ const AdminCreateChange = ({ propsItem }) => {
       }
       return uniqueArray;
     }, []);
-    const filteredArray = concatArrayUnique.find(
-      (brand) => brand.value === brandData
-    );
-    return filteredArray || null;
+
+    return concatArrayUnique.find((brand) => brand.value === brandData) || null;
   };
 
   const searchValueAvailable = (availableData) => {
-    const filteredArray = availableOptions.find(
-      (available) => available.value === availableData
+    return (
+      availableOptions.find((available) => available.value === availableData) ||
+      null
     );
-    return filteredArray || null;
   };
 
   const searchValueTickets = (ticketsData) => {
-    const filteredArray = tickets.find(
-      (ticket) => ticket.value === ticketsData[0]
-    );
-    return filteredArray || null;
+    return tickets.find((ticket) => ticket.value === ticketsData[0]) || null;
   };
 
   const searchPlateKeyboards = (plateData) => {
@@ -377,6 +356,7 @@ const AdminCreateChange = ({ propsItem }) => {
 
     return arrayObjLayouts;
   };
+
   const searchSwitchKeyboards = (switchData) => {
     const transformedArray = switchData?.map((obj) => {
       const [keys] = Object.keys(obj);
@@ -388,6 +368,7 @@ const AdminCreateChange = ({ propsItem }) => {
     });    
     return transformedArray;
   };
+
   useEffect(() => {
     if (status === 'success' && data !== null && data.admin !== 1) {
       return <Navigate to='/'></Navigate>;

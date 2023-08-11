@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { fetchDeleteItem } from '../../redux/slices/adminSlice';
 
 function AdminAllItem({ props, onEdit, onProps }) {
+  
   const dispatch = useDispatch()
   const fnClickEdit = (props) => {
     onEdit()
@@ -33,7 +34,7 @@ function AdminAllItem({ props, onEdit, onProps }) {
             pagination={{ clickable: true }}
             centeredSlides={true}
           >
-            {JSON.parse(props.image_link).map((image, index) => (
+            {JSON.parse(props.image_link)?.map((image, index) => (
               <SwiperSlide
                 key={index}
                 className={styles.item_slider_slide}

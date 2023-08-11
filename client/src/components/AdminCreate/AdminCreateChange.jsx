@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import {  fetchNewItem } from '../../redux/slices/adminSlice';
+import { fetchNewItem } from '../../redux/slices/adminSlice';
 import { selectUserData } from '../../redux/slices/authSlice';
 import styles from './AdminCreate.module.sass';
 import DescriptionItem from './DescriptionItem';
@@ -35,7 +35,6 @@ const AdminCreateChange = ({ propsItem }) => {
     window.scrollTo(0, 0);
   }, [location]);
   const dataChange = propsItem.props;
-
   const parsedParametersDop = dataChange?.parameters_dop
     ? JSON.parse(dataChange?.parameters_dop)
     : null || [
@@ -96,26 +95,25 @@ const AdminCreateChange = ({ propsItem }) => {
 
   const dispatch = useDispatch();
   const { data, status } = useSelector(selectUserData);
-  
+
   const initialState = {
     name: dataChange?.name || '',
     brand: dataChange?.brand || '',
     feature: parsedFeatures,
     description_small: dataChange?.description_small || '',
     description_full: dataChange?.description_full || '',
-    old_price: Number(dataChange?.old_price) || 0,
-    price: Number(dataChange?.price) || 0,
+    old_price: Number(dataChange?.old_price) || '',
+    price: Number(dataChange?.price) || '',
     availability: dataChange?.availability || availableOptions[0],
-    colors: dataChange?.colors|| [],
+    colors: dataChange?.colors || [],
     colors_avail: dataChange?.colors_avail || [],
     parameters: parsedParameters,
     parameters_avail: dataChange?.parameters_avail || [],
     parameters_dop: parsedParametersDop,
     type: dataChange?.type || '',
     image_links: parsedImage,
-    weight: dataChange?.weight || 0,
+    weight: dataChange?.weight || '',
     category: dataChange?.category || categoryOptions[0].value,
-    
   };
   const [newItem, setNewItem] = useState(initialState);
   const [parameters, setParameters] = useState(
@@ -144,7 +142,6 @@ const AdminCreateChange = ({ propsItem }) => {
     isEditing: true,
   });
   const [height, setHeight] = useState(38);
-  
 
   const uploadImage = async (file) => {
     try {
@@ -189,11 +186,21 @@ const AdminCreateChange = ({ propsItem }) => {
     }));
   };
 
-  
-
   const sendForm = async (e) => {
     e.preventDefault();
-    const response = await dispatch(fetchNewItem({...newItem, info_category: [], colors: [], colors_avail: [], price: Number(newItem.price), old_price: Number(newItem.old_price), weight: Number(newItem.weight), parameters_avail: [], type: [newItem.type]}));
+    const response = await dispatch(
+      fetchNewItem({
+        ...newItem,
+        info_category: [],
+        colors: [],
+        colors_avail: [],
+        price: Number(newItem.price),
+        old_price: Number(newItem.old_price),
+        weight: Number(newItem.weight),
+        parameters_avail: [],
+        type: [newItem.type],
+      })
+    );
     if (!response.payload) {
       alert('Не удалось создать товар');
     } else {
@@ -365,7 +372,7 @@ const AdminCreateChange = ({ propsItem }) => {
         label: keys,
       };
       return transformedObj;
-    });    
+    });
     return transformedArray;
   };
 
@@ -491,7 +498,6 @@ const AdminCreateChange = ({ propsItem }) => {
               <CreatableSelect
                 className='basic-single'
                 classNamePrefix='select'
-                
                 placeholder='Выберите цвет мышки или введите цвет которого нет в списке'
                 isClearable={true}
                 onChange={(event) =>
@@ -541,7 +547,6 @@ const AdminCreateChange = ({ propsItem }) => {
                     ? searchLayoutKeyboards(layoutsParsedParametersDop)
                     : null
                 }
-                
                 isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('layout', event.value)
@@ -555,6 +560,12 @@ const AdminCreateChange = ({ propsItem }) => {
                 classNamePrefix='select'
                 placeholder='Выберите свитчи клавиатуры или введите свитчи которого нет в списке'
                 isClearable={true}
+                isMulti
+                defaultValue={
+                  dataChange
+                    ? searchSwitchKeyboards(switchesParsedParametersDop)
+                    : null
+                }
                 onChange={(event) =>
                   handleCreatableSelectChange('switches', event.value)
                 }
@@ -568,6 +579,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 isMulti
                 placeholder='Выберите материал платы клавиатуры или введите материал платы которого нет в списке'
                 isClearable={true}
+                defaultValue={
+                  dataChange
+                    ? searchPlateKeyboards(platesParsedParametersDop)
+                    : null
+                }
                 onChange={(event) =>
                   handleCreatableSelectChange('plate', event.value)
                 }

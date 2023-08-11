@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import { fetchDeleteItem, fetchNewItem } from '../../redux/slices/adminSlice';
+import {  fetchNewItem } from '../../redux/slices/adminSlice';
 import { selectUserData } from '../../redux/slices/authSlice';
 import styles from './AdminCreate.module.sass';
 import DescriptionItem from './DescriptionItem';
@@ -98,20 +98,20 @@ const AdminCreateChange = ({ propsItem }) => {
   const initialState = {
     name: dataChange?.name || '',
     brand: dataChange?.brand || '',
-    features: parsedFeatures,
+    feature: parsedFeatures,
     description_small: dataChange?.description_small || '',
     description_full: dataChange?.description_full || '',
-    old_price: dataChange?.old_price || '',
-    price: dataChange?.price || '',
+    old_price: Number(dataChange?.old_price) || 0,
+    price: Number(dataChange?.price) || 0,
     availability: dataChange?.availability || availableOptions[0],
-    color: dataChange?.color || '',
-    colors_avail: dataChange?.colors_avail || '',
+    colors: dataChange?.colors|| [],
+    colors_avail: dataChange?.colors_avail || [],
     parameters: parsedParameters,
-    parameters_avail: dataChange?.parameters_avail || '',
+    parameters_avail: dataChange?.parameters_avail || [],
     parameters_dop: parsedParametersDop,
     type: dataChange?.type || '',
     image_links: parsedImage,
-    weight: dataChange?.weight || '',
+    weight: dataChange?.weight || 0,
     category: dataChange?.category || categoryOptions[0].value,
     
   };
@@ -126,7 +126,7 @@ const AdminCreateChange = ({ propsItem }) => {
       };
     })
   );
-  const [features, setFeatures] = useState(
+  const [feature, setFeatures] = useState(
     parsedFeatures.map((feature) => {
       return {
         id: Math.random(),
@@ -142,8 +142,7 @@ const AdminCreateChange = ({ propsItem }) => {
     isEditing: true,
   });
   const [height, setHeight] = useState(38);
-  const [isClearable] = useState(true);
-  const [isSearchable] = useState(true);
+  
 
   const uploadImage = async (file) => {
     try {
@@ -192,7 +191,7 @@ const AdminCreateChange = ({ propsItem }) => {
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const response = await dispatch(fetchNewItem(newItem));
+    const response = await dispatch(fetchNewItem({...newItem, info_category: [], colors: [], colors_avail: [], price: Number(newItem.price), old_price: Number(newItem.old_price), weight: Number(newItem.weight), parameters_avail: [], type: [newItem.type]}));
     if (!response.payload) {
       alert('Не удалось создать товар');
     } else {
@@ -248,7 +247,7 @@ const AdminCreateChange = ({ propsItem }) => {
 
   const handleAddFeature = () => {
     setFeatures([
-      ...features,
+      ...feature,
       {
         id: Math.random(),
         title: '',
@@ -276,12 +275,12 @@ const AdminCreateChange = ({ propsItem }) => {
   };
 
   const handleDeleteFeatures = (id) => {
-    const deletedFeature = features.filter((parameter) => parameter.id !== id);
+    const deletedFeature = feature.filter((parameter) => parameter.id !== id);
     setFeatures(deletedFeature);
   };
 
   const handleEditingFeatures = (id) => {
-    const updatedFeatures = features.map((feature) => {
+    const updatedFeatures = feature.map((feature) => {
       if (feature.id === id) {
         return { ...feature, isEditing: true };
       }
@@ -291,9 +290,9 @@ const AdminCreateChange = ({ propsItem }) => {
   };
 
   const handleChangeDescription = (event) => {
-    setDescription({
-      ...description,
-      desc: event.target.value,
+    setNewItem({
+      ...newItem,
+      description_full: event.target.value,
     });
   };
 
@@ -359,6 +358,7 @@ const AdminCreateChange = ({ propsItem }) => {
       return <Navigate to='/'></Navigate>;
     }
   }, [status, data]);
+  console.log(newItem, parameters);
 
   return (
     <div className={styles.wrapper}>
@@ -407,7 +407,7 @@ const AdminCreateChange = ({ propsItem }) => {
           />
           <input
             type='text'
-            name='price'
+            name='old_price'
             value={newItem.old_price}
             onChange={handleChange}
             placeholder='Введите старую цену товара'
@@ -419,6 +419,14 @@ const AdminCreateChange = ({ propsItem }) => {
             value={newItem.price}
             onChange={handleChange}
             placeholder='Введите цену товара'
+            className={styles.info_item_input}
+          />
+          <input
+            type='text'
+            name='weight'
+            value={newItem.weight}
+            onChange={handleChange}
+            placeholder='Введите вес товара'
             className={styles.info_item_input}
           />
           <textarea
@@ -439,11 +447,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 ? searchValueCategory(dataChange.category)
                 : categoryOptions[0]
             }
-            isClearable={isClearable}
+            isClearable={true}
             onChange={(event) =>
               handleCreatableSelectChange('category', event.value)
             }
-            isSearchable={isSearchable}
+            isSearchable={true}
             name='category'
             options={categoryOptions}
           />
@@ -453,28 +461,28 @@ const AdminCreateChange = ({ propsItem }) => {
                 className='basic-single'
                 classNamePrefix='select'
                 placeholder='Выберите бренд мышки или введите бренд которого нет в списке'
-                isClearable={isClearable}
+                isClearable={true}
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsMouse}
               />
               <CreatableSelect
                 className='basic-single'
                 classNamePrefix='select'
-                isMulti
+                
                 placeholder='Выберите цвет мышки или введите цвет которого нет в списке'
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
-                  handleCreatableSelectChange('color', event.value)
+                  handleCreatableSelectChange('colors', event.value)
                 }
-                isSearchable={isSearchable}
-                name='color'
+                isSearchable={true}
+                name='colors'
                 options={colorsMouse}
               />
             </>
@@ -487,11 +495,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsKeyboards}
               />
@@ -499,11 +507,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 className='basic-single'
                 classNamePrefix='select'
                 placeholder='Выберите цвет клавиатуры или введите цвет которого нет в списке'
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('color', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='color'
                 options={colorsMouse}
               />
@@ -517,11 +525,11 @@ const AdminCreateChange = ({ propsItem }) => {
                     : null
                 }
                 placeholder='Выберите раскладку клавиатуры или введите раскладку которого нет в списке'
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('layout', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='layout'
                 options={layoutKeyboards}
               />
@@ -529,11 +537,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 className='basic-single'
                 classNamePrefix='select'
                 placeholder='Выберите свитчи клавиатуры или введите свитчи которого нет в списке'
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('switches', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='switches'
                 options={switchesKeyboard}
               />
@@ -541,11 +549,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 className='basic-single'
                 classNamePrefix='select'
                 placeholder='Выберите материал платы клавиатуры или введите материал платы которого нет в списке'
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('plate', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='plate'
                 options={platesKeyboards}
               />
@@ -559,11 +567,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsHeadphones}
               />
@@ -577,11 +585,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsMicrophone}
               />
@@ -595,11 +603,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsAccessory}
               />
@@ -613,11 +621,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsKeycap}
               />
@@ -631,11 +639,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsCover}
               />
@@ -649,11 +657,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 defaultValue={
                   dataChange ? searchValueBrand(dataChange?.brand) : null
                 }
-                isClearable={isClearable}
+                isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('brand', event.value)
                 }
-                isSearchable={isSearchable}
+                isSearchable={true}
                 name='brand'
                 options={brandsWebCam}
               />
@@ -667,11 +675,11 @@ const AdminCreateChange = ({ propsItem }) => {
                 ? searchValueAvailable(dataChange?.availability)
                 : availableOptions[0]
             }
-            isClearable={isClearable}
+            isClearable={true}
             onChange={(event) =>
               handleCreatableSelectChange('availability', event.value)
             }
-            isSearchable={isSearchable}
+            isSearchable={true}
             name='availability'
             options={availableOptions}
           />
@@ -685,12 +693,12 @@ const AdminCreateChange = ({ propsItem }) => {
                   )
                 : tickets[0]
             }
-            isClearable={isClearable}
+            isClearable={true}
             onChange={(event) =>
-              handleCreatableSelectChange('availability', event.value)
+              handleCreatableSelectChange('type', event.value)
             }
-            isSearchable={isSearchable}
-            name='availability'
+            isSearchable={true}
+            name='type'
             options={tickets}
           />
         </div>
@@ -706,7 +714,7 @@ const AdminCreateChange = ({ propsItem }) => {
           <div className={styles.description_wrapper}>
             <DescriptionItem
               props={description}
-              propsValue={newItem.desc}
+              propsValue={newItem.description_full}
               onChange={handleChangeDescription}
               onEditing={handleEditingDescription}
             />
@@ -777,7 +785,7 @@ const AdminCreateChange = ({ propsItem }) => {
             </button>
           </div>
           <div className={styles.feature_wrapper}>
-            {features?.map((feature, index) => (
+            {feature?.map((feature, index) => (
               <div className={styles.feature_item} key={feature.id}>
                 <FeatureItem
                   props={feature}

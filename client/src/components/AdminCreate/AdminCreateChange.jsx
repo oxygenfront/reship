@@ -208,6 +208,8 @@ const AdminCreateChange = ({ propsItem }) => {
     }
   };
 
+  const changeItem = () => {};
+
   const handleAddParameter = () => {
     setParameters((prevParameters) => [
       ...prevParameters,
@@ -737,7 +739,10 @@ const AdminCreateChange = ({ propsItem }) => {
           />
         </div>
         <div className={styles.create_wrapper}>
-          <button onClick={sendForm} className={styles.create}>
+          <button
+            onClick={dataChange ? sendForm : changeItem}
+            className={styles.create}
+          >
             {dataChange ? 'Редактировать' : 'Создать'} товар
           </button>
         </div>

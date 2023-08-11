@@ -50,23 +50,23 @@ const AdminCreateChange = ({ propsItem }) => {
         },
       ];
 
-  const [[[platesParsedParametersDop]]] = parsedParametersDop.map((obj) =>
-    obj.plates?.map((plateParam) => {
-      const keys = Object.keys(plateParam);
-      return keys;
-    })
+  const platesParsedParametersDop = parsedParametersDop[0]?.plates?.map(
+    (obj) => {
+      return obj;
+    }
   );
-  // console.log(parsedParametersDop.map((obj) => console.log(obj.switches)));
-  // const switchesParsedParametersDop = parsedParametersDop?.switches?.map(
-  //   (obj) => console.log(obj)
 
-  //   // obj.switches?.map((switchParam) => {
-  //   //   const keys = Object.keys(switchParam);
-  //   //   return keys;
-  //   // })
-  // );
+  const switchesParsedParametersDop = parsedParametersDop[1].switches?.map(
+    (obj) => {
+      return obj;
+    }
+  );
 
-  // console.log(switchesParsedParametersDop);
+  const layoutsParsedParametersDop = parsedParametersDop[2]?.layouts?.map(
+    (obj) => {
+      return obj;
+    }
+  );
 
   const parsedFeatures = dataChange?.feature
     ? JSON.parse(dataChange?.feature)
@@ -78,6 +78,7 @@ const AdminCreateChange = ({ propsItem }) => {
           isEditing: true,
         },
       ];
+
   const parsedParameters = dataChange?.parameters
     ? JSON.parse(dataChange?.parameters)
     : null || [
@@ -92,6 +93,7 @@ const AdminCreateChange = ({ propsItem }) => {
   const parsedImage = dataChange?.image_link
     ? JSON.parse(dataChange?.image_link)
     : null || [];
+
   const dispatch = useDispatch();
   const { data, status } = useSelector(selectUserData);
   const token = localStorage.getItem('token');
@@ -345,12 +347,44 @@ const AdminCreateChange = ({ propsItem }) => {
     return filteredArray || null;
   };
 
-  const searchValuePlateKeyboards = (plateData) => {
-    const filteredArray = platesKeyboards.find(
-      (plate) => plate.value === plateData
-    );
+  const searchPlateKeyboards = (plateData) => {
+    const transformedArray = plateData?.map((obj) => {
+      const [keys] = Object.keys(obj);
+      const transformedObj = {
+        value: obj,
+        label: keys,
+      };
+      return transformedObj;
+    });
 
-    return filteredArray || null;
+    return transformedArray;
+  };
+
+  const searchLayoutKeyboards = (layoutData) => {
+    const arrayObjLayouts = [];
+    layoutData?.forEach((transformedObj) => {
+      const foundLayout = layoutKeyboards.find((objPlate) => {
+        return Object.entries(objPlate.value).every(
+          ([key, value]) => transformedObj[key] === value
+        );
+      });
+      if (foundLayout) {
+        arrayObjLayouts.push(foundLayout);
+      }
+    });
+
+    return arrayObjLayouts;
+  };
+  const searchSwitchKeyboards = (switchData) => {
+    const transformedArray = switchData?.map((obj) => {
+      const [keys] = Object.keys(obj);
+      const transformedObj = {
+        value: obj,
+        label: keys,
+      };
+      return transformedObj;
+    });    
+    return transformedArray;
   };
   useEffect(() => {
     if (status === 'success' && data !== null && data.admin !== 1) {
@@ -505,16 +539,16 @@ const AdminCreateChange = ({ propsItem }) => {
                 name='color'
                 options={colorsMouse}
               />
-              <CreatableSelect
+              <Select
                 className='basic-single'
                 classNamePrefix='select'
                 isMulti
+                placeholder='Выберите раскладку клавиатуры или введите раскладку которого нет в списке'
                 defaultValue={
                   dataChange
-                    ? searchValuePlateKeyboards(platesParsedParametersDop)
+                    ? searchLayoutKeyboards(layoutsParsedParametersDop)
                     : null
                 }
-                placeholder='Выберите раскладку клавиатуры или введите раскладку которого нет в списке'
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('layout', event.value)
@@ -523,10 +557,16 @@ const AdminCreateChange = ({ propsItem }) => {
                 name='layout'
                 options={layoutKeyboards}
               />
-              <CreatableSelect
+              <Select
                 className='basic-single'
                 classNamePrefix='select'
                 placeholder='Выберите свитчи клавиатуры или введите свитчи которого нет в списке'
+                isMulti
+                defaultValue={
+                  dataChange
+                    ? searchSwitchKeyboards(switchesParsedParametersDop)
+                    : null
+                }
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('switches', event.value)
@@ -535,10 +575,16 @@ const AdminCreateChange = ({ propsItem }) => {
                 name='switches'
                 options={switchesKeyboard}
               />
-              <CreatableSelect
+              <Select
                 className='basic-single'
                 classNamePrefix='select'
+                isMulti
                 placeholder='Выберите материал платы клавиатуры или введите материал платы которого нет в списке'
+                defaultValue={
+                  dataChange
+                    ? searchPlateKeyboards(platesParsedParametersDop)
+                    : null
+                }
                 isClearable={isClearable}
                 onChange={(event) =>
                   handleCreatableSelectChange('plate', event.value)

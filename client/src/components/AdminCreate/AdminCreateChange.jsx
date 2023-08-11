@@ -50,23 +50,23 @@ const AdminCreateChange = ({ propsItem }) => {
         },
       ];
 
-  const [[[platesParsedParametersDop]]] = parsedParametersDop.map((obj) =>
-    obj.plates?.map((plateParam) => {
-      const keys = Object.keys(plateParam);
-      return keys;
-    })
+  const platesParsedParametersDop = parsedParametersDop[0]?.plates?.map(
+    (obj) => {
+      return obj;
+    }
   );
-  // console.log(parsedParametersDop.map((obj) => console.log(obj.switches)));
-  // const switchesParsedParametersDop = parsedParametersDop?.switches?.map(
-  //   (obj) => console.log(obj)
 
-  //   // obj.switches?.map((switchParam) => {
-  //   //   const keys = Object.keys(switchParam);
-  //   //   return keys;
-  //   // })
-  // );
+  const switchesParsedParametersDop = parsedParametersDop[1]?.switches?.map(
+    (obj) => {
+      return obj;
+    }
+  );
 
-  // console.log(switchesParsedParametersDop);
+  const layoutsParsedParametersDop = parsedParametersDop[2]?.layouts?.map(
+    (obj) => {
+      return obj;
+    }
+  );
 
   const parsedFeatures = dataChange?.feature
     ? JSON.parse(dataChange?.feature)
@@ -78,6 +78,7 @@ const AdminCreateChange = ({ propsItem }) => {
           isEditing: true,
         },
       ];
+
   const parsedParameters = dataChange?.parameters
     ? JSON.parse(dataChange?.parameters)
     : null || [
@@ -92,6 +93,7 @@ const AdminCreateChange = ({ propsItem }) => {
   const parsedImage = dataChange?.image_link
     ? JSON.parse(dataChange?.image_link)
     : null || [];
+
   const dispatch = useDispatch();
   const { data, status } = useSelector(selectUserData);
   
@@ -200,8 +202,8 @@ const AdminCreateChange = ({ propsItem }) => {
   };
 
   const handleAddParameter = () => {
-    setParameters([
-      ...parameters,
+    setParameters((prevParameters) => [
+      ...prevParameters,
       {
         id: Math.random(),
         value1: '',
@@ -211,38 +213,29 @@ const AdminCreateChange = ({ propsItem }) => {
     ]);
   };
 
-  const handleChangeParameter = async (event) => {
+  const handleChangeParameter = (event) => {
     const { name, value, id } = event.target;
-    await setParameters((prevParameters) => {
-      const updatedParameters = prevParameters.map((prevParameter) => {
-        if (Number(prevParameter.id) === Number(id)) {
-          return {
-            ...prevParameter,
-            [name]: value,
-          };
-        }
-        return prevParameter;
-      });
-
-      return updatedParameters;
+    setParameters((prevParameters) => {
+      return prevParameters.map((prevParameter) =>
+        Number(prevParameter.id) === Number(id)
+          ? { ...prevParameter, [name]: value }
+          : prevParameter
+      );
     });
   };
 
   const handleDeleteParameter = (id) => {
-    const deletedParameter = parameters.filter(
-      (parameter) => parameter.id !== id
+    setParameters((prevParameters) =>
+      prevParameters.filter((parameter) => parameter.id !== id)
     );
-    setParameters(deletedParameter);
   };
 
   const handleEditingParameter = (id) => {
-    const updatedParameters = parameters.map((parameter) => {
-      if (parameter.id === id) {
-        return { ...parameter, isEditing: true };
-      }
-      return parameter;
-    });
-    setParameters(updatedParameters);
+    setParameters((prevParameters) =>
+      prevParameters.map((parameter) =>
+        parameter.id === id ? { ...parameter, isEditing: true } : parameter
+      )
+    );
   };
 
   const handleAddFeature = () => {
@@ -257,20 +250,14 @@ const AdminCreateChange = ({ propsItem }) => {
     ]);
   };
 
-  const handleChangeFeatures = async (event) => {
+  const handleChangeFeatures = (event) => {
     const { name, value, id } = event.target;
-    await setFeatures((prevFeatures) => {
-      const updatedFeatures = prevFeatures.map((prevFeatures) => {
-        if (Number(prevFeatures.id) === Number(id)) {
-          return {
-            ...prevFeatures,
-            [name]: value,
-          };
-        }
-        return prevFeatures;
-      });
-
-      return updatedFeatures;
+    setFeatures((prevFeatures) => {
+      return prevFeatures.map((prevFeature) =>
+        Number(prevFeature.id) === Number(id)
+          ? { ...prevFeature, [name]: value }
+          : prevFeature
+      );
     });
   };
 
@@ -304,10 +291,10 @@ const AdminCreateChange = ({ propsItem }) => {
   };
 
   const searchValueCategory = (categoryData) => {
-    const filteredArray = categoryOptions.find(
-      (category) => category.value === categoryData
+    return (
+      categoryOptions.find((category) => category.value === categoryData) ||
+      null
     );
-    return filteredArray || null;
   };
 
   const searchValueBrand = (brandData) => {
@@ -326,33 +313,62 @@ const AdminCreateChange = ({ propsItem }) => {
       }
       return uniqueArray;
     }, []);
-    const filteredArray = concatArrayUnique.find(
-      (brand) => brand.value === brandData
-    );
-    return filteredArray || null;
+
+    return concatArrayUnique.find((brand) => brand.value === brandData) || null;
   };
 
   const searchValueAvailable = (availableData) => {
-    const filteredArray = availableOptions.find(
-      (available) => available.value === availableData
+    return (
+      availableOptions.find((available) => available.value === availableData) ||
+      null
     );
-    return filteredArray || null;
   };
 
   const searchValueTickets = (ticketsData) => {
-    const filteredArray = tickets.find(
-      (ticket) => ticket.value === ticketsData[0]
-    );
-    return filteredArray || null;
+    return tickets.find((ticket) => ticket.value === ticketsData[0]) || null;
   };
 
-  const searchValuePlateKeyboards = (plateData) => {
-    const filteredArray = platesKeyboards.find(
-      (plate) => plate.value === plateData
-    );
+  const searchPlateKeyboards = (plateData) => {
+    const transformedArray = plateData?.map((obj) => {
+      const [keys] = Object.keys(obj);
+      const transformedObj = {
+        value: obj,
+        label: keys,
+      };
+      return transformedObj;
+    });
 
-    return filteredArray || null;
+    return transformedArray;
   };
+
+  const searchLayoutKeyboards = (layoutData) => {
+    const arrayObjLayouts = [];
+    layoutData?.forEach((transformedObj) => {
+      const foundLayout = layoutKeyboards.find((objPlate) => {
+        return Object.entries(objPlate.value).every(
+          ([key, value]) => transformedObj[key] === value
+        );
+      });
+      if (foundLayout) {
+        arrayObjLayouts.push(foundLayout);
+      }
+    });
+
+    return arrayObjLayouts;
+  };
+
+  const searchSwitchKeyboards = (switchData) => {
+    const transformedArray = switchData?.map((obj) => {
+      const [keys] = Object.keys(obj);
+      const transformedObj = {
+        value: obj,
+        label: keys,
+      };
+      return transformedObj;
+    });    
+    return transformedArray;
+  };
+
   useEffect(() => {
     if (status === 'success' && data !== null && data.admin !== 1) {
       return <Navigate to='/'></Navigate>;
@@ -515,16 +531,17 @@ const AdminCreateChange = ({ propsItem }) => {
                 name='color'
                 options={colorsMouse}
               />
-              <CreatableSelect
+              <Select
                 className='basic-single'
                 classNamePrefix='select'
                 isMulti
+                placeholder='Выберите раскладку клавиатуры или введите раскладку которого нет в списке'
                 defaultValue={
                   dataChange
-                    ? searchValuePlateKeyboards(platesParsedParametersDop)
+                    ? searchLayoutKeyboards(layoutsParsedParametersDop)
                     : null
                 }
-                placeholder='Выберите раскладку клавиатуры или введите раскладку которого нет в списке'
+                
                 isClearable={true}
                 onChange={(event) =>
                   handleCreatableSelectChange('layout', event.value)
@@ -533,7 +550,7 @@ const AdminCreateChange = ({ propsItem }) => {
                 name='layout'
                 options={layoutKeyboards}
               />
-              <CreatableSelect
+              <Select
                 className='basic-single'
                 classNamePrefix='select'
                 placeholder='Выберите свитчи клавиатуры или введите свитчи которого нет в списке'
@@ -545,9 +562,10 @@ const AdminCreateChange = ({ propsItem }) => {
                 name='switches'
                 options={switchesKeyboard}
               />
-              <CreatableSelect
+              <Select
                 className='basic-single'
                 classNamePrefix='select'
+                isMulti
                 placeholder='Выберите материал платы клавиатуры или введите материал платы которого нет в списке'
                 isClearable={true}
                 onChange={(event) =>

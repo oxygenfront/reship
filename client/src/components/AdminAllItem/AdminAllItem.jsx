@@ -3,12 +3,19 @@ import styles from './AdminAllitem.module.sass';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import { fetchDeleteItem } from '../../redux/slices/adminSlice';
 
 function AdminAllItem({ props, onEdit, onProps }) {
-
+  const dispatch = useDispatch()
   const fnClickEdit = (props) => {
     onEdit()
     onProps(props)
+  }
+  const onClickDelete = () => {
+    if (window.confirm('Вы действительно хотите удалить товар?')) {
+      dispatch(fetchDeleteItem({ id: props.id }))
+    }
   }
   
   return (
@@ -59,6 +66,7 @@ function AdminAllItem({ props, onEdit, onProps }) {
             Редактировать
           </button>
           <button
+          onClick={onClickDelete}
             className={classNames(styles.item_buttons_item, styles.delete)}
           >
             Удалить

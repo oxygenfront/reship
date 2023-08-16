@@ -1,41 +1,41 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import {
   addItem,
   minusItem,
   removeItem,
   selectCartItemById,
-} from '../redux/slices/cartSlice'
+} from '../redux/slices/cartSlice';
 import {
   fetchFullItem,
   selectFullItemData,
-} from '../redux/slices/fullItemSlice'
+} from '../redux/slices/fullItemSlice';
 
-import 'swiper/css'
-import 'swiper/css/bundle'
-import { Comment, FullItemSlider } from '../components'
+import 'swiper/css';
+import 'swiper/css/bundle';
+import { Comment, FullItemSlider } from '../components';
 import {
   fetchGetReviewsForProductId,
   selectCommentsData,
-} from '../redux/slices/commentSlice'
+} from '../redux/slices/commentSlice';
 
 const FullItem = () => {
-  const token = localStorage.getItem('token')
-  const theme = useSelector((state) => state.theme)
-  const { id } = useParams()
-  const { comments, arrStatus } = useSelector(selectCommentsData)
-  const { item, status } = useSelector(selectFullItemData)
-  const dispatch = useDispatch()
-  const [navigate, setNavigate] = useState(false)
-  const [parametr, setParametr] = useState('')
-  const [color, setColor] = useState('')
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const [paramPrice, setParamPrice] = useState(0)
+  const token = localStorage.getItem('token');
+  const theme = useSelector((state) => state.theme);
+  const { id } = useParams();
+  const { comments, arrStatus } = useSelector(selectCommentsData);
+  const { item, status } = useSelector(selectFullItemData);
+  const dispatch = useDispatch();
+  const [navigate, setNavigate] = useState(false);
+  const [parametr, setParametr] = useState('');
+  const [color, setColor] = useState('');
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [paramPrice, setParamPrice] = useState(0);
 
-  console.log(status, item)
-  const cartItem = useSelector(selectCartItemById(item.id))
-  const addedCount = cartItem ? cartItem.count : 0
+  console.log(item);
+  const cartItem = useSelector(selectCartItemById(item.id));
+  const addedCount = cartItem ? cartItem.count : 0;
   const onClickAdd = () => {
     const tovar = {
       id: item.id,
@@ -46,44 +46,43 @@ const FullItem = () => {
       parametr,
       color: item.color,
       count: 0,
-    }
-    dispatch(addItem(tovar))
-  }
+    };
+    dispatch(addItem(tovar));
+  };
   const onClickMinus = () => {
-    dispatch(minusItem(item.id))
-  }
+    dispatch(minusItem(item.id));
+  };
   const onClickRemove = () => {
-    dispatch(removeItem(item.id))
-  }
+    dispatch(removeItem(item.id));
+  };
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-  console.log('1')
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   useEffect(() => {
-    dispatch(fetchFullItem({ id }))
-    dispatch(fetchGetReviewsForProductId({ token, id }))
-  }, [color])
+    dispatch(fetchFullItem({ id }));
+    dispatch(fetchGetReviewsForProductId({ token, id }));
+  }, [color]);
 
   if (navigate) {
-    return <Navigate to="/login"></Navigate>
+    return <Navigate to='/login'></Navigate>;
   }
-  const renderStatus = Boolean(status === 'success')
+  const renderStatus = Boolean(status === 'success');
 
   return (
     <>
       {windowWidth > 991 ? (
-        <div className="fullitem">
-          <div className="fullitem__card-wrapper">
-            <div className="fullitem__card-breadcrumb container"></div>
-            <div className="fullitem__card container">
-              <div className="fullitem__card-sliders">
+        <div className='fullitem'>
+          <div className='fullitem__card-wrapper'>
+            <div className='fullitem__card-breadcrumb container'></div>
+            <div className='fullitem__card container'>
+              <div className='fullitem__card-sliders'>
                 {status === 'success' ? (
                   <FullItemSlider
                     image={item.image_link}
@@ -91,23 +90,23 @@ const FullItem = () => {
                   ></FullItemSlider>
                 ) : null}
               </div>
-              <div className="fullitem__card_info-wrapper">
-                <div className="fullitem__card_info-name">{item.name}</div>
-                <div className="fullitem__card_info-params">
+              <div className='fullitem__card_info-wrapper'>
+                <div className='fullitem__card_info-name'>{item.name}</div>
+                <div className='fullitem__card_info-params'>
                   {item.category === 'Клавиатуры' ? (
                     <div>
-                      <div className="fullitem__card_info-params_block">
+                      <div className='fullitem__card_info-params_block'>
                         <p>
-                          {status === 'success' &&
-                          JSON.parse(item.colors).length > 0
+                          {renderStatus === 'success' &&
+                          JSON.parse(item?.colors).length > 0
                             ? 'Цвет'
                             : null}
                         </p>
-                        <div className="fullitem__card_info-params_block-wrapper">
+                        <div className='fullitem__card_info-params_block-wrapper'>
                           {status === 'success' &&
                             JSON.parse(item.colors).map(
                               (colour) => {
-                                console.log(colour)
+                                console.log(colour);
                               }
                               // <Link
                               //   to={`/item/${colour.id}`}
@@ -125,13 +124,13 @@ const FullItem = () => {
                             )}
                         </div>
                       </div>
-                      <div className="fullitem__card_info-params_block">
+                      <div className='fullitem__card_info-params_block'>
                         {status === 'success' &&
                         JSON.parse(item.parameters_dop).length !== 0 ? (
                           <p>Переключатели</p>
                         ) : null}
 
-                        <div className="fullitem__card_info-params_block-wrapper">
+                        <div className='fullitem__card_info-params_block-wrapper'>
                           {status === 'success' &&
                             JSON.parse(item.parameters_dop).map((item) =>
                               item.svitchi.map((svitch) => (
@@ -156,15 +155,15 @@ const FullItem = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="fullitem__card_info-params_block">
+                    <div className='fullitem__card_info-params_block'>
                       <p>
-                        {status === 'success' &&
-                        JSON.parse(item.colors).length > 0
+                        {renderStatus === 'success' &&
+                        JSON.parse(item?.colors)?.length > 0
                           ? 'Цвет'
                           : null}
                       </p>
-                      <div className="fullitem__card_info-params_block-wrapper">
-                        {status &&
+                      <div className='fullitem__card_info-params_block-wrapper'>
+                        {renderStatus &&
                           JSON.parse(item.colors).map((colour) => (
                             <Link
                               to={`/item/${colour.id}`}
@@ -186,13 +185,13 @@ const FullItem = () => {
                     </div>
                   )}
                 </div>
-                <div className="fullitem__card_info-bottom">
+                <div className='fullitem__card_info-bottom'>
                   <span>{item.price + paramPrice} руб</span>
                   {addedCount > 0 ? (
-                    <div className="fullitem__card_info-bottom_buttons">
+                    <div className='fullitem__card_info-bottom_buttons'>
                       <Link
-                        className="fullitem__card_info-bottom_buttons_cart"
-                        to="/cart"
+                        className='fullitem__card_info-bottom_buttons_cart'
+                        to='/cart'
                       >
                         Перейти<br></br> в корзину
                       </Link>
@@ -242,8 +241,8 @@ const FullItem = () => {
                     </div>
                   ) : (
                     <button
-                      className="fullitem__card_info-bottom_btn"
-                      to="/cart"
+                      className='fullitem__card_info-bottom_btn'
+                      to='/cart'
                       onClick={onClickAdd}
                     >
                       В корзину
@@ -253,81 +252,81 @@ const FullItem = () => {
               </div>
             </div>
           </div>
-          <div className="fullitem__description container">
-            <div className="fullitem__description_left">
-              <div className="">
+          <div className='fullitem__description container'>
+            <div className='fullitem__description_left'>
+              <div className=''>
                 <p>Описание</p>
-                <div className="fullitem__description_left_description">
+                <div className='fullitem__description_left_description'>
                   {item.description_full}
                 </div>
               </div>
-              <div className="">
+              <div className=''>
                 <p>Особенности</p>
                 {status === 'success' &&
                   JSON.parse(item.feature).map((feature, index) => (
                     <div
                       key={index}
-                      className="fullitem__description_left_spec"
+                      className='fullitem__description_left_spec'
                     >
-                      <div className="fullitem__description_left_spec_title">
+                      <div className='fullitem__description_left_spec_title'>
                         {feature.title}
                       </div>
-                      <div className="fullitem__description_left_spec_text">
+                      <div className='fullitem__description_left_spec_text'>
                         {feature.desc}
                       </div>
                     </div>
                   ))}
               </div>
             </div>
-            <div className="fullitem__description_right">
+            <div className='fullitem__description_right'>
               <p>Характеристика</p>
-              <div className="fullitem__description_right_har">
-                <div className="fullitem__description_right_har_item">
-                  <div className="fullitem__description_right_har_item_left">
+              <div className='fullitem__description_right_har'>
+                <div className='fullitem__description_right_har_item'>
+                  <div className='fullitem__description_right_har_item_left'>
                     Материал клавиш
                   </div>
-                  <div className="fullitem__description_right_har_item_right">
+                  <div className='fullitem__description_right_har_item_right'>
                     Doubleshot
                   </div>
                 </div>
-                <div className="fullitem__description_right_har_item">
-                  <div className="fullitem__description_right_har_item_left">
+                <div className='fullitem__description_right_har_item'>
+                  <div className='fullitem__description_right_har_item_left'>
                     Материал клавиш
                   </div>
-                  <div className="fullitem__description_right_har_item_right">
+                  <div className='fullitem__description_right_har_item_right'>
                     Doubleshot
                   </div>
                 </div>
-                <div className="fullitem__description_right_har_item">
-                  <div className="fullitem__description_right_har_item_left">
+                <div className='fullitem__description_right_har_item'>
+                  <div className='fullitem__description_right_har_item_left'>
                     Материал клавиш
                   </div>
-                  <div className="fullitem__description_right_har_item_right">
+                  <div className='fullitem__description_right_har_item_right'>
                     Doubleshot
                   </div>
                 </div>
-                <div className="fullitem__description_right_har_item">
-                  <div className="fullitem__description_right_har_item_left">
+                <div className='fullitem__description_right_har_item'>
+                  <div className='fullitem__description_right_har_item_left'>
                     Материал клавиш
                   </div>
-                  <div className="fullitem__description_right_har_item_right">
+                  <div className='fullitem__description_right_har_item_right'>
                     Doubleshot
                   </div>
                 </div>
-                <div className="fullitem__description_right_har_item">
-                  <div className="fullitem__description_right_har_item_left">
+                <div className='fullitem__description_right_har_item'>
+                  <div className='fullitem__description_right_har_item_left'>
                     Материал клавиш
                   </div>
-                  <div className="fullitem__description_right_har_item_right">
+                  <div className='fullitem__description_right_har_item_right'>
                     Doubleshot
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="fullitem__comments container">
-            <p className="fullitem__comments_title">Отзывы</p>
-            <div className="fullitem__comments_items">
+          <div className='fullitem__comments container'>
+            <p className='fullitem__comments_title'>Отзывы</p>
+            <div className='fullitem__comments_items'>
               {arrStatus === 'success' && comments.items?.length > 0 ? (
                 comments.items.map((comment) => (
                   <Comment
@@ -341,8 +340,8 @@ const FullItem = () => {
                   ></Comment>
                 ))
               ) : (
-                <div className="personal__empty_wrapper">
-                  <div className="container personal__empty_container">
+                <div className='personal__empty_wrapper'>
+                  <div className='container personal__empty_container'>
                     <div
                       style={{
                         backgroundImage:
@@ -351,7 +350,7 @@ const FullItem = () => {
                             : `url('../assets/img/no-item.png')`,
                         backgroundSize: 'cover',
                       }}
-                      className="personal__empty"
+                      className='personal__empty'
                     >
                       Пусто
                     </div>
@@ -362,13 +361,13 @@ const FullItem = () => {
           </div>
         </div>
       ) : (
-        <div className="fullitem">
-          <div className="fullitem__card-wrapper">
-            <div className="fullitem__card-breadcrumb container"></div>
-            <div className="fullitem__card container">
-              <div className="fullitem__card_info-wrapper">
-                <div className="fullitem__card_info-name">{item.name}</div>
-                <div className="fullitem__card-sliders">
+        <div className='fullitem'>
+          <div className='fullitem__card-wrapper'>
+            <div className='fullitem__card-breadcrumb container'></div>
+            <div className='fullitem__card container'>
+              <div className='fullitem__card_info-wrapper'>
+                <div className='fullitem__card_info-name'>{item.name}</div>
+                <div className='fullitem__card-sliders'>
                   {status === 'success' ? (
                     <FullItemSlider
                       image={item.image_link}
@@ -376,15 +375,15 @@ const FullItem = () => {
                     ></FullItemSlider>
                   ) : null}
                 </div>
-                <div className="fullitem__card_info-params">
+                <div className='fullitem__card_info-params'>
                   {item.category === 'Клавиатуры' ? (
                     <>
-                      <div className="fullitem__card_info-params_block">
+                      <div className='fullitem__card_info-params_block'>
                         {status === 'success' &&
                         JSON.parse(item.parameters_dop).length !== 0 ? (
                           <p>Переключатели</p>
                         ) : null}
-                        <div className="fullitem__card_info-params_block-wrapper">
+                        <div className='fullitem__card_info-params_block-wrapper'>
                           {status === 'success' &&
                             JSON.parse(item.parameters_dop).map((item) =>
                               item.svitchi.map((svitch) => (
@@ -420,9 +419,9 @@ const FullItem = () => {
                       </div> */}
                     </>
                   ) : (
-                    <div className="fullitem__card_info-params_block">
+                    <div className='fullitem__card_info-params_block'>
                       <p>Цвет</p>
-                      <div className="fullitem__card_info-params_block-wrapper">
+                      <div className='fullitem__card_info-params_block-wrapper'>
                         {status &&
                           JSON.parse(item.colors).map((colour) => (
                             <Link
@@ -445,13 +444,13 @@ const FullItem = () => {
                     </div>
                   )}
                 </div>
-                <div className="fullitem__card_info-bottom">
+                <div className='fullitem__card_info-bottom'>
                   <span>{item.price} руб</span>
                   {addedCount > 0 ? (
-                    <div className="fullitem__card_info-bottom_buttons">
+                    <div className='fullitem__card_info-bottom_buttons'>
                       <Link
-                        className="fullitem__card_info-bottom_buttons_cart"
-                        to="/cart"
+                        className='fullitem__card_info-bottom_buttons_cart'
+                        to='/cart'
                       >
                         Перейти<br></br> в корзину
                       </Link>
@@ -501,8 +500,8 @@ const FullItem = () => {
                     </div>
                   ) : (
                     <button
-                      className="fullitem__card_info-bottom_btn"
-                      to="/cart"
+                      className='fullitem__card_info-bottom_btn'
+                      to='/cart'
                       onClick={onClickAdd}
                     >
                       В корзину
@@ -512,68 +511,68 @@ const FullItem = () => {
               </div>
             </div>
           </div>
-          <div className="fullitem__description container">
-            <div className="fullitem__description_left">
-              <div className="fullitem__description_left-block">
+          <div className='fullitem__description container'>
+            <div className='fullitem__description_left'>
+              <div className='fullitem__description_left-block'>
                 <p>Описание</p>
-                <div className="fullitem__description_left_description">
+                <div className='fullitem__description_left_description'>
                   {item.description_full}
                 </div>
               </div>
-              <div className="fullitem__description_left-block">
+              <div className='fullitem__description_left-block'>
                 <p>Особенности</p>
                 {status === 'success' &&
                   JSON.parse(item.feature).map((feature) => (
-                    <div className="fullitem__description_left_spec">
-                      <div className="fullitem__description_left_spec_title">
+                    <div className='fullitem__description_left_spec'>
+                      <div className='fullitem__description_left_spec_title'>
                         {feature.title}
                       </div>
-                      <div className="fullitem__description_left_spec_text">
+                      <div className='fullitem__description_left_spec_text'>
                         {feature.desc}
                       </div>
                     </div>
                   ))}
               </div>
-              <div className="fullitem__description_right">
+              <div className='fullitem__description_right'>
                 <p>Характеристика</p>
-                <div className="fullitem__description_right_har">
-                  <div className="fullitem__description_right_har_item">
-                    <div className="fullitem__description_right_har_item_left">
+                <div className='fullitem__description_right_har'>
+                  <div className='fullitem__description_right_har_item'>
+                    <div className='fullitem__description_right_har_item_left'>
                       Материал клавиш
                     </div>
-                    <div className="fullitem__description_right_har_item_right">
+                    <div className='fullitem__description_right_har_item_right'>
                       Doubleshot
                     </div>
                   </div>
-                  <div className="fullitem__description_right_har_item">
-                    <div className="fullitem__description_right_har_item_left">
+                  <div className='fullitem__description_right_har_item'>
+                    <div className='fullitem__description_right_har_item_left'>
                       Материал клавиш
                     </div>
-                    <div className="fullitem__description_right_har_item_right">
+                    <div className='fullitem__description_right_har_item_right'>
                       Doubleshot
                     </div>
                   </div>
-                  <div className="fullitem__description_right_har_item">
-                    <div className="fullitem__description_right_har_item_left">
+                  <div className='fullitem__description_right_har_item'>
+                    <div className='fullitem__description_right_har_item_left'>
                       Материал клавиш
                     </div>
-                    <div className="fullitem__description_right_har_item_right">
+                    <div className='fullitem__description_right_har_item_right'>
                       Doubleshot
                     </div>
                   </div>
-                  <div className="fullitem__description_right_har_item">
-                    <div className="fullitem__description_right_har_item_left">
+                  <div className='fullitem__description_right_har_item'>
+                    <div className='fullitem__description_right_har_item_left'>
                       Материал клавиш
                     </div>
-                    <div className="fullitem__description_right_har_item_right">
+                    <div className='fullitem__description_right_har_item_right'>
                       Doubleshot
                     </div>
                   </div>
-                  <div className="fullitem__description_right_har_item">
-                    <div className="fullitem__description_right_har_item_left">
+                  <div className='fullitem__description_right_har_item'>
+                    <div className='fullitem__description_right_har_item_left'>
                       Материал клавиш
                     </div>
-                    <div className="fullitem__description_right_har_item_right">
+                    <div className='fullitem__description_right_har_item_right'>
                       Doubleshot
                     </div>
                   </div>
@@ -581,9 +580,9 @@ const FullItem = () => {
               </div>
             </div>
           </div>
-          <div className="fullitem__comments container">
-            <p className="fullitem__comments_title">Отзывы</p>
-            <div className="fullitem__comments_items">
+          <div className='fullitem__comments container'>
+            <p className='fullitem__comments_title'>Отзывы</p>
+            <div className='fullitem__comments_items'>
               {arrStatus === 'success' && comments.items.length > 0 ? (
                 comments.items.map((comment) => (
                   <Comment
@@ -597,8 +596,8 @@ const FullItem = () => {
                   ></Comment>
                 ))
               ) : (
-                <div className="personal__empty_wrapper">
-                  <div className="container personal__empty_container">
+                <div className='personal__empty_wrapper'>
+                  <div className='container personal__empty_container'>
                     <div
                       style={{
                         backgroundImage:
@@ -607,7 +606,7 @@ const FullItem = () => {
                             : `url('../assets/img/no-item.png')`,
                         backgroundSize: 'cover',
                       }}
-                      className="personal__empty"
+                      className='personal__empty'
                     >
                       Пусто
                     </div>
@@ -619,7 +618,7 @@ const FullItem = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default FullItem
+export default FullItem;

@@ -14,17 +14,20 @@
     align-items: center
   &_switch
     position: relative
-
     &_moon
       position: absolute
       top: -15px
       right: -45px
+      height: 100%
+      width: 20px
       img
         width: 14px
     &_sun
       position: absolute
       top: -15px
       right: -22px
+      height: 100%
+      width: 20px
       img
         width: 16px
 
@@ -121,10 +124,26 @@
       width: 100%
     &__delivery
       margin-right: 15px
-      font-size: 4vw
+      font-size: 13px
     &__faq
       margin-right: 15px
-      font-size: 4vw
+      font-size: 13px
     &__comments
-      font-size: 4vw
-    
+      font-size: 13px
+      margin-right: 15px
+    &__admin
+      font-size: 13px
+    &_switch
+      &_circle
+        width: 14px
+        height: 14px
+        top: -16px
+
+        &_active
+          width: 14px
+          height: 14px
+          left: 18px
+          top: -16px
+      &_wrapper
+        width: 35px
+        height: 20px

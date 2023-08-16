@@ -125,7 +125,7 @@ const FullItem = () => {
                         </div>
                       </div>
                       <div className='fullitem__card_info-params_block'>
-                        {status === 'success' &&
+                        {renderStatus === 'success' &&
                         JSON.parse(item.parameters_dop).length !== 0 ? (
                           <p>Переключатели</p>
                         ) : null}
@@ -422,7 +422,7 @@ const FullItem = () => {
                     <div className='fullitem__card_info-params_block'>
                       <p>Цвет</p>
                       <div className='fullitem__card_info-params_block-wrapper'>
-                        {status &&
+                        {renderStatus &&
                           JSON.parse(item.colors).map((colour) => (
                             <Link
                               to={`/item/${colour.id}`}

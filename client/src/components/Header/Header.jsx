@@ -72,10 +72,14 @@ const Header = () => {
                 aria-hidden='true'
               />
               <div className={styles.header_switch_sun}>
-                <img src='../assets/img/sun.svg' alt='sun' />
+                {windowWidth > 575 && (
+                  <img src='../assets/img/sun.svg' alt='sun' />
+                )}
               </div>
               <div className={styles.header_switch_moon}>
-                <img src='../assets/img/moon.svg' alt='moon' />
+                {windowWidth > 575 && (
+                  <img src='../assets/img/moon.svg' alt='moon' />
+                )}
               </div>
             </Switch>
           </div>

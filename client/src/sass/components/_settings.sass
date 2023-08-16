@@ -22,26 +22,19 @@
             display: flex
             align-items: center
             transition: all .2s ease-in-out
+            padding: 0 26px
+            width: fit-content
             &:hover
                 background: #0540F2
                 & span
                     color: white
             &:not(:last-child)
                 margin-bottom: 7px
-            &:nth-child(1)
-                width: 138px
-            &:nth-child(2)
-                width: 297px
-            &:nth-child(3)
-                width: 171px
-            &:nth-child(4)
-                width: 250px
+        
             & span
                 font-size: 20px
                 font-weight: 500
                 color: var(--color)
-                margin-left: 26px
-                margin-right: 26px
                 transition: all .3s linear
             &.active
                 background: #0540F2
@@ -244,7 +237,6 @@
     //                     width: 272px
     //                 & span
     //                     font-size: 18px
-@media (max-width: 767px)
 @media (max-width: 575px)
     .settings
         &__title
@@ -264,7 +256,9 @@
                 &_info
                     &-block
                         &_name
-                            font-size: 27px
+                            font-size: 4.8vw
+                        &_about
+                            font-size: 4vw
         &__change
             &_block
                 width: 100%
@@ -277,3 +271,6 @@
                         margin: 0
                         &:not(:last-child)
                             margin-bottom: 40px
+        &__buttons-block_item
+            & span
+                font-size: 5vw

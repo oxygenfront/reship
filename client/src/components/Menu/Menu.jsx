@@ -494,19 +494,20 @@ const Menu = () => {
                   Зарегистрироваться
                 </Link>
                 <hr className="hr" />
-                <li
+                <Link to='/personal/favorites'
                   onClick={() => setShowBurger(!showBurger)}
                   className={styles.search_section_burger_items_item}
                 >
                   Мои избранные
-                </li>
+                </Link>
                 <hr className="hr" />
-                <li
+                  <Link
+                    to='/cart'
                   onClick={() => setShowBurger(!showBurger)}
                   className={styles.search_section_burger_items_item}
                 >
                   Моя корзина
-                </li>
+                </Link>
                 <li
                   onClick={() => setShowBurger(!showBurger)}
                   className={styles.search_section_burger_items_item}

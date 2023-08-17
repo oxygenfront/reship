@@ -116,8 +116,8 @@
                     display: flex
                     justify-content: center
                     align-items: center
-                    width: 544px
-                    height: 339px
+                    // width: 544px
+                    // height: 339px
                     position: relative
                     margin-bottom: 53px
                     &:hover .fullitem__card-slider_big-favorite
@@ -416,7 +416,7 @@
                 &-wrapper
                     width: 47%
                 &-name
-                    font-size: 45px
+                    font-size: 42px
                 &-params
                     &_block
 
@@ -477,7 +477,7 @@
                         & img
                 &_small
                     &-wrapper
-                        width: 122px
+                        width: 111px
                         &_overflow
                             width: 50%
                         &_button
@@ -494,6 +494,7 @@
                 &-wrapper
                     width: 100%
                 &-name
+                    font-size: 30px
                     margin-bottom: 0
                 &-params
                     &_block
@@ -520,6 +521,7 @@
 
 @media ( max-width: 767px )
     .fullitem
+        overflow: hidden
         &__comments
             &_items
             &_title
@@ -532,7 +534,9 @@
                         &_left
                         &_right
                 p
+                    font-size: 33px
             &_left
+                width: 100%
                 p
                 &_description
                     width: 100%
@@ -621,8 +625,9 @@
                         & img
                 &_small
                     &-wrapper
+                        width: 200px
                         &_overflow
-                            width: 62%
+                            width: 67%
                         &_button
                             &-prev
                                 display: none

@@ -1,41 +1,43 @@
-import { useCallback, useEffect, useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import styles from './Menu.module.sass'
+import { useCallback, useEffect, useState } from 'react';
+import { Dialog } from '@headlessui/react';
+import styles from './Menu.module.sass';
 import {
   setChoosenCategorie,
   setChoosenType,
-} from '../../redux/slices/fiterSlice'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+} from '../../redux/slices/fiterSlice';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Modal = ({ isOpen, setIsOpen }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [localCategory, setLocalCategory] = useState('Мышки')
-  const [localCategoryEn, setLocalCategoryEn] = useState('mouse')
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [localCategory, setLocalCategory] = useState('Мышки');
+  const [localCategoryEn, setLocalCategoryEn] = useState('mouse');
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const onChangeCategory = useCallback((sort) => {
-    dispatch(setChoosenCategorie(sort))
-  }, [])
+    dispatch(setChoosenCategorie(sort));
+  }, []);
 
   useEffect(() => {
     function handleResize() {
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
     }
 
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  console.log(localCategory);
+
   return (
     <Dialog
-      as="div"
+      as='div'
       className={styles.modal}
       open={isOpen}
       onClose={() => setIsOpen(false)}
     >
-      <div className={styles.modal_bg} aria-hidden="true"></div>
+      <div className={styles.modal_bg} aria-hidden='true'></div>
       <div className={styles.modal_scroll}>
         <div className={styles.modal_container}>
           <Dialog.Panel>
@@ -51,11 +53,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                             : null
                         }
                         onClick={() => {
-                          setLocalCategoryEn('mouse')
-                          setLocalCategory('Мышки')
+                          setLocalCategoryEn('mouse');
+                          setLocalCategory('Мышки');
                         }}
                       >
-                        <img src="../assets/img/mouse.svg" alt="mouse" />
+                        <img src='../assets/img/mouse.svg' alt='mouse' />
                         Мышки
                       </li>
                       <li
@@ -65,11 +67,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                             : null
                         }
                         onClick={() => {
-                          setLocalCategoryEn('boards')
-                          setLocalCategory('Клавиатуры')
+                          setLocalCategoryEn('boards');
+                          setLocalCategory('Клавиатуры');
                         }}
                       >
-                        <img src="../assets/img/keyboard.svg" alt="keyboard" />
+                        <img src='../assets/img/keyboard.svg' alt='keyboard' />
                         Клавиатуры
                       </li>
                       <li
@@ -79,13 +81,13 @@ const Modal = ({ isOpen, setIsOpen }) => {
                             : null
                         }
                         onClick={() => {
-                          setLocalCategoryEn('headphones')
-                          setLocalCategory('Наушники')
+                          setLocalCategoryEn('headphones');
+                          setLocalCategory('Наушники');
                         }}
                       >
                         <img
-                          src="../assets/img/headphones.svg"
-                          alt="headphones"
+                          src='../assets/img/headphones.svg'
+                          alt='headphones'
                         />
                         Наушники
                       </li>
@@ -96,13 +98,13 @@ const Modal = ({ isOpen, setIsOpen }) => {
                             : null
                         }
                         onClick={() => {
-                          setLocalCategoryEn('microphone')
-                          setLocalCategory('Микрофоны')
+                          setLocalCategoryEn('microphone');
+                          setLocalCategory('Микрофоны');
                         }}
                       >
                         <img
-                          src="../assets/img/microfone.svg"
-                          alt="microfone"
+                          src='../assets/img/microfone.svg'
+                          alt='microfone'
                         />
                         Микрофоны
                       </li>
@@ -113,11 +115,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                             : null
                         }
                         onClick={() => {
-                          setLocalCategoryEn('accessory')
-                          setLocalCategory('Аксессуары')
+                          setLocalCategoryEn('accessory');
+                          setLocalCategory('Аксессуары');
                         }}
                       >
-                        <img src="../assets/img/accessory.svg" alt="access" />
+                        <img src='../assets/img/accessory.svg' alt='access' />
                         Аксессуары
                       </li>
                       <li
@@ -127,26 +129,26 @@ const Modal = ({ isOpen, setIsOpen }) => {
                             : null
                         }
                         onClick={() => {
-                          setLocalCategoryEn('camera')
-                          setLocalCategory('Веб-камеры')
+                          setLocalCategoryEn('camera');
+                          setLocalCategory('Веб-камеры');
                         }}
                       >
-                        <img src="../assets/img/camera.svg" alt="camera" />
+                        <img src='../assets/img/camera.svg' alt='camera' />
                         Веб-камеры
                       </li>
                     </ul>
                   </div>
                   <div className={styles.modal_right}>
                     <Link
-                      to="/catalog"
+                      to='/catalog'
                       onClick={() => {
-                        setIsOpen(false)
-                        onChangeCategory(localCategory)
+                        setIsOpen(false);
+                        onChangeCategory(localCategory);
                       }}
                     >
                       <img
                         src={`../assets/img/${localCategoryEn}-main-catalog.png`}
-                        alt="mouse"
+                        alt='mouse'
                       />
                       <span>Просмотреть все {localCategory}</span>
                       <div className={styles.swiper_button_next_wrapper}>
@@ -166,12 +168,15 @@ const Modal = ({ isOpen, setIsOpen }) => {
                     </div>
                   </div>
                   <div className={styles.modal_center_items}>
-                    <ul>
-                      <li>Беспроводные</li>
-                      <li>С русскими букавами</li>
-                      <li>RGB-подсветка</li>
-                      <li>Эргономичные </li>
-                    </ul>
+                    {localCategory === '' ? (
+                      <ul>
+                        <li>Беспроводные</li>
+                        <li>С русскими букавами</li>
+                        <li>RGB-подсветка</li>
+                        <li>Эргономичные </li>
+                      </ul>
+                    ) : null}
+
                     <ul>
                       <li>Varmilo</li>
                       <li>С русскими букавами</li>
@@ -204,11 +209,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                           : null
                       }
                       onClick={() => {
-                        setLocalCategoryEn('mouse')
-                        setLocalCategory('Мышки')
+                        setLocalCategoryEn('mouse');
+                        setLocalCategory('Мышки');
                       }}
                     >
-                      <img src="../assets/img/mouse.svg" alt="mouse" />
+                      <img src='../assets/img/mouse.svg' alt='mouse' />
                       Мышки
                     </li>
                     <li
@@ -218,11 +223,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                           : null
                       }
                       onClick={() => {
-                        setLocalCategoryEn('boards')
-                        setLocalCategory('Клавиатуры')
+                        setLocalCategoryEn('boards');
+                        setLocalCategory('Клавиатуры');
                       }}
                     >
-                      <img src="../assets/img/keyboard.svg" alt="keyboard" />
+                      <img src='../assets/img/keyboard.svg' alt='keyboard' />
                       Клавиатуры
                     </li>
                     <li
@@ -232,13 +237,13 @@ const Modal = ({ isOpen, setIsOpen }) => {
                           : null
                       }
                       onClick={() => {
-                        setLocalCategoryEn('headphones')
-                        setLocalCategory('Наушники')
+                        setLocalCategoryEn('headphones');
+                        setLocalCategory('Наушники');
                       }}
                     >
                       <img
-                        src="../assets/img/headphones.svg"
-                        alt="headphones"
+                        src='../assets/img/headphones.svg'
+                        alt='headphones'
                       />
                       Наушники
                     </li>
@@ -249,11 +254,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                           : null
                       }
                       onClick={() => {
-                        setLocalCategoryEn('microphone')
-                        setLocalCategory('Микрофоны')
+                        setLocalCategoryEn('microphone');
+                        setLocalCategory('Микрофоны');
                       }}
                     >
-                      <img src="../assets/img/microfone.svg" alt="microfone" />
+                      <img src='../assets/img/microfone.svg' alt='microfone' />
                       Микрофоны
                     </li>
                     <li
@@ -263,11 +268,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                           : null
                       }
                       onClick={() => {
-                        setLocalCategoryEn('accessory')
-                        setLocalCategory('Аксессуары')
+                        setLocalCategoryEn('accessory');
+                        setLocalCategory('Аксессуары');
                       }}
                     >
-                      <img src="../assets/img/accessory.svg" alt="access" />
+                      <img src='../assets/img/accessory.svg' alt='access' />
                       Аксессуары
                     </li>
                     <li
@@ -277,11 +282,11 @@ const Modal = ({ isOpen, setIsOpen }) => {
                           : null
                       }
                       onClick={() => {
-                        setLocalCategoryEn('camera')
-                        setLocalCategory('Веб-камеры')
+                        setLocalCategoryEn('camera');
+                        setLocalCategory('Веб-камеры');
                       }}
                     >
-                      <img src="../assets/img/camera.svg" alt="camera" />
+                      <img src='../assets/img/camera.svg' alt='camera' />
                       Веб-камеры
                     </li>
                   </ul>
@@ -296,44 +301,120 @@ const Modal = ({ isOpen, setIsOpen }) => {
                     </div>
                   </div>
                   <div className={styles.modal_center_items}>
-                    <ul>
-                      <li>Беспроводные</li>
-                      <li>С русскими букавами</li>
-                      <li>RGB-подсветка</li>
-                      <li>Эргономичные </li>
-                    </ul>
-                    <ul>
-                      <li>Varmilo</li>
-                      <li>С русскими букавами</li>
-                      <li>RGB-подсветка</li>
-                      <li>Эргономичные </li>
-                    </ul>
+                    {localCategory === 'Мышки' ? (
+                      <ul>
+                        <li>Беспроводные</li>
+                        <li>Проводные</li>
+                        <li>С подсветкой</li>
+                        <li>Эргономичные </li>
+                      </ul>
+                    ) : localCategory === 'Клавиатуры' ? (
+                      <ul>
+                        <li>Проводные</li>
+                        <li>Беспроводные</li>
+                        <li>С русскими букавами</li>
+                        <li>RGB-подсветка </li>
+                      </ul>
+                    ) : localCategory === 'Наушники' ? (
+                      <ul>
+                        <li>Беспроводные</li>
+                        <li>Проводные</li>
+                        <li>С радиоканалом</li>
+                        <li>С микрофоном</li>
+                        <li>Со звуком 7.1</li>
+                      </ul>
+                    ) : localCategory === 'Микрофоны' ? (
+                      <ul>
+                        <li>С подсветкой</li>
+                        <li>С пантографом</li>
+                        <li>Подключение USB</li>
+                        <li>Подключение XLR</li>
+                      </ul>
+                    ) : localCategory === 'Веб-камеры' ? (
+                      <ul>
+                        <li>1080p</li>
+                        <li>1440p</li>
+                        <li>30 FPS</li>
+                        <li>60 FPS</li>
+                      </ul>
+                    ) : localCategory === 'Аксессуары' ? (
+                      <ul>
+                        <li>1080p</li>
+                        <li>1440p</li>
+                        <li>30 FPS</li>
+                        <li>60 FPS</li>
+                      </ul>
+                    ) : null}
+
+                    {localCategory === 'Мышки' ? (
+                      <ul>
+                        <li>Logitech </li>
+                        <li>Razer</li>
+                        <li>HyperX</li>
+                        <li>Dragonfly </li>
+                      </ul>
+                    ) : localCategory === 'Клавиатуры' ? (
+                      <ul>
+                        <li>Akko</li>
+                        <li>Steelseries</li>
+                        <li>REDRAGON</li>
+                        <li>MATHEW FL</li>
+                        <li>ESPORTS</li>
+                        <li>NuPhy</li>
+                        <li>Wooting</li>
+                        <li>CIDOO</li>
+                        <li>SKYLOONG</li>
+                        <li>Machenike</li>
+                        <li>EPOMAKER</li>
+                      </ul>
+                    ) : localCategory === 'Наушники' ? (
+                      <ul>
+                        <li>Logitech</li>
+                        <li>HyperX</li>
+                        <li>Fifine</li>
+                        <li>Havit</li>
+                      </ul>
+                    ) : localCategory === 'Микрофоны' ? (
+                      <ul>
+                        <li>Fifine</li>
+                        <li>HyperX</li>
+                      </ul>
+                    ) : localCategory === 'Веб-камеры' ? (
+                      <ul>
+                        <li>Logitech</li>
+                        <li>Fifine</li>
+                      </ul>
+                    ) : null}
                   </div>
-                  <div className={styles.modal_center_title}>
-                    <div>
-                      <p>Размер</p>
+                  {localCategory === 'Клавиатуры' && (
+                    <div className={styles.modal_center_title}>
+                      <div>
+                        <p>Размер</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className={styles.modal_center_items}>
-                    <ul>
-                      <li>Полноразмерные 100%</li>
-                      <li>Без нампада 75-80% </li>
-                      <li>Без F-ряда 60-65%</li>
-                    </ul>
+                    {localCategory === 'Клавиатуры' ? (
+                      <ul>
+                        <li>Полноразмерные 100%</li>
+                        <li>Без цифрового блока 75-80% </li>
+                        <li>Без F-ряда 60-65%</li>
+                      </ul>
+                    ) : null}
                   </div>
                 </div>
                 <div className={styles.modal_right}>
                   <Link
-                    to="/catalog"
+                    to='/catalog'
                     onClick={() => {
-                      setIsOpen(false)
-                      onChangeCategory(localCategory)
-                      dispatch(setChoosenType(''))
+                      setIsOpen(false);
+                      onChangeCategory(localCategory);
+                      dispatch(setChoosenType(''));
                     }}
                   >
                     <img
                       src={`../assets/img/${localCategoryEn}-main-catalog.png`}
-                      alt="mouse"
+                      alt='mouse'
                     />
                     <span>Просмотреть все {localCategory}</span>
                     <div className={styles.swiper_button_next_wrapper}>
@@ -347,7 +428,7 @@ const Modal = ({ isOpen, setIsOpen }) => {
         </div>
       </div>
     </Dialog>
-  )
-}
+  );
+};
 
-export default Modal
+export default Modal;

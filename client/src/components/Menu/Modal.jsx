@@ -28,7 +28,6 @@ const Modal = ({ isOpen, setIsOpen }) => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  console.log(localCategory);
 
   return (
     <Dialog

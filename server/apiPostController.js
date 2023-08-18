@@ -90,7 +90,7 @@ async function calcFromTarifCode(city, tariff_code, weight) {
           code: 278,
         },
         to_location: {
-          code: 12,
+          code: resp.data[0].code,
         },
         packages: [
           {

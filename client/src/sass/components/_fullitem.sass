@@ -223,6 +223,7 @@
             &-params
                 display: flex
                 justify-content: space-between
+                flex-wrap: wrap
                 margin-bottom: 30px
                 &_block
                     margin-bottom: 30px
@@ -232,6 +233,7 @@
                         color: var(--color)
                     &-wrapper
                         display: flex
+
                     &_button
                         padding: 4px 19px
                         background: #0540F2
@@ -242,6 +244,15 @@
                         font-weight: 500
                         border: 2px solid transparent
                         transition: all .2s linear
+                        &_layout
+                            font-size: 16px
+                            background: none
+                            width: fit-content
+                            color: rgba(#0540F2, .4)
+                            &.active
+                                color: #0540F2
+                            &:not(:last-child)
+                                margin-right: 26px
                         &.active
                             border: 2px solid #0540F2
                             background: #416EF233

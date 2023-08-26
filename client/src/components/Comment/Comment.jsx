@@ -36,7 +36,7 @@ const Comment = ({
         </div>
         <div className={styles.reviews__slider_slide_item_header_stars}>
           {[...new Array(rating)].map((_, index) => (
-            <img key={index} src="../assets/img/Star 14.png" alt="star" />
+            <img key={index} src="../assets/img/star 14.png" alt="star" />
           ))}
           {[...new Array(5 - Number(rating))].map((_, index) => {
             return (

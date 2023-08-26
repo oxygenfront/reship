@@ -382,7 +382,8 @@ const FullItem = () => {
                     <>
                       <div className="fullitem__card_info-params_block">
                         {renderStatus &&
-                        JSON.parse(item.parameters_dop).length !== 0 ? (
+                        JSON.parse(item?.parameters_dop)[1]?.switches.length !==
+                          0 ? (
                           <p>Переключатели</p>
                         ) : null}
                         <div className="fullitem__card_info-params_block-wrapper">
@@ -408,17 +409,54 @@ const FullItem = () => {
                             )}
                         </div>
                       </div>
-                      {/* <div className="fullitem__card_info-params_block">
+                      <div className="fullitem__card_info-params_block">
                         <p>Раскладка</p>
                         <div className="fullitem__card_info-params_block-wrapper">
-                          <button className="fullitem__card_info-params_block_text">
-                            Русская
-                          </button>
-                          <button className="fullitem__card_info-params_block_text">
-                            Английская
-                          </button>
+                          {renderStatus &&
+                            JSON.parse(item?.parameters_dop)[2]?.layouts.map(
+                              (layout) => (
+                                <button
+                                  key={Object.keys(layout)[0]}
+                                  value={Object.values(layout)[0]}
+                                  onClick={(e) =>
+                                    setLayoutPrice(Number(e.target.value))
+                                  }
+                                  className={
+                                    layoutPrice ===
+                                    Number(Object.values(layout)[0])
+                                      ? 'fullitem__card_info-params_block_button active'
+                                      : 'fullitem__card_info-params_block_button'
+                                  }
+                                >
+                                  {Object.keys(layout)[0]}
+                                </button>
+                              )
+                            )}
                         </div>
-                      </div> */}
+                      </div>
+                      <div className="fullitem__card_info-params_block">
+                        <p>Цвет</p>
+                        <div className="fullitem__card_info-params_block-wrapper">
+                          {renderStatus &&
+                            JSON.parse(item.colors).map((colour) => (
+                              <Link
+                                to={`/item/${colour.id}`}
+                                onClick={(e) => setColor(e.target.innerHTML)}
+                                className={
+                                  renderStatus
+                                    ? Number(id) === colour.id
+                                      ? 'fullitem__card_info-params_block_text active'
+                                      : 'fullitem__card_info-params_block_text'
+                                    : ''
+                                }
+                                key={colour.id}
+                                value={colour.color}
+                              >
+                                {colour.color}
+                              </Link>
+                            ))}
+                        </div>
+                      </div>
                     </>
                   ) : (
                     <div className="fullitem__card_info-params_block">
@@ -447,7 +485,7 @@ const FullItem = () => {
                   )}
                 </div>
                 <div className="fullitem__card_info-bottom">
-                  <span>{item.price} руб</span>
+                  <span>{item.price + layoutPrice + switchPrice} руб</span>
                   {addedCount > 0 ? (
                     <div className="fullitem__card_info-bottom_buttons">
                       <Link

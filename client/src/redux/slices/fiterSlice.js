@@ -7,7 +7,7 @@ const initialState = {
   searchValue: '',
   choosenPrice: [0, 9999999],
   choosenBrand: '',
-  choosenType: 'популярное',
+  choosenType: '',
 }
 
 export const filterSlice = createSlice({

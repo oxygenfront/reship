@@ -98,6 +98,7 @@
             margin-bottom: 20px
         &-sliders
             position: relative
+            height: fit-content
             width: 550px
 
         &-slider
@@ -118,7 +119,8 @@
                     display: flex
                     justify-content: center
                     align-items: center
-                    // width: 544px
+                    width: 544px
+                    overflow: hidden
                     height: 339px
                     position: relative
                     margin-bottom: 53px
@@ -126,7 +128,6 @@
                         opacity: 1
 
                 &-item
-
                     width: 80%
                     height: 100%
                     border-radius: 30px
@@ -226,27 +227,46 @@
                 display: flex
                 justify-content: space-between
                 flex-wrap: wrap
-                margin-bottom: 30px
                 &_block
                     width: fit-content
-                    margin-bottom: 30px
+                    margin-bottom: 20px
                     & p
                         font-size: 20px
                         margin-bottom: 12px
                         color: var(--color)
                     &-wrapper
-                        display: flex
+                        display: grid
+                        &.swithes
+                            grid-template-columns: repeat(2, auto)
+                            gap: 5px
+                        &.colors
+                            grid-template-columns: repeat(4, auto)
+                            gap: 20px
+                        &.layouts
+                            grid-template-columns: repeat(2, auto)
+                            gap: 10px
+                        &.plates
+                            grid-template-columns: repeat(2, auto)
+                            gap: 5px
 
                     &_button
-                        padding: 4px 19px
-                        background: #0540F2
-                        border-radius: 30px
-                        color: white
-                        text-transform: uppercase
-                        font-size: 16px
+                        display: flex
+                        align-items: center
+                        padding: 4px 10px
+                        background: transparent
+                        border-radius: 10px
+                        color: black
+                        font-size: 14px
                         font-weight: 500
-                        border: 2px solid transparent
+                        border: 2px solid #416EF233
                         transition: all .2s linear
+                        & span
+                            display: inline-block
+                            content: ''
+                            border-radius: 50%
+                            width: 15px
+                            height: 15px
+                            margin-right: 5px
                         &_layout
                             font-size: 16px
                             background: none
@@ -258,7 +278,6 @@
                                 margin-right: 26px
                         &.active
                             border: 2px solid #0540F2
-                            background: #416EF233
                         &.noItem
                             background: #416EF233
                             &:before
@@ -269,28 +288,21 @@
                                 height: 3px
                                 background: #E8EBF5
                                 transform: rotate(-45deg) translate(-20px, -5px)
-
-                        & span
-                            color: white
-                            text-transform: uppercase
-                            font-size: 16px
-                            font-weight: 500
-                        &:not(:last-child)
-                            margin-right: 5px
-                    &_text
+                    &_color
                         content: ''
                         display: block
                         width: 30px
                         height: 30px
                         border-radius: 50%
                         border: 4px solid transparent
-                        transtion: all .2s linear
+                        transition: all .2s linear
+                        margin: 0 auto
                         &.голубой
                             background: #00aeff
                         &.синий
                             background: blue
                         &.зелёный
-                            background: #7bff00
+                            background: #91ce03
                         &.розовый
                             background: #FFC0CB
                         &.черный
@@ -303,8 +315,6 @@
                             border-color: white
                             &.белый
                                 border-color: black
-                        &:not(:last-child)
-                            margin-right: 24px
             &-bottom
                 display: flex
                 justify-content: space-between
@@ -368,16 +378,18 @@
                         transform: translateY(-5.5px)
 
                     &_cart
-                        display: flex
-                        align-items: center
-                        justify-content: center
-                        width: 171px
-                        height: 54px
+                        width: fit-content
+                        padding: 15px 20px
                         background: #0540F2
                         color: #fff
                         border-radius: 30px
-                        font-weight: 500
-                        font-size: 16px
+                        font-size: 18px
+                        border: 2px solid transparent
+                        transition: all .3s linear
+                        &:hover
+                            border-color: #0540F2
+                            background: transparent
+                            color: #0540F2
                 & span
                     font-size: 24px
                     color: #0540F2
@@ -681,6 +693,9 @@
                             &:not(:last-child)
                         &_text
                 &-bottom
+                    flex-direction: column
+                    & span
+                        margin-bottom: 20px
                     &_buttons
                         &_button
                             &_minus
@@ -691,5 +706,6 @@
                                 &_itemh
                         &_plus
                         &_cart
+                            font-size: 16px
                     & span
                     &_btn

@@ -9,12 +9,20 @@
     &__delivery_items
         background: none
         padding: 0
-
+        &_parameters
+            display: grid
+            grid-template-columns: repeat(2, auto)
+            justify-content: center
+            align-items: center
+            gap: 10px
         &_item
+            a
+                font-size: 25px
+                font-weight: bold
             padding: 0 20px
             &:not(:last-child)
                 border-bottom: 2px solid #E8EBF5
-                margin-bottom: 24px
+                // margin-bottom: 24px
             &_left
                 display: flex
             &_right
@@ -112,7 +120,7 @@
 
                 font-size: 20px
                 &:not(:last-child)
-                    margin-bottom: 36px
+                    // margin-bottom: 20px
                 &_img
                     height: 100%
                     width: 100%

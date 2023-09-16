@@ -64,17 +64,20 @@ const FullItem = () => {
 
 	const colorItem =
 		renderStatus &&
-		JSON.parse(item.colors).find((item) => item.id === Number(id));
+		(JSON.parse(item.colors).find((item) => item.id === Number(id)) ||
+			JSON.parse(item.colors)[0]);
+	console.log(colors);
 
 	const collectedItem = {
 		id: item.id,
 		cartId: Math.random(),
+		category: item.category,
 		name: item.name,
 		image: item.image_link,
 		price: item.price + switchPrice + layoutPrice + platePrice,
 		weight: item.weight,
 		parameters: parameters,
-		color: colorItem.color,
+		color: colorItem?.color,
 		count: 0,
 	};
 
@@ -142,11 +145,13 @@ const FullItem = () => {
 	]);
 
 	const cartItem = useSelector(
-		selectCartItemById(
-			collectedItem.name,
-			collectedItem.parameters,
-			collectedItem.color
-		)
+		selectCartItemById({
+			category: collectedItem.category,
+			name: collectedItem.name,
+			parameters: collectedItem.parameters,
+			color: collectedItem.color,
+			id: collectedItem.id,
+		})
 	);
 
 	useEffect(() => {
@@ -175,12 +180,22 @@ const FullItem = () => {
 		dispatch(fetchGetReviewsForProductId({ token, id }));
 	}, [selectedColor]);
 
+	const colorSwitchForStyle = (switchText) => {
+		return switchText.split(" ")[switchText.split(" ").length - 1];
+	};
+
+	const titleSwitch = (switchText) => {
+		if (switchText.split(" ").length > 1) {
+			return switchText.split(" ").slice(0, -1);
+		} else return switchText;
+	};
+
 	if (navigate) {
 		return <Navigate to="/login"></Navigate>;
 	}
 	return (
 		<>
-			{windowWidth > 991 ? (
+			{windowWidth > 991 && renderStatus ? (
 				<div className="fullitem">
 					<div className="fullitem__card-wrapper">
 						<div className="fullitem__card-breadcrumb container"></div>
@@ -207,7 +222,7 @@ const FullItem = () => {
 													<div className="fullitem__card_info-params_block">
 														<p>Переключатели</p>
 
-														<div className="fullitem__card_info-params_block-wrapper">
+														<div className="fullitem__card_info-params_block-wrapper swithes">
 															{switches &&
 																switches.map((svitch) => (
 																	<button
@@ -219,11 +234,22 @@ const FullItem = () => {
 																		value={Object.values(svitch)[0]}
 																		className={
 																			selectedSwitch === Object.keys(svitch)[0]
-																				? "fullitem__card_info-params_block_button active"
-																				: "fullitem__card_info-params_block_button"
+																				? `fullitem__card_info-params_block_button ${colorSwitchForStyle(
+																						Object.keys(svitch)[0]
+																				  )} active`
+																				: `fullitem__card_info-params_block_button ${colorSwitchForStyle(
+																						Object.keys(svitch)[0]
+																				  )}`
 																		}
 																	>
-																		{Object.keys(svitch)[0]}
+																		<span
+																			style={{
+																				backgroundColor: `${colorSwitchForStyle(
+																					Object.keys(svitch)[0]
+																				)}`,
+																			}}
+																		></span>
+																		{titleSwitch(Object.keys(svitch)[0])}
 																	</button>
 																))}
 														</div>
@@ -232,7 +258,7 @@ const FullItem = () => {
 												{colors.length > 0 && (
 													<div className="fullitem__card_info-params_block">
 														<p>Цвет</p>
-														<div className="fullitem__card_info-params_block-wrapper">
+														<div className="fullitem__card_info-params_block-wrapper colors">
 															{colors &&
 																colors.map((colour) => (
 																	<Link
@@ -243,8 +269,8 @@ const FullItem = () => {
 																		className={
 																			renderStatus
 																				? Number(id) === colour.id
-																					? `fullitem__card_info-params_block_text active ${colour.color.toLowerCase()}`
-																					: `fullitem__card_info-params_block_text ${colour.color.toLowerCase()}`
+																					? `fullitem__card_info-params_block_color active ${colour?.color?.toLowerCase()}`
+																					: `fullitem__card_info-params_block_color ${colour?.color?.toLowerCase()}`
 																				: ""
 																		}
 																		key={colour.id}
@@ -255,9 +281,9 @@ const FullItem = () => {
 													</div>
 												)}
 												{layouts.length > 0 && (
-													<div className="fullitem__card_info-params_block">
+													<div className="fullitem__card_info-params_block ">
 														<p>Раскладка</p>
-														<div className="fullitem__card_info-params_block-wrapper">
+														<div className="fullitem__card_info-params_block-wrapper layouts">
 															{layouts &&
 																layouts.map((layout) => (
 																	<button
@@ -273,7 +299,12 @@ const FullItem = () => {
 																				: "fullitem__card_info-params_block_button"
 																		}
 																	>
-																		{Object.keys(layout)[0]}
+																		{Object.keys(layout)[0] === "rus"
+																			? "Русская"
+																			: Object.keys(layout)[0] === "eng"
+																			? "Английская"
+																			: Object.keys(layout)[0] === "jpn" &&
+																			  "Японская"}
 																	</button>
 																))}
 														</div>
@@ -282,7 +313,7 @@ const FullItem = () => {
 												{plates.length > 0 && (
 													<div className="fullitem__card_info-params_block">
 														<p>Материал платы</p>
-														<div className="fullitem__card_info-params_block-wrapper">
+														<div className="fullitem__card_info-params_block-wrapper plates">
 															{plates &&
 																plates.map((plate) => (
 																	<button
@@ -298,7 +329,12 @@ const FullItem = () => {
 																				: "fullitem__card_info-params_block_button"
 																		}
 																	>
-																		{Object.keys(plate)[0]}
+																		{Object.keys(plate)[0] === "allum"
+																			? "Алюминий"
+																			: Object.keys(plate)[0] === "poliCarb"
+																			? "Поликарбонат"
+																			: Object.keys(plate)[0] === "latun" &&
+																			  "Латунь"}
 																	</button>
 																))}
 														</div>
@@ -309,8 +345,8 @@ const FullItem = () => {
 											<>
 												{colors.length > 0 && (
 													<div className="fullitem__card_info-params_block">
-														<p> Цвет</p>
-														<div className="fullitem__card_info-params_block-wrapper">
+														<p>Цвет</p>
+														<div className="fullitem__card_info-params_block-wrapper colors">
 															{colors &&
 																colors.map((colour) => (
 																	<Link
@@ -321,8 +357,8 @@ const FullItem = () => {
 																		className={
 																			renderStatus
 																				? Number(id) === colour.id
-																					? `fullitem__card_info-params_block_text active ${colour.color.toLowerCase()}`
-																					: `fullitem__card_info-params_block_text ${colour.color.toLowerCase()}`
+																					? `fullitem__card_info-params_block_color active ${colour?.color?.toLowerCase()}`
+																					: `fullitem__card_info-params_block_color ${colour?.color?.toLowerCase()}`
 																				: ""
 																		}
 																		key={colour.id}
@@ -347,7 +383,7 @@ const FullItem = () => {
 												className="fullitem__card_info-bottom_buttons_cart"
 												to="/cart"
 											>
-												Перейти<br></br> в корзину
+												Перейти в корзину
 											</Link>
 
 											<div
@@ -489,282 +525,336 @@ const FullItem = () => {
 					</div>
 				</div>
 			) : (
-				<div className="fullitem">
-					<div className="fullitem__card-wrapper">
-						<div className="fullitem__card-breadcrumb container"></div>
-						<div className="fullitem__card container">
-							<div className="fullitem__card_info-wrapper">
-								<div className="fullitem__card_info-name">{item.name}</div>
-								<div className="fullitem__card-sliders">
-									{renderStatus && (
-										<FullItemSlider
-											image={item.image_link}
-											id={id}
-										></FullItemSlider>
-									)}
-								</div>
-								{colors.length > 0 ||
-								layouts.length > 0 ||
-								plates.length > 0 ||
-								switches.length > 0 ? (
-									<div className="fullitem__card_info-params">
-										{item.category === "Клавиатуры" ? (
-											<>
-												{switches.length > 0 && (
-													<div className="fullitem__card_info-params_block">
-														<p>Переключатели</p>
-														<div className="fullitem__card_info-params_block-wrapper">
-															{switches &&
-																switches.map((svitch) => (
-																	<button
-																		key={Object.keys(svitch)[0]}
-																		onClick={(e) =>
-																			setSwitchPrice(Number(e.target.value))
-																		}
-																		value={Object.values(svitch)[0]}
-																		className={
-																			switchPrice ===
-																			Number(Object.values(svitch)[0])
-																				? "fullitem__card_info-params_block_button active"
-																				: "fullitem__card_info-params_block_button"
-																		}
-																	>
-																		{Object.keys(svitch)[0]}
-																	</button>
-																))}
-														</div>
-													</div>
-												)}
-												{layouts.length > 0 && (
-													<div className="fullitem__card_info-params_block">
-														<p>Раскладка</p>
-														<div className="fullitem__card_info-params_block-wrapper">
-															{layouts &&
-																layouts.map((layout) => (
-																	<button
-																		key={Object.keys(layout)[0]}
-																		value={Object.values(layout)[0]}
-																		onClick={(e) =>
-																			setLayoutPrice(Number(e.target.value))
-																		}
-																		className={
-																			layoutPrice ===
-																			Number(Object.values(layout)[0])
-																				? "fullitem__card_info-params_block_button active"
-																				: "fullitem__card_info-params_block_button"
-																		}
-																	>
-																		{Object.keys(layout)[0]}
-																	</button>
-																))}
-														</div>
-													</div>
-												)}
-												{colors.length > 0 && (
-													<div className="fullitem__card_info-params_block">
-														<p>Цвет</p>
-														<div className="fullitem__card_info-params_block-wrapper">
-															{colors &&
-																colors.map((colour) => (
-																	<Link
-																		to={`/item/${colour.id}`}
-																		onClick={() =>
-																			setSelectedColor(colour.color)
-																		}
-																		className={
-																			renderStatus
-																				? Number(id) === colour.id
-																					? `fullitem__card_info-params_block_text active ${colour.color.toLowerCase()}`
-																					: `fullitem__card_info-params_block_text ${colour.color.toLowerCase()}`
-																				: ""
-																		}
-																		key={colour.id}
-																		value={colour.color}
-																	></Link>
-																))}
-														</div>
-													</div>
-												)}
-											</>
-										) : (
-											<>
-												{colors.length > 0 && (
-													<div className="fullitem__card_info-params_block">
-														<p>Цвет</p>
-														<div className="fullitem__card_info-params_block-wrapper">
-															{colors &&
-																colors.map((colour) => (
-																	<Link
-																		to={`/item/${colour.id}`}
-																		onClick={() =>
-																			setSelectedColor(colour.color)
-																		}
-																		className={
-																			renderStatus
-																				? Number(id) === colour.id
-																					? `fullitem__card_info-params_block_text active ${colour.color.toLowerCase()}`
-																					: `fullitem__card_info-params_block_text ${colour.color.toLowerCase()}`
-																				: ""
-																		}
-																		key={colour.id}
-																		value={colour.color}
-																	></Link>
-																))}
-														</div>
-													</div>
-												)}
-											</>
+				renderStatus &&
+				windowWidth <= 991 && (
+					<div className="fullitem">
+						<div className="fullitem__card-wrapper">
+							<div className="fullitem__card-breadcrumb container"></div>
+							<div className="fullitem__card container">
+								<div className="fullitem__card_info-wrapper">
+									<div className="fullitem__card_info-name">{item.name}</div>
+									<div className="fullitem__card-sliders">
+										{renderStatus && (
+											<FullItemSlider
+												image={item.image_link}
+												id={id}
+											></FullItemSlider>
 										)}
 									</div>
-								) : null}
-								<div className="fullitem__card_info-bottom">
-									<span>
-										{item.price + layoutPrice + switchPrice + platePrice} руб
-									</span>
-									{addedCount ? (
-										<div className="fullitem__card_info-bottom_buttons">
-											<Link
-												className="fullitem__card_info-bottom_buttons_cart"
-												to="/cart"
-											>
-												Перейти<br></br> в корзину
-											</Link>
+									{colors.length > 0 ||
+									layouts.length > 0 ||
+									plates.length > 0 ||
+									switches.length > 0 ? (
+										<div className="fullitem__card_info-params">
+											{item.category === "Клавиатуры" ? (
+												<>
+													{switches.length > 0 && (
+														<div className="fullitem__card_info-params_block">
+															<p>Переключатели</p>
 
-											<div
-												className={"fullitem__card_info-bottom_buttons_button"}
-											>
+															<div className="fullitem__card_info-params_block-wrapper swithes">
+																{switches &&
+																	switches.map((svitch) => (
+																		<button
+																			key={Object.keys(svitch)[0]}
+																			onClick={(e) => {
+																				setSwitchPrice(Number(e.target.value));
+																				setSelectedSwitch(
+																					Object.keys(svitch)[0]
+																				);
+																			}}
+																			value={Object.values(svitch)[0]}
+																			className={
+																				selectedSwitch ===
+																				Object.keys(svitch)[0]
+																					? `fullitem__card_info-params_block_button ${colorSwitchForStyle(
+																							Object.keys(svitch)[0]
+																					  )} active`
+																					: `fullitem__card_info-params_block_button ${colorSwitchForStyle(
+																							Object.keys(svitch)[0]
+																					  )}`
+																			}
+																		>
+																			<span
+																				style={{
+																					backgroundColor: `${colorSwitchForStyle(
+																						Object.keys(svitch)[0]
+																					)}`,
+																				}}
+																			></span>
+																			{titleSwitch(Object.keys(svitch)[0])}
+																		</button>
+																	))}
+															</div>
+														</div>
+													)}
+
+													{layouts.length > 0 && (
+														<div className="fullitem__card_info-params_block ">
+															<p>Раскладка</p>
+															<div className="fullitem__card_info-params_block-wrapper layouts">
+																{layouts &&
+																	layouts.map((layout) => (
+																		<button
+																			key={Object.keys(layout)[0]}
+																			value={Object.values(layout)[0]}
+																			onClick={(e) => {
+																				setLayoutPrice(Number(e.target.value));
+																				setSelectedLayout(
+																					Object.keys(layout)[0]
+																				);
+																			}}
+																			className={
+																				selectedLayout ===
+																				Object.keys(layout)[0]
+																					? "fullitem__card_info-params_block_button active"
+																					: "fullitem__card_info-params_block_button"
+																			}
+																		>
+																			{Object.keys(layout)[0] === "rus"
+																				? "Русская"
+																				: Object.keys(layout)[0] === "eng"
+																				? "Английская"
+																				: Object.keys(layout)[0] === "jpn" &&
+																				  "Японская"}
+																		</button>
+																	))}
+															</div>
+														</div>
+													)}
+													{plates.length > 0 && (
+														<div className="fullitem__card_info-params_block">
+															<p>Материал платы</p>
+															<div className="fullitem__card_info-params_block-wrapper plates">
+																{plates &&
+																	plates.map((plate) => (
+																		<button
+																			key={Object.keys(plate)[0]}
+																			value={Object.values(plate)[0]}
+																			onClick={(e) => {
+																				setPlatePrice(Number(e.target.value));
+																				setSelectedPlate(Object.keys(plate)[0]);
+																			}}
+																			className={
+																				selectedPlate === Object.keys(plate)[0]
+																					? "fullitem__card_info-params_block_button active"
+																					: "fullitem__card_info-params_block_button"
+																			}
+																		>
+																			{Object.keys(plate)[0]}
+																		</button>
+																	))}
+															</div>
+														</div>
+													)}
+													{colors.length > 0 && (
+														<div className="fullitem__card_info-params_block">
+															<p>Цвет</p>
+															<div className="fullitem__card_info-params_block-wrapper colors">
+																{colors &&
+																	colors.map((colour) => (
+																		<Link
+																			to={`/item/${colour.id}`}
+																			onClick={() =>
+																				setSelectedColor(colour.color)
+																			}
+																			className={
+																				renderStatus
+																					? Number(id) === colour.id
+																						? `fullitem__card_info-params_block_color active ${colour.color.toLowerCase()}`
+																						: `fullitem__card_info-params_block_color ${colour.color.toLowerCase()}`
+																					: ""
+																			}
+																			key={colour.id}
+																			value={colour.color}
+																		></Link>
+																	))}
+															</div>
+														</div>
+													)}
+												</>
+											) : (
+												<>
+													{colors.length > 0 && (
+														<div className="fullitem__card_info-params_block">
+															<p> Цвет</p>
+															<div className="fullitem__card_info-params_block-wrapper">
+																{colors &&
+																	colors.map((colour) => (
+																		<Link
+																			to={`/item/${colour.id}`}
+																			onClick={() =>
+																				setSelectedColor(colour.color)
+																			}
+																			className={
+																				renderStatus
+																					? Number(id) === colour.id
+																						? `fullitem__card_info-params_block_color active ${colour.color.toLowerCase()}`
+																						: `fullitem__card_info-params_block_color ${colour.color.toLowerCase()}`
+																					: ""
+																			}
+																			key={colour.id}
+																			value={colour.color}
+																		></Link>
+																	))}
+															</div>
+														</div>
+													)}
+												</>
+											)}
+										</div>
+									) : null}
+									<div className="fullitem__card_info-bottom">
+										<span>
+											{item.price + layoutPrice + switchPrice + platePrice} руб
+										</span>
+										{addedCount ? (
+											<div className="fullitem__card_info-bottom_buttons">
+												<Link
+													className="fullitem__card_info-bottom_buttons_cart"
+													to="/cart"
+												>
+													Перейти в корзину
+												</Link>
+
 												<div
-													onClick={
-														addedCount > 1 ? onClickMinus : onClickRemove
-													}
 													className={
-														"fullitem__card_info-bottom_buttons_button_minus_wrapper"
+														"fullitem__card_info-bottom_buttons_button"
 													}
 												>
 													<div
-														className={
-															"fullitem__card_info-bottom_buttons_button_minus"
+														onClick={
+															addedCount > 1 ? onClickMinus : onClickRemove
 														}
-													></div>
-												</div>
-												{addedCount}
-												<button
-													onClick={onClickAdd}
-													className={
-														"fullitem__card_info-bottom_buttons_button_pluses"
-													}
-												>
-													<div
 														className={
-															"fullitem__card_info-bottom_buttons_button_pluses_block"
+															"fullitem__card_info-bottom_buttons_button_minus_wrapper"
 														}
 													>
 														<div
 															className={
-																"fullitem__card_info-bottom_buttons_button_pluses_itemv"
-															}
-														></div>
-														<div
-															className={
-																"fullitem__card_info-bottom_buttons_button_pluses_itemh"
+																"fullitem__card_info-bottom_buttons_button_minus"
 															}
 														></div>
 													</div>
-												</button>
+													{addedCount}
+													<button
+														onClick={onClickAdd}
+														className={
+															"fullitem__card_info-bottom_buttons_button_pluses"
+														}
+													>
+														<div
+															className={
+																"fullitem__card_info-bottom_buttons_button_pluses_block"
+															}
+														>
+															<div
+																className={
+																	"fullitem__card_info-bottom_buttons_button_pluses_itemv"
+																}
+															></div>
+															<div
+																className={
+																	"fullitem__card_info-bottom_buttons_button_pluses_itemh"
+																}
+															></div>
+														</div>
+													</button>
+												</div>
 											</div>
-										</div>
-									) : (
-										<button
-											className="fullitem__card_info-bottom_btn"
-											to="/cart"
-											onClick={onClickAdd}
-										>
-											В корзину
-										</button>
-									)}
+										) : (
+											<button
+												className="fullitem__card_info-bottom_btn"
+												to="/cart"
+												onClick={onClickAdd}
+											>
+												В корзину
+											</button>
+										)}
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div className="fullitem__description container">
-						<div className="fullitem__description_left">
-							<div className="fullitem__description_left-block">
-								<p>Описание</p>
-								<div className="fullitem__description_left_description">
-									{item.description_full}
+						<div className="fullitem__description container">
+							<div className="fullitem__description_left">
+								<div className="fullitem__description_left-block">
+									<p>Описание</p>
+									<div className="fullitem__description_left_description">
+										{item.description_full}
+									</div>
 								</div>
-							</div>
-							<div className="fullitem__description_left-block">
-								<p>Особенности</p>
-								{renderStatus &&
-									JSON.parse(item.feature).map((feature) => (
-										<div className="fullitem__description_left_spec">
-											<div className="fullitem__description_left_spec_title">
-												{feature.title}
-											</div>
-											<div className="fullitem__description_left_spec_text">
-												{feature.desc}
-											</div>
-										</div>
-									))}
-							</div>
-							<div className="fullitem__description_right">
-								<p>Характеристика</p>
-								<div className="fullitem__description_right_har">
+								<div className="fullitem__description_left-block">
+									<p>Особенности</p>
 									{renderStatus &&
-										JSON.parse(item?.parameters).map((item, index) => (
-											<div
-												className="fullitem__description_right_har_item"
-												key={index}
-											>
-												<div className="fullitem__description_right_har_item_left">
-													{item.title}
+										JSON.parse(item.feature).map((feature) => (
+											<div className="fullitem__description_left_spec">
+												<div className="fullitem__description_left_spec_title">
+													{feature.title}
 												</div>
-												<div className="fullitem__description_right_har_item_right">
-													{item.desc}
+												<div className="fullitem__description_left_spec_text">
+													{feature.desc}
 												</div>
 											</div>
 										))}
 								</div>
+								<div className="fullitem__description_right">
+									<p>Характеристика</p>
+									<div className="fullitem__description_right_har">
+										{renderStatus &&
+											JSON.parse(item?.parameters).map((item, index) => (
+												<div
+													className="fullitem__description_right_har_item"
+													key={index}
+												>
+													<div className="fullitem__description_right_har_item_left">
+														{item.title}
+													</div>
+													<div className="fullitem__description_right_har_item_right">
+														{item.desc}
+													</div>
+												</div>
+											))}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="fullitem__comments container">
+							<p className="fullitem__comments_title">Отзывы</p>
+							<div className="fullitem__comments_items">
+								{arrStatus === "success" && comments.items.length > 0 ? (
+									comments.items.map((comment) => (
+										<Comment
+											first_name={comment.first_name}
+											last_name={comment.last_name}
+											anon={comment.anon}
+											author_id={comment.author_id}
+											date={comment.date_timestamp}
+											rating={comment.rating}
+											text={comment.text}
+										></Comment>
+									))
+								) : (
+									<div className="personal__empty_wrapper">
+										<div className="container personal__empty_container">
+											<div
+												style={{
+													backgroundImage:
+														theme === "dark"
+															? `url('../assets/img/no-item black theme.png')`
+															: `url('../assets/img/no-item.png')`,
+													backgroundSize: "cover",
+												}}
+												className="personal__empty"
+											>
+												Пусто
+											</div>
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
-					<div className="fullitem__comments container">
-						<p className="fullitem__comments_title">Отзывы</p>
-						<div className="fullitem__comments_items">
-							{arrStatus === "success" && comments.items.length > 0 ? (
-								comments.items.map((comment) => (
-									<Comment
-										first_name={comment.first_name}
-										last_name={comment.last_name}
-										anon={comment.anon}
-										author_id={comment.author_id}
-										date={comment.date_timestamp}
-										rating={comment.rating}
-										text={comment.text}
-									></Comment>
-								))
-							) : (
-								<div className="personal__empty_wrapper">
-									<div className="container personal__empty_container">
-										<div
-											style={{
-												backgroundImage:
-													theme === "dark"
-														? `url('../assets/img/no-item black theme.png')`
-														: `url('../assets/img/no-item.png')`,
-												backgroundSize: "cover",
-											}}
-											className="personal__empty"
-										>
-											Пусто
-										</div>
-									</div>
-								</div>
-							)}
-						</div>
-					</div>
-				</div>
+				)
 			)}
 		</>
 	);

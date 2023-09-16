@@ -25,6 +25,7 @@ const cartSlice = createSlice({
 			const findItem = state.cartItems.find(
 				(obj) =>
 					(obj.id === action.payload.id &&
+						obj.color === action.payload.color &&
 						isEqual(obj.parameters, action.payload.parameters)) ||
 					obj.cartId === action.payload.cartId
 			);
@@ -39,16 +40,19 @@ const cartSlice = createSlice({
 			state.cartItems = state.cartItems.filter(
 				(obj) =>
 					obj.cartId !== action.payload &&
-					obj.parameters !== action.payload.parameters
+					obj.parameters !== action.payload.parameters &&
+					obj.id !== action.payload
 			);
 			state.totalPrice = calcTotalPrice(state.cartItems);
 		},
 		removeItemFromFullItem(state, action) {
-			state.cartItems = state.cartItems.filter(
-				(obj) =>
-					obj.name !== action.payload.name &&
-					!isEqual(obj.parameters, action.payload.paramters)
-			);
+			state.cartItems = state.cartItems.filter((obj) => {
+				if (action.payload.category === "Клавиатуры") {
+					return !isEqual({ ...obj.parameters }, action.payload.parameters);
+				} else {
+					return obj.id !== action.payload.id;
+				}
+			});
 		},
 		minusItem(state, action) {
 			const findItem = state.cartItems.find(
@@ -70,13 +74,26 @@ const cartSlice = createSlice({
 });
 
 export const selectCart = (state) => state.cart;
-export const selectCartItemById = (name, parameters, color) => (state) =>
-	state.cart.cartItems.find(
-		(obj) =>
-			isEqual(obj.parameters, parameters) &&
-			obj.name === name &&
-			obj.color === color
-	);
+export const selectCartItemById = (params) => (state) =>
+	state.cart.cartItems.find((obj) => {
+		if (params.category === "Клавиатуры") {
+			return (
+				obj.id === params.id &&
+				isEqual(obj.parameters, params.parameters) &&
+				obj.name === params.name &&
+				obj.color === params.color
+			);
+		}
+		if (params.color !== undefined) {
+			return (
+				obj.id === params.id &&
+				obj.color === params.color &&
+				obj.name === params.name
+			);
+		} else {
+			return obj.id === params.id && obj.name === params.name;
+		}
+	});
 
 export const {
 	addItem,

@@ -1,11 +1,13 @@
-import { Suspense, useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Suspense, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Routes, useLocation } from "react-router-dom";
 
 import Header from "./components/Header/Header";
 
+import { Footer, Menu } from "./components";
 import {
 	Admin,
+	ConfirmedOrder,
 	// AdminChange,
 	// AdminCreate,
 	// AdminCreatePromocode,
@@ -14,10 +16,9 @@ import {
 	// AdminPromocodes,
 	Favorites,
 	ForgotMessage,
-	Settings,
-	Orders,
 	NewPassword,
-	ConfirmedOrder,
+	Orders,
+	Settings,
 } from "./pages";
 import Cart from "./pages/Cart";
 import Catalog from "./pages/Catalog";
@@ -30,10 +31,6 @@ import Personal from "./pages/Personal";
 import Register from "./pages/Register";
 import { fetchAuthMe } from "./redux/slices/authSlice";
 import "./sass/index.sass";
-import { debounce } from "lodash";
-import { Footer, Menu } from "./components";
-import { selectFilter } from "./redux/slices/fiterSlice";
-import { fetchItems } from "./redux/slices/itemsSlice";
 
 const App = () => {
 	const dispatch = useDispatch();

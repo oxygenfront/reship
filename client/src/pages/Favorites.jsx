@@ -1,68 +1,65 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-import { FavoriteItem } from '../components'
-import { useSelector } from 'react-redux'
+import { FavoriteItem } from "../components";
+import { useSelector } from "react-redux";
 
-import { selectFavorites } from '../redux/slices/favoriteSlice'
+import { selectFavorites } from "../redux/slices/favoriteSlice";
 
 const Favorites = () => {
-  const { favorites } = useSelector(selectFavorites)
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  const theme = useSelector((state) => state.theme)
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth)
-    }
+	const { favorites } = useSelector(selectFavorites);
 
-    window.addEventListener('resize', handleResize)
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const theme = useSelector((state) => state.theme);
+	useEffect(() => {
+		function handleResize() {
+			setWindowWidth(window.innerWidth);
+		}
 
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+		window.addEventListener("resize", handleResize);
 
-  return (
-    <>
-      <section className="favorites">
-        <div className="favorites_wrapper container">
-          <div className="favorites_container">
-            <div className="favorites_title">
-              <h1>Избранное</h1>
-            </div>
-            <div className="favorites_items">
-              {favorites.length > 0 ? (
-                favorites.map((item) => (
-                  <FavoriteItem
-                    weight={item.weight}
-                    image={item.image}
-                    name={item.name}
-                    id={item.id}
-                    key={item.id}
-                    price={item.price}
-                  ></FavoriteItem>
-                ))
-              ) : (
-                <div className="cart__empty_wrapper">
-                  <div className="container cart__empty_container">
-                    <div
-                      style={{
-                        backgroundImage:
-                          theme === 'dark'
-                            ? `url('../assets/img/no-item black theme.png')`
-                            : `url('../assets/img/no-item.png')`,
-                        backgroundSize: 'cover',
-                      }}
-                      className="cart__empty"
-                    >
-                      У вас пока нет<br></br> товара в избранном
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  )
-}
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
-export default Favorites
+	return (
+		<>
+			<section className="favorites">
+				<div className="favorites_wrapper container">
+					<div className="favorites_container">
+						<div className="favorites_title">
+							<h1>Избранное</h1>
+						</div>
+						<div className="favorites_items">
+							{favorites.length > 0 ? (
+								favorites.map((item) => (
+									<FavoriteItem
+										key={item.cartId}
+										params={item}
+									></FavoriteItem>
+								))
+							) : (
+								<div className="cart__empty_wrapper">
+									<div className="container cart__empty_container">
+										<div
+											style={{
+												backgroundImage:
+													theme === "dark"
+														? `url('../assets/img/no-item black theme.png')`
+														: `url('../assets/img/no-item.png')`,
+												backgroundSize: "cover",
+											}}
+											className="cart__empty"
+										>
+											У вас пока нет<br></br> товара в избранном
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+				</div>
+			</section>
+		</>
+	);
+};
+
+export default Favorites;

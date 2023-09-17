@@ -21,11 +21,17 @@ import {
 	fetchGetReviewsForProductId,
 	selectCommentsData,
 } from "../redux/slices/commentSlice";
+import {
+	addFavorite,
+	removeFavorite,
+	selectFavorites,
+} from "../redux/slices/favoriteSlice";
 
 const FullItem = () => {
 	const token = localStorage.getItem("token");
-	const { id } = useParams();
 
+	const { id } = useParams();
+	const { favorites } = useSelector(selectFavorites);
 	const theme = useSelector((state) => state.theme);
 	const { comments, arrStatus } = useSelector(selectCommentsData);
 	const { cartItems } = useSelector(selectCart);
@@ -33,6 +39,8 @@ const FullItem = () => {
 	const { item, status } = useSelector(selectFullItemData);
 
 	const renderStatus = Boolean(status === "success");
+
+	const [isFavorite, setIsFavorite] = useState(false);
 
 	const [layouts, setLayouts] = useState([]);
 	const [plates, setPlates] = useState([]);
@@ -66,7 +74,6 @@ const FullItem = () => {
 		renderStatus &&
 		(JSON.parse(item.colors).find((item) => item.id === Number(id)) ||
 			JSON.parse(item.colors)[0]);
-	console.log(colors);
 
 	const collectedItem = {
 		id: item.id,
@@ -190,6 +197,42 @@ const FullItem = () => {
 		} else return switchText;
 	};
 
+	useEffect(() => {
+		const ids = favorites.some((obj) => {
+			if (obj.category === "Клавиатуры") {
+				return (
+					obj.id === collectedItem.id &&
+					isEqual(obj.parameters, collectedItem.parameters) &&
+					obj.name === collectedItem.name &&
+					obj.color === collectedItem.color
+				);
+			}
+			if (collectedItem.color !== undefined) {
+				return (
+					obj.id === collectedItem.id &&
+					obj.color === collectedItem.color &&
+					obj.name === collectedItem.name
+				);
+			} else {
+				return obj.id === collectedItem.id && obj.name === collectedItem.name;
+			}
+		});
+		setIsFavorite(ids);
+	}, [favorites, collectedItem]);
+
+	const onChangeFavorite = () => {
+		if (!isFavorite) {
+			dispatch(addFavorite(collectedItem));
+
+			return setIsFavorite(true);
+		}
+		if (isFavorite) {
+			dispatch(removeFavorite(collectedItem));
+
+			return setIsFavorite(false);
+		}
+	};
+
 	if (navigate) {
 		return <Navigate to="/login"></Navigate>;
 	}
@@ -203,8 +246,9 @@ const FullItem = () => {
 							<div className="fullitem__card-sliders">
 								{renderStatus && (
 									<FullItemSlider
-										image={item.image_link}
-										id={id}
+										paramsItem={item}
+										isFavorite={isFavorite}
+										onChangeFavorite={onChangeFavorite}
 									></FullItemSlider>
 								)}
 							</div>
@@ -357,8 +401,14 @@ const FullItem = () => {
 																		className={
 																			renderStatus
 																				? Number(id) === colour.id
-																					? `fullitem__card_info-params_block_color active ${colour?.color?.toLowerCase()}`
-																					: `fullitem__card_info-params_block_color ${colour?.color?.toLowerCase()}`
+																					? `fullitem__card_info-params_block_color active ${
+																							colour?.color?.toLowerCase() ||
+																							colour.toLowerCase()
+																					  }`
+																					: `fullitem__card_info-params_block_color ${
+																							colour?.color?.toLowerCase() ||
+																							colour.toLowerCase()
+																					  }`
 																				: ""
 																		}
 																		key={colour.id}

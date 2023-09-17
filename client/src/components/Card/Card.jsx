@@ -17,6 +17,7 @@ import {
 } from "../../redux/slices/favoriteSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
+import { isEqual } from "lodash";
 
 const Card = (cardItem) => {
 	const dispatch = useDispatch();
@@ -81,28 +82,36 @@ const Card = (cardItem) => {
 
 	const [isFavorite, setIsFavorite] = useState(false);
 	useEffect(() => {
-		const ids = favorites.map((item) => item.id);
-
-		setIsFavorite(ids.includes(Number(cardItem.id)));
-	}, []);
+		const ids = favorites.some((obj) => {
+			if (obj.category === "Клавиатуры") {
+				return (
+					obj.id === collectedItem.id &&
+					isEqual(obj.parameters, collectedItem.parameters) &&
+					obj.name === collectedItem.name &&
+					obj.color === collectedItem.color
+				);
+			}
+			if (collectedItem.color !== undefined) {
+				return (
+					obj.id === collectedItem.id &&
+					obj.color === collectedItem.color &&
+					obj.name === collectedItem.name
+				);
+			} else {
+				return obj.id === collectedItem.id && obj.name === collectedItem.name;
+			}
+		});
+		setIsFavorite(ids);
+	}, [favorites, collectedItem]);
 
 	const onChangeFavorite = () => {
 		if (!isFavorite) {
-			dispatch(
-				addFavorite({
-					id: cardItem.id,
-					name: cardItem.name,
-					image: cardItem.image_link,
-					price: cardItem.price,
-					color,
-					weight: cardItem.weight,
-				})
-			);
+			dispatch(addFavorite(collectedItem));
 
 			return setIsFavorite(true);
 		}
 		if (isFavorite) {
-			dispatch(removeFavorite(cardItem.id));
+			dispatch(removeFavorite(collectedItem));
 
 			return setIsFavorite(false);
 		}

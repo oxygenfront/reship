@@ -99,11 +99,13 @@ router.post(
 
 // admin
 router.post("/createProduct", apiPostController.createProduct);
+router.post("/createSwitch", apiPostController.createSwitch);
 router.post("/changeProduct", apiPostController.changeProduct);
 router.post("/deleteProduct", apiPostController.deleteProduct);
 router.post("/acceptPayment", apiPostController.acceptPayment);
 router.post("/addPromocode", apiPostController.addPromocode);
 router.get("/getOrdersAll", apiPostController.getOrdersAll);
+router.get("/getSwitches", apiPostController.getSwitches);
 router.post("/getAllPromocodes", apiPostController.getAllPromocodes);
 router.get("/getPayments", apiPostController.getPayments);
 

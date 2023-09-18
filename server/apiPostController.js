@@ -280,7 +280,7 @@ class ApiPostController {
     let query = "SELECT * FROM products";
 
     if (search) {
-      query += ` WHERE name LIKE '%${search}%'`
+      query += ` WHERE name LIKE '%${search}%'`;
     }
 
     if (priceStart && priceEnd) {
@@ -288,8 +288,7 @@ class ApiPostController {
         query += ` AND price BETWEEN ${tools.delInjection(
           priceStart
         )} AND ${tools.delInjection(priceEnd)}`;
-      }
-      else {
+      } else {
         query += ` WHERE price BETWEEN ${tools.delInjection(
           priceStart
         )} AND ${tools.delInjection(priceEnd)}`;
@@ -306,7 +305,7 @@ class ApiPostController {
       if (error) {
         return response
           .status(500)
-          .json({ error: "Ошибка на сервере", bcode: 2.2, e:error});
+          .json({ error: "Ошибка на сервере", bcode: 2.2, e: error });
       }
 
       if (categories.length >= 1) {
@@ -426,7 +425,7 @@ class ApiPostController {
   async getUser(request, response) {
     if (!request.headers.hasOwnProperty("authorization")) {
       return response
-        .status(400)
+        .status(200)
         .json({ error: "Некорректные данные", bcode: 4 });
     }
 
@@ -802,7 +801,9 @@ class ApiPostController {
                   parameters
                 )}', '${JSON.stringify(parameters_avail)}', '${JSON.stringify(
                   image_links
-                )}', '${category}', '${JSON.stringify(info_category)}', '${brand}', '${feature}', '${JSON.stringify(
+                )}', '${category}', '${JSON.stringify(
+                  info_category
+                )}', '${brand}', '${feature}', '${JSON.stringify(
                   type
                 )}', '${JSON.stringify(parameters_dop)}', '${weight}');`,
                 (error, rows, fields) => {
@@ -865,16 +866,13 @@ class ApiPostController {
       request.body.description_small
     );
 
-    const description_full = tools.delInjection(
-      request.body.description_full
-    );
+    const description_full = tools.delInjection(request.body.description_full);
 
     const old_price = tools.delInjection(request.body.old_price);
     const price = tools.delInjection(request.body.price);
     const availability = tools.delInjection(request.body.availability);
     const brand = tools.delInjection(request.body.brand);
     // const feature = tools.delInjection(request.body.feature);
-    
 
     // const info_category = JSON.parse(request.body.info_category);
     // const colors = JSON.parse(request.body.colors);
@@ -889,7 +887,6 @@ class ApiPostController {
     const weight = tools.delInjection(request.body.weight);
 
     const token = tools.delInjection(request.headers.authorization);
-
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${token}'`,
@@ -914,17 +911,11 @@ class ApiPostController {
             }
 
             if (description_small) {
-              sql_start +=
-                "`description_small` = '" +
-                description_small +
-                "',";
+              sql_start += "`description_small` = '" + description_small + "',";
             }
 
             if (description_full) {
-              sql_start +=
-                "`description_full` = '" +
-                description_full +
-                "',";
+              sql_start += "`description_full` = '" + description_full + "',";
             }
 
             if (old_price) {
@@ -936,18 +927,18 @@ class ApiPostController {
             }
 
             if (availability) {
-              sql_start +=
-                "`availability` = '" + availability + "',";
+              sql_start += "`availability` = '" + availability + "',";
             }
 
             if (request.body.colors) {
               sql_start +=
-                "`colors` = '" + JSON.stringify(JSON.parse(request.body.colors)) + "',";
+                "`colors` = '" +
+                JSON.stringify(JSON.parse(request.body.colors)) +
+                "',";
             }
 
             if (weight) {
-              sql_start +=
-                "`weight` = '" + weight + "',";
+              sql_start += "`weight` = '" + weight + "',";
             }
 
             if (request.body.colors_avail) {
@@ -1000,17 +991,18 @@ class ApiPostController {
             }
 
             if (brand) {
-              sql_start +=
-                "`brand` = '" +
-                brand +
-                "',";
+              sql_start += "`brand` = '" + brand + "',";
             }
 
             if (category) {
               sql_start += "`category` = '" + category + "'";
             }
 
-            let sql_end = sql_start.replace(/,\s*$/, "") + " WHERE id='" + product_id + "';";
+            let sql_end =
+              sql_start.replace(/,\s*$/, "") +
+              " WHERE id='" +
+              product_id +
+              "';";
 
             database.query(sql_end, (error, rows, fields) => {
               if (error) {
@@ -2416,7 +2408,87 @@ class ApiPostController {
         .json({ error: "Город не найден", bcode: 37.2 });
     }
 
-    return response.json(price_calc)
+    return response.json(price_calc);
+  }
+
+  async createSwitch(request, response) {
+    if (
+      !request.body.hasOwnProperty("title") ||
+      !request.body.hasOwnProperty("color") ||
+      !request.body.hasOwnProperty("type") ||
+      !request.body.hasOwnProperty("description") ||
+      !request.body.hasOwnProperty("force_actuation") ||
+      !request.body.hasOwnProperty("force_limit") ||
+      !request.body.hasOwnProperty("power_tactical") ||
+      !request.body.hasOwnProperty("path_length") ||
+      !request.headers.hasOwnProperty("authorization")
+    ) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные", bcode: 38 });
+    }
+
+    const title = tools.delInjection(request.body.title);
+    const color = tools.delInjection(request.body.color);
+    const type = tools.delInjection(request.body.type);
+    const description = tools.delInjection(request.body.description);
+    const force_actuation = tools.delInjection(request.body.force_actuation);
+    const force_limit = tools.delInjection(request.body.force_limit);
+    const power_tactical = tools.delInjection(request.body.power_tactical);
+    const path_length = tools.delInjection(request.body.path_length);
+    const authorization = tools.delInjection(request.headers.authorization);
+
+    database.query(
+      `SELECT * FROM \`users\` WHERE token='${authorization}';`,
+      (error, rows) => {
+        if (error) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка на сервере", bcode: 38.1 });
+        }
+
+        if (rows.length !== 1 || rows[0].admin == 0) {
+          return response
+            .status(500)
+            .json({ error: "Ошибка доступа", bcode: 38.2 });
+        } else {
+          database.query(
+            `INSERT INTO \`switches\` (\`title\`, \`color\`, \`type\`, \`description\`, \`force_actuation\`, \`force_limit\`, \`power_tactical\`, \`path_length\`) VALUES ('${title}', '${color}', '${type}', '${description}', '${force_actuation}', '${force_limit}', '${power_tactical}', '${path_length}');`,
+            (error, rows) => {
+              if (error) {
+                return response
+                  .status(400)
+                  .json({ error: "Ошибка на сервере", bcode: 38.3});
+              }
+      
+              return response.json(request.body);
+            }
+          );
+        }
+      }
+    );
+  }
+
+  async getSwitches(request, response) {
+    if (
+      !request.query.hasOwnProperty("id")
+    ) {
+      return response
+        .status(400)
+        .json({ error: "Некорректные данные", bcode: 39 });
+    }
+
+    const id = tools.delInjection(request.query.id)
+
+    database.query(`SELECT * FROM \`switches\` WHERE id='${id}'`, (error, rows) => {
+      if (error) {
+        return response
+          .status(400)
+          .json({ error: "Некорректные данные", bcode: 39.1 });
+      }
+
+      return response.json(rows)
+    })    
   }
 }
 

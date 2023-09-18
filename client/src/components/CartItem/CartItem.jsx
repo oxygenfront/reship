@@ -15,7 +15,6 @@ const CartItem = ({
 	parameters,
 	cartId,
 }) => {
-
 	const dispatch = useDispatch();
 
 	const onClickPlus = () => {

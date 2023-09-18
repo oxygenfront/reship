@@ -49,7 +49,7 @@ const Favorites = () => {
 											}}
 											className="cart__empty"
 										>
-											У вас пока нет<br></br> товара в избранном
+											У вас пока нет<br></br> товаров в избранном
 										</div>
 									</div>
 								</div>

@@ -2487,7 +2487,7 @@ class ApiPostController {
           .json({ error: "Некорректные данные", bcode: 39.1 });
       }
 
-      return response.json(rows)
+      return response.json(rows[0])
     })    
   }
 }

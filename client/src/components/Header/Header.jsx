@@ -54,62 +54,64 @@ const Header = () => {
   }
 
   return (
-    <header className={styles.header}>
-      <div className={classNames(styles.header__container, styles.container)}>
-        <div className={styles.header__cont}>
-          <div className={styles.header_switch_wrapper}>
-            <Switch
-              checked={theme === 'dark'}
-              onChange={handleChange}
-              className={styles.header_switch}
-            >
-              <span
-                className={
-                  theme === 'light'
-                    ? styles.header_switch_circle
-                    : styles.header_switch_circle_active
-                }
-                aria-hidden='true'
-              />
-              <div className={styles.header_switch_sun}>
-                {windowWidth > 575 && (
-                  <img src='../assets/img/sun.svg' alt='sun' />
-                )}
-              </div>
-              <div className={styles.header_switch_moon}>
-                {windowWidth > 575 && (
-                  <img src='../assets/img/moon.svg' alt='moon' />
-                )}
-              </div>
-            </Switch>
-          </div>
-          <div className={styles.header_center}>
-            <a href='/#delpay' className={styles.header__delivery}>
-              Доставка и оплата
-            </a>
-            <a
-              target='_blank'
-              href='https://vk.com/topic-214661020_49655928'
-              className={styles.header__faq}
-            >
-              FAQ
-            </a>
-            <a
-              target='_blank'
-              href='https://vk.com/topic-214661020_49238528'
-              className={styles.header__comments}
-            >
-              Отзывы
-            </a>
-            {isAuth && status === 'success' && data.admin === 1 ? (
-              <Link to='/admin' className={styles.header__admin}>
-                ADMIN
-              </Link>
-            ) : null}
-          </div>
-        </div>
+		<header className={styles.header}>
+			<div className={classNames(styles.header__container, styles.container)}>
+				<div className={styles.header__cont}>
+					<div className={styles.header_switch_wrapper}>
+						<Switch
+							checked={theme === "dark"}
+							onChange={handleChange}
+							className={styles.header_switch}
+						>
+							<span
+								className={
+									theme === "light"
+										? styles.header_switch_circle
+										: styles.header_switch_circle_active
+								}
+								aria-hidden="true"
+							/>
+							<div className={styles.header_switch_sun}>
+								{windowWidth > 575 && (
+									<img src="../assets/img/sun.svg" alt="sun" />
+								)}
+							</div>
+							<div className={styles.header_switch_moon}>
+								{windowWidth > 575 && (
+									<img src="../assets/img/moon.svg" alt="moon" />
+								)}
+							</div>
+						</Switch>
+					</div>
+					<div className={styles.header_center}>
+						<a href="/#delpay" className={styles.header__delivery}>
+							Доставка и оплата
+						</a>
+						<a
+							target="_blank"
+							href="https://vk.com/topic-214661020_49655928"
+							className={styles.header__faq}
+							rel="noreferrer"
+						>
+							FAQ
+						</a>
+						<a
+							rel="noreferrer"
+							target="_blank"
+							href="https://vk.com/topic-214661020_49238528"
+							className={styles.header__comments}
+						>
+							Отзывы
+						</a>
+						{isAuth && status === "success" && data.admin === 1 ? (
+							<Link to="/admin" className={styles.header__admin}>
+								ADMIN
+							</Link>
+						) : null}
+					</div>
+				</div>
 
-        {/* <button
+				{/* <button
           onClick={() => setIsBurger(!isBurger)}
           className={
             isBurger
@@ -121,9 +123,9 @@ const Header = () => {
           <div className={styles.header__adaptive_burger_button_line}></div>
           <div className={styles.header__adaptive_burger_button_line}></div>
         </button> */}
-      </div>
-    </header>
-  );
+			</div>
+		</header>
+	);
 }
 
 export default React.memo(Header)

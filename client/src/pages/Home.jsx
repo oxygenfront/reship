@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { CatalogMain, Comment, Footer, Menu, Slider } from '../components'
-import Accordeon from '../components/Accordeon'
-import { SwiperSlide, Swiper } from 'swiper/react'
 import { Navigation } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { CatalogMain, Comment, Slider } from '../components'
+import Accordeon from '../components/Accordeon'
+import InfoSwitch from '../components/InfoSwitch/InfoSwitch'
 const Home = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth)
   useEffect(() => {
@@ -16,6 +17,7 @@ const Home = () => {
   }, [])
   return (
     <>
+      <InfoSwitch/>
       <Slider />
 
       <CatalogMain />

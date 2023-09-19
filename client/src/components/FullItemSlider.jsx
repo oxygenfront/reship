@@ -8,7 +8,9 @@ const FullItemSlider = ({
 	isFavorite,
 	onChangeFavorite,
 }) => {
-	const parsedImage = JSON.parse(paramsItem.image_link);
+	console.log(paramsItem)
+	
+	const parsedImage = JSON.parse(paramsItem?.image_link);
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const swiperRef = useRef(null);
 

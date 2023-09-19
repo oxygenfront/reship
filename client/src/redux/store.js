@@ -10,19 +10,20 @@ import change from './slices/changeSlice'
 import order from './slices/orderSlice'
 import theme from './slices/themeSlice'
 import comment from './slices/commentSlice'
-
+import switchInfo from './slices/switchInfoSlice'
 export const store = configureStore({
-  reducer: {
-    items,
-    cart,
-    fullItem,
-    auth,
-    filter,
-    admin,
-    favorites,
-    change,
-    order,
-    theme,
-    comment,
-  },
-})
+	reducer: {
+		items,
+		cart,
+		fullItem,
+		auth,
+		filter,
+		admin,
+		favorites,
+		change,
+		order,
+		theme,
+		comment,
+		switchInfo,
+	},
+});

@@ -1,5 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Menu as DropDown } from "@headlessui/react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { InputGroup, InputNumber, RangeSlider } from "rsuite";
 import { Card, Skeleton } from "../components";
 import {
 	selectFilter,
@@ -7,15 +9,9 @@ import {
 	setChoosenBrand,
 	setChoosenCategorie,
 	setChoosenPrice,
-	setChoosenType,
-	setSearchValue,
+	setChoosenType
 } from "../redux/slices/fiterSlice";
-import { fetchFullItem } from "../redux/slices/fullItemSlice";
 import { fetchItems, selectItemsData } from "../redux/slices/itemsSlice";
-import { RangeSlider, InputGroup, InputNumber } from "rsuite";
-import { Navigate } from "react-router-dom";
-import { Menu as DropDown } from "@headlessui/react";
-import ContentLoader from "react-content-loader";
 
 const Catalog = () => {
 	const dispatch = useDispatch();

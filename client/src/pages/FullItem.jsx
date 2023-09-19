@@ -46,7 +46,6 @@ const FullItem = () => {
 	const [plates, setPlates] = useState([]);
 	const [switches, setSwitches] = useState([]);
 	const [colors, setColors] = useState([]);
-console.log(colors)
 
 	const [selectedLayout, setSelectedLayout] = useState();
 	const [selectedPlate, setSelectedPlate] = useState();
@@ -587,8 +586,9 @@ console.log(colors)
 									<div className="fullitem__card-sliders">
 										{renderStatus && (
 											<FullItemSlider
-												image={item.image_link}
-												id={id}
+												paramsItem={item}
+												isFavorite={isFavorite}
+												onChangeFavorite={onChangeFavorite}
 											></FullItemSlider>
 										)}
 									</div>

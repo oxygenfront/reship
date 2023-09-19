@@ -21,13 +21,33 @@ import { isEqual } from "lodash";
 
 const Card = (cardItem) => {
 	const dispatch = useDispatch();
-	const isAuth = useSelector(selectIsAuth);
 	const { favorites } = useSelector(selectFavorites);
-	const token = localStorage.getItem("token");
 	const { data, status } = useSelector(selectUserData);
 	const [navigate, setNavigate] = useState(false);
 	const [color, setColor] = useState("");
 	const [addedCount, setAddedCount] = useState(0);
+	const [parameters, setParameters] = useState({
+		layout: "",
+		plate: "",
+		switch: "",
+	});
+
+	useEffect(() => {
+		setParameters({
+			plate:
+				JSON.parse(cardItem.parameters_dop)[0]?.plates[0] !== undefined
+					? Object.keys(JSON.parse(cardItem.parameters_dop)[0]?.plates[0])[0]
+					: "",
+			switch:
+				JSON.parse(cardItem.parameters_dop)[1]?.switches[0] !== undefined
+					? Object.keys(JSON.parse(cardItem.parameters_dop)[1]?.switches[0])[0]
+					: "",
+			layout:
+				JSON.parse(cardItem.parameters_dop)[2]?.layouts[0] !== undefined
+					? Object.keys(JSON.parse(cardItem.parameters_dop)[2]?.layouts[0])[0]
+					: "",
+		});
+	}, [cardItem, status]);
 
 	useEffect(() => {
 		if (cardItem.colors) {
@@ -49,7 +69,7 @@ const Card = (cardItem) => {
 	const collectedItem = {
 		id: cardItem.id,
 		cartId: Math.random(),
-		parameters: cardItem?.parameters ? cardItem.parameters : [],
+		parameters: parameters,
 		name: cardItem.name,
 		image: cardItem.image_link,
 		price: cardItem.price,
@@ -102,7 +122,7 @@ const Card = (cardItem) => {
 			}
 		});
 		setIsFavorite(ids);
-	}, [favorites, collectedItem]);
+	}, [favorites]);
 
 	const onChangeFavorite = () => {
 		if (!isFavorite) {
@@ -119,7 +139,6 @@ const Card = (cardItem) => {
 	if (navigate) {
 		return <Navigate to="/login"></Navigate>;
 	}
-
 	return (
 		<>
 			{cardItem.view === "grid" ? (
@@ -129,9 +148,9 @@ const Card = (cardItem) => {
 						className={styles.main_catalog__products_wrapper_item_favorite}
 					>
 						{isFavorite ? (
-							<img src="/assets/img/active-heart-main-catalog.png"></img>
+							<img src="/assets/img/active-heart-main-catalog.png" alt=""></img>
 						) : (
-							<img src="/assets/img/heart-main-catalog.png"></img>
+							<img src="/assets/img/heart-main-catalog.png" alt=""></img>
 						)}
 					</button>
 					<Link to={`/item/${cardItem.id}`}>
@@ -237,12 +256,12 @@ const Card = (cardItem) => {
 							{cardItem.name}
 						</Link>
 						<div className="catalog__main_item_mid-subtitle">
-							{cardItem.description}
+							{cardItem.description_small}
 						</div>
 					</div>
 					<div className="catalog__main_item_right">
 						<div className="catalog__main_item_right-price">
-							{cardItem.category === "Клавиатуры" ? "от" : null}
+							{cardItem.category === "Клавиатуры" ? "от " : null}
 							{cardItem.price} руб
 						</div>
 						{/* <div className="catalog__main_item_right-rating">

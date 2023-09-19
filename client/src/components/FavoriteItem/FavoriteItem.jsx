@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectIsAuth } from "../../redux/slices/authSlice";
 import {
 	addItem,
 	minusItem,
-	removeItem,
 	removeItemFromFullItem,
 	selectCartItemById,
 } from "../../redux/slices/cartSlice";
 import { removeFavorite } from "../../redux/slices/favoriteSlice";
-import styles from "./FavoriteItem.module.sass";
+import styles from "../CartItem/CartItem.module.sass";
 
+import classNames from "classnames";
 const FavoriteItem = ({ params }) => {
 	const dispatch = useDispatch();
 	const [addedCount, setAddedCount] = useState(0);
@@ -28,7 +27,6 @@ const FavoriteItem = ({ params }) => {
 	useEffect(() => {
 		cartItem ? setAddedCount(cartItem.count) : setAddedCount(0);
 	}, [cartItem]);
-	console.log(addedCount);
 
 	const onClickAdd = () => {
 		dispatch(addItem(params));
@@ -43,72 +41,169 @@ const FavoriteItem = ({ params }) => {
 		dispatch(removeItemFromFullItem(params));
 	};
 
-	return (
-		<div className={styles.favorite__item}>
-			<Link
-				to={`/params/${params.id}`}
-				className={styles.favorite__item_imgBlock}
-			>
-				<img src={JSON.parse(params.image)[0]} alt="product" />
-			</Link>
-			<div className={styles.favorite__item_columnBlock}>
-				<Link to={`/params/${params.id}`}>
-					<div className={styles.favorite__item_columnBlock_upBlock}>
-						<span className={styles.favorite__item_columnBlock_upBlock_name}>
-							{params.name}
-						</span>
-						<span className={styles.favorite__item_columnBlock_upBlock_price}>
-							{params.price} руб
-						</span>
-					</div>
-				</Link>
+	const colorSwitchForStyle = (switchText) => {
+		return switchText.split(" ")[switchText.split(" ").length - 1];
+	};
 
-				<div className={styles.favorite__item_midBlock}>
-					<span className={styles.favorite__item_midBlock_color}>
-						{params.color}
-					</span>
-				</div>
-				<div className={styles.favorite__item_bottomBlock}>
-					<button
-						className={styles.favorite__item_bottomBlock_delete}
-						onClick={onClickRemove}
-					>
-						<span>Удалить</span>
-					</button>
-					{addedCount > 0 ? (
-						<div className={styles.favorite__item_bottomBlock_button}>
-							<button
-								onClick={addedCount > 1 ? onClickMinus : onClickRemoveCart}
-								className={styles.favorite__item_bottomBlock_minus_wrapper}
-							>
-								<div className={styles.favorite__item_bottomBlock_minus}></div>
-							</button>
-							{addedCount}
-							<button
-								onClick={onClickAdd}
-								className={styles.favorite__item_bottomBlock_pluses}
-							>
-								<div className={styles.favorite__item_bottomBlock_pluses_block}>
-									<div
-										className={styles.favorite__item_bottomBlock_pluses_itemv}
-									></div>
-									<div
-										className={styles.favorite__item_bottomBlock_pluses_itemh}
-									></div>
-								</div>
-							</button>
-						</div>
-					) : (
-						<button
-							className={styles.favorite__item_bottomBlock_addToCart}
-							onClick={onClickAdd}
-						>
-							В корзину
-						</button>
+	const titleSwitch = (switchText) => {
+		if (switchText.split(" ").length > 1) {
+			return switchText.split(" ").slice(0, -1);
+		} else return switchText;
+	};
+
+	return (
+		<>
+			{params.image && (
+				<div
+					className={classNames(
+						styles.person__delivery_items_item,
+						styles.cart__delivery_items_item
 					)}
+				>
+					<div className={styles.cart__delivery_items_item_left}>
+						<Link
+							to={`/item/${params.id}`}
+							className={styles.cart__delivery_items_item_block_img}
+						>
+							<img
+								src={JSON.parse(params.image)[0]}
+								alt="product"
+								className={classNames(
+									styles.person__delivery_items_item_img,
+									styles.cart__delivery_items_item_block_img_img
+								)}
+							/>
+						</Link>
+
+						<div
+							className={classNames(
+								styles.person__delivery_items_item_name,
+								styles.cart__delivery_items_item_name
+							)}
+						>
+							<Link to={`/item/${params.id}`}>{params.name}</Link>
+							<div className={styles.cart__delivery_items_parameters}>
+								{params.color && (
+									<div
+										className={`fullitem__card_info-params_block_color active ${params.color?.toLowerCase()} colors`}
+									>
+										<span></span>
+									</div>
+								)}
+								{params.parameters?.switch && (
+									<div className="fullitem__card_info-params_block_button active">
+										<span
+											style={{
+												backgroundColor: `${colorSwitchForStyle(
+													params.parameters.switch
+												)}`,
+											}}
+										></span>
+										{titleSwitch(params.parameters.switch)}
+									</div>
+								)}
+								{params.parameters?.layout && (
+									<div className="fullitem__card_info-params_block_button active">
+										{params.parameters?.layout === "rus"
+											? "Русская"
+											: params.parameters?.layout === "eng"
+											? "Английская"
+											: params.parameters?.layout === "jpn" && "Японская"}
+									</div>
+								)}
+								{params.parameters?.plate && (
+									<div className="fullitem__card_info-params_block_button active">
+										{params.parameters?.plate === "allum"
+											? "Алюминий"
+											: params.parameters?.plate === "poliCarb"
+											? "Поликарбонат"
+											: params.parameters?.plate === "latun" && "Латунь"}
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+
+					<div className={styles.cart__delivery_items_item_right}>
+						<div
+							className={classNames(
+								styles.person__delivery_items_item_price,
+								styles.cart__delivery_items_item_price
+							)}
+						>
+							{params.price} руб
+						</div>
+						<div
+							className={styles.cart__delivery_items_item_favorite_block_delete}
+						>
+							<button
+								onClick={onClickRemove}
+								className={
+									styles.cart__delivery_items_item_favorite_block_delete_button
+								}
+							>
+								Удалить
+							</button>
+							{addedCount > 0 ? (
+								<div className={styles.cart__delivery_items_item_count_wrapper}>
+									<button
+										onClick={addedCount > 1 ? onClickMinus : onClickRemoveCart}
+										className={styles.cart__delivery_items_item_count_minus}
+									>
+										<div></div>
+									</button>
+									<div
+										className={classNames(
+											styles.person__delivery_items_item_count_number_block,
+											styles.cart__delivery_items_item_count_number_block
+										)}
+									>
+										<span
+											className={classNames(
+												styles.person__delivery_items_item_count_number_block_item,
+												styles.cart__delivery_items_item_count_number_block_item
+											)}
+										>
+											{addedCount}
+										</span>
+									</div>
+									<button
+										onClick={onClickAdd}
+										className={styles.cart__delivery_items_item_count_pluses}
+									>
+										<div
+											className={
+												styles.cart__delivery_items_item_count_pluses_block
+											}
+										>
+											<div
+												className={
+													styles.cart__delivery_items_item_count_pluses_itemv
+												}
+											></div>
+											<div
+												className={
+													styles.cart__delivery_items_item_count_pluses_itemh
+												}
+											></div>
+										</div>
+									</button>
+								</div>
+							) : (
+								<button
+									onClick={onClickAdd}
+									className={
+										styles.cart__delivery_items_item_favorite_block_delete_button
+									}
+								>
+									В корзину
+								</button>
+							)}
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
+			)}
+		</>
 	);
 };
 

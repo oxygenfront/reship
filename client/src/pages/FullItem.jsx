@@ -46,6 +46,7 @@ const FullItem = () => {
 	const [plates, setPlates] = useState([]);
 	const [switches, setSwitches] = useState([]);
 	const [colors, setColors] = useState([]);
+console.log(colors)
 
 	const [selectedLayout, setSelectedLayout] = useState();
 	const [selectedPlate, setSelectedPlate] = useState();
@@ -56,7 +57,7 @@ const FullItem = () => {
 	const [platePrice, setPlatePrice] = useState(0);
 	const [layoutPrice, setLayoutPrice] = useState(0);
 
-	const [parameters, setParameter] = useState({
+	const [parameters, setParameters] = useState({
 		layout: "",
 		plate: "",
 		switch: "",
@@ -116,7 +117,7 @@ const FullItem = () => {
 
 	// Выбор начальных/дефолтных значений при рендере
 	useEffect(() => {
-		setParameter({
+		setParameters({
 			layout: selectedLayout,
 			switch: selectedSwitch,
 			plate: selectedPlate,

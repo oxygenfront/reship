@@ -7,9 +7,8 @@ const FullItemSlider = ({
 	paramsItem,
 	isFavorite,
 	onChangeFavorite,
+	handleBigImage,
 }) => {
-	console.log(paramsItem)
-	
 	const parsedImage = JSON.parse(paramsItem?.image_link);
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const swiperRef = useRef(null);
@@ -56,6 +55,7 @@ const FullItemSlider = ({
 				</button>
 				<img
 					src={parsedImage[currentSlide]}
+					onClick={() => handleBigImage(parsedImage[currentSlide])}
 					alt="Большая картинка"
 					className="fullitem__card-slider_big-item"
 				/>

@@ -1,5 +1,5 @@
 import { isEqual } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useParams } from "react-router-dom";
 import {
@@ -16,7 +16,7 @@ import {
 
 import "swiper/css";
 import "swiper/css/bundle";
-import { Comment, FullItemSlider } from "../components";
+import { Comment, FullItemSlider, InfoSwitch } from "../components";
 import {
 	fetchGetReviewsForProductId,
 	selectCommentsData,
@@ -26,6 +26,7 @@ import {
 	removeFavorite,
 	selectFavorites,
 } from "../redux/slices/favoriteSlice";
+import { AiOutlineClose } from "react-icons/ai";
 
 const FullItem = () => {
 	const token = localStorage.getItem("token");
@@ -62,6 +63,8 @@ const FullItem = () => {
 		switch: "",
 	});
 
+	const [bigImage, setBigImage] = useState("");
+
 	const [isDifferent, setIsDifferent] = useState(false);
 
 	const [addedCount, setAddedCount] = useState(0);
@@ -69,6 +72,11 @@ const FullItem = () => {
 	const dispatch = useDispatch();
 	const [navigate, setNavigate] = useState(false);
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+	const [isHovered, setIsHovered] = useState({
+		isHovered: false,
+		id: "",
+	});
 
 	const colorItem =
 		renderStatus &&
@@ -88,6 +96,10 @@ const FullItem = () => {
 		count: 0,
 	};
 
+	const handleBigImage = (image) => {
+		setBigImage(image);
+	};
+
 	const onClickAdd = () => {
 		dispatch(addItem(collectedItem));
 	};
@@ -96,6 +108,24 @@ const FullItem = () => {
 	};
 	const onClickRemove = () => {
 		dispatch(removeItemFromFullItem(collectedItem));
+	};
+
+	const mouseRef = useRef();
+
+	const handlerMouseEnter = (svitch) => {
+		mouseRef.current = setTimeout(() => {
+			setIsHovered({
+				isHovered: true,
+				id: svitch.id,
+			});
+		}, 750);
+	};
+	const handlerMouseLeave = () => {
+		clearTimeout(mouseRef.current);
+		setIsHovered({
+			isHovered: false,
+			id: "",
+		});
 	};
 
 	// Добавление объектов плат, свитчей и раскладок в стейты
@@ -109,9 +139,9 @@ const FullItem = () => {
 	}, [item]);
 
 	useEffect(() => {
-		plates.length > 0 && setSelectedPlate(Object.keys(plates[0])[0]);
-		switches.length > 0 && setSelectedSwitch(Object.keys(switches[0])[0]);
-		layouts.length > 0 && setSelectedLayout(Object.keys(layouts[0])[0]);
+		plates.length > 0 && setSelectedPlate(plates[0]?.value);
+		switches.length > 0 && setSelectedSwitch(switches[0]?.name);
+		layouts.length > 0 && setSelectedLayout(layouts[0]?.value);
 	}, [renderStatus, plates, switches, layouts]);
 
 	// Выбор начальных/дефолтных значений при рендере
@@ -125,19 +155,13 @@ const FullItem = () => {
 
 	// Добавление цены параметрам
 	useEffect(() => {
-		const foundSwitch = switches.find(
-			(item) => Object.keys(item)[0] === selectedSwitch
-		);
-		const foundLayout = layouts.find(
-			(item) => Object.keys(item)[0] === selectedLayout
-		);
-		const foundPlate = plates.find(
-			(item) => Object.keys(item)[0] === selectedPlate
-		);
+		const foundSwitch = switches.find((item) => item.name === selectedSwitch);
+		const foundLayout = layouts.find((item) => item.value === selectedLayout);
+		const foundPlate = plates.find((item) => item.value === selectedPlate);
 
-		const layoutPrice = foundLayout?.[selectedLayout];
-		const switchPrice = foundSwitch?.[selectedSwitch];
-		const platePrice = foundPlate?.[selectedPlate];
+		const layoutPrice = foundLayout?.price;
+		const switchPrice = foundSwitch?.price;
+		const platePrice = foundPlate?.price;
 
 		setSwitchPrice(switchPrice ?? 0);
 		setLayoutPrice(layoutPrice ?? 0);
@@ -218,8 +242,7 @@ const FullItem = () => {
 			}
 		});
 		setIsFavorite(ids);
-	}, [favorites, collectedItem]);
-
+	}, [favorites]);
 	const onChangeFavorite = () => {
 		if (!isFavorite) {
 			dispatch(addFavorite(collectedItem));
@@ -236,12 +259,30 @@ const FullItem = () => {
 	if (navigate) {
 		return <Navigate to="/login"></Navigate>;
 	}
+
 	return (
 		<>
 			{windowWidth > 991 && renderStatus ? (
 				<div className="fullitem">
 					<div className="fullitem__card-wrapper">
 						<div className="fullitem__card-breadcrumb container"></div>
+						{bigImage && (
+							<div className="fullitem__card-sliders_big-wrapper">
+								<div className="fullitem__card-sliders_big-image_wrapper">
+									<img
+										className="fullitem__card-sliders_big-image"
+										src={bigImage}
+										alt="Большое изображение"
+									></img>
+								</div>
+								<button
+									onClick={() => setBigImage("")}
+									className="fullitem__card-sliders_big-close"
+								>
+									<AiOutlineClose />
+								</button>
+							</div>
+						)}
 						<div className="fullitem__card container">
 							<div className="fullitem__card-sliders">
 								{renderStatus && (
@@ -249,6 +290,7 @@ const FullItem = () => {
 										paramsItem={item}
 										isFavorite={isFavorite}
 										onChangeFavorite={onChangeFavorite}
+										handleBigImage={handleBigImage}
 									></FullItemSlider>
 								)}
 							</div>
@@ -266,34 +308,44 @@ const FullItem = () => {
 													<div className="fullitem__card_info-params_block">
 														<p>Переключатели</p>
 
-														<div className="fullitem__card_info-params_block-wrapper swithes">
+														<div className="fullitem__card_info-params_block-wrapper switches">
+															{isHovered.isHovered ? (
+																<InfoSwitch id={isHovered.id} />
+															) : null}
 															{switches &&
-																switches.map((svitch) => (
+																switches.map((svitch, index) => (
 																	<button
-																		key={Object.keys(svitch)[0]}
+																		key={index}
 																		onClick={(e) => {
 																			setSwitchPrice(Number(e.target.value));
-																			setSelectedSwitch(Object.keys(svitch)[0]);
+																			setSelectedSwitch(svitch.name);
 																		}}
-																		value={Object.values(svitch)[0]}
+																		value={svitch.price}
+																		style={{
+																			position: "relative",
+																		}}
 																		className={
-																			selectedSwitch === Object.keys(svitch)[0]
+																			selectedSwitch === svitch.name
 																				? `fullitem__card_info-params_block_button ${colorSwitchForStyle(
-																						Object.keys(svitch)[0]
+																						svitch.color
 																				  )} active`
 																				: `fullitem__card_info-params_block_button ${colorSwitchForStyle(
-																						Object.keys(svitch)[0]
+																						svitch.color
 																				  )}`
 																		}
+																		onMouseEnter={() =>
+																			handlerMouseEnter(svitch)
+																		}
+																		onMouseLeave={() => handlerMouseLeave()}
 																	>
 																		<span
 																			style={{
 																				backgroundColor: `${colorSwitchForStyle(
-																					Object.keys(svitch)[0]
+																					svitch.color
 																				)}`,
 																			}}
 																		></span>
-																		{titleSwitch(Object.keys(svitch)[0])}
+																		{titleSwitch(svitch.name)}
 																	</button>
 																))}
 														</div>
@@ -312,7 +364,7 @@ const FullItem = () => {
 																		}
 																		className={
 																			renderStatus
-																				? Number(id) === colour.id
+																				? Number(id) === Number(colour.id)
 																					? `fullitem__card_info-params_block_color active ${colour?.color?.toLowerCase()}`
 																					: `fullitem__card_info-params_block_color ${colour?.color?.toLowerCase()}`
 																				: ""
@@ -329,26 +381,25 @@ const FullItem = () => {
 														<p>Раскладка</p>
 														<div className="fullitem__card_info-params_block-wrapper layouts">
 															{layouts &&
-																layouts.map((layout) => (
+																layouts.map((layout, index) => (
 																	<button
-																		key={Object.keys(layout)[0]}
-																		value={Object.values(layout)[0]}
+																		key={index}
+																		value={layout.price}
 																		onClick={(e) => {
 																			setLayoutPrice(Number(e.target.value));
-																			setSelectedLayout(Object.keys(layout)[0]);
+																			setSelectedLayout(layout.value);
 																		}}
 																		className={
-																			selectedLayout === Object.keys(layout)[0]
+																			selectedLayout === layout.value
 																				? "fullitem__card_info-params_block_button active"
 																				: "fullitem__card_info-params_block_button"
 																		}
 																	>
-																		{Object.keys(layout)[0] === "rus"
+																		{layout.value === "rus"
 																			? "Русская"
-																			: Object.keys(layout)[0] === "eng"
+																			: layout.value === "eng"
 																			? "Английская"
-																			: Object.keys(layout)[0] === "jpn" &&
-																			  "Японская"}
+																			: layout.value === "jpn" && "Японская"}
 																	</button>
 																))}
 														</div>
@@ -359,26 +410,21 @@ const FullItem = () => {
 														<p>Материал платы</p>
 														<div className="fullitem__card_info-params_block-wrapper plates">
 															{plates &&
-																plates.map((plate) => (
+																plates.map((plate, index) => (
 																	<button
-																		key={Object.keys(plate)[0]}
-																		value={Object.values(plate)[0]}
+																		key={index}
+																		value={plate.price}
 																		onClick={(e) => {
 																			setPlatePrice(Number(e.target.value));
-																			setSelectedPlate(Object.keys(plate)[0]);
+																			setSelectedPlate(plate.value);
 																		}}
 																		className={
-																			selectedPlate === Object.keys(plate)[0]
+																			selectedPlate === plate.value
 																				? "fullitem__card_info-params_block_button active"
 																				: "fullitem__card_info-params_block_button"
 																		}
 																	>
-																		{Object.keys(plate)[0] === "allum"
-																			? "Алюминий"
-																			: Object.keys(plate)[0] === "poliCarb"
-																			? "Поликарбонат"
-																			: Object.keys(plate)[0] === "latun" &&
-																			  "Латунь"}
+																		{plate.title}
 																	</button>
 																))}
 														</div>
@@ -400,7 +446,7 @@ const FullItem = () => {
 																		}
 																		className={
 																			renderStatus
-																				? Number(id) === colour.id
+																				? Number(id) === Number(colour.id)
 																					? `fullitem__card_info-params_block_color active ${
 																							colour?.color?.toLowerCase() ||
 																							colour.toLowerCase()
@@ -580,15 +626,33 @@ const FullItem = () => {
 					<div className="fullitem">
 						<div className="fullitem__card-wrapper">
 							<div className="fullitem__card-breadcrumb container"></div>
+							{bigImage && (
+								<div className="fullitem__card-sliders_big-wrapper">
+									<div className="fullitem__card-sliders_big-image_wrapper">
+										<img
+											className="fullitem__card-sliders_big-image"
+											src={bigImage}
+											alt="Большое изображение"
+										></img>
+									</div>
+									<button
+										onClick={() => setBigImage("")}
+										className="fullitem__card-sliders_big-close"
+									>
+										<AiOutlineClose />
+									</button>
+								</div>
+							)}
 							<div className="fullitem__card container">
 								<div className="fullitem__card_info-wrapper">
-									<div className="fullitem__card_info-name">{item.name}</div>
+									<h1 className="fullitem__card_info-name">{item.name}</h1>
 									<div className="fullitem__card-sliders">
 										{renderStatus && (
 											<FullItemSlider
 												paramsItem={item}
 												isFavorite={isFavorite}
 												onChangeFavorite={onChangeFavorite}
+												handleBigImage={handleBigImage}
 											></FullItemSlider>
 										)}
 									</div>
@@ -603,96 +667,40 @@ const FullItem = () => {
 														<div className="fullitem__card_info-params_block">
 															<p>Переключатели</p>
 
-															<div className="fullitem__card_info-params_block-wrapper swithes">
+															<div className="fullitem__card_info-params_block-wrapper switches">
 																{switches &&
-																	switches.map((svitch) => (
+																	switches.map((svitch, index) => (
 																		<button
-																			key={Object.keys(svitch)[0]}
+																			key={index}
 																			onClick={(e) => {
 																				setSwitchPrice(Number(e.target.value));
-																				setSelectedSwitch(
-																					Object.keys(svitch)[0]
-																				);
+																				setSelectedSwitch(svitch.name);
 																			}}
-																			value={Object.values(svitch)[0]}
+																			value={svitch.price}
 																			className={
-																				selectedSwitch ===
-																				Object.keys(svitch)[0]
+																				selectedSwitch === svitch.name
 																					? `fullitem__card_info-params_block_button ${colorSwitchForStyle(
-																							Object.keys(svitch)[0]
+																							svitch.color
 																					  )} active`
 																					: `fullitem__card_info-params_block_button ${colorSwitchForStyle(
-																							Object.keys(svitch)[0]
+																							svitch.color
 																					  )}`
 																			}
+																			// onMouseEnter={() =>
+																			// 	handlerMouseEnter(svitch)
+																			// }
+																			// onMouseLeave={() =>
+																			// 	handlerMouseLeave(svitch)
+																			// }
 																		>
 																			<span
 																				style={{
 																					backgroundColor: `${colorSwitchForStyle(
-																						Object.keys(svitch)[0]
+																						svitch.color
 																					)}`,
 																				}}
 																			></span>
-																			{titleSwitch(Object.keys(svitch)[0])}
-																		</button>
-																	))}
-															</div>
-														</div>
-													)}
-
-													{layouts.length > 0 && (
-														<div className="fullitem__card_info-params_block ">
-															<p>Раскладка</p>
-															<div className="fullitem__card_info-params_block-wrapper layouts">
-																{layouts &&
-																	layouts.map((layout) => (
-																		<button
-																			key={Object.keys(layout)[0]}
-																			value={Object.values(layout)[0]}
-																			onClick={(e) => {
-																				setLayoutPrice(Number(e.target.value));
-																				setSelectedLayout(
-																					Object.keys(layout)[0]
-																				);
-																			}}
-																			className={
-																				selectedLayout ===
-																				Object.keys(layout)[0]
-																					? "fullitem__card_info-params_block_button active"
-																					: "fullitem__card_info-params_block_button"
-																			}
-																		>
-																			{Object.keys(layout)[0] === "rus"
-																				? "Русская"
-																				: Object.keys(layout)[0] === "eng"
-																				? "Английская"
-																				: Object.keys(layout)[0] === "jpn" &&
-																				  "Японская"}
-																		</button>
-																	))}
-															</div>
-														</div>
-													)}
-													{plates.length > 0 && (
-														<div className="fullitem__card_info-params_block">
-															<p>Материал платы</p>
-															<div className="fullitem__card_info-params_block-wrapper plates">
-																{plates &&
-																	plates.map((plate) => (
-																		<button
-																			key={Object.keys(plate)[0]}
-																			value={Object.values(plate)[0]}
-																			onClick={(e) => {
-																				setPlatePrice(Number(e.target.value));
-																				setSelectedPlate(Object.keys(plate)[0]);
-																			}}
-																			className={
-																				selectedPlate === Object.keys(plate)[0]
-																					? "fullitem__card_info-params_block_button active"
-																					: "fullitem__card_info-params_block_button"
-																			}
-																		>
-																			{Object.keys(plate)[0]}
+																			{titleSwitch(svitch.name)}
 																		</button>
 																	))}
 															</div>
@@ -712,13 +720,67 @@ const FullItem = () => {
 																			className={
 																				renderStatus
 																					? Number(id) === colour.id
-																						? `fullitem__card_info-params_block_color active ${colour.color.toLowerCase()}`
-																						: `fullitem__card_info-params_block_color ${colour.color.toLowerCase()}`
+																						? `fullitem__card_info-params_block_color active ${colour?.color?.toLowerCase()}`
+																						: `fullitem__card_info-params_block_color ${colour?.color?.toLowerCase()}`
 																					: ""
 																			}
 																			key={colour.id}
 																			value={colour.color}
 																		></Link>
+																	))}
+															</div>
+														</div>
+													)}
+													{layouts.length > 0 && (
+														<div className="fullitem__card_info-params_block ">
+															<p>Раскладка</p>
+															<div className="fullitem__card_info-params_block-wrapper layouts">
+																{layouts &&
+																	layouts.map((layout, index) => (
+																		<button
+																			key={index}
+																			value={layout.price}
+																			onClick={(e) => {
+																				setLayoutPrice(Number(e.target.value));
+																				setSelectedLayout(layout.value);
+																			}}
+																			className={
+																				selectedLayout === layout.value
+																					? "fullitem__card_info-params_block_button active"
+																					: "fullitem__card_info-params_block_button"
+																			}
+																		>
+																			{layout.value === "rus"
+																				? "Русская"
+																				: layout.value === "eng"
+																				? "Английская"
+																				: layout.value === "jpn" && "Японская"}
+																		</button>
+																	))}
+															</div>
+														</div>
+													)}
+													{plates.length > 0 && (
+														<div className="fullitem__card_info-params_block">
+															<p>Материал платы</p>
+															<div className="fullitem__card_info-params_block-wrapper plates">
+																{plates &&
+																	plates.map((plate, index) => (
+																		<button
+																			key={index}
+																			value={plate.price}
+																			onClick={(e) => {
+																				setPlatePrice(Number(e.target.value));
+																				setSelectedPlate(plate.value);
+																			}}
+																			className={
+																				selectedPlate === plate.value
+																					? "fullitem__card_info-params_block_button active"
+																					: "fullitem__card_info-params_block_button"
+																			}
+																		>
+																			{plate.title}
+																		</button>
 																	))}
 															</div>
 														</div>

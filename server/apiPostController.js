@@ -425,7 +425,7 @@ class ApiPostController {
   async getUser(request, response) {
     if (!request.headers.hasOwnProperty("authorization")) {
       return response
-        .status(200)
+        .status(400)
         .json({ error: "Некорректные данные", bcode: 4 });
     }
 

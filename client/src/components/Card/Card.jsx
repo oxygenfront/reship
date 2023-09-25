@@ -31,20 +31,20 @@ const Card = (cardItem) => {
 		plate: "",
 		switch: "",
 	});
-
+	
 	useEffect(() => {
 		setParameters({
 			plate:
 				JSON.parse(cardItem.parameters_dop)[0]?.plates[0] !== undefined
-					? Object.keys(JSON.parse(cardItem.parameters_dop)[0]?.plates[0])[0]
+					? JSON.parse(cardItem.parameters_dop)[0]?.plates[0]?.value
 					: "",
 			switch:
 				JSON.parse(cardItem.parameters_dop)[1]?.switches[0] !== undefined
-					? Object.keys(JSON.parse(cardItem.parameters_dop)[1]?.switches[0])[0]
+					? JSON.parse(cardItem.parameters_dop)[1]?.switches[0]?.name
 					: "",
 			layout:
 				JSON.parse(cardItem.parameters_dop)[2]?.layouts[0] !== undefined
-					? Object.keys(JSON.parse(cardItem.parameters_dop)[2]?.layouts[0])[0]
+					? JSON.parse(cardItem.parameters_dop)[2]?.layouts[0]?.value
 					: "",
 		});
 	}, [cardItem, status]);

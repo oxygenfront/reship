@@ -20,9 +20,16 @@ const favoriteSlice = createSlice({
 		removeFavorite(state, action) {
 			state.favorites = state.favorites.filter((obj) => {
 				if (action.payload.category === "Клавиатуры") {
-					return !isEqual({ ...obj.parameters }, action.payload.parameters);
+					return (
+						!isEqual({ ...obj.parameters }, action.payload.parameters) ||
+						obj.color !== action.payload.color
+					);
 				} else {
-					return obj.id !== action.payload.id;
+					return (
+						obj.color !== action.payload.color ||
+						obj.id !== action.payload.id ||
+						obj.name !== action.payload.name
+					);
 				}
 			});
 		},

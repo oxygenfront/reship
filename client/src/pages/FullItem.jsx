@@ -231,18 +231,23 @@ const FullItem = () => {
 					obj.color === collectedItem.color
 				);
 			}
-			if (collectedItem.color !== undefined) {
+			if (collectedItem.color !== undefined && obj.category !== "Клавиатуры") {
 				return (
 					obj.id === collectedItem.id &&
 					obj.color === collectedItem.color &&
 					obj.name === collectedItem.name
 				);
 			} else {
-				return obj.id === collectedItem.id && obj.name === collectedItem.name;
+				return (
+					obj.id === collectedItem.id &&
+					obj.name === collectedItem.name
+				);
 			}
 		});
+
 		setIsFavorite(ids);
-	}, [favorites]);
+	}, [favorites, collectedItem]);
+
 	const onChangeFavorite = () => {
 		if (!isFavorite) {
 			dispatch(addFavorite(collectedItem));

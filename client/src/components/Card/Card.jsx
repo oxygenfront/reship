@@ -111,7 +111,7 @@ const Card = (cardItem) => {
 					obj.color === collectedItem.color
 				);
 			}
-			if (collectedItem.color !== undefined) {
+			if (collectedItem.color !== undefined && obj.category !== "Клавиатуры") {
 				return (
 					obj.id === collectedItem.id &&
 					obj.color === collectedItem.color &&

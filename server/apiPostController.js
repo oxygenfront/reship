@@ -263,6 +263,11 @@ class ApiPostController {
   }
 
   async getProducts(request, response) {
+    let db_name = 'products';
+    if (tools.checkJsonKey(request.query, "warehouse")) {
+      db_name = 'warehouse'
+    }
+
     const priceStart = request.query.price_start;
     const priceEnd = request.query.price_end;
     const categories = request.query.categories
@@ -277,7 +282,7 @@ class ApiPostController {
     const popularity = request.query.popularity;
     const search = request.query.search;
 
-    let query = "SELECT * FROM products";
+    let query = `SELECT * FROM ${db_name}`;
 
     if (search) {
       query += ` WHERE name LIKE '%${search}%'`;
@@ -677,6 +682,7 @@ class ApiPostController {
   }
 
   async getProductById(request, response) {
+
     const id = tools.delInjection(request.params.id);
 
     database.query(
@@ -694,7 +700,12 @@ class ApiPostController {
   }
 
   async getProductsAll(request, response) {
-    database.query(`SELECT * FROM \`products\``, (error, rows, fields) => {
+    let db_name = 'products';
+    if (tools.checkJsonKey(request.query, "warehouse")) {
+      db_name = 'warehouse'
+    }
+
+    database.query(`SELECT * FROM \`${db_name}\``, (error, rows, fields) => {
       if (error) {
         return response
           .status(500)
@@ -776,6 +787,11 @@ class ApiPostController {
       const category = tools.delInjection(request.body.category);
       const weight = tools.delInjection(request.body.weight);
 
+      let db_name = 'products';
+      if (tools.checkJsonKey(request.body, "warehouse")) {
+        db_name = 'warehouse'
+      }
+
       const token = tools.delInjection(request.headers.authorization);
 
       database.query(
@@ -795,7 +811,7 @@ class ApiPostController {
               });
             } else {
               database.query(
-                `INSERT INTO \`products\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`, \`brand\`, \`feature\`, \`type\`, \`parameters_dop\`, \`weight\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
+                `INSERT INTO \`${db_name}\` (\`name\`, \`description_small\`, \`description_full\`, \`old_price\`, \`price\`, \`availability\`, \`colors\`, \`colors_avail\`, \`parameters\`, \`parameters_avail\`, \`image_link\`, \`category\`, \`info_category\`, \`brand\`, \`feature\`, \`type\`, \`parameters_dop\`, \`weight\`) VALUES ('${name}', '${description_small}', '${description_full}', '${old_price}', '${price}', '${availability}', '${JSON.stringify(
                   colors
                 )}', '${JSON.stringify(colors_avail)}', '${JSON.stringify(
                   parameters
@@ -860,6 +876,11 @@ class ApiPostController {
         .json({ error: "Некорректные данные", bcode: 12 });
     }
 
+    let db_name = 'products';
+    if (tools.checkJsonKey(request.body, "warehouse")) {
+      db_name = 'warehouse'
+    }
+
     const product_id = tools.delInjection(request.body.product_id);
     const name = tools.delInjection(request.body.name);
     const description_small = tools.delInjection(
@@ -904,7 +925,7 @@ class ApiPostController {
               bcode: 12.3,
             });
           } else {
-            let sql_start = "UPDATE `products` SET ";
+            let sql_start = `UPDATE \`${db_name}\` SET `;
 
             if (name) {
               sql_start += "`name` = '" + name + "',";
@@ -1043,8 +1064,13 @@ class ApiPostController {
       id: tools.delInjection(id),
     };
 
+    let db_name = 'products';
+    if (tools.checkJsonKey(request.body, "warehouse")) {
+      db_name = 'warehouse'
+    }
+
     database.query(
-      `DELETE FROM products WHERE id=${sanitizedValues.id}`,
+      `DELETE FROM ${db_name} WHERE id=${sanitizedValues.id}`,
       (error) => {
         if (error) {
           return response.status(400).json({
@@ -2421,7 +2447,8 @@ class ApiPostController {
       !request.body.hasOwnProperty("force_limit") ||
       !request.body.hasOwnProperty("power_tactical") ||
       !request.body.hasOwnProperty("path_length") ||
-      !request.headers.hasOwnProperty("authorization")
+      !request.headers.hasOwnProperty("authorization") ||
+      !request.body.hasOwnProperty("image") 
     ) {
       return response
         .status(400)
@@ -2437,6 +2464,7 @@ class ApiPostController {
     const power_tactical = tools.delInjection(request.body.power_tactical);
     const path_length = tools.delInjection(request.body.path_length);
     const authorization = tools.delInjection(request.headers.authorization);
+    const image = tools.delInjection(request.body.image);
 
     database.query(
       `SELECT * FROM \`users\` WHERE token='${authorization}';`,
@@ -2453,7 +2481,7 @@ class ApiPostController {
             .json({ error: "Ошибка доступа", bcode: 38.2 });
         } else {
           database.query(
-            `INSERT INTO \`switches\` (\`title\`, \`color\`, \`type\`, \`description\`, \`force_actuation\`, \`force_limit\`, \`power_tactical\`, \`path_length\`) VALUES ('${title}', '${color}', '${type}', '${description}', '${force_actuation}', '${force_limit}', '${power_tactical}', '${path_length}');`,
+            `INSERT INTO \`switches\` (\`title\`, \`color\`, \`type\`, \`description\`, \`force_actuation\`, \`force_limit\`, \`power_tactical\`, \`path_length\`, \`image\`) VALUES ('${title}', '${color}', '${type}', '${description}', '${force_actuation}', '${force_limit}', '${power_tactical}', '${path_length}', '${image}');`,
             (error, rows) => {
               if (error) {
                 return response

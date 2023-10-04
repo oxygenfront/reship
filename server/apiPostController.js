@@ -383,10 +383,18 @@ class ApiPostController {
 
           results.sort((a, b) => b.rating - a.rating);
 
-          response.json(results);
+          if (tools.checkJsonKey(request.query, "maxResults")) {
+            response.json(results.slice(0, parseInt(tools.delInjection(request.query.maxResults))));
+          } else {
+            response.json(results);
+          }
         });
       } else {
-        response.json(results);
+        if (tools.checkJsonKey(request.query, "maxResults")) {
+          response.json(results.slice(0, parseInt(tools.delInjection(request.query.maxResults))));
+        } else {
+          response.json(results);
+        }
       }
     });
   }
